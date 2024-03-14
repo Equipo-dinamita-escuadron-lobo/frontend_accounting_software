@@ -15,6 +15,15 @@ module.exports = {
         'purpleP3':'#DAAAF6'
 
       },
+      backgroundColor:{
+        "gray-ligth":"#F9FAFD"
+      },
+      borderColor:{
+        "gray-ligth":"#E5EAF1"
+      },
+      textColor:{
+        "menu-item":"#334155"
+      },
       fontFamily:{
         projectFont: ['Inria Sans']
       }

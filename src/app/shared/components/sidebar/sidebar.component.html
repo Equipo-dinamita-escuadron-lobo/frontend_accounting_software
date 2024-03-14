@@ -1,10 +1,9 @@
-<div id="sidebar" class="h-screen w-auto bg-gray-200 flex flex-col justify-start items-center font-projectFont text-sidebar font-bold">
-    <div class="flex justify-center items-center py-5 m-2 border-b-4 border-sidebar w-48">
+<div id="sidebar" class="h-[90vh] w-60 bg-white flex flex-col justify-start items-center font-projectFont text-menu-item font-bold">
+    <div class="flex justify-center items-center py-3 border-b-2 border-gray-ligth w-48">
       <h3 id="Empresa" class="">Empresa</h3>
     </div>
       <ng-container *ngFor="let link of links">
         <app-sidebar-selected [svgPath]="link.svgPath" [href]="link.href" [linkText]="link.linkText"></app-sidebar-selected>
       </ng-container>
-  
+
 </div>
-  
