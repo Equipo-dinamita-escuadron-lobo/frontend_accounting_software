@@ -8,11 +8,11 @@ module.exports = {
       colors:{
         'sidebar':'#334155',
         'blueP1':'#0472FA',
-        'bluep2':'#78BEF9',
-        'bluep3':'#DAEDFD',
-        'purple1':'#9814E5',
-        'purple2': '#BD69EE',
-        'purple3':'#DAAAF6'
+        'blueP2':'#78BEF9',
+        'blueP3':'#DAEDFD',
+        'purpleP1':'#9814E5',
+        'purpleP2': '#BD69EE',
+        'purpleP3':'#DAAAF6'
 
       },
       fontFamily:{
