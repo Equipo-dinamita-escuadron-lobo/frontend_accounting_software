@@ -12,7 +12,9 @@ module.exports = {
         'blueP3':'#DAEDFD',
         'purpleP1':'#9814E5',
         'purpleP2': '#BD69EE',
-        'purpleP3':'#DAAAF6'
+        'purpleP3':'#DAAAF6',
+        'grayP1': '#7B7B7B',
+        'grayP2': '#E4E3E3'
 
       },
       fontFamily:{
