@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación de Producto</title>
+</head>
+<body>
+
+<h1>Creación de Producto</h1>
+<p>Ingrese la información requerida para crear un nuevo producto:</p>
+
+<div>
+    <div>
+        <p>Información del Producto</p>
+    </div>
+    <div>
+        <div class="formulario fila">
+
+            <div class="columna">
+                <label for="tipo_item">Tipo de Item (Nombre):</label>
+                <input type="text" id="tipo_item" name="tipo_item">
+
+                <label for="codigo">Código:</label>
+                <input type="text" id="codigo" name="codigo">
+
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion">
+
+                <label for="minima_cantidad">Cantidad Mínima:</label>
+                <input type="number" id="minima_cantidad" name="minima_cantidad" min="0">
+            </div>
+
+            <div class="columna">
+                <label for="maxima_cantidad">Cantidad Máxima:</label>
+                <input type="number" id="maxima_cantidad" name="maxima_cantidad" min="0">
+
+                <label for="iva">Porcentaje de IVA (%):</label>
+                <input type="number" id="iva" name="iva" min="0" max="100">
+
+                <label for="fecha_creacion">Fecha de Creación:</label>
+                <input type="date" id="fecha_creacion" name="fecha_creacion">
+
+                <label for="unidad_medida">Unidad de Medida:</label>
+                <input type="text" id="unidad_medida" name="unidad_medida">
+
+                <label for="proveedor">Proveedor:</label>
+                <input type="text" id="proveedor" name="proveedor">
+
+                <label for="categoria">Categoría:</label>
+                <input type="text" id="categoria" name="categoria">
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
