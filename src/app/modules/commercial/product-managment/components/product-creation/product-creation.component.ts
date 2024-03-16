@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
-import { ProductService } from '../services/product.service'; 
-import { UnitOfMeasureService } from '../services/unit-of-measure.service'; 
-import { CategoryService } from '../services/category.service'; 
+import { ProductService } from '../../services/product.service'; 
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service'; 
+import { CategoryService } from '../../services/category.service'; 
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-creation',
@@ -10,7 +11,7 @@ import { CategoryService } from '../services/category.service';
   styleUrls: ['./product-creation.component.css']
 })
 export class ProductCreationComponent implements OnInit {
-  productForm: FormGroup; // Define un formulario reactivo para la creación de productos
+  productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
 
@@ -37,14 +38,15 @@ export class ProductCreationComponent implements OnInit {
     });
 
     // Obtiene todas las unidades de medida al inicializar el componente
-    this.getUnitOfMeasures();
+  //  this.getUnitOfMeasures();
 
     // Obtiene todas las categorías al inicializar el componente
-    this.getCategories();
+   // this.getCategories();
 
   }
 
   // Método para obtener todas las unidades de medida
+  /*
   getUnitOfMeasures(): void {
     this.unitOfMeasureService.getUnitOfMeasures().subscribe(
       (data: any[]) => {
@@ -55,8 +57,9 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }
-
-  // Método para obtener todas las categorías
+*/
+  // Método para obtener todas las categorías/
+  /*
   getCategories(): void {
     this.categoryService.getCategories().subscribe(
       (data: any[]) => {
@@ -66,7 +69,7 @@ export class ProductCreationComponent implements OnInit {
         console.log('Error al obtener las categorías:', error);
       }
     );
-  }
+  }*/
 
 
   // Método para enviar el formulario y crear un nuevo producto

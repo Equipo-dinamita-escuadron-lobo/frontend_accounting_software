@@ -12,6 +12,8 @@ import { ProductCreationComponent } from './components/product-creation/product-
   imports: [
     CommonModule,
     ProductManagmentRoutingModule
+  ],
+  exports: [ProductCreationComponent
   ]
 })
 export class ProductManagmentModule { }
