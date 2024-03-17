@@ -14,7 +14,7 @@ export class ProductService {
 
   // Método para obtener todos los productos
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+    return this.http.get<Product[]>(this.apiUrl+"GetAll");
   }
 
   // Método para crear un nuevo producto
