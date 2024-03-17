@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
-import { ProductService } from '../../services/product.service'; 
-import { UnitOfMeasureService } from '../../services/unit-of-measure.service'; 
-import { CategoryService } from '../../services/category.service'; 
+import { ProductService } from '../../services/product.service';
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { CategoryService } from '../../services/category.service';
 import { Router, RouterModule } from '@angular/router';
+import { Product } from '../../models/Product';
 
 @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
-  styleUrls: ['./product-creation.component.css']
+  styleUrls: ['./product-creation.component.css'],
 })
 export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
@@ -19,30 +20,31 @@ export class ProductCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
-    private categoryService: CategoryService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
     // Inicializa el formulario reactivo y define las validaciones necesarias para cada campo
     this.productForm = this.formBuilder.group({
-      tipo_item: ['', Validators.required],
-      codigo: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      minima_cantidad: ['', Validators.required],
-      maxima_cantidad: ['', Validators.required],
-      iva: ['', Validators.required],
-      fecha_creacion: ['', Validators.required],
-      unidad_medida: ['', Validators.required],
-      proveedor: ['', Validators.required],
-      categoria: ['', Validators.required]
+      id: ['', Validators.required],
+      itemType: ['', Validators.required],
+      code: ['', Validators.required],
+      description: ['', Validators.required],
+      minQuantity: ['', Validators.required],
+      maxQuantity: ['', Validators.required],
+      taxPercentage: ['', Validators.required],
+      creationDate: ['', Validators.required],
+      unitOfMeasure: ['', Validators.required],
+      supplier: ['', Validators.required],
+      category: ['', Validators.required],
+      price: ['', Validators.required],
     });
 
     // Obtiene todas las unidades de medida al inicializar el componente
-  //  this.getUnitOfMeasures();
+    //  this.getUnitOfMeasures();
 
     // Obtiene todas las categorías al inicializar el componente
-   // this.getCategories();
-
+    // this.getCategories();
   }
 
   // Método para obtener todas las unidades de medida
@@ -71,11 +73,24 @@ export class ProductCreationComponent implements OnInit {
     );
   }*/
 
-
   // Método para enviar el formulario y crear un nuevo producto
   onSubmit(): void {
-    if (this.productForm.valid) {
-      const productData = this.productForm.value;
+    if (true  /*this.productForm.valid*/) {
+      const productData: Product = {
+        id: this.productForm.value.id, // Accede al valor del campo 'id' del formulario
+        itemType: this.productForm.value.itemType, // Accede al valor del campo 'itemType' del formulario
+        code: this.productForm.value.code,
+        description: this.productForm.value.description,
+        minQuantity: this.productForm.value.minQuantity,
+        maxQuantity: this.productForm.value.maxQuantity,
+        taxPercentage: this.productForm.value.taxPercentage,
+        creationDate: this.productForm.value.creationDate,
+        unitOfMeasure: this.productForm.value.unitOfMeasure,
+        supplier: this.productForm.value.supplier,
+        category: this.productForm.value.category,
+        price: this.productForm.value.price,
+      };
+      console.log('Datos del producto:', productData);
       // Aquí puedes enviar los datos del formulario al servicio ProductService para crear un nuevo producto
       this.productService.createProduct(productData).subscribe(
         (response: any) => {
@@ -83,7 +98,7 @@ export class ProductCreationComponent implements OnInit {
           // Limpia el formulario después de crear el producto exitosamente
           this.productForm.reset();
         },
-        error => {
+        (error) => {
           console.log('Error al crear el producto:', error);
         }
       );
@@ -91,4 +106,5 @@ export class ProductCreationComponent implements OnInit {
       console.log('Formulario inválido');
     }
   }
+
 }

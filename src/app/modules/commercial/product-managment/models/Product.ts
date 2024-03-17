@@ -1,4 +1,5 @@
 export interface Product {
+    id :string;
     itemType: string;
     code: string;
     description: string;
@@ -9,5 +10,6 @@ export interface Product {
     unitOfMeasure: string;
     supplier: string;
     category: string;
+    price: number;
   }
   
