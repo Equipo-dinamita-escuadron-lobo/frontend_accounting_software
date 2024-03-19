@@ -1,6 +1,8 @@
-<div class="flex flex-row justify-start items-center hover:bg-gray-100 rounded-md w-52 h-10 mt-2">
+
+<a [routerLink]="href"><div class="flex flex-row justify-start items-center hover:bg-gray-100 rounded-md w-52 h-10 mt-2">
     <div class="p-2 mx-4">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 640 512"><path [attr.d]="svgPath"></path> </svg>
     </div>
-    <a [href]="href">{{ linkText }}</a>
+    {{ linkText }}
   </div>
+</a>
