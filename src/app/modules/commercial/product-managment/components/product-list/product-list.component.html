@@ -1,40 +1,44 @@
 <!-- Botones para agregar producto, categoría y unidad -->
 <div class="flex justify-between gap-4 mt-4">
-    <button class="buttonsC h-10 w-auto" (click)="redirectTo('product-creation')">
-        Agregar Producto
-    </button>
-    <button class="buttonsC h-10 w-auto" (click)="redirectTo('agregar-categoria')">
-        Agregar Categoría
-    </button>
-    <button class="buttonsC h-10 w-auto" (click)="redirectTo('agregar-unidad')">
-        Agregar Unidad
-    </button>
-
-     <!-- Barra de búsqueda -->
-     <div class="flex flex-grow items-center bg-white border border-gray-300 rounded-lg overflow-hidden">
-        <input type="text" class="w-full py-2 px-4 focus:outline-none" placeholder="Buscar producto...">
-        <button class="buttonsC h-10 w-auto ">Buscar</button>
-    </div>
-
+  <!-- Barra de búsqueda -->
+  <div
+    class="flex flex-grow items-center bg-white border border-gray-300 rounded-lg overflow-hidden"
+  >
+    <input
+      type="text"
+      class="w-full py-2 px-4 focus:outline-none"
+      placeholder="Buscar producto..."
+    />
+    <button class="buttonsC h-10 w-auto">Buscar</button>
+  </div>
+  <button class="buttonsC h-10 w-auto" (click)="redirectTo('product-creation')">
+    Agregar Producto
+  </button>
+  <button
+    class="buttonsC h-10 w-auto"
+    (click)="redirectTo('agregar-categoria')"
+  >
+    Agregar Categoría
+  </button>
+  <button class="buttonsC h-10 w-auto" (click)="redirectTo('agregar-unidad')">
+    Agregar Unidad
+  </button>
 </div>
 
 <!-- Verificar si hay productos disponibles -->
 <div *ngIf="products && products.length > 0; else noProducts" class="my-4">
-    <!-- Iterar sobre la lista de productos -->
+  <!-- Iterar sobre la lista de productos -->
 
-    <div *ngFor="let product of products" class="bg-gray-100 rounded-lg p-4 mb-4">
-    
-      <!-- Mostrar los datos del producto -->
-      <h3 class="text-xl font-bold">{{ product.itemType }}</h3>
-      <p class="text-gray-700">{{ product.description }}</p>
-      <p class="text-gray-700">Precio: {{ product.price }}</p>
-      <!-- Agregar más campos según sea necesario -->
-    </div>
+  <div *ngFor="let product of products" class="bg-gray-100 rounded-lg p-4 mb-4">
+    <!-- Mostrar los datos del producto -->
+    <h3 class="text-xl font-bold">{{ product.itemType }}</h3>
+    <p class="text-gray-700">{{ product.description }}</p>
+    <p class="text-gray-700">Precio: {{ product.price }}</p>
+    <!-- Agregar más campos según sea necesario -->
+  </div>
 </div>
 
 <!-- Manejar caso de lista vacía -->
 <ng-template #noProducts>
-    <p class="text-gray-700">No hay productos disponibles.</p>
+  <p class="text-gray-700">No hay productos disponibles.</p>
 </ng-template>
-
-
