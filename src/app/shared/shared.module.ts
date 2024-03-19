@@ -6,8 +6,11 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarSelectedComponent } from './components/sidebar-selected/sidebar-selected.component';
+<<<<<<< HEAD
 import { CheckButtonComponent } from './components/check-button/check-button.component';
 
+=======
+>>>>>>> feature/navbarSidebarComponents
 
 @NgModule({
   declarations: [
