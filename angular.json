@@ -35,9 +35,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/datatables.net-dt/css/dataTables.dataTables.min.css",
+              "node_modules/datatables.net-responsive-dt/css/responsive.dataTables.min.css",
+              "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/dataTables.min.js",
+              "node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+              "node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+              "node_modules/datatables.net-buttons/js/buttons.html5.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -103,6 +112,6 @@
     }
   },
   "cli": {
-    "analytics": "b40f4f1b-9897-414f-8f64-f8fe01395e6b"
+    "analytics": "89cf2182-5a4a-45b8-9d99-85edb21f157d"
   }
 }
