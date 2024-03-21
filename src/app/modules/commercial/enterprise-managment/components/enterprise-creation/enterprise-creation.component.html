@@ -1,89 +1,131 @@
-<h1>Cracion de empresa</h1>
-<p>Ingrese toda la informacion que es requerida en los isgueintes formularios</p>
-<div>
-    <div>
-        <p>Informacion basica</p>
-    </div>
-    <div>
-        <div class="column image">
-            <img src="iconoSubir.webp" alt="Imagen" width="100" height="100">
-        </div>
-        <div class="formulario fila">
+<div class="flex w-full  h-4/5 font-projectFont mb-5">
+    <div class="max-w-full mx-auto p-24">
+        <h1 class="text-3xl font-bold">Creación de Empresa</h1>
+        <p class="text-xl mt-2 mb-4">Ingrese toda la información requerida en los siguientes formularios</p>
 
-            <div class="columna">
-                <label for="nombre_empresa">Nombre de Empresa:</label>
-                <input type="text" id="nombre_empresa" name="nombre_empresa">
+        <section class="create-enterprise  rounded-xl shadow-xl border-solid border-blue-800 border-2 mg-">
+            <div class="container">
+                <div class="container__basic__information">
+                    <div class="p-4 border-b-2 border-solid border-blue-800 flex justify-center  ">
+                        <h2 class="font-bold">Informacion basica </h2>
+                    </div>
 
-                <label for="nombre_propietario">Nombre de Propietario:</label>
-                <input type="text" id="nombre_propietario" name="nombre_propietario">
+                    <div class="basic__information__content p-8 grid grid-cols-1 md:grid-cols-3 w-full">
+                        <div class="basic__information__picture col-span-1 flex p-9 w-4/5 justify-center items-center">
+                            <img src="../../../../../../assets/Iconos/enterprise/iconoSubir.webp" alt="Imagen" class="object-cover w-full h-full icon-upload">
+                        </div>
 
-                <label for="tipo_empresa">Tipo de Empresa:</label>
-                <select id="tipo_empresa" name="tipo_empresa">
-                    <option value="SA">Sociedad Anónima (SA)</option>
-                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
-                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
-                    <option value="OTRO">Otro</option>
-                </select>
+                        <div class="basic__information__form flex flex-col justify-center mb-8 col-span-2">
+                            <div class="basic__information__buttoms justify-center flex mb-5">
+                                <button class="legal-person buttonsC mr-5">Persona Juridica</button>
+                                <button class="natural-person buttonsC">Persona Natural</button>
+                            </div>
+
+                            <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+                                    <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
+                                    <input type="text" id="nombre_empresa" name="nombre_empresa" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                            
+                                    <label for="nombre_propietario" class="block">Nombre de Propietario:</label>
+                                    <input type="text" id="nombre_propietario" name="nombre_propietario" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                            
+                                    <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+                                    <select id="tipo_empresa" name="tipo_empresa" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                        <option value="SA">Sociedad Anónima (SA)</option>
+                                        <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
+                                        <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
+                                        <option value="OTRO">Otro</option>
+                                    </select>
+                                </div>
+                            
+                                <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
+                                    <label for="nit" class="block">NIT:</label>
+                                    <input type="text" id="nit" name="nit" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                            
+                                    <label for="apellidos" class="block">Apellidos:</label>
+                                    <input type="text" id="apellidos" name="apellidos" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                            
+                                    <label for="tipo_contribuyente" class="block">Tipo de Contribuyente:</label>
+                                    <select id="tipo_contribuyente" name="tipo_contribuyente" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                        <option value="Persona Natural">Persona Natural</option>
+                                        <option value="Persona Jurídica">Persona Jurídica</option>
+                                        <option value="Sociedad de Hecho">Sociedad de Hecho</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container__additional-information">
+                    <div class="p-4 border-y-2 border-solid border-blue-800 flex justify-center ">
+                        <p class="font-bold">Información Adicional</p>
+                    </div>
+
+                    <div class="additional__information__content px-20 py-14">
+                        <form action="" class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 gap-20">
+                            <div class="form__enterprise__column-1  grid grid-cols-1 md:grid-cols-1 gap-4">
+
+                                <label for="taxliability">Responsabilidades tributarias:</label>
+                                <select id="tax-liability" name="tax-liability" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                    <option value="SA">Sociedad Anónima (SA)</option>
+                                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
+                                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+
+
+                                <label for="pais">Pais</label>
+                                <select id="pais" name="pais" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                    <option value="SA">Sociedad Anónima (SA)</option>
+                                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
+                                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+
+                                <label for="departamento">Departamento</label>
+                                <select id="departamento" name="departamento" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                    <option value="SA">Sociedad Anónima (SA)</option>
+                                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
+                                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+
+                                <label for="municipio">Municipio</label>
+                                <select id="municipio" name="municipio" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                                    <option value="SA">Sociedad Anónima (SA)</option>
+                                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
+                                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+
+                            </div>
+
+                            <div class="form__enterprise__column-2 grid grid-cols-1 md:grid-cols-1 gap-4">
+                                <label for="direccion">Direccion</label>
+                                <input type="text" id="direccion" name="direccion" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+
+                                <label for="telefono">Telefono</label>
+                                <input type="number" id="telefono" name="telefono" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+
+                                <label for="sucursal">¿Tiene sucursales?</label>
+                                <input type="checkbox">
+
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="border border-gray-300 rounded-md px-3 py-2 w-full">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="buttons-create-cancel flex justify-center m-10">
+                    <button class="save-enterprise text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Guardar</button>
+                    <button class="cancel-create text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Cancelar</button>
+                </div>
             </div>
+        </section>
 
-            <div class="columna">
-                <label for="nit">NIT:</label>
-                <input type="text" id="nit" name="nit">
-
-                <label for="apellidos">Apellidos:</label>
-                <input type="text" id="apellidos" name="apellidos">
-
-                <label for="tipo_contribuyente">Tipo de Contribuyente:</label>
-                <select id="tipo_contribuyente" name="tipo_contribuyente">
-                    <option value="Persona Natural">Persona Natural</option>
-                    <option value="Persona Jurídica">Persona Jurídica</option>
-                    <option value="Sociedad de Hecho">Sociedad de Hecho</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div>
-    <div>
-        <p>Informacion adicional</p>
-    </div>
-    <div>
-        <div class="formulario fila">
-
-            <div class="columna">
-                <label for="nombre_empresa">Nombre de Empresa:</label>
-                <input type="text" id="nombre_empresa" name="nombre_empresa">
-
-                <label for="nombre_propietario">Nombre de Propietario:</label>
-                <input type="text" id="nombre_propietario" name="nombre_propietario">
-
-                <label for="tipo_empresa">Tipo de Empresa:</label>
-                <select id="tipo_empresa" name="tipo_empresa">
-                    <option value="SA">Sociedad Anónima (SA)</option>
-                    <option value="SRL">Sociedad de Responsabilidad Limitada (SRL)</option>
-                    <option value="EIRL">Empresa Individual de Responsabilidad Limitada (EIRL)</option>
-                    <option value="OTRO">Otro</option>
-                </select>
-            </div>
-
-            <div class="columna">
-                <label for="nit">NIT:</label>
-                <input type="text" id="nit" name="nit">
-
-                <label for="apellidos">Apellidos:</label>
-                <input type="text" id="apellidos" name="apellidos">
-
-                <label for="tipo_contribuyente">Tipo de Contribuyente:</label>
-                <select id="tipo_contribuyente" name="tipo_contribuyente">
-                    <option value="Persona Natural">Persona Natural</option>
-                    <option value="Persona Jurídica">Persona Jurídica</option>
-                    <option value="Sociedad de Hecho">Sociedad de Hecho</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-        </div>
     </div>
 </div>

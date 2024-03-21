@@ -1,0 +1,5 @@
+
+.icon-upload {
+    filter: brightness(0.4) hue-rotate(450deg); /* Reduce la intensidad y cambia el matiz a azul oscuro */
+    object-fit: fill;
+}
