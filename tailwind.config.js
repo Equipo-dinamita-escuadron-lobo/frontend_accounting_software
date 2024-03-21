@@ -24,7 +24,8 @@ module.exports = {
         "gray-ligth":"#E5EAF1"
       },
       textColor:{
-        "menu-item":"#334155"
+        "menu-item":"#334155",
+        "subtitle":"#78BEF9"
       },
       fontFamily:{
         projectFont: ['Inria Sans']
