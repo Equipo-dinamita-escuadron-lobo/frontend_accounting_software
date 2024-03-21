@@ -1,3 +1,4 @@
+import { Location } from "./Location";
 import { PersonType } from "./PersonType";
 
 export interface Enterprise{

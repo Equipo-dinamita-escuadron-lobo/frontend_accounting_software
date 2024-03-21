@@ -9,6 +9,27 @@ import { EnterpriseList } from '../models/EnterpriseList';
 })
 export class EnterpriseService {
 
+  /**
+   * Test of service
+   */
+
+  enterprises: EnterpriseList[] = [
+    {
+        id: 1,
+        name: "Enterprise 1",
+        nit: "NIT123",
+        logo: "enterprise1_logo.png"
+    },
+    {
+        id: 2,
+        name: "Enterprise 2",
+        nit: "NIT456",
+        logo: "enterprise2_logo.png"
+    },
+    // Añade más objetos según sea necesario
+];
+
+
   //Route API
   private apiUrl = ''; 
 
