@@ -27,7 +27,7 @@ export class DatatableComponent implements AfterViewInit, OnDestroy, OnInit {
       autoWidth: false,
       columns: this.columns,
       dom: `
-      <'mt-3 flex flex-row justify-between'
+      <'mt-3 m-4 flex flex-row justify-between'
         <'flex flex-row' B>
         <'flex flex-row' f>
       >
@@ -39,7 +39,7 @@ export class DatatableComponent implements AfterViewInit, OnDestroy, OnInit {
       >
     `,
       buttons: [
-        {
+        /*{
           text: 'Nuevo',
           className: "",
           action: function (e: MouseEvent, dt: DataTables.Api, node: HTMLButtonElement, config: any) {
@@ -47,14 +47,14 @@ export class DatatableComponent implements AfterViewInit, OnDestroy, OnInit {
             alert('Botón presionado');
           }
         },
-        {
+       /* {
           text: 'Lista clinton',
           className: "",
           action: function (e: MouseEvent, dt: DataTables.Api, node: HTMLButtonElement, config: any) {
             // Acción del botón, por ejemplo, mostrar un alerta
             alert('Botón presionado');
           }
-        }
+        }*/
       ],
       language: {
         processing: "Procesando...",
