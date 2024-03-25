@@ -17,6 +17,16 @@ module.exports = {
         'grayP2': '#E4E3E3'
 
       },
+      backgroundColor:{
+        "gray-ligth":"#F9FAFD"
+      },
+      borderColor:{
+        "gray-ligth":"#E5EAF1"
+      },
+      textColor:{
+        "menu-item":"#334155",
+        "subtitle":"#78BEF9"
+      },
       fontFamily:{
         projectFont: ['Inria Sans']
       }

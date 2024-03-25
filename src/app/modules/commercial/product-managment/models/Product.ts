@@ -1,3 +1,6 @@
+import { Category } from "./Category";
+import { UnitOfMeasure } from "./UnitOfMeasure";
+
 export interface Product {
     id :string;
     itemType: string;
@@ -7,9 +10,9 @@ export interface Product {
     maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
-    unitOfMeasure: string;
+    unitOfMeasure: UnitOfMeasure;
     supplier: string;
-    category: string;
+    category: Category;
     price: number;
   }
   

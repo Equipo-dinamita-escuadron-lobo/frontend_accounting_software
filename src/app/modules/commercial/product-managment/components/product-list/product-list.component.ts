@@ -10,6 +10,20 @@ import { Router } from '@angular/router'; // Importa Router desde '@angular/rout
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = []; // Inicializa la lista de productos
+  columns: any[] = [
+    {title: 'Id', data: 'id'},
+    {title:'Nombres',data:'itemType'},
+   // {title:'Codigo',data:'code'},
+    {title:'Descripción',data:'description'},
+    {title:'min',data:'minQuantity'},
+   // {title:'max',data:'maxQuantity'},
+    //{title:'tax',data:'taxPercentage'},
+    //{title:'f creación',data:'creationDate'},
+    {title:'unidad',data:'unitOfMeasure'},
+    {title:'prov',data:'supplier'},
+    {title:'cat',data:'category'},
+    {title:'precio',data:'price'},
+  ];
 
   constructor(private productService: ProductService,  private router: Router ) { } // Inyecta el servicio ProductService en el constructor
 
@@ -17,7 +31,6 @@ export class ProductListComponent implements OnInit {
     this.getProducts(); // Llama al método getProducts() al inicializar el componente
   }
 
-  // Método para obtener la lista de productos
   getProducts(): void {
     this.productService.getProducts().subscribe(
       (data: Product[]) => {
