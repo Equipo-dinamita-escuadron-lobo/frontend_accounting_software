@@ -9,6 +9,10 @@ import { Location } from '../../models/Location';
 import { EnterpriseList } from '../../models/EnterpriseList';
 import { TaxLiability } from '../../models/TaxLiability';
 import { TaxPayerType } from '../../models/TaxPrayerType';
+import { CityService } from '../../services/city.service';
+import { DepartmentService } from '../../services/department.service';
+import { Department } from '../../models/Department';
+import { City } from '../../models/City';
 
 @Component({
   selector: 'app-enterprise-creation',
@@ -21,9 +25,13 @@ export class EnterpriseCreationComponent {
    */
 
   form: FormGroup;
+  
   enterpriseList: EnterpriseList[] = [];
   taxLiabilitiesList: TaxLiability[] = [];
   taxPrayersList: TaxPayerType[] = [];
+  departmenList: Department[] = [];
+  cityList: City[] = [];
+
   selectedButtonType: string = 'legal';
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;
@@ -32,7 +40,9 @@ export class EnterpriseCreationComponent {
     private fb: FormBuilder,
     private enterpriseService: EnterpriseService,
     private taxLiabilityService: TaxLiabilityService,
-    private taxPayerService: TaxPayerTypeService
+    private taxPayerService: TaxPayerTypeService,
+    private cityService: CityService,
+    private departmentService: DepartmentService
   ) {
     this.form = this.fb.group(this.validations());
   }
@@ -117,12 +127,7 @@ export class EnterpriseCreationComponent {
     })
   }
 
-  getAllEnterprises() {
-    this.enterpriseService.getEnterprises().subscribe(data => {
-      this.enterpriseList = data;
-      console.log(data);
-    })
-  }
+
 
   getAllTaxLiabilities() {
     this.taxLiabilityService.getTaxLiabilities().subscribe(

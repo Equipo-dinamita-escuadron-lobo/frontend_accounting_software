@@ -1,12 +1,15 @@
+
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filter'
+  name: 'filterEnterpriseList'
 })
-export class FilterPipe implements PipeTransform {
+export class FilterEnterpriseList implements PipeTransform {
+  transform(items: any[], filterName: string): any[] {
+    if ((!filterName || filterName.trim() === '')) {
+      return items;
+    }
 
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+    return items.filter(item => item.name.toLowerCase().includes(filterName.toLowerCase()) || item.nit.toLowerCase().includes(filterName));
   }
-
 }

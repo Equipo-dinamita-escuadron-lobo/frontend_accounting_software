@@ -9,6 +9,7 @@ import { EnterpriseList } from '../models/EnterpriseList';
 })
 export class EnterpriseService {
 
+  logoDefault:string = "../../../../../../assets/Iconos/enterprise/icon-default.png";
   /**
    * Test of service
    */
@@ -18,13 +19,13 @@ export class EnterpriseService {
         id: 1,
         name: "Enterprise 1",
         nit: "NIT123",
-        logo: "enterprise1_logo.png"
+        logo: this.logoDefault
     },
     {
         id: 2,
         name: "Enterprise 2",
         nit: "NIT456",
-        logo: "enterprise2_logo.png"
+        logo: this.logoDefault
     },
     // Añade más objetos según sea necesario
 ];
