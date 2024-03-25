@@ -6,13 +6,15 @@ import { EnterpriseCreationComponent } from './components/enterprise-creation/en
 import { PrincipalComponent } from './components/principal/principal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EnterpriseListComponent } from './components/enterprise-list/enterprise-list.component';
+import { FilterPipe } from './components/filter.pipe';
 
 
 @NgModule({
   declarations: [
     EnterpriseCreationComponent,
     PrincipalComponent,
-    EnterpriseListComponent
+    EnterpriseListComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,

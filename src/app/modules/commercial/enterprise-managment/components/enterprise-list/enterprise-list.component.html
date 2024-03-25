@@ -1,1 +1,48 @@
-<p>enterprise-list works!</p>
+<section class="contenido px-10 py-10 font-projectFont ">
+    <div class="flex w-10/12 justify-between mx-4 flex-auto">
+        <h1 class="text-3xl font-bold mb-8">Listado de empresas</h1>
+
+        <button type="button" routerLink="/enterprise-management/create"
+            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+            Agregar empresa
+        </button>
+    </div>
+
+    <form>
+        <div class=" mb-6 ml-8 flex border-b-2 border-blue-800 w-1/2 rounded-md">
+            <svg class="h-6 w-6 text-blue-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="11" cy="11" r="8" />  <line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+            <input type="text" name="searchName" class="mb-2 mr-3 ml-2 border-b-2 w-10/12 outline-none" id="search"
+                placeholder="Ingrese el nombre de la empresa" name="filterPost" [(ngModel)]="filterPost">
+        </div>
+    </form>
+
+    <div class="mostrador">
+        <ng-container *ngFor="let filaEmpresas of dividirEmpresasEnGrupos(empresas, 3)">
+            <div class="fila flex">
+                <div class="flex max-w-sm ml-8 mb-4 bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900"
+                    *ngFor="let empresa of filaEmpresas">
+
+                    <a href="#" class="content-center ml-3 my-2 max-w-20">
+                        <img class="rounded-t-lg w-24 object-cover shadow-sm" [src]="empresa.imagenUrl" alt="" />
+                    </a>
+                    <div class="pl-4 py-2 mr-4">
+                        <a href="#">
+                            <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.nombre
+                                }}</h5>
+                        </a>
+                        <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">{{ empresa.descripcion }}
+                        </p>
+                        <a href="#"
+                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1">
+                            Acceder
+                            <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</section>
