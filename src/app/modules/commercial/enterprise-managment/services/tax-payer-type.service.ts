@@ -19,8 +19,14 @@ export class TaxPayerTypeService {
 
   constructor(private http: HttpClient) {}
 
+  
+
+  /**
+   * @description method to get all tax payer types
+   * @returns all tax payer types from the backend
+   */
+
   /*
-  // Method to get all tax payer types
   getTaxPayerTypes(): Observable<TaxPayerType[]> {
     return this.http.get<TaxPayerType[]>(this.apiUrl);
   }*/

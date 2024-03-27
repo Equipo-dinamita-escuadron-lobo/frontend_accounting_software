@@ -35,108 +35,141 @@
                             </div>
 
 
-                            <div class="divA" *ngIf="showNaturalForm">
-                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                                        <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
-                                        <input type="text" id="nombre_empresa" name="nombre_empresa"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese el nombre de la empresa" formControlName="name"
-                                            required>
+                            <div class="divA mt-5" *ngIf="showNaturalForm">
+                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-9">
+                                    <div class="">
+                                        <div class="col-1-name grid mb-3">
+                                            <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
+                                            <input type="text" id="nombre_empresa" name="nombre_empresa"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ingrese el nombre de la empresa" formControlName="name"
+                                                required>
+                                        </div>
 
-                                        <label for="nombre_propietario" class="block">Nombre de Propietario:</label>
-                                        <input type="text" id="nombre_propietario" name="nombre_propietario"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese nombre de propietario" formControlName="nameOwner"
-                                            required>
 
-                                        <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+                                        <div class="col-1-owner grid mb-3">
+                                            <label for="nombre_propietario" class="block">Nombre de Propietario:</label>
+                                            <input type="text" id="nombre_propietario" name="nombre_propietario"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ingrese nombre de propietario" formControlName="nameOwner"
+                                                required>
+                                        </div>
 
-                                        <ng-select [items]="enterpriseTypesList" bindLabel="name" bindValue="id"
-                                            [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}
-                                                </div>
-                                            </ng-template>
-                                        </ng-select>
+
+                                        <div class="col-1-type grid mb-3 ">
+                                            <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+
+                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList" bindLabel="name" 
+                                                [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full">
+                                                <ng-template ng-option-tmp let-item="item">
+                                                    <div
+                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                        {{ item.name }}
+                                                    </div>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+
 
 
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                                        <label for="nit" class="block">NIT(Numero de identificacion tributaria):</label>
-                                        <input type="text" id="nit" name="nit"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese NIT" formControlName="nit">
+                                    <div class="">
+                                        <div class="col-2-nit grid mb-3 ">
+                                            <label for="nit" class="block">NIT(Numero de identificacion
+                                                tributaria):</label>
+                                            <input type="text" id="nit" name="nit"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ingrese NIT" formControlName="nit">
+                                        </div>
 
-                                        <label for="apellidos" class="block">Apellidos:</label>
-                                        <input type="text" id="apellidos" name="apellidos"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese los apellidos" formControlName="surnameOwner">
+                                        <div class="col-2-surname grid mb-3">
+                                            <label for="apellidos" class="block">Apellidos:</label>
+                                            <input type="text" id="apellidos" name="apellidos"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ingrese los apellidos" formControlName="surnameOwner">
+                                        </div>
 
-                                        <label for="tipo_contribuyente" class="block">Tipo de Contribuyente:</label>
-                                        <ng-select [items]="taxPayersList" bindLabel="name" bindValue="id"
-                                            [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                            placeholder="Seleccione un tipo">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}</div>
-                                            </ng-template>
-                                        </ng-select>
+                                        <div class="col-2-payer grid mb-3">
+                                            <label for="tipo_contribuyente" class="block">Tipo de Contribuyente:</label>
+                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name" 
+                                                [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
+                                                >
+                                                <ng-template ng-option-tmp let-item="item">
+                                                    <div
+                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                        {{ item.name }}</div>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>
 
-                            <div class="divB" *ngIf="showLegalForm">
-                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                                        <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
-                                        <input type="text" id="nombre_empresa" name="nombre_empresa"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese el nombre de la empresa" formControlName="name">
+                            <div class="divB mt-5" *ngIf="showLegalForm">
+                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-9">
+                                    <div class="">
+                                        <div class="col-1-name grid mb-3">
+                                            <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
+                                            <input type="text" id="nombre_empresa" name="nombre_empresa"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                placeholder="Ingrese el nombre de la empresa" formControlName="name">
 
-                                        <label for="nombre_propietario" class="block">Razon social:</label>
-                                        <input type="text" id="nombre_propietario" name="nombre_propietario"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                            placeholder="Ingrese la razón social" formControlName="businessName">
+                                        </div>
 
-                                        <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
-                                        <ng-select [items]="enterpriseTypesList" bindLabel="name" bindValue="id"
-                                            [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                            placeholder="Seleccione un tipo">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}</div>
-                                            </ng-template>
-                                        </ng-select>
+                                        <div class="col-1-business grid mb-3">
+                                            <label for="nombre_propietario" class="block">Razon social:</label>
+                                            <input type="text" id="nombre_propietario" name="nombre_propietario"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                placeholder="Ingrese la razón social" formControlName="businessName">
+                                        </div>
+
+                                        <div class="col-1-type grid mb-3 ">
+                                            <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList" bindLabel="name" 
+                                                [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9"
+                                                >
+                                                <ng-template ng-option-tmp let-item="item">
+                                                    <div
+                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                        {{ item.name }}</div>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
+
                                     </div>
 
-                                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                                        <label for="nit" class="block">NIT(Numero de identificacion tributaria):</label>
-                                        <input type="text" id="nit" name="nit"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-12 mb-1 w-full max-h-9"
-                                            placeholder="Ingrese NIT" formControlName="nit">
+                                    <div class="">
+                                        <div class="col-2-nit grid mb-3 ">
+                                            <label for="nit" class="block">NIT(Numero de identificacion
+                                                tributaria):</label>
+                                            <input type="text" id="nit" name="nit"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                placeholder="Ingrese NIT" formControlName="nit">
+                                        </div>
 
+                                        <div class="col-2-tax-payer-type grid mb-3 ">
+                                            <label for="tipo_contribuyente" class="block ">Tipo de
+                                                Contribuyente:</label>
+                                            <ng-select name="tax-prayer" [items]="taxPayersList" bindLabel="name"
+                                                [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9"
+                                                >
+                                                <ng-template ng-option-tmp let-item="item">
+                                                    <div
+                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                        {{ item.name }}</div>
+                                                </ng-template>
+                                            </ng-select>
+                                        </div>
 
-                                        <label for="tipo_contribuyente" class="block -mt-12">Tipo de
-                                            Contribuyente:</label>
-                                        <ng-select [items]="taxPayersList" bindLabel="name" bindValue="id"
-                                            [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
-                                            class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                            placeholder="Seleccione un tipo">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}</div>
-                                            </ng-template>
-                                        </ng-select>
+                                        <div>
+
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -152,78 +185,103 @@
 
                     <div class="additional__information__content px-20 py-14">
                         <form action="" class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 gap-20">
-                            <div class="form__enterprise__column-1  grid grid-cols-1 md:grid-cols-1 gap-4">
+                            <div class="form__enterprise__column-1">
 
-                                <label for="taxliability">Responsabilidades tributarias:</label>
-                                <ng-select [items]="taxLiabilitiesList" bindLabel="name" bindValue="id"
-                                    [searchable]="true" [(ngModel)]="selectedItemTaxLiabilities"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                    [maxSelectedItems]="7" [multiple]="true" placeholder="Seleccione una opción">
+                                <div class="tax-liabilities w-full grid mb-3">
+                                    <label for="taxliability">Responsabilidades tributarias:</label>
+                                    <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
+                                        [searchable]="true" [(ngModel)]="selectedItemTaxLiabilities" (change)="consola()"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
+                                        [maxSelectedItems]="7" [multiple]="true" >
 
-                                    <ng-template ng-option-tmp let-item="item">
-                                        <div
-                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                            {{ item.name }}</div>
-                                    </ng-template>
-
-
-                                </ng-select>
+                                        <ng-template ng-option-tmp let-item="item">
+                                            <div
+                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                {{ item.name }}</div>
+                                        </ng-template>
 
 
-                                <label for="country1">Pais</label>
-                                <input type="text" id="country1" name="country1"
-                                    class="border border-gray-400 rounded-md px-3 py-1 mb-1 -mt-4 w-full max-h-9"
-                                    [disabled]="true" value="Colombia" formControlName="country">
+                                    </ng-select>
+                                </div>
 
-                                <label for="departamento">Departamento</label>
-                                <ng-select [items]="departmenList" bindLabel="name" bindValue="id" [searchable]="true"
-                                    [(ngModel)]="selectedItemDepartment"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                    placeholder="Seleccione un departamento">
-                                    <ng-template ng-option-tmp let-item="item">
-                                        <div
-                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                            {{ item.name }}</div>
-                                    </ng-template>
-                                </ng-select>
+                                <div class="col-1 country w-full grid mb-3">
+                                    <label for="country1">Pais</label>
+                                    <input type="text" id="country1" name="country1"
+                                        class="border border-gray-400 rounded-md px-3 mt-1 py-1 w-full max-h-9"
+                                        value="Colombia" disabled>
+                                </div>
 
-                                <label for="municipio">Municipio</label>
-                                <ng-select [items]="cityList" bindLabel="name" bindValue="id" [searchable]="true"
-                                    [(ngModel)]="selectedItemCity"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-ful "
-                                    placeholder="Seleccione un municipio">
-                                    <ng-template ng-option-tmp let-item="item">
-                                        <div
-                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                            {{ item.name }}</div>
-                                    </ng-template>
-                                </ng-select>
+                                <div class="col-1-department w-full grid mb-3">
+                                    <label for="departamento">Departamento</label>
+                                    <ng-select [items]="departmenList" bindLabel="name" (clear)="onSelectionClear()"
+                                         [searchable]="true" [(ngModel)]="selectedItemDepartment"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-ful max-h-9 "
+                                         (change)="enableSelectCity()" name="department">
+                                        <ng-template ng-option-tmp let-item="item">
+                                            <div
+                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                {{ item.name }}</div>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
 
+                                <div class="col-1-city w-full grid mb-3">
+                                    <label *ngIf="enabledSelectCity" for="municipio">Ciudad</label>
+                                    <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList" bindLabel="name"
+                                         [searchable]="true" [(ngModel)]="selectedItemCity"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9"
+                                        >
+                                        <ng-template ng-option-tmp let-item="item">
+                                            <div
+                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                {{ item.name }}</div>
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
                             </div>
 
-                            <div class="form__enterprise__column-2 grid grid-cols-1 md:grid-cols-1 gap-4">
-                                <label for="direccion">Direccion</label>
-                                <input type="text" id="direccion" name="direccion"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                    formControlName="address">
+                            <div class="form__enterprise__column-2 ">
 
-                                <label for="telefono">Telefono</label>
-                                <input type="number" id="telefono" name="telefono"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                    formControlName="phone">
+                                <div class="col-2address grid mb-3">
+                                    <label for="direccion">Direccion</label>
+                                    <input type="text" id="direccion" name="direccion"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                        formControlName="address">
+                                </div>
 
-                                <label for="sucursal">¿Tiene sucursales?</label>
-                                <input type="checkbox" id="sucursal" name="sucursal" [(ngModel)]="branchSelected">
+                                <div class="col-2-phone grid mb-3">
+                                    <label for="telefono">Telefono</label>
+                                    <input type="number" id="telefono" name="telefono"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                        formControlName="phone">
+                                </div>
 
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                    formControlName="email">
+                                <div class="col-2-email grid mb-3">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                        formControlName="email">
+                                </div>
 
-                                <label for="dv">Digito de verificación</label>
-                                <input type="text" id="dv" name="dv"
-                                    class="border border-gray-400 rounded-md px-3 py-1 -mt-4 mb-1 w-full"
-                                    formControlName="dv">
+
+                                <div class="div grid grid-cols-5 mb-3 gap-9">
+                                    <div class="checkbox col-span-2">
+                                        <label class="w-full block text-center" for="sucursal">¿Tiene sucursales?</label>
+                                        <input  type="checkbox" id="sucursal" name="sucursal" class="w-full mt-3"
+                                            [(ngModel)]="branchSelected">
+                                    </div>
+
+                                    <div class="dv col-span-3">
+                                        <label for="dv">Digito de verificación</label>
+                                        <input type="text" id="dv" name="dv"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                            formControlName="dv">
+                                    </div>
+
+
+
+                                </div>
+
                             </div>
                         </form>
                     </div>

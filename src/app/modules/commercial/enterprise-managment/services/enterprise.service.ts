@@ -36,18 +36,30 @@ export class EnterpriseService {
 
   constructor(private http: HttpClient) { }
 
-  //Method to get all enterprises.
+    /**
+   * @description Method to get all enterprises.
+   * @returns all tax payer types from the backend
+   */
+  
   getEnterprises(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
   }
 
-  // Method to get one enterprise by its ID. 
+  /**
+   * 
+   * @param id enterprise´s identifier
+   * @description  Method to get one enterprise by its ID. 
+   * @returns one enterprise with id
+   */
   getEnterpriseById(id: number): Observable<Enterprise> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Enterprise>(url);
   }
 
-  // Method to create one enterprise
+  /**
+   * @param enterprise 
+   * @returns respond from the backend of creation enterprise
+   */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }

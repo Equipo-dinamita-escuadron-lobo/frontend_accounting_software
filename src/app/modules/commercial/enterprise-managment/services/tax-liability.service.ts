@@ -23,12 +23,14 @@ export class TaxLiabilityService {
     return this.taxLiabilities;
   }
 
-
-
   constructor(private http: HttpClient) { }
 
+  /**
+   * @description method to get all tax liabilities
+   * @returns all tax payer types from the backend
+   */
+
   /*
-  // Method to get all the Tax Liabilities
   getTaxLiabilities(): Observable<TaxLiability[]> {
     return this.http.get<TaxLiability[]>(this.apiUrl);
   }*/
