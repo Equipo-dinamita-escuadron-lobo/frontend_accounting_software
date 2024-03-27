@@ -8,6 +8,7 @@ import { ProductManagmentModule } from './modules/commercial/product-managment/p
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThirdPartiesManagmentModule } from './modules/commercial/third-parties-managment/third-parties-managment.module';
 import { DataTablesModule } from 'angular-datatables';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DataTablesModule } from 'angular-datatables';
     ProductManagmentModule,
     ReactiveFormsModule,
     ThirdPartiesManagmentModule,
-    DataTablesModule
+    DataTablesModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

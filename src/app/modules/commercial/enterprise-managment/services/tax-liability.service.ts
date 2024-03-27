@@ -12,27 +12,25 @@ export class TaxLiabilityService {
   /**
    * PRUEBAS
    *  */ 
-  taxResponsibilities: string[] = [
-    'información exogena',
-    'facturador electronico',
-    'informante de beneficiarios finales',
-    'retención en la fuente a titulo de renta',
-    'retención en la fuente a titulo de iva',
-    'autorretenedor',
-    'gran contribuyente'
+  taxLiabilities: TaxLiability[] = [
+    { id: 1, name: 'Impuesto sobre la Renta' },
+    { id: 2, name: 'Impuesto al Valor Agregado (IVA)' },
+    { id: 3, name: 'Impuesto de Sociedades' },
+    // Puedes añadir más tipos de obligaciones fiscales según sea necesario
   ];
 
-  getResponsibilitiesTest(){
-    return this.taxResponsibilities;
+  getTaxLiabilities(){
+    return this.taxLiabilities;
   }
 
 
 
   constructor(private http: HttpClient) { }
 
+  /*
   // Method to get all the Tax Liabilities
   getTaxLiabilities(): Observable<TaxLiability[]> {
     return this.http.get<TaxLiability[]>(this.apiUrl);
-  }
+  }*/
 
 }

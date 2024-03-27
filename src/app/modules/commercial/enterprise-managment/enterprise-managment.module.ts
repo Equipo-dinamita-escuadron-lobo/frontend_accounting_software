@@ -7,6 +7,7 @@ import { PrincipalComponent } from './components/principal/principal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EnterpriseListComponent } from './components/enterprise-list/enterprise-list.component';
 import { FilterEnterpriseList } from './components/filter.pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { FilterEnterpriseList } from './components/filter.pipe';
     CommonModule,
     EnterpriseManagmentRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class EnterpriseManagmentModule { }
