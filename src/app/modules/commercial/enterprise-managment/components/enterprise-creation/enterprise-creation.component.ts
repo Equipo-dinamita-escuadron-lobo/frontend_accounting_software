@@ -93,15 +93,15 @@ export class EnterpriseCreationComponent {
    */
   validations() {
     return {
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      nit: ['', [Validators.required, Validators.maxLength(15)]],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      email: ['', [Validators.required, Validators.email]],
       logo: ['', Validators.required],
-      nameOwner: ['', [Validators.maxLength(50)]],
-      surnameOwner: ['', [Validators.maxLength(50)]],
-      businessName: ['', [Validators.maxLength(50)]],
-      address: ['', [Validators.required, Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.maxLength(15),Validators.pattern(/^[a-zA-Z]+$/)]],
+      nit: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
+      businessName: ['', [Validators.required, Validators.maxLength(15)]],
+      nameOwner: ['', [Validators.required, Validators.maxLength(15),Validators.pattern(/^[a-zA-Z]+$/)]],
+      surnameOwner: ['', [Validators.required,Validators.maxLength(15)],Validators.pattern(/^[a-zA-Z]+$/)],
+      address: ['', [Validators.required, Validators.maxLength(30)]],
+      phone: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
+      email: ['', [Validators.required, Validators.email]],
       city: ['', [Validators.required, Validators.maxLength(50)]],
       country: [
         { value: 'Colombia', disabled: true },
@@ -111,6 +111,8 @@ export class EnterpriseCreationComponent {
       dv: ['', [Validators.required, Validators.maxLength(1)]],
     };
   }
+
+  
 
   /**
    * @description Allows you to change the type of person to legal
@@ -273,4 +275,6 @@ export class EnterpriseCreationComponent {
   getCities(idDepartment:number){
     this.cityList = this.cityService.getListCitiesByDepartment(1);
   }
+
+  
 }

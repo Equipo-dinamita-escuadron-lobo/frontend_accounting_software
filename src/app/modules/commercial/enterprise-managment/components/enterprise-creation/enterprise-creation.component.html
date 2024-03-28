@@ -36,32 +36,55 @@
 
 
                             <div class="divA mt-5" *ngIf="showNaturalForm">
-                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-9">
+                                <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
+                                    class="grid grid-cols-1 md:grid-cols-2 gap-9">
                                     <div class="">
+
                                         <div class="col-1-name grid mb-3">
                                             <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ingrese el nombre de la empresa" formControlName="name"
                                                 required>
+                                            <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('name')?.hasError('maxlength')">Supera limite
+                                                    caracteres</div>
+                                                <div *ngIf="form.get('name')?.hasError('required')">El nombre es
+                                                    requerido.</div>
+                                                <div *ngIf="form.get('name')?.hasError('pattern')">El nombre solo puede
+                                                    contener letras.</div>
+                                            </div>
                                         </div>
 
 
                                         <div class="col-1-owner grid mb-3">
-                                            <label for="nombre_propietario" class="block">Nombre de Propietario:</label>
+                                            <label for="nombre_propietario" class="block">Nombre de
+                                                Propietario:</label>
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ingrese nombre de propietario" formControlName="nameOwner"
                                                 required>
+                                            <div *ngIf="form.get('nameOwner')?.invalid && form.get('nameOwner')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('nameOwner')?.hasError('maxlength')">Supera limite
+                                                    caracteres</div>
+                                                <div *ngIf="form.get('nameOwner')?.hasError('required')">El nombre es
+                                                    requerido.</div>
+                                                <div *ngIf="form.get('nameOwner')?.hasError('pattern')">El nombre solo
+                                                    puede contener letras.</div>
+                                            </div>
                                         </div>
 
 
                                         <div class="col-1-type grid mb-3 ">
                                             <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
 
-                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList" bindLabel="name" 
-                                                [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full">
+                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList"
+                                                bindLabel="name" [searchable]="true"
+                                                [(ngModel)]="selectedItemEnterpriseType"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                formControlName="type-enterprise">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -82,6 +105,15 @@
                                             <input type="text" id="nit" name="nit"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ingrese NIT" formControlName="nit">
+                                            <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
+                                                    digitos</div>
+                                                <div *ngIf="form.get('nit')?.hasError('required')">El NIT es requerido.
+                                                </div>
+                                                <div *ngIf="form.get('nit')?.hasError('pattern')">El NIT solo debe
+                                                    contener numeros</div>
+                                            </div>
                                         </div>
 
                                         <div class="col-2-surname grid mb-3">
@@ -89,14 +121,24 @@
                                             <input type="text" id="apellidos" name="apellidos"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ingrese los apellidos" formControlName="surnameOwner">
+                                            <div *ngIf="form.get('surnameOwner')?.invalid && form.get('surnameOwner')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('surnameOwner')?.hasError('maxlength')">Supera
+                                                    limite caracteres</div>
+                                                <div *ngIf="form.get('surnameOwner')?.hasError('required')">El apellido
+                                                    es obligatorio.</div>
+                                                <div *ngIf="form.get('surnameOwner')?.hasError('pattern')">El nombre
+                                                    solo puede contener letras.</div>
+                                            </div>
                                         </div>
 
                                         <div class="col-2-payer grid mb-3">
-                                            <label for="tipo_contribuyente" class="block">Tipo de Contribuyente:</label>
-                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name" 
+                                            <label for="tipo_contribuyente" class="block">Tipo de
+                                                Contribuyente:</label>
+                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
                                                 [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
-                                                >
+                                                formControlName="tax-payer"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful ">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -110,29 +152,46 @@
                             </div>
 
                             <div class="divB mt-5" *ngIf="showLegalForm">
-                                <form action="" class="grid grid-cols-1 md:grid-cols-2 gap-9">
+                                <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
+                                    class="grid grid-cols-1 md:grid-cols-2 gap-9">
                                     <div class="">
                                         <div class="col-1-name grid mb-3">
                                             <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ingrese el nombre de la empresa" formControlName="name">
-
+                                            <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('name')?.hasError('maxlength')">Supera limite
+                                                    caracteres</div>
+                                                <div *ngIf="form.get('name')?.hasError('required')">El nombre es
+                                                    requerido.</div>
+                                                <div *ngIf="form.get('name')?.hasError('pattern')">El nombre solo puede
+                                                    contener letras.</div>
+                                            </div>
                                         </div>
 
                                         <div class="col-1-business grid mb-3">
-                                            <label for="nombre_propietario" class="block">Razon social:</label>
-                                            <input type="text" id="nombre_propietario" name="nombre_propietario"
+                                            <label for="businessName" class="block">Razon social:</label>
+                                            <input type="text" id="businessName" name="businessName"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ingrese la razón social" formControlName="businessName">
+                                            <div *ngIf="form.get('businessName')?.invalid && form.get('businessName')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('businessName')?.hasError('maxlength')">Supera
+                                                    limite caracteres</div>
+                                                <div *ngIf="form.get('businessName')?.hasError('required')">El campo es
+                                                    requerido.</div>
+                                            </div>
                                         </div>
 
                                         <div class="col-1-type grid mb-3 ">
-                                            <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
-                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList" bindLabel="name" 
-                                                [searchable]="true" [(ngModel)]="selectedItemEnterpriseType"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9"
-                                                >
+                                            <label class="block">Tipo de Empresa:</label>
+                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList"
+                                                bindLabel="name" [searchable]="true"
+                                                [(ngModel)]="selectedItemEnterpriseType"
+                                                formControlName="type-enterprise"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -147,18 +206,27 @@
                                         <div class="col-2-nit grid mb-3 ">
                                             <label for="nit" class="block">NIT(Numero de identificacion
                                                 tributaria):</label>
-                                            <input type="text" id="nit" name="nit"
+                                            <input type="number" id="nit" name="nit"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ingrese NIT" formControlName="nit">
+                                            <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
+                                                    digitos</div>
+                                                <div *ngIf="form.get('nit')?.hasError('required')">El NIT es requerido.
+                                                </div>
+                                                <div *ngIf="form.get('nit')?.hasError('pattern')">El NIT solo debe
+                                                    contener numeros</div>
+                                            </div>
                                         </div>
 
                                         <div class="col-2-tax-payer-type grid mb-3 ">
-                                            <label for="tipo_contribuyente" class="block ">Tipo de
+                                            <label class="block ">Tipo de
                                                 Contribuyente:</label>
                                             <ng-select name="tax-prayer" [items]="taxPayersList" bindLabel="name"
                                                 [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9"
-                                                >
+                                                formControlName="tax-prayer"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -184,24 +252,27 @@
                     </div>
 
                     <div class="additional__information__content px-20 py-14">
-                        <form action="" class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 gap-20">
+                        <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
+                            class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 gap-20">
                             <div class="form__enterprise__column-1">
 
                                 <div class="tax-liabilities w-full grid mb-3">
-                                    <label for="taxliability">Responsabilidades tributarias:</label>
+                                    <label>Responsabilidades tributarias:</label>
                                     <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
-                                        [searchable]="true" [(ngModel)]="selectedItemTaxLiabilities" (change)="consola()"
+                                        [searchable]="true" [(ngModel)]="selectedItemTaxLiabilities"
+                                        (change)="consola()"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
-                                        [maxSelectedItems]="7" [multiple]="true" >
+                                        [maxSelectedItems]="7" [multiple]="true" formControlName="tax-liabilities">
 
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
                                                 class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
                                                 {{ item.name }}</div>
                                         </ng-template>
-
-
                                     </ng-select>
+                                    <div *ngIf="form.get('tax-liabilities')?.invalid && form.get('tax-liabilities')?.touched" class="text-red-500 text-sm font-medium -mt-1">
+                                        <div *ngIf="form.get('tax-liabilities')?.hasError('required')">Debe seleccionar al menos una opción.</div>
+                                      </div>
                                 </div>
 
                                 <div class="col-1 country w-full grid mb-3">
@@ -212,11 +283,11 @@
                                 </div>
 
                                 <div class="col-1-department w-full grid mb-3">
-                                    <label for="departamento">Departamento</label>
+                                    <label>Departamento</label>
                                     <ng-select [items]="departmenList" bindLabel="name" (clear)="onSelectionClear()"
-                                         [searchable]="true" [(ngModel)]="selectedItemDepartment"
+                                        [searchable]="true" [(ngModel)]="selectedItemDepartment"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-ful max-h-9 "
-                                         (change)="enableSelectCity()" name="department">
+                                        (change)="enableSelectCity()" name="department">
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
                                                 class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -228,9 +299,8 @@
                                 <div class="col-1-city w-full grid mb-3">
                                     <label *ngIf="enabledSelectCity" for="municipio">Ciudad</label>
                                     <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList" bindLabel="name"
-                                         [searchable]="true" [(ngModel)]="selectedItemCity"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9"
-                                        >
+                                        [searchable]="true" [(ngModel)]="selectedItemCity"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9">
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
                                                 class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -247,6 +317,10 @@
                                     <input type="text" id="direccion" name="direccion"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="address">
+                                    <span class="text-red-500 text-sm font-medium -mt-1"
+                                        *ngIf="form.get('address')?.hasError('required') && form.get('address')?.touched">
+                                        Campo requerido
+                                    </span>
                                 </div>
 
                                 <div class="col-2-phone grid mb-3">
@@ -254,6 +328,15 @@
                                     <input type="number" id="telefono" name="telefono"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="phone">
+                                    <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        <div *ngIf="form.get('phone')?.hasError('maxlength')">Supera limite digitos
+                                        </div>
+                                        <div *ngIf="form.get('phone')?.hasError('required')">El Telefono es requerido.
+                                        </div>
+                                        <div *ngIf="form.get('phone')?.hasError('pattern')">El Telefono solo debe
+                                            contener numeros</div>
+                                    </div>
                                 </div>
 
                                 <div class="col-2-email grid mb-3">
@@ -261,21 +344,32 @@
                                     <input type="email" id="email" name="email"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="email">
+                                    <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        <div *ngIf="form.get('email')?.hasError('required')">El email es requerido.
+                                        </div>
+                                        <div *ngIf="form.get('email')?.hasError('email')">El email no es válido.</div>
+                                    </div>
                                 </div>
 
 
                                 <div class="div grid grid-cols-5 mb-3 gap-9">
                                     <div class="checkbox col-span-2">
-                                        <label class="w-full block text-center" for="sucursal">¿Tiene sucursales?</label>
-                                        <input  type="checkbox" id="sucursal" name="sucursal" class="w-full mt-3"
+                                        <label class="w-full block text-center" for="sucursal">¿Tiene
+                                            sucursales?</label>
+                                        <input type="checkbox" id="sucursal" name="sucursal" class="w-full mt-3"
                                             [(ngModel)]="branchSelected">
                                     </div>
 
                                     <div class="dv col-span-3">
                                         <label for="dv">Digito de verificación</label>
-                                        <input type="text" id="dv" name="dv"
+                                        <input type="number" id="dv" name="dv"
                                             class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                             formControlName="dv">
+                                        <span class="text-red-500 text-sm font-medium -mt-1"
+                                            *ngIf="form.get('dv')?.hasError('required') && form.get('dv')?.touched">
+                                            Campo requerido
+                                        </span>
                                     </div>
 
 
@@ -290,13 +384,21 @@
                 <div class="buttons-create-cancel flex justify-center mx-10 my-3 -mt-9">
                     <button
                         class="save-enterprise text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        (click)="saveEnterprise()">Guardar</button>
+                        type="submit" [disabled]="form.invalid">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         routerLinkActive="/">Cancelar</button>
                 </div>
             </div>
         </section>
-
     </div>
 </div>
+
+<h3>formulario</h3>
+<pre>Estado del formulario:{{form.valid}}
+    <br>
+    Estado:{{form.status}}
+</pre>
+<pre>
+    {{form.value | json}}
+</pre>
