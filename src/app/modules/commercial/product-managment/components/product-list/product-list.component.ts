@@ -11,7 +11,7 @@ import { Router } from '@angular/router'; // Importa Router desde '@angular/rout
 export class ProductListComponent implements OnInit {
   products: Product[] = []; // Inicializa la lista de productos
   columns: any[] = [
-    {title: 'Id', data: 'id'},
+    //{title: 'Id', data: 'id'},
     {title:'Nombres',data:'itemType'},
    // {title:'Codigo',data:'code'},
     {title:'Descripción',data:'description'},

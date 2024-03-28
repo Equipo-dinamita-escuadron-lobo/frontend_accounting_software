@@ -6,6 +6,7 @@ import { CategoryService } from '../../services/category.service';
 import { Router, RouterModule } from '@angular/router';
 import { Product } from '../../models/Product';
 
+
 @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -15,6 +16,9 @@ export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
+  formSubmitAttempt: boolean = false;
+  submitSuccess: boolean = false;
+  nextProductId: number = 1; // Inicializa el contador del ID del producto
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,23 +26,27 @@ export class ProductCreationComponent implements OnInit {
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService
   ) {}
-
+  
   ngOnInit(): void {
     // Inicializa el formulario reactivo y define las validaciones necesarias para cada campo
+    // TypeScript: Agregando validaciones para campos no negativos y no vacíos
+    const today = new Date().toISOString().split('T')[0];
     this.productForm = this.formBuilder.group({
-      id: ['', Validators.required],
-      itemType: ['', Validators.required],
-      code: ['', Validators.required],
-      description: ['', Validators.required],
-      minQuantity: ['', Validators.required],
-      maxQuantity: ['', Validators.required],
-      taxPercentage: ['', Validators.required],
-      creationDate: ['', Validators.required],
-      unitOfMeasure: ['', Validators.required],
-      supplier: ['', Validators.required],
-      category: ['', Validators.required],
-      price: ['', Validators.required],
-    });
+      id: [''], // 'id' es un string
+      itemType: ['', [Validators.required]], // 'itemType' es un string
+      code: ['', [Validators.required]], // 'code' es un string
+      description: ['', [Validators.required]], // 'description' es un string
+      minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
+      maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
+      taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
+      creationDate: [today, [Validators.required]], // 'creationDate' es un Date
+      unitOfMeasure: [null, [Validators.required]], // 'unitOfMeasure' es un objeto
+      supplier: ['', [Validators.required]], // 'supplier' es un string
+      category: [null, [Validators.required]], // 'category' es un objeto
+      price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
+    }, { validators: minMaxValidator });  
+    this.initForm();
+
 
     // Obtiene todas las unidades de medida al inicializar el componente
     //  this.getUnitOfMeasures();
@@ -46,7 +54,24 @@ export class ProductCreationComponent implements OnInit {
     // Obtiene todas las categorías al inicializar el componente
     // this.getCategories();
   }
-
+  //Metodo Complementario
+  initForm(): void {
+    // Definir el formulario reactivo con las validaciones
+    this.productForm = this.formBuilder.group({
+      id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
+      itemType: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      minQuantity: [null, [Validators.required, Validators.min(0)]],
+      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
+      creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
+      unitOfMeasure: [null, [Validators.required]],
+      supplier: ['', [Validators.required]],
+      category: [null, [Validators.required]],
+      price: [null, [Validators.required, Validators.min(0)]]
+    });
+  }
   // Método para obtener todas las unidades de medida
   /*
   getUnitOfMeasures(): void {
@@ -72,39 +97,83 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }*/
+//______________________________________________________________________________
 
-  // Método para enviar el formulario y crear un nuevo producto
+  //Metodo de validacion para devolver true o false
+  isFormValid(): boolean {
+    const formValue = this.productForm.value;
+
+    // Verifica que los campos de tipo 'string' no estén vacíos
+    const areTextFieldsValid =formValue.itemType.trim() !== '' &&
+                              formValue.code.trim() !== '' &&
+                              formValue.description.trim() !== '' &&
+                              formValue.unitOfMeasure && // Suponiendo que esto sea un valor seleccionado, no un objeto
+                              formValue.supplier.trim() !== '' &&
+                              formValue.category; // Suponiendo que esto sea un valor seleccionado, no un objeto
+
+    // Verifica que los números no sean negativos y que la fecha sea válida
+    const areNumberFieldsValid = formValue.minQuantity !== null && // Revisar que no sea null
+                                formValue.maxQuantity !== null && // Revisar que no sea null
+                                formValue.minQuantity >= 0 &&
+                                formValue.maxQuantity >= 0 &&
+                                formValue.taxPercentage !== null && // Revisar que no sea null
+                                formValue.taxPercentage >= 0 &&
+                                formValue.taxPercentage <= 100 &&
+                                formValue.price !== null && // Revisar que no sea null
+                                formValue.price >= 0;
+
+    // Verifica que la fecha de creación sea válida
+    const isDateValid = formValue.creationDate && new Date(formValue.creationDate).toString() !== 'Invalid Date';
+
+    // Verifica que minQuantity sea menor que maxQuantity
+    const isMinMaxQuantityValid = formValue.minQuantity <= formValue.maxQuantity;
+
+    return areTextFieldsValid && areNumberFieldsValid && isDateValid && isMinMaxQuantityValid;
+  }
+  //Método para enviar el formulario y crear un nuevo producto
   onSubmit(): void {
-    if (true  /*this.productForm.valid*/) {
-      const productData: Product = {
-        id: this.productForm.value.id, // Accede al valor del campo 'id' del formulario
-        itemType: this.productForm.value.itemType, // Accede al valor del campo 'itemType' del formulario
-        code: this.productForm.value.code,
-        description: this.productForm.value.description,
-        minQuantity: this.productForm.value.minQuantity,
-        maxQuantity: this.productForm.value.maxQuantity,
-        taxPercentage: this.productForm.value.taxPercentage,
-        creationDate: this.productForm.value.creationDate,
-        unitOfMeasure: this.productForm.value.unitOfMeasure,
-        supplier: this.productForm.value.supplier,
-        category: this.productForm.value.category,
-        price: this.productForm.value.price,
-      };
-      console.log('Datos del producto:', productData);
-      // Aquí puedes enviar los datos del formulario al servicio ProductService para crear un nuevo producto
-      this.productService.createProduct(productData).subscribe(
-        (response: any) => {
-          console.log('Producto creado exitosamente:', response);
-          // Limpia el formulario después de crear el producto exitosamente
-          this.productForm.reset();
-        },
-        (error) => {
-          console.log('Error al crear el producto:', error);
-        }
-      );
-    } else {
-      console.log('Formulario inválido');
-    }
+  this.formSubmitAttempt = true;
+
+  if (this.isFormValid()) {
+    const productData: Product = this.productForm.value;
+    this.productService.createProduct(productData).subscribe(
+      (response: any) => {
+        // Mensaje de éxito con alert
+        alert('El producto se creó con éxito.');
+        
+        // Restablece el formulario con la fecha actual
+        this.resetFormWithCurrentDate();        
+        this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
+        // Incrementa el contador del ID del producto
+        this.nextProductId++;
+        // Vuelve a inicializar el formulario con el nuevo ID
+        this.initForm();
+      },
+      (error) => {
+        // Mensaje de error con alert
+        alert('No se pudo crear el producto. Por favor revisa los campos.');
+      }
+    );
+  } else {
+    // Mensaje de error si el formulario es inválido
+    alert('No se pudo crear el producto. Por favor revisa los campos.');
+  }
+  }
+  //Metodo para Resetear Fecha actual
+  resetFormWithCurrentDate(): void {
+    this.productForm.reset({
+      creationDate: new Date().toISOString().split('T')[0]
+    });
+  }
+  
+}
+
+  // Funcion para validar que el maximo y minimo tengan valores coherentes 
+  function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
+    const min = group.controls['minQuantity'].value;
+    const max = group.controls['maxQuantity'].value;
+    return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
   }
 
-}
+
+
