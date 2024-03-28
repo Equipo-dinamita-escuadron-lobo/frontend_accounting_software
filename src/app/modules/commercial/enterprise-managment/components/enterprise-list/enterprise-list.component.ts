@@ -25,12 +25,17 @@ export class EnterpriseListComponent {
   }
 
   
+  /*
   getEnterprises(){
     this.enterpriseServide.getEnterprises().subscribe({
       next:(enterpriseData) =>{
         this.listEnterprises = enterpriseData;
       }
     })
+  }*/
+
+  getEnterprises(){
+    this.listEnterprises = this.enterpriseServide.getEnterprises();
   }
 
 

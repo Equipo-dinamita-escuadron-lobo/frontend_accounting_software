@@ -31,8 +31,23 @@ export class EnterpriseService {
    * @returns all tax payer types from the backend
    */
   
+
+    /*
   getEnterprises(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
+  }*/
+
+  getEnterprises():EnterpriseList[]{
+    return [
+      {id:1, name: "Unicauca", nit: "1234", logo: this.logoDefault},
+      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
+      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault}
+    ]
   }
 
   /**

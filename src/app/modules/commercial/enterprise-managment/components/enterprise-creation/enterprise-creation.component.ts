@@ -36,7 +36,7 @@ export class EnterpriseCreationComponent {
   taxLiabilitiesList: TaxLiability[] = [];
   taxPayersList: TaxPayerType[] = [];
   departmenList: Department[] = [];
-  cityList: City[] = [];
+  cityList:{id:number, name:string}[] = [];
   enterpriseTypesList: EnterpriseType[] = [];
 
   /**
@@ -144,8 +144,8 @@ export class EnterpriseCreationComponent {
    * @description Active select of city 
    */
   enableSelectCity(){
-      this.enabledSelectCity = true;
       this.getCities(this.form.value.selectedItemDepartment.id);
+      this.enabledSelectCity = true;
      
   }
 
@@ -264,7 +264,7 @@ export class EnterpriseCreationComponent {
   
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
-      this.cityList = data;
+      this.cityList = data.cities;
     });
   }
 

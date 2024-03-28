@@ -29,6 +29,15 @@ module.exports = {
       },
       fontFamily:{
         projectFont: ['Inria Sans']
+      },
+      width:{
+        "21": ['6rem']/* 80px */
+      },
+      height:{
+        "21": ['6rem']/* 80px */
+      },
+      screens: {
+        'tm': '400px'
       }
     },
   },

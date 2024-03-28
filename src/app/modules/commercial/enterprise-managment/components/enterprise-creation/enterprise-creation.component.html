@@ -80,19 +80,26 @@
                                         <div class="col-1-type grid mb-3 ">
                                             <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
 
-                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList"
-                                                bindLabel="name" [searchable]="true"
-                                                formControlName="selectedItemEnterpriseType"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                (change)="onEnterpriseTypeSelect($event)"
-                                                (clear)="onSelectionTypeEnterpriseClear()">
-                                                <ng-template ng-option-tmp let-item="item">
-                                                    <div
-                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                        {{ item.name }}
-                                                    </div>
-                                                </ng-template>
-                                            </ng-select>
+                                            <div class="icon flex">
+                                                <ng-select name="type-enterprise" [items]="enterpriseTypesList"
+                                                    bindLabel="name" [searchable]="true"
+                                                    formControlName="selectedItemEnterpriseType"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                    (change)="onEnterpriseTypeSelect($event)"
+                                                    (clear)="onSelectionTypeEnterpriseClear()">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        <div
+                                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                            {{ item.name }}
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                            </div>
                                         </div>
 
 
@@ -136,19 +143,25 @@
                                         <div class="col-2-payer grid mb-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de
                                                 Contribuyente:</label>
-                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
-                                                [searchable]="true" formControlName="selectedItemTaxPayer"
-                                                formControlName="tax-payer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
-                                                (change)="onTaxPayerSelect($event)"
-                                                (clear)="onSelectionTaxPayerClear()">
-                                                <ng-template ng-option-tmp let-item="item">
-                                                    <div
-                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                        {{ item.name }}</div>
-                                                </ng-template>
-                                            </ng-select>
-                                            {{form.value.selectedItemTaxPayer | json}}
+                                            <div class="icon flex">
+                                                <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
+                                                    [searchable]="true" formControlName="selectedItemTaxPayer"
+                                                    formControlName="tax-payer"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
+                                                    (change)="onTaxPayerSelect($event)"
+                                                    (clear)="onSelectionTaxPayerClear()">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        <div
+                                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                            {{ item.name }}</div>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -192,19 +205,27 @@
                                         <div class="col-1-type grid mb-3 ">
                                             <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
 
-                                            <ng-select name="type-enterprise" [items]="enterpriseTypesList"
-                                                bindLabel="name" [searchable]="true"
-                                                formControlName="selectedItemEnterpriseType"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                (change)="onEnterpriseTypeSelect($event)"
-                                                (clear)="onSelectionTypeEnterpriseClear()">
-                                                <ng-template ng-option-tmp let-item="item">
-                                                    <div
-                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                        {{ item.name }}
-                                                    </div>
-                                                </ng-template>
-                                            </ng-select>
+                                            <div class="icon flex">
+                                                <ng-select name="type-enterprise" [items]="enterpriseTypesList"
+                                                    bindLabel="name" [searchable]="true"
+                                                    formControlName="selectedItemEnterpriseType"
+                                                    [clearable]="false" 
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                    (change)="onEnterpriseTypeSelect($event)"
+                                                    (clear)="onSelectionTypeEnterpriseClear()">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        <div
+                                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                            {{ item.name }}
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -230,19 +251,27 @@
                                         <div class="col-2-payer grid mb-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de
                                                 Contribuyente:</label>
-                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
-                                                [searchable]="true" formControlName="selectedItemTaxPayer"
-                                                formControlName="tax-payer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
-                                                (change)="onTaxPayerSelect($event)"
-                                                (clear)="onSelectionTaxPayerClear()">
-                                                <ng-template ng-option-tmp let-item="item">
-                                                    <div
-                                                        class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                        {{ item.name }}</div>
-                                                </ng-template>
-                                            </ng-select>
-                                            {{form.value.selectedItemTaxPayer | json}}
+                                            <div class="icon flex">
+                                                <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
+                                                    [searchable]="true" formControlName="selectedItemTaxPayer"
+                                                    formControlName="tax-payer"
+                                                    [clearable]="false"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full "
+                                                    (change)="onTaxPayerSelect($event)"
+                                                    (clear)="onSelectionTaxPayerClear()">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        <div
+                                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                            {{ item.name }}</div>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                            </div>
+
                                         </div>
 
                                         <div>
@@ -268,24 +297,31 @@
 
                                 <div class="tax-liabilities w-full grid mb-3">
                                     <label>Responsabilidades tributarias:</label>
-                                    <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
-                                        [searchable]="true" formControlName="selectedItemTaxLiabilities"
-                                        (change)="onTaxLiabilitySelect($event)"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
-                                        [maxSelectedItems]="7" [multiple]="true"
-                                        formControlName="selectedItemTaxLiabilities">
-
-
-                                        <ng-template ng-option-tmp let-item="item">
-                                            <div
-                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                {{ item.name }}</div>
-                                        </ng-template>
-                                    </ng-select>
-                                    <div *ngIf="form.get('tax-liabilities')?.invalid && form.get('tax-liabilities')?.touched"
-                                        class="text-red-500 text-sm font-medium -mt-1">
-                                        <div *ngIf="form.get('tax-liabilities')?.hasError('required')">Debe seleccionar
-                                            al menos una opción.</div>
+                                    <div class="icon flex">
+                                        <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedItemTaxLiabilities"
+                                            (change)="onTaxLiabilitySelect($event)"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
+                                            [maxSelectedItems]="7" [multiple]="true"
+                                            formControlName="selectedItemTaxLiabilities"
+                                            [clearable]="false">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}</div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                        <div *ngIf="form.get('tax-liabilities')?.invalid && form.get('tax-liabilities')?.touched"
+                                            class="text-red-500 text-sm font-medium -mt-1">
+                                            <div *ngIf="form.get('tax-liabilities')?.hasError('required')">Debe
+                                                seleccionar
+                                                al menos una opción.</div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -299,36 +335,51 @@
 
                                 <div class="col-1-department w-full grid mb-3">
                                     <label>Departamento</label>
-                                    <ng-select [items]="departmenList" bindLabel="name"
-                                        (clear)="onSelectionDepartmentClear()" formControlName="selectedItemDepartment"
-                                        [searchable]="true"
-                                        [clearable]="false"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
-                                        (change)="onDepartmentSelect($event)" name="department">
-                                        <ng-template ng-option-tmp let-item="item">
-                                            <div
-                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                {{ item.name }}
-                                            </div>
-                                        </ng-template>
-                                    </ng-select>
+                                    <div class="icon flex">
+                                        <ng-select [items]="departmenList" bindLabel="name"
+                                            (clear)="onSelectionDepartmentClear()"
+                                            formControlName="selectedItemDepartment" [searchable]="true"
+                                            [clearable]="false"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
+                                            (change)="onDepartmentSelect($event)" name="department">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+
+                                    </div>
                                 </div>
 
 
                                 <div class="col-1-city w-full grid mb-3">
                                     <label *ngIf="enabledSelectCity" for="municipio">Ciudad</label>
-                                    <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList" bindLabel="name"
-                                        (clear)="onSelectionCityClear()" [searchable]="true"
-                                        formControlName="selectedItemCity"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9"
-                                        (change)="onCitySelect($event)">
-                                        <ng-template ng-option-tmp let-item="item">
-                                            <div
-                                                class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                {{ item.name }}</div>
-                                        </ng-template>
-                                    </ng-select>
-                                    
+                                    <div class="icon flex">
+                                        <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList"
+                                            bindLabel="name" (clear)="onSelectionCityClear()" [searchable]="true"
+                                            formControlName="selectedItemCity"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-full max-h-9"
+                                            (change)="onCitySelect($event)"
+                                            [clearable]="false">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}</div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg *ngIf="enabledSelectCity" class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
 
@@ -415,5 +466,3 @@
         </section>
     </div>
 </div>
-
-{{saveEnterprise() | json}}
