@@ -21,15 +21,16 @@ export class EnterpriseTypeService {
 
    }
 
-   /*
+   
   //Method to get all enterprises.
   getListTypesEnterprise(): Observable<EnterpriseType[]> {
     return this.http.get<EnterpriseType[]>(this.apiUrl);
-  }*/
+  }
 
+  /*
   getListTypesEnterprise(){
     return this.enterpriseTypes;
-  }
+  }*/
 
 
 }

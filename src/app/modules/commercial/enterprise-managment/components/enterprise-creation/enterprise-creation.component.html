@@ -82,9 +82,10 @@
 
                                             <ng-select name="type-enterprise" [items]="enterpriseTypesList"
                                                 bindLabel="name" [searchable]="true"
-                                                [(ngModel)]="selectedItemEnterpriseType"
+                                                formControlName="selectedItemEnterpriseType"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                formControlName="type-enterprise">
+                                                (change)="onEnterpriseTypeSelect($event)"
+                                                (clear)="onSelectionTypeEnterpriseClear()">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -136,9 +137,11 @@
                                             <label for="tipo_contribuyente" class="block">Tipo de
                                                 Contribuyente:</label>
                                             <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
-                                                [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
+                                                [searchable]="true" formControlName="selectedItemTaxPayer"
                                                 formControlName="tax-payer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful ">
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
+                                                (change)="onTaxPayerSelect($event)"
+                                                (clear)="onSelectionTaxPayerClear()">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -186,16 +189,19 @@
                                         </div>
 
                                         <div class="col-1-type grid mb-3 ">
-                                            <label class="block">Tipo de Empresa:</label>
+                                            <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+
                                             <ng-select name="type-enterprise" [items]="enterpriseTypesList"
                                                 bindLabel="name" [searchable]="true"
-                                                [(ngModel)]="selectedItemEnterpriseType"
-                                                formControlName="type-enterprise"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9">
+                                                formControlName="selectedItemEnterpriseType"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                (change)="onEnterpriseTypeSelect($event)"
+                                                (clear)="onSelectionTypeEnterpriseClear()">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                        {{ item.name }}</div>
+                                                        {{ item.name }}
+                                                    </div>
                                                 </ng-template>
                                             </ng-select>
                                         </div>
@@ -220,13 +226,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-2-tax-payer-type grid mb-3 ">
-                                            <label class="block ">Tipo de
+                                        <div class="col-2-payer grid mb-3">
+                                            <label for="tipo_contribuyente" class="block">Tipo de
                                                 Contribuyente:</label>
-                                            <ng-select name="tax-prayer" [items]="taxPayersList" bindLabel="name"
-                                                [searchable]="true" [(ngModel)]="selectedItemTaxPayer"
-                                                formControlName="tax-prayer"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful max-h-9">
+                                            <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
+                                                [searchable]="true" formControlName="selectedItemTaxPayer"
+                                                formControlName="tax-payer"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-ful "
+                                                (change)="onTaxPayerSelect($event)"
+                                                (clear)="onSelectionTaxPayerClear()">
                                                 <ng-template ng-option-tmp let-item="item">
                                                     <div
                                                         class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -259,10 +267,12 @@
                                 <div class="tax-liabilities w-full grid mb-3">
                                     <label>Responsabilidades tributarias:</label>
                                     <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
-                                        [searchable]="true" [(ngModel)]="selectedItemTaxLiabilities"
-                                        (change)="consola()"
+                                        [searchable]="true" formControlName="selectedItemTaxLiabilities"
+                                        (change)="onTaxLiabilitySelect($event)"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
-                                        [maxSelectedItems]="7" [multiple]="true" formControlName="tax-liabilities">
+                                        [maxSelectedItems]="7" [multiple]="true"
+                                        formControlName="selectedItemTaxLiabilities">
+
 
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
@@ -270,9 +280,11 @@
                                                 {{ item.name }}</div>
                                         </ng-template>
                                     </ng-select>
-                                    <div *ngIf="form.get('tax-liabilities')?.invalid && form.get('tax-liabilities')?.touched" class="text-red-500 text-sm font-medium -mt-1">
-                                        <div *ngIf="form.get('tax-liabilities')?.hasError('required')">Debe seleccionar al menos una opción.</div>
-                                      </div>
+                                    <div *ngIf="form.get('tax-liabilities')?.invalid && form.get('tax-liabilities')?.touched"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        <div *ngIf="form.get('tax-liabilities')?.hasError('required')">Debe seleccionar
+                                            al menos una opción.</div>
+                                    </div>
                                 </div>
 
                                 <div class="col-1 country w-full grid mb-3">
@@ -282,25 +294,31 @@
                                         value="Colombia" disabled>
                                 </div>
 
+
                                 <div class="col-1-department w-full grid mb-3">
                                     <label>Departamento</label>
-                                    <ng-select [items]="departmenList" bindLabel="name" (clear)="onSelectionClear()"
-                                        [searchable]="true" [(ngModel)]="selectedItemDepartment"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-ful max-h-9 "
-                                        (change)="enableSelectCity()" name="department">
+                                    <ng-select [items]="departmenList" bindLabel="name"
+                                        (clear)="onSelectionDepartmentClear()" formControlName="selectedItemDepartment"
+                                        [searchable]="true"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
+                                        (change)="onDepartmentSelect($event)" name="department">
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
                                                 class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                {{ item.name }}</div>
+                                                {{ item.name }}
+                                            </div>
                                         </ng-template>
                                     </ng-select>
                                 </div>
 
+
                                 <div class="col-1-city w-full grid mb-3">
                                     <label *ngIf="enabledSelectCity" for="municipio">Ciudad</label>
                                     <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList" bindLabel="name"
-                                        [searchable]="true" [(ngModel)]="selectedItemCity"
-                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9">
+                                        (clear)="onSelectionCityClear()" [searchable]="true"
+                                        formControlName="selectedItemCity"
+                                        class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-ful max-h-9"
+                                        (change)="onCitySelect($event)">
                                         <ng-template ng-option-tmp let-item="item">
                                             <div
                                                 class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -358,7 +376,7 @@
                                         <label class="w-full block text-center" for="sucursal">¿Tiene
                                             sucursales?</label>
                                         <input type="checkbox" id="sucursal" name="sucursal" class="w-full mt-3"
-                                            [(ngModel)]="branchSelected">
+                                            [(ngModel)]="branchSelected" />
                                     </div>
 
                                     <div class="dv col-span-3">
@@ -384,7 +402,7 @@
                 <div class="buttons-create-cancel flex justify-center mx-10 my-3 -mt-9">
                     <button
                         class="save-enterprise text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        type="submit" [disabled]="form.invalid">Guardar</button>
+                        (click)="saveEnterprise()">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         routerLinkActive="/">Cancelar</button>
@@ -394,11 +412,4 @@
     </div>
 </div>
 
-<h3>formulario</h3>
-<pre>Estado del formulario:{{form.valid}}
-    <br>
-    Estado:{{form.status}}
-</pre>
-<pre>
-    {{form.value | json}}
-</pre>
+{{saveEnterprise() | json }}

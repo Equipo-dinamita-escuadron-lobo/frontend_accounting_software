@@ -19,9 +19,10 @@ export class TaxLiabilityService {
     // Puedes añadir más tipos de obligaciones fiscales según sea necesario
   ];
 
+  /*
   getTaxLiabilities(){
     return this.taxLiabilities;
-  }
+  }*/
 
   constructor(private http: HttpClient) { }
 
@@ -30,9 +31,9 @@ export class TaxLiabilityService {
    * @returns all tax payer types from the backend
    */
 
-  /*
+  
   getTaxLiabilities(): Observable<TaxLiability[]> {
     return this.http.get<TaxLiability[]>(this.apiUrl);
-  }*/
+  }
 
 }

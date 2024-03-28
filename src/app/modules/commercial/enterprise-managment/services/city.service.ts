@@ -21,15 +21,16 @@ export class CityService {
 
    }
 
-   /*
-  getListCitiesByDepartment(id: number): Observable<City> {
+   
+  getListCitiesByDepartment(id: number): Observable<City[]> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.get<City>(url);
-  }*/
+    return this.http.get<City[]>(url);
+  }
 
+  /*
   getListCitiesByDepartment(id: number){
     return this.caucaCities;
-  }
+  }*/
 
 
 }

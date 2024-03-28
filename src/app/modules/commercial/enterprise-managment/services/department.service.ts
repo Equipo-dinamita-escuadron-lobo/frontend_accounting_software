@@ -48,13 +48,14 @@ export class DepartmentService {
 
    }
 
-   /*
-  getListDepartments(id: number): Observable<Department> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<Department>(url);
-  }*/
+   
+  getListDepartments(): Observable<Department[]> {
+    return this.http.get<Department[]>(this.apiUrl);
+  }
 
+
+  /*
   getListDepartments(){
     return this.colombianDepartments;
-  }
+  }*/
 }

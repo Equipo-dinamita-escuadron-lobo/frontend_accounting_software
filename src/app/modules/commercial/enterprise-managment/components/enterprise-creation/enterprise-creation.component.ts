@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { TaxLiabilityService } from '../../services/tax-liability.service';
 import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
@@ -50,11 +50,13 @@ export class EnterpriseCreationComponent {
   /**
    * Variables to save the items selectioned on the interface
    */
+
+  /*
   selectedItemDepartment: Department = { id: -1, name: '' };
   selectedItemEnterpriseType: EnterpriseType = { id: -1, name: '' };
   selectedItemTaxPayer: TaxPayerType = { id: -1, name: '' };
   selectedItemTaxLiabilities: TaxLiability[] = [];
-  selectedItemCity: City = { id: -1, name: '' };
+  selectedItemCity: City = { id: -1, name: '' };*/
   branchSelected: boolean = false;
 
   /**
@@ -109,6 +111,12 @@ export class EnterpriseCreationComponent {
       ],
       department: ['', [Validators.required, Validators.maxLength(50)]],
       dv: ['', [Validators.required, Validators.maxLength(1)]],
+      selectedItemDepartment: [{ id: -1, name: '' },[Validators.required]],
+      selectedItemEnterpriseType:[{ id: -1, name: '' },[Validators.required]],
+      selectedItemTaxPayer: [{ id: -1, name: '' },[Validators.required]],
+      selectedItemTaxLiabilities: [[], Validators.required],
+      selectedItemCity: [{ id: -1, name: '' },[Validators.required]],
+  
     };
   }
 
@@ -149,17 +157,51 @@ export class EnterpriseCreationComponent {
    */
   enableSelectCity(){
       this.enabledSelectCity = true;
-      this.getCities(this.selectedItemDepartment.id);
+      this.getCities(this.form.value.selectedItemDepartment.id);
+     
+  }
+
+  onDepartmentSelect(event: any) {
+    this.form.value.selectedItemDepartment = event;
+    this.enableSelectCity();
+  }
+
+  onEnterpriseTypeSelect(event: any) {
+    this.form.value.selectedItemEnterpriseType = event;
+  }
+
+  onTaxPayerSelect(event: any) {
+    this.form.value.selectedItemTaxPayer = event;
+  }
+
+  onCitySelect(event: any) {
+    this.form.value.selectedItemCity = event;
+  }
+
+  onTaxLiabilitySelect(event: any) {
+    this.form.value.selectedItemTaxLiabilities = event;
   }
 
    /**
    * @description Desactive select of city 
    */
-  onSelectionClear(){
+  onSelectionDepartmentClear(){
     this.enabledSelectCity = false;
+    this.form.value.selectedItemDepartment = { id: -1, name: '' };
     this.cityList = [];
   }
 
+  onSelectionCityClear(){
+    this.form.value.selectedItemCity = { id: -1, name: '' };
+  }
+
+  onSelectionTaxPayerClear(){
+    this.form.value.selectedItemTaxPayer = { id: -1, name: '' };
+  }
+
+  onSelectionTypeEnterpriseClear(){
+    this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
+  }
   /**
    * @description Save enterprise using Enterprise service
    */
@@ -175,86 +217,86 @@ export class EnterpriseCreationComponent {
     const locationForm: Location = {
       address: this.form.value.address,
       country: 0,
-      department: this.selectedItemDepartment.id,
-      city: this.selectedItemCity.id,
+      department: this.form.value.selectedItemDepartment.id,
+      city: this.form.value.selectedItemCity.id,
     };
+
+    var branchResponse:number = this.checkBranch();
 
     const enterprise: Enterprise = {
       name: this.form.value.name,
       nit: this.form.value.nit,
       phone: this.form.value.phone,
-      branch: '' + this.checkBranch,
+      branch: '' + branchResponse,
       email: this.form.value.email,
       logo: this.form.value.logo,
-      taxLiabilities: this.selectedItemTaxLiabilities.map((item) => item.id),
-      taxPayerType: this.selectedItemTaxPayer.id,
+      taxLiabilities: this.form.value.selectedItemTaxLiabilities.map((item:TaxLiability) => item.id),
+      taxPayerType: this.form.value.selectedItemTaxPayer.id,
       personType: personTypeForm,
       location: locationForm,
       dv: this.form.value.dv,
-      enterpriseType: this.selectedItemEnterpriseType.id,
+      enterpriseType: this.form.value.selectedItemEnterpriseType.id,
     };
 
-    this.enterpriseService.createEnterprise(enterprise).subscribe((data) => {
+    
+      this.enterpriseService.createEnterprise(enterprise).subscribe((data) => {
       //Logic TODO
     });
   }
   
-
-  consola(){
-    console.log(this.selectedItemDepartment);
-  }
-
   /**
    * Use the Taxlibility service to list in the select interface.
    */
 
-  /*
+  
   getAllTaxLiabilities() {
     this.taxLiabilityService.getTaxLiabilities().subscribe((data) => {
       this.taxLiabilitiesList = data;
     });
-  }*/
+  }
 
   /**
    * Use the TaxPayer service to list in the select interface.
    */
-  /*
+  
   getAllTaxPayeres() {
     this.taxPayerService.getTaxPayerTypes().subscribe((data) => {
       this.taxPayersList = data;
     });
-  }*/
+  }
 
   /**
    * Use the Department service to list in the select interface.
    */
-  /*
+  
   getDepartments() {
     this.departmentService.getListDepartments().subscribe((data) => {
       this.departmenList = data;
     });
-  }*/
+  }
 
   /**
    * Use the City service to list in the select interface.
    */
-  /*
+  
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
-      this.cityService = data;
+      this.cityList = data;
     });
-  }*/
+  }
 
   /**
    * Use the EnterpriseType service to list in the select interface.
    */
-  /*
+  
   getTypesEnterprise() {
     this.enterpriseTypesService.getListTypesEnterprise().subscribe((data) => {
       this.enterpriseTypesList = data;
     });
-  }*/
+  }
 
+
+  /*
   
   getAllTaxLiabilities() {
     this.taxLiabilitiesList = this.taxLiabilityService.getTaxLiabilities();
@@ -274,7 +316,7 @@ export class EnterpriseCreationComponent {
 
   getCities(idDepartment:number){
     this.cityList = this.cityService.getListCitiesByDepartment(1);
-  }
+  }*/
 
   
 }

@@ -26,13 +26,13 @@ export class TaxPayerTypeService {
    * @returns all tax payer types from the backend
    */
 
-  /*
+  
   getTaxPayerTypes(): Observable<TaxPayerType[]> {
     return this.http.get<TaxPayerType[]>(this.apiUrl);
-  }*/
+  }
 
-
+/*
   getTaxPayerTypes(){
     return this.taxpayerTypes;
-  }
+  }*/
 }
