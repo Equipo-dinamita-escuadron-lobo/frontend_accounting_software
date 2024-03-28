@@ -49,13 +49,13 @@ export class DepartmentService {
    }
 
    
-  getListDepartments(): Observable<Department[]> {
+  getListDepartmentsBackend(): Observable<Department[]> {
     return this.http.get<Department[]>(this.apiUrl);
   }
 
 
-  /*
+  
   getListDepartments(){
     return this.colombianDepartments;
-  }*/
+  }
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Enterprise } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
+import { EnterpriseType } from '../models/EnterpriseType';
 
 @Injectable({
   providedIn: 'root'
@@ -14,22 +15,11 @@ export class EnterpriseService {
    * Test of service
    */
 
-  enterprises: EnterpriseList[] = [
-    {
-        id: 1,
-        name: "Enterprise 1",
-        nit: "NIT123",
-        logo: this.logoDefault
-    },
-    {
-        id: 2,
-        name: "Enterprise 2",
-        nit: "NIT456",
-        logo: this.logoDefault
-    },
-    // Añade más objetos según sea necesario
+  enterpriseTypes: EnterpriseType[] = [
+    { id: 1, name: 'Privada' },
+    { id: 2, name: 'Oficial' },
+    { id: 3, name: 'Mixta' }
 ];
-
 
   //Route API
   private apiUrl = ''; 
@@ -62,6 +52,10 @@ export class EnterpriseService {
    */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
+  }
+
+  getTypesEnterprise(){
+    return this.enterpriseTypes;
   }
 
 }

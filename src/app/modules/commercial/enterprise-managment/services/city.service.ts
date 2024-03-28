@@ -8,14 +8,6 @@ import { Observable } from 'rxjs';
 })
 export class CityService {
 
-  caucaCities: City[] = [
-    { id: 1, name: 'Popayán' },
-    { id: 2, name: 'Santander de Quilichao' },
-    { id: 3, name: 'Puerto Tejada' },
-    { id: 4, name: 'Guachené' },
-    // Puedes añadir más ciudades del Cauca según sea necesario
-  ];
-
   private apiUrl = ''; 
   constructor(private http: HttpClient) {
 
@@ -26,11 +18,5 @@ export class CityService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<City[]>(url);
   }
-
-  /*
-  getListCitiesByDepartment(id: number){
-    return this.caucaCities;
-  }*/
-
 
 }

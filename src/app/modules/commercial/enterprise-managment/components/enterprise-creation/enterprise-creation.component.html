@@ -148,6 +148,7 @@
                                                         {{ item.name }}</div>
                                                 </ng-template>
                                             </ng-select>
+                                            {{form.value.selectedItemTaxPayer | json}}
                                         </div>
 
                                     </div>
@@ -241,6 +242,7 @@
                                                         {{ item.name }}</div>
                                                 </ng-template>
                                             </ng-select>
+                                            {{form.value.selectedItemTaxPayer | json}}
                                         </div>
 
                                         <div>
@@ -300,6 +302,7 @@
                                     <ng-select [items]="departmenList" bindLabel="name"
                                         (clear)="onSelectionDepartmentClear()" formControlName="selectedItemDepartment"
                                         [searchable]="true"
+                                        [clearable]="false"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
                                         (change)="onDepartmentSelect($event)" name="department">
                                         <ng-template ng-option-tmp let-item="item">
@@ -325,6 +328,7 @@
                                                 {{ item.name }}</div>
                                         </ng-template>
                                     </ng-select>
+                                    
                                 </div>
                             </div>
 
@@ -412,4 +416,4 @@
     </div>
 </div>
 
-{{saveEnterprise() | json }}
+{{saveEnterprise() | json}}
