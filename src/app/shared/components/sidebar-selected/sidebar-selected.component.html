@@ -1,8 +1,43 @@
-
-<a [routerLink]="href"><div class="flex flex-row justify-start items-center hover:bg-gray-100 rounded-md w-52 h-10 mt-2">
-    <div class="p-2 mx-4">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 640 512"><path [attr.d]="svgPath"></path> </svg>
-    </div>
-    {{ linkText }}
+<div class="grid col-span-1 rounded-md w-full mt-2">
+  <div [class.selected] = "stateSubhref" class="container-hrefs w-full  hover:bg-gray-100 col-span-1 p-1" (click)=" changeStateItems()">
+    <a [routerLink]="href" class="block w-full">
+      <div class="container-all  w-full grid grid-cols-5">
+        <div class="p-2 mx-4 col-span-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 " viewBox="0 0 640 512">
+            <path [attr.d]="svgPath"></path>
+          </svg>
+        </div>
+        <div class="p-2 mx-4  ml-2 col-span-3">
+          {{ linkText }}
+        </div>
+        <div class="justify-end col-span-1 flex " *ngIf="!stateSubhref && subhref.length>0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 stroke-gray-400" viewBox="0 0 640 512">
+            <path [attr.d]="svgDown"></path>
+          </svg>
+        </div>
+        <div class="justify-end col-span-1 flex " *ngIf="stateSubhref && subhref.length>0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 stroke-gray-400" viewBox="0 0 640 512">
+            <path [attr.d]="svgUp"></path>
+          </svg>
+        </div>
+      </div>
+    </a>
   </div>
-</a>
+
+
+  <div class="container-subhrefs w-full" *ngIf="stateSubhref"
+    [class.opacity-0]="!stateSubhref">
+    <div class="sub-items-href w-4/5 bg-yellow grid grid-cols-6 text-center justify-center"
+      *ngFor="let items of subhref">
+      <div class="col-span-2"></div>
+      <div class="col-span-4">
+        <a [routerLink]="items.href" class="block w-full">
+          <div class="flex flex-row justify-start items-center hover:bg-gray-100 rounded-md w-52 h-10 mt-2 pl-2">
+            {{ items.linkText }}
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

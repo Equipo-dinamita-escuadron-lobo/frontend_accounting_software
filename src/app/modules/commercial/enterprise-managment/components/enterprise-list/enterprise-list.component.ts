@@ -25,27 +25,18 @@ export class EnterpriseListComponent {
   }
 
   
-  /*
+  
   getEnterprises(){
     this.enterpriseServide.getEnterprises().subscribe({
       next:(enterpriseData) =>{
         this.listEnterprises = enterpriseData;
       }
     })
-  }*/
+  }
 
+  /*
   getEnterprises(){
     this.listEnterprises = this.enterpriseServide.getEnterprises();
-  }
-
-
-  // Método para dividir las empresas en grupos de N(parametro)
-  divideEnterpriseInGroups( tamanoGrupo: number) {
-    const grupos = [];
-    for (let i = 0; i < this.listEnterprises.length; i += tamanoGrupo) {
-      grupos.push(this.listEnterprises.slice(i, i + tamanoGrupo));
-    }
-    return grupos;
-  }
+  }*/
 
 }

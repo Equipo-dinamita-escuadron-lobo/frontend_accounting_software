@@ -49,6 +49,16 @@ export class EnterpriseCreationComponent {
   branchSelected: boolean = false;
 
   /**
+   * Placeholder
+   */
+
+ placeTypeEnterprise:string = "Seleccione el tipo de empresa";
+ placeTypePayer: string = "Seleccione el tipo de contribuyente";
+ placeTaxLiaabilities: string = "Seleccione una opción(es)";
+ placeDepartment: string = "Seleccione un departamento";
+ placeCity: string = "Seleccione una ciudad"
+
+  /**
    *
    * @param fb To form reactive
    * @param enterpriseService
@@ -97,18 +107,16 @@ export class EnterpriseCreationComponent {
         { value: 'Colombia', disabled: true },
         [Validators.maxLength(50)],
       ],
-      department: ['', [Validators.required, Validators.maxLength(50)]],
-      dv: ['', [Validators.required, Validators.maxLength(1)]],
-      selectedItemDepartment: [{ id: -1, name: '' },[Validators.required]],
-      selectedItemEnterpriseType:[{ id: -1, name: '' },[Validators.required]],
-      selectedItemTaxPayer: [{ id: -1, name: '' },[Validators.required]],
-      selectedItemTaxLiabilities: [[], Validators.required],
-      selectedItemCity: [{ id: -1, name: '' },[Validators.required]],
+      department: [{id:-1, name:''}, [Validators.required, Validators.maxLength(50)]],
+      dv: ['', [ Validators.maxLength(10)]],
+      selectedItemDepartment: ['', [Validators.required]],
+      selectedItemEnterpriseType:[ {id:-1, name:''},[Validators.required]],
+      selectedItemTaxPayer: [[Validators.required]],
+      selectedItemTaxLiabilities: [ Validators.required],
+      selectedItemCity: [[Validators.required]],
   
     };
   }
-
-  
 
   /**
    * @description Allows you to change the type of person to legal
@@ -152,22 +160,27 @@ export class EnterpriseCreationComponent {
   onDepartmentSelect(event: any) {
     this.form.value.selectedItemDepartment = event;
     this.enableSelectCity();
+    this.placeDepartment = "";
   }
 
   onEnterpriseTypeSelect(event: any) {
     this.form.value.selectedItemEnterpriseType = event;
+    this.placeTypeEnterprise = "";
   }
 
   onTaxPayerSelect(event: any) {
     this.form.value.selectedItemTaxPayer = event;
+    this.placeTypePayer = "";
   }
 
   onCitySelect(event: any) {
     this.form.value.selectedItemCity = event;
+    this.placeCity = "";
   }
 
   onTaxLiabilitySelect(event: any) {
     this.form.value.selectedItemTaxLiabilities = event;
+    this.placeTaxLiaabilities = "";
   }
 
    /**
@@ -189,6 +202,7 @@ export class EnterpriseCreationComponent {
 
   onSelectionTypeEnterpriseClear(){
     this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
+    this.placeTypeEnterprise = "Seleccione el tipo de empresa"
   }
   /**
    * @description Save enterprise using Enterprise service
@@ -226,12 +240,10 @@ export class EnterpriseCreationComponent {
       enterpriseType: this.form.value.selectedItemEnterpriseType.id,
     };
 
-    /*
+    
       this.enterpriseService.createEnterprise(enterprise).subscribe((data) => {
       //Logic TODO
-    });*/
-
-    return enterprise;
+    });
   }
   
   /**

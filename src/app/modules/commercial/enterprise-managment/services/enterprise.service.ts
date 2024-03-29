@@ -23,7 +23,7 @@ export class EnterpriseService {
 ];
 
   //Route API
-  private apiUrl = environment.API_URL + 'enterprises';  
+  private apiUrl = environment.API_URL + 'enterprises/';  
 
   constructor(private http: HttpClient) { }
 
@@ -33,11 +33,12 @@ export class EnterpriseService {
    */
   
 
-    /*
+  
   getEnterprises(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
-  }*/
+  }
 
+  /*
   getEnterprises():EnterpriseList[]{
     return [
       {id:1, name: "Unicauca", nit: "1234", logo: this.logoDefault},
@@ -49,7 +50,7 @@ export class EnterpriseService {
       {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
       {id:2, name: "Exito", nit: "1234", logo: this.logoDefault}
     ]
-  }
+  }*/
 
   /**
    * 
@@ -70,6 +71,7 @@ export class EnterpriseService {
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }
 
+  
   getTypesEnterprise(){
     return this.enterpriseTypes;
   }
