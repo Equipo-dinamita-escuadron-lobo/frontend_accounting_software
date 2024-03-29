@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Department } from '../models/Department';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class DepartmentService {
     { id: 32, name: 'Vichada' }
   ];
 
-  private apiUrl = ''; 
+  private apiUrl = environment.API_URL + 'address/departments'; 
   constructor(private http: HttpClient) {
 
    }

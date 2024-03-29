@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Enterprise } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class EnterpriseService {
 ];
 
   //Route API
-  private apiUrl = ''; 
+  private apiUrl = environment.API_URL + 'enterprises';  
 
   constructor(private http: HttpClient) { }
 
