@@ -12,9 +12,10 @@ export class ProductListComponent implements OnInit {
   products: Product[] = []; // Inicializa la lista de productos
   columns: any[] = [
     //{title: 'Id', data: 'id'},
+    {title:'Codigo',data:'code'},
     {title:'Nombres',data:'itemType'},
-   // {title:'Codigo',data:'code'},
     {title:'Descripción',data:'description'},
+    {title:'precio',data:'price'},
     {title:'min',data:'minQuantity'},
    // {title:'max',data:'maxQuantity'},
     //{title:'tax',data:'taxPercentage'},
@@ -22,7 +23,6 @@ export class ProductListComponent implements OnInit {
     {title:'unidad',data:'unitOfMeasure'},
     {title:'prov',data:'supplier'},
     {title:'cat',data:'category'},
-    {title:'precio',data:'price'},
   ];
 
   constructor(private productService: ProductService,  private router: Router ) { } // Inyecta el servicio ProductService en el constructor

@@ -5,9 +5,9 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { CategoryService } from '../../services/category.service';
 import { Router, RouterModule } from '@angular/router';
 import { Product } from '../../models/Product';
-
-
-@Component({
+import { ThirdService } from '../../../third-parties-managment/services/third-service';
+import { Third } from '../../../third-parties-managment/models/third-model';
+ @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
@@ -16,6 +16,7 @@ export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
+  thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
   nextProductId: number = 1; // Inicializa el contador del ID del producto
@@ -24,7 +25,8 @@ export class ProductCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private thirdService: ThirdService // Inyecta el servicio ThirdService en el constructor
   ) {}
   
   ngOnInit(): void {
@@ -53,7 +55,26 @@ export class ProductCreationComponent implements OnInit {
 
     // Obtiene todas las categorías al inicializar el componente
     // this.getCategories();
+
+  this.getThirdParties();
   }
+
+  // Método para obtener la lista de proveedores
+getThirdParties(): void {
+
+  this.thirdService.getThirdParties().subscribe(
+    (thirdParties: any[]) => {
+      // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
+      this.thirdParties = thirdParties;
+      // Llamar a initForm() después de obtener la lista de proveedores
+      this.initForm();
+    },
+    error => {
+      console.error('Error al obtener la lista de proveedores:', error);
+    }
+  );
+}
+
   //Metodo Complementario
   initForm(): void {
     // Definir el formulario reactivo con las validaciones
