@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, AbstractControl } from '@angular/forms';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { TaxLiabilityService } from '../../services/tax-liability.service';
 import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
@@ -109,13 +109,21 @@ export class EnterpriseCreationComponent {
       ],
       department: [{id:-1, name:''}, [Validators.required, Validators.maxLength(50)]],
       dv: ['', [ Validators.maxLength(10)]],
-      selectedItemDepartment: ['', [Validators.required]],
-      selectedItemEnterpriseType:[ {id:-1, name:''},[Validators.required]],
-      selectedItemTaxPayer: [[Validators.required]],
-      selectedItemTaxLiabilities: [ Validators.required],
-      selectedItemCity: [[Validators.required]],
+      selectedItemDepartment: [null, [this.selectedValueValidator]],
+      selectedItemEnterpriseType:[ null, [this.selectedValueValidator]],
+      selectedItemTaxPayer: [null, [this.selectedValueValidator]],
+      selectedItemTaxLiabilities: [ null, [this.selectedValueValidator]],
+      selectedItemCity: [null, [this.selectedValueValidator]],
   
     };
+  }
+
+  selectedValueValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== null && control.value !== undefined && control.value !== '') {
+      return null; // El valor es válido
+    } else {
+      return { noValueSelected: true }; // El valor no es válido
+    }
   }
 
   /**
