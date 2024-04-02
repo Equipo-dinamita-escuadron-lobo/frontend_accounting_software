@@ -1,1 +1,125 @@
-<p>third-creation works!</p>
+<form (submit)="OnSubmit()" [formGroup]="createdThirdForm">
+<div class="flex flex-col justify-start  font-projectFont m-3">
+    <h2 class="text-black font-bold text-2xl" >Crea Tercero</h2>
+
+    <div  id="ThirdType" class="flex flex-row justify-center items-center w-full">
+       <div class="flex flex-row justify-center items-center m-5">
+        <div class="flex flex-col justify-start items-center ">
+            <p>Tipo Terceros</p>
+            <select formControlName="thirdTypes" class="selectsC">
+                <option value="Cliente">Cliente</option>
+                <option value="Proveedor" selected>Provedoor</option>
+                <option value="Empleado">Empleado</option>
+            </select>
+        </div>
+        <button class="buttonsC">Agregar Tecero</button>
+       </div>
+
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Tipo Persona</p>
+
+            
+        <div class="flex flex-row justify-center items-center">
+            <app-check-button [(isChecked)]="button1Checked" (isCheckedChange)="onCheckChange(1)" formControlName="personType" value="Juridica" texto="Juridica" value="Juridica" tailConfig="w-32 m-4 mt-1"></app-check-button>
+            <app-check-button [(isChecked)]="button2Checked" (isCheckedChange)="onCheckChange(2)" formControlName="personType" value="Natural" texto="Natural" value="Natural" tailConfig="w-32 m-4  mt-1"></app-check-button>
+        </div>
+        </div>
+
+    </div>
+    
+    <!-----------------------DATOS TERCERO--------------------------------------->
+    <h2 class="font-bold text-2xl">Datos Tecero</h2>
+    <div *ngIf="button2Checked" class="flex flex-row justify-center items-center w-full">
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Nombre</p>
+            <input formControlName="names" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Apellidos</p>
+            <input formControlName="lastNames" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Estado</p>
+            <app-check-button formControlName="state" value="state" texto="Activo" value="Activo" tailConfig="w-32 m-4 mt-1" ></app-check-button>
+        </div>
+    </div>
+
+    <div *ngIf="button1Checked" class="flex flex-row justify-center items-center w-full">
+        <div class="flex flex-col justify-start items-center m-5 w-80">
+            <p>Razon Social</p>
+            <input formControlName="socialReason" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Estado</p>
+            <app-check-button formControlName="state" value="state" texto="Activo" value="Activo" tailConfig="w-32 m-4 mt-1" ></app-check-button>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-center items-center m-5">
+        <div class="flex flex-col justify-start items-center ">
+            <p>Tipo Identificación</p>
+            <select formControlName="typeId" class="selectsC" (change)="onTypeIdChange($event)">
+                <option value="CC">Cedula Ciudadana</option>
+                <option value="CE" selected>Cedula Extranjeria</option>
+                <option value="NIT">NIT</option>
+                <option value="pasaporte">Pasaporte</option>
+                <option value="TI">Tarjeta De Identidad</option>
+            </select>
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Numero Identificación</p>
+            <input formControlName="idnumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+        </div>
+        
+        <div *ngIf="showAdditionalDiv" class="flex flex-col justify-start items-center m-5">
+            <p>Digito Verificacion</p>
+            <input formControlName="verificationNumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+        </div>
+       </div>
+
+        <!-----------------------INFORMACION TERCEROS--------------------------------------->
+
+        <div class="flex flex-row justify-center items-center m-5">
+            <div class="flex flex-col justify-start items-center ">
+                <p>Pais</p>
+                <select  (change)="onCountryChange($event)" formControlName="country" class="selectsC">
+                    <option *ngFor="let country of countries" [value]="country.isoCode">{{country.name}}</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col justify-start items-center ">
+                <p>Departamento</p>
+                <select (change)="onStateChange($event)" formControlName="province" class="selectsC">
+                    <option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col justify-start items-center ">
+                <p>Ciudad</p>
+                <select formControlName="city" class="selectsC">
+                    <option *ngFor="let city of citys" [value]="city.name">{{ city.name }}</option>
+                </select>
+            </div>
+           </div>
+<div class="flex flex-col justify-center items-center w-full">
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-4">Dirrección</p>
+            <input formControlName="address" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
+           </div>
+
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-4">Correo</p>
+            <input formControlName="email" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
+           </div>
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-4">Celular</p>
+            <input formControlName="phoneNumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
+           </div>
+</div>
+
+
+           <div class="flex justify-center items-center">
+           <button type="submit" class="buttonsC w-36">Crear Tercero</button>
+        </div>
+</div>
+</form>

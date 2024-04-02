@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ThirdService } from '../../services/third-service';
-import { Third } from '../../models/third-model';
+import { Third } from '../../models/Third';
+import { ThirdServiceService } from '../../services/third-service.service';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
@@ -9,27 +10,34 @@ import { Third } from '../../models/third-model';
 export class ThirdsListComponent {
   data: Third[] = [];
   columns: any[] = [
-    {title: 'Id', data: 'id'},
-    {title:'Nombres',data:'nombres'},
-    {title:'Apellidos',data:'apellidos'},
-    {title:'Razón Social',data:'razonSocial'},
-    {title:'Tipo Id',data:'tipoIdentificacion'},
-    {title:'Identificación',data:'numeroIdentificacion'},
-    {title:'DV',data:'digitoVerificacion'},
-    {title:'Estado',data:'estado'},
-    {title:'Pais',data:'pais'},
-    {title:'Departamento',data:'departamento'},
-    {title:'Ciudad',data:'ciudad'},
-    {title:'Direccion',data:'direccion'},
-    {title:'Celular',data:'celular'},
-    {title:'Correo',data:'correo'},
+      { title: 'Id', data: 'entId' },
+    { title: 'Nombres', data: 'names' },
+    { title: 'Apellidos', data: 'lastNames' },
+    { title: 'Razón Social', data: 'socialReason' },
+    { title: 'Tipo Id', data: 'typeId' },
+    { title: 'Identificación', data: 'idNumber' },
+    { title: 'DV', data: 'verificationNumber' },
+    { title: 'Estado', data: 'state' },
+    { title: 'Pais', data: 'country' },
+    { title: 'Departamento', data: 'province' },
+    { title: 'Ciudad', data: 'city' },
+    { title: 'Direccion', data: 'address' },
+    { title: 'Celular', data: 'phoneNumber' },
+    { title: 'Correo', data: 'email' },
   ];
 
-  constructor(private thirdService: ThirdService) {}
+  constructor(private thirdService: ThirdServiceService) {}
 
   ngOnInit() {
-    this.thirdService.getThirdParties().subscribe((thirdParties) => {
-      this.data = thirdParties;
-    });
+    this.thirdService.getThirdParties().subscribe({
+      next: (response: Third[])=>{
+        this.data = response;
+      },
+      error: (error) => {
+        console.log(error)
+        alert("Failed to get Thirds")
+      }
+  });
+    
   }
 }

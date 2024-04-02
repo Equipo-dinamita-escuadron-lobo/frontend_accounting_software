@@ -1,6 +1,6 @@
 <label>
-<div [ngClass]="{'border-blueP1 bg-white text-blueP1': isChecked, 'border-grayP1 bg-grayP2 text-grayP1': !isChecked}"  class="border-solid border-2 border-grayP1 bg-grayP2 text-grayP1 rounded-lg {{tailConfig}} flex flex-row justify-center items-center font-projectFont font-bold">
-    <input type="checkbox" class="hidden" id="miCheckbox" [value]="value" [(ngModel)]="isChecked">
+<div [ngClass]="{'border-blueP1 bg-white text-blueP1': isChecked, 'border-grayP1 bg-grayP2 text-grayP1': !isChecked }"  class="border-solid border-2 border-grayP1 bg-grayP2 text-grayP1 rounded-lg {{tailConfig}} flex flex-row justify-center items-center font-projectFont font-bold">
+    <input type="checkbox" class="hidden" id="miCheckbox" [value]="value"  #input (change)="toggleChecked()"   (input)="onChange($any($event.target).value)" (blur)="onTouched(); blur.emit()" [disabled]="disabled" [checked]="isChecked" [class.checked]="isChecked">
     {{texto}}
     <div>
       <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'fill-blueP1': isChecked, 'fill-grayP1': !isChecked}" class="w-6 h-6 m-2 fill-grayP1 " viewBox="0 0 512 512">

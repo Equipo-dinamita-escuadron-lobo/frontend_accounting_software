@@ -5,6 +5,7 @@ import { ThirdPartiesManagmentRoutingModule } from './third-parties-managment-ro
 import { ThirdsListComponent } from './components/thirds-list/thirds-list.component';
 import { ThirdCreationComponent } from './components/third-creation/third-creation.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SharedModule } from '../../../shared/shared.module';
     CommonModule,
     ThirdPartiesManagmentRoutingModule,
     SharedModule,
+    ReactiveFormsModule
   ]
 })
 export class ThirdPartiesManagmentModule { }
