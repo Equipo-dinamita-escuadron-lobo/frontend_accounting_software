@@ -15,14 +15,14 @@ export class ProductListComponent implements OnInit {
     {title:'Codigo',data:'code'},
     {title:'Nombres',data:'itemType'},
     {title:'Descripción',data:'description'},
-    {title:'precio',data:'price'},
-    {title:'min',data:'minQuantity'},
+    {title:'Precio',data:'price'},
+    {title:'Min',data:'minQuantity'},
    // {title:'max',data:'maxQuantity'},
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
-    {title:'unidad',data:'unitOfMeasure'},
-    {title:'prov',data:'supplier'},
-    {title:'cat',data:'category'},
+    {title:'Unidad',data:'unitOfMeasure'},
+    {title:'Prov',data:'supplier'},
+    {title:'Cat',data:'category'},
   ];
 
   constructor(private productService: ProductService,  private router: Router ) { } // Inyecta el servicio ProductService en el constructor
