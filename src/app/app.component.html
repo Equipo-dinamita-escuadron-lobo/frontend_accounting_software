@@ -1,6 +1,6 @@
-<app-header></app-header>
+<app-header (stateSideBar)="changeStateSideBar($event)"></app-header>
 <div class="flex">
-  <app-sidebar></app-sidebar>
+  <app-sidebar [stateHidden]="stateSideBar"></app-sidebar>
   <div class="flex-grow">
     <div class="bg-gray-ligth">
       <router-outlet></router-outlet>

@@ -12,27 +12,35 @@ export class TaxLiabilityService {
   /**
    * PRUEBAS
    *  */ 
-  taxResponsibilities: string[] = [
-    'información exogena',
-    'facturador electronico',
-    'informante de beneficiarios finales',
-    'retención en la fuente a titulo de renta',
-    'retención en la fuente a titulo de iva',
-    'autorretenedor',
-    'gran contribuyente'
-  ];
+  private taxLiabilities: TaxLiability[] = [
+    { id: 1, name: 'Información Exógena' },
+    { id: 2, name: 'Facturador Electrónico' },
+    { id: 3, name: 'Informante de Beneficiarios Finales' },
+    { id: 4, name: 'Retención en la Fuente a Título de Renta' },
+    { id: 5, name: 'Retención en la Fuente a Título de IVA' },
+    { id: 6, name: 'Autorretenedor' },
+    { id: 7, name: 'Gran Contribuyente' }
+];
 
-  getResponsibilitiesTest(){
-    return this.taxResponsibilities;
-  }
-
-
+  /*
+  getTaxLiabilities(){
+    return this.taxLiabilities;
+  }*/
 
   constructor(private http: HttpClient) { }
 
-  // Method to get all the Tax Liabilities
-  getTaxLiabilities(): Observable<TaxLiability[]> {
+  /**
+   * @description method to get all tax liabilities
+   * @returns all tax payer types from the backend
+   */
+
+  
+  getTaxLiabilitiesBackend(): Observable<TaxLiability[]> {
     return this.http.get<TaxLiability[]>(this.apiUrl);
+  }
+
+  getTaxLiabilities(){
+    return this.taxLiabilities;
   }
 
 }
