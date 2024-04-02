@@ -27,6 +27,8 @@ export class EnterpriseCreationComponent {
    */
 
   form: FormGroup;
+  form_legal: FormGroup;
+  form_natural: FormGroup;
 
   /**
    * Arrays with information of services
@@ -46,7 +48,6 @@ export class EnterpriseCreationComponent {
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;
   enabledSelectCity: boolean = false;
-  branchSelected: boolean = false;
 
   /**
    * Placeholder
@@ -77,7 +78,9 @@ export class EnterpriseCreationComponent {
     private cityService: CityService,
     private departmentService: DepartmentService,
   ) {
-    this.form = this.fb.group(this.validations());
+    this.form = this.fb.group(this.validationsAll());
+    this.form_legal = this.fb.group(this.validationsLegal());
+    this.form_natural = this.fb.group(this.validationsNatural());
   }
 
   ngOnInit(): void {
@@ -91,18 +94,13 @@ export class EnterpriseCreationComponent {
    *
    * @returns  validations of the form group
    */
-  validations() {
+  validationsAll() {
     return {
-      logo: ['', Validators.required],
       name: ['', [Validators.required, Validators.maxLength(15),Validators.pattern(/^[a-zA-Z]+$/)]],
       nit: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
-      businessName: ['', [Validators.required, Validators.maxLength(15)]],
-      nameOwner: ['', [Validators.required, Validators.maxLength(15),Validators.pattern(/^[a-zA-Z]+$/)]],
-      surnameOwner: ['', [Validators.required,Validators.maxLength(15)],Validators.pattern(/^[a-zA-Z]+$/)],
       address: ['', [Validators.required, Validators.maxLength(30)]],
       phone: ['', [Validators.required, Validators.maxLength(15), Validators.pattern(/^\d+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      city: ['', [Validators.required, Validators.maxLength(50)]],
       country: [
         { value: 'Colombia', disabled: true },
         [Validators.maxLength(50)],
@@ -113,9 +111,35 @@ export class EnterpriseCreationComponent {
       selectedItemEnterpriseType:[ null, [this.selectedValueValidator]],
       selectedItemTaxPayer: [null, [this.selectedValueValidator]],
       selectedItemTaxLiabilities: [ null, [this.selectedValueValidator]],
-      selectedItemCity: [null, [this.selectedValueValidator]],
-  
+      selectedItemCity: [null,  [this.selectedValueValidator]],
+      branchSelected: [false]
     };
+  }
+
+  validationsNatural() {
+    return {
+      nameOwner: ['', [Validators.required, Validators.maxLength(15),Validators.pattern(/^[a-zA-Z]+$/)]],
+      surnameOwner: ['', [Validators.required,Validators.maxLength(15)],Validators.pattern(/^[a-zA-Z]+$/)],
+    };
+  }
+
+  validationsLegal() {
+    return {
+      businessName: ['', [Validators.required, Validators.maxLength(15)]]
+    };
+  }
+
+
+  validationsForm():boolean{
+    if(this.form.valid){
+      if(this.selectedButtonType == 'LEGAL_PERSON'){
+        return this.form_legal.invalid;
+      }else{
+        return this.form_natural.invalid;
+      }
+    }
+
+    return true;
   }
 
   selectedValueValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -150,7 +174,7 @@ export class EnterpriseCreationComponent {
  * @returns 0 if checkbox is not selected, 1 if it's selected
  */
   checkBranch() {
-    if (this.branchSelected) {
+    if (this.form.value.branchSelected) {
       return 1;
     }
     return 0;

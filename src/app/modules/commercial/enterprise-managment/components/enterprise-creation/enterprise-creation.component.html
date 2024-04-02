@@ -5,6 +5,7 @@
 
         <section class="create-enterprise  rounded-xl shadow-xl   bg-white pb-6">
             <!-- mg--->
+
             <div class="container">
                 <div class="container__basic__information">
                     <div class="p-2 flex justify-center pt-7">
@@ -60,7 +61,7 @@
                                         </div>
 
 
-                                        <div class="col-1-owner grid mb-3" *ngIf="showNaturalForm">
+                                        <form [formGroup]="form_natural" class="col-1-owner grid mb-3" *ngIf="showNaturalForm">
                                             <label for="nombre_propietario" class="block">Nombre de
                                                 Propietario:</label>
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
@@ -76,21 +77,21 @@
                                                 <div *ngIf="form.get('nameOwner')?.hasError('pattern')">El nombre solo
                                                     puede contener letras.</div>
                                             </div>
-                                        </div>
+                                        </form>
 
-                                        <div class="col-1-business grid mb-3" *ngIf="showLegalForm">
+                                        <form [formGroup]="form_legal" class="col-1-business grid mb-3" *ngIf="showLegalForm">
                                             <label for="businessName" class="block">Razon social:</label>
                                             <input type="text" id="businessName" name="businessName"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ingrese la razón social" formControlName="businessName">
-                                            <div *ngIf="form.get('businessName')?.invalid && form.get('businessName')?.touched"
+                                            <div *ngIf="form_legal.get('businessName')?.invalid && form.get('businessName')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form.get('businessName')?.hasError('maxlength')">Supera
+                                                <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">Supera
                                                     limite caracteres</div>
-                                                <div *ngIf="form.get('businessName')?.hasError('required')">El campo es
+                                                <div *ngIf="form_legal.get('businessName')?.hasError('required')">El campo es
                                                     requerido.</div>
                                             </div>
-                                        </div>
+                                        </form>
 
 
                                         <div class="col-1-type grid mb-3 ">
@@ -143,7 +144,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-2-surname grid mb-3" *ngIf="showNaturalForm">
+                                        <form [formGroup]="form_natural" class="col-2-surname grid mb-3" *ngIf="showNaturalForm">
                                             <label for="apellidos" class="block">Apellidos:</label>
                                             <input type="text" id="apellidos" name="apellidos"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
@@ -157,7 +158,7 @@
                                                 <div *ngIf="form.get('surnameOwner')?.hasError('pattern')">El nombre
                                                     solo puede contener letras.</div>
                                             </div>
-                                        </div>
+                                        </form>
 
                                         <div class="col-2-payer grid mb-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de
@@ -352,7 +353,7 @@
                                         <label class="w-full block text-center" for="sucursal">¿Tiene
                                             sucursales?</label>
                                         <input type="checkbox" id="sucursal" name="sucursal" class="w-full mt-3 h-6"
-                                            [(ngModel)]="branchSelected" />
+                                            formControlName="branchSelected" />
                                     </div>
 
                                     <div class="dv col-span-3">
@@ -371,7 +372,7 @@
                 <div class="buttons-create-cancel flex justify-center mx-10 my-3">
                     <button
                         class="save-enterprise text-white bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-600 dark:focus:ring-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        (click)="saveEnterprise()" [disabled]="form.invalid">Guardar</button>
+                        (click)="saveEnterprise()" [disabled]="validationsForm()">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-600 via-red-700 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         routerLink="/enterprise-management/list">Cancelar</button>
