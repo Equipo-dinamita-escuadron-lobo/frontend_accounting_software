@@ -37,7 +37,8 @@ module.exports = {
         "21": ['6rem']/* 80px */
       },
       screens: {
-        'tm': '400px'
+        'tm': '400px',
+        'mmm': '200px'
       }
     },
   },
