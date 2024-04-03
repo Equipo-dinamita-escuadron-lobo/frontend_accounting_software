@@ -10,7 +10,7 @@
 
 @layer components{
     .buttonsC{
-        @apply border-solid border-2 border-blueP1 rounded-lg justify-center items-center p-2 hover:bg-blueP3 text-blueP1 font-projectFont font-bold
+        @apply rounded-xl bg-blue-950 text-white px-3
     }
 
     .selectsC{

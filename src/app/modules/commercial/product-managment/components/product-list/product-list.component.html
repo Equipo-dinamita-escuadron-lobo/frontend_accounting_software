@@ -1,7 +1,6 @@
 <!-- Botones para agregar producto, categoría y unidad -->
-<div class="">
-  
-  <div class="flex justify-start gap-4 mt-4">
+<div class="px-16 py-3 font-projectFont">
+  <div class="mt-4">
     <!-- Barra de búsqueda 
   <div
     class="flex flex-grow items-center bg-white border border-gray-300 rounded-lg overflow-hidden"
@@ -13,45 +12,123 @@
     /> 
     <button class="buttonsC h-10 w-auto">Buscar</button>
   </div>-->
-  <div class="px-4">
-    <span class="text-4xl text-subtitle">productos</span>
-  </div>
-  <button
-      class="buttonsC h-10 w-auto"
-      (click)="redirectTo('product-creation')"
-    >
-      Agregar Producto
-    </button>
-    <button
-      class="buttonsC h-10 w-auto"
-      (click)="redirectTo('agregar-categoria')"
-    >
-      Categorías
-    </button>
-    <button class="buttonsC h-10 w-auto" (click)="redirectTo('agregar-unidad')">
-      Unidades de medida
-    </button>
-  </div>
-  <div class="lg:text-md mx-auto w-[90%]">
-    <app-datatable [columns]="columns" [data]="products"></app-datatable>
-  </div>
 
-  <!-- 
-<!-- Verificar si hay productos disponibles 
-<div *ngIf="products && products.length > 0; else noProducts" class="my-4">
-  <!-- Iterar sobre la lista de productos 
+    <div class="mb-6">
+      <span class="text-4xl text-blue-950">Productos</span>
+    </div>
 
-  <div *ngFor="let product of products" class="bg-gray-100 rounded-lg p-4 mb-4">
-    <!-- Mostrar los datos del producto 
-    <h3 class="text-xl font-bold">{{ product.itemType }}</h3>
-    <p class="text-gray-700">{{ product.description }}</p>
-    <p class="text-gray-700">Precio: {{ product.price }}</p>
-    <!-- Agregar más campos según sea necesario 
+    <div
+      class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
+    >
+      <div
+        class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex "
+      >
+        <svg
+          class="h-6 w-6 text-blue-500 mr-2"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <form [formGroup]="form" class="flex justify-start items-start">
+          <input
+            type="text"
+            class="mb-2 w-full outline-none bg-transparent"
+            id="stringSearch"
+            placeholder="Buscar"
+            name="stringSearch"
+            formControlName= "stringSearch"
+          />
+        </form>
+      </div>
+
+      <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+        <button
+          class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+          (click)="redirectTo('product-creation')"
+        >
+          Agregar
+        </button>
+        <!--
+           <button
+          class="buttonsC h-10 min-w-28 p-1"
+          (click)="redirectTo('agregar-categoria')"
+        >
+          Categorías
+        </button>
+        <button
+          class="buttonsC h-10 min-w-48 p-1"
+          (click)="redirectTo('agregar-unidad')"
+        >
+          Unidades de medida
+        </button>
+        -->
+      </div>
+    </div>
+
+    <div class="lg:text-md mx-auto">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-200 ">
+            <tr class="overflow-hidden">
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-lg text-blue-950  font-bold overflow-hidden"
+                *ngFor="let col of columns"
+              >
+                {{ col.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              *ngFor="
+                let prod of products | filterList : form.value.stringSearch
+              "
+              class="hover:bg-gray-100"
+            >
+              <td class="px-6 py-4 whitespace-nowrap">{{ prod.code }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ prod.itemType }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ prod.description }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ prod.price }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ prod.minQuantity }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ prod.unitOfMeasure }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ prod.supplier }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ prod.category }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 
+  <!-- Verificar si hay productos disponibles 
+  <div *ngIf="products && products.length > 0; else noProducts" class="my-4">
+    <!-- Iterar sobre la lista de productos 
+  
+    <div *ngFor="let product of products" class="bg-gray-100 rounded-lg p-4 mb-4">
+      <!-- Mostrar los datos del producto 
+      <h3 class="text-xl font-bold">{{ product.itemType }}</h3>
+      <p class="text-gray-700">{{ product.description }}</p>
+      <p class="text-gray-700">Precio: {{ product.price }}</p>
+      <!-- Agregar más campos según sea necesario 
+    </div>
   </div>
-</div>
--->
-  <!-- Manejar caso de lista vacía -->
-  <ng-template #noProducts>
-    <p class="text-gray-700">No hay productos disponibles.</p>
-  </ng-template>
+  -->
+    <!-- Manejar caso de lista vacía -->
+    <ng-template #noProducts>
+      <p class="text-gray-700">No hay productos disponibles.</p>
+    </ng-template>
+  </div>
 </div>

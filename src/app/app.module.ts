@@ -5,8 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ProductManagmentModule } from './modules/commercial/product-managment/product-managment.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ThirdPartiesManagmentModule } from './modules/commercial/third-parties-managment/third-parties-managment.module';
 import { DataTablesModule } from 'angular-datatables';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,8 +20,10 @@ import { DataTablesModule } from 'angular-datatables';
     AppRoutingModule,
     SharedModule,
     ProductManagmentModule,
+    ReactiveFormsModule,
     ThirdPartiesManagmentModule,
-    DataTablesModule
+    DataTablesModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

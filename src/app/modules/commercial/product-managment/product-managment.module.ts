@@ -5,11 +5,13 @@ import { ProductManagmentRoutingModule } from './product-managment-routing.modul
 import { ProductCreationComponent } from './components/product-creation/product-creation.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { SharedModule } from "../../../shared/shared.module";
+import { FilterList } from './pipes/filter.pipe';
 
 @NgModule({
     declarations: [
         ProductCreationComponent,
-        ProductListComponent
+        ProductListComponent,
+        FilterList
     ],
     exports: [
         ProductCreationComponent,

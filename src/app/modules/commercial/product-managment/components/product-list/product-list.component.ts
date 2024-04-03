@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service'; // Importa el servicio ProductService
 import { Product } from '../../models/Product'; // Importa el modelo Product
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
@@ -12,20 +13,30 @@ export class ProductListComponent implements OnInit {
   products: Product[] = []; // Inicializa la lista de productos
   columns: any[] = [
     //{title: 'Id', data: 'id'},
+    {title:'Codigo',data:'code'},
     {title:'Nombres',data:'itemType'},
-   // {title:'Codigo',data:'code'},
     {title:'Descripción',data:'description'},
-    {title:'min',data:'minQuantity'},
+    {title:'Precio',data:'price'},
+    {title:'Min',data:'minQuantity'},
    // {title:'max',data:'maxQuantity'},
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
-    {title:'unidad',data:'unitOfMeasure'},
-    {title:'prov',data:'supplier'},
-    {title:'cat',data:'category'},
-    {title:'precio',data:'price'},
+    {title:'Unidad',data:'unitOfMeasure'},
+    {title:'Prov',data:'supplier'},
+    {title:'Cat',data:'category'},
   ];
 
-  constructor(private productService: ProductService,  private router: Router ) { } // Inyecta el servicio ProductService en el constructor
+  form: FormGroup;
+
+  constructor(private productService: ProductService,  private router: Router, private fb: FormBuilder ) {
+    this.form = this.fb.group(this.validationsAll());
+   } // Inyecta el servicio ProductService en el constructor
+
+validationsAll(){
+  return {
+    stringSearch: ['']
+  };
+}
 
   ngOnInit(): void {
     this.getProducts(); // Llama al método getProducts() al inicializar el componente
