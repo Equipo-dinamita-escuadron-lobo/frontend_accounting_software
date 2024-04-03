@@ -18,7 +18,7 @@ export class ThirdCreationComponent implements OnInit {
 
   createdThirdForm!: FormGroup;
   submitted = false;
-  button1Checked = false;
+  button1Checked = true;
   button2Checked = false;
   showAdditionalDiv = false;
   countries: any[] = [];
@@ -45,7 +45,7 @@ export class ThirdCreationComponent implements OnInit {
         lastNames: [""],
         socialReason: [""],
         gender:[""],
-        idnumber: ["",Validators.required],
+        idNumber: ["",Validators.required],
         verificationNumber: [""], 
         state: ["",Validators.required],
         photoPath:[""],
@@ -89,7 +89,7 @@ OnSubmit(){
   third.updateDate = this.datePipe.transform(currentDate, "yyyy-MM-dd")!;
   third.thirdTypes = [this.createdThirdForm.get('thirdTypes')?.value]
 
-  /*this.thirdService.createThird(third).subscribe({
+  this.thirdService.createThird(third).subscribe({
     next: (response) => {
       // Handle the successful response here
       console.log("Success:", response);
@@ -100,7 +100,7 @@ OnSubmit(){
       console.error("Error:", error);
       alert("Failed to create Third.");
     }
-  });*/
+  });
 
   alert("Succes Created Third" + JSON.stringify(this.createdThirdForm.value,null,4));
 }

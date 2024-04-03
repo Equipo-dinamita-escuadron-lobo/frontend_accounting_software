@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Third } from '../models/Third';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Third } from '../models/Third';
 })
 export class ThirdServiceService {
 
-  private thirdApiUrl = "http://localhost:8080/th_api/thirds"
+  private thirdApiUrl = "http://localhost:8080/api/thirds/"
 
   constructor(private http: HttpClient){
   }
@@ -23,8 +23,17 @@ export class ThirdServiceService {
     );
   }
 
-  getThirdParties(): Observable<Third[]> {
-    return this.http.get<any>(this.thirdApiUrl);
+  getThirdParties(entId: String, numPage: number): Observable<Third[]> {
+    
+    const data = {
+      entId: entId,
+      numPage: numPage
+    };
+
+    return this.http.post<any>(this.thirdApiUrl + 'listThird', data)
+    .pipe(
+      map(response => response.content as Third[])
+    );
   }
 
 }

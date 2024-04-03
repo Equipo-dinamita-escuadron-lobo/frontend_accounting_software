@@ -1,6 +1,13 @@
-<form (submit)="OnSubmit()" [formGroup]="createdThirdForm">
-<div class="flex flex-col justify-start  font-projectFont m-3">
-    <h2 class="text-black font-bold text-2xl" >Crea Tercero</h2>
+<div class="flex flex-col justify-start items-center w-full h-full">
+    <div class="items-start self-start ml-20 mb-5">
+        <h1 class="text-2xl font-bold text-blue-950 mt-8">Creación de Tercero</h1>
+
+        <p class="mt-4 font-projectFont">
+            Ingrese la información requerida para crear un nuevo Tercero:
+        </p>
+    </div>
+<form (submit)="OnSubmit()" [formGroup]="createdThirdForm" class="w-11/12">
+<div class="flex flex-col justify-center items-center font-projectFont m-2 p-3 bg-white rounded-xl  w-full shadow-xl ">
 
     <div  id="ThirdType" class="flex flex-row justify-center items-center w-full">
        <div class="flex flex-row justify-center items-center m-5">
@@ -12,7 +19,7 @@
                 <option value="Empleado">Empleado</option>
             </select>
         </div>
-        <button class="buttonsC">Agregar Tecero</button>
+        <button class="buttonsC w-36 h-10 mt-5 ml-4">Agregar Tecero</button>
        </div>
 
         <div class="flex flex-col justify-start items-center m-5">
@@ -28,15 +35,15 @@
     </div>
     
     <!-----------------------DATOS TERCERO--------------------------------------->
-    <h2 class="font-bold text-2xl">Datos Tecero</h2>
+    <h2 class="relative font-bold text-2xl group pb-2 border-solid border-b-2 border-blue-950">Datos Tecero</h2>
     <div *ngIf="button2Checked" class="flex flex-row justify-center items-center w-full">
         <div class="flex flex-col justify-start items-center m-5">
             <p>Nombre</p>
-            <input formControlName="names" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+            <input formControlName="names" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
         </div>
         <div class="flex flex-col justify-start items-center m-5">
             <p>Apellidos</p>
-            <input formControlName="lastNames" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+            <input formControlName="lastNames" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
         </div>
         <div class="flex flex-col justify-start items-center m-5">
             <p>Estado</p>
@@ -47,7 +54,7 @@
     <div *ngIf="button1Checked" class="flex flex-row justify-center items-center w-full">
         <div class="flex flex-col justify-start items-center m-5 w-80">
             <p>Razon Social</p>
-            <input formControlName="socialReason" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+            <input formControlName="socialReason" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
         </div>
         <div class="flex flex-col justify-start items-center m-5">
             <p>Estado</p>
@@ -68,16 +75,17 @@
         </div>
         <div class="flex flex-col justify-start items-center m-5">
             <p>Numero Identificación</p>
-            <input formControlName="idnumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+            <input formControlName="idNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 w-full p-2.5">
         </div>
         
         <div *ngIf="showAdditionalDiv" class="flex flex-col justify-start items-center m-5">
             <p>Digito Verificacion</p>
-            <input formControlName="verificationNumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-full p-2.5">
+            <input formControlName="verificationNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
         </div>
        </div>
 
         <!-----------------------INFORMACION TERCEROS--------------------------------------->
+
 
         <div class="flex flex-row justify-center items-center m-5">
             <div class="flex flex-col justify-start items-center ">
@@ -101,25 +109,25 @@
                 </select>
             </div>
            </div>
-<div class="flex flex-col justify-center items-center w-full">
+<div class="flex flex-col justify-center items-center w-2/3">
            <div class="flex flex-row justify-start items-center m-5 w-2/3">
             <p class="m-4">Dirrección</p>
-            <input formControlName="address" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
-           </div>
-
-           <div class="flex flex-row justify-start items-center m-5 w-2/3">
-            <p class="m-4">Correo</p>
-            <input formControlName="email" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
+            <input formControlName="address" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
            </div>
            <div class="flex flex-row justify-start items-center m-5 w-2/3">
-            <p class="m-4">Celular</p>
-            <input formControlName="phoneNumber" type="text" class="bg-white border border-grayP1 text-grayP1  text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:text-blueP1 focus:border-blueP1 block w-2/3 p-2.5">
+            <p class="m-7">Correo</p>
+            <input formControlName="email" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
+           </div>
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-7">Celular</p>
+            <input formControlName="phoneNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
            </div>
 </div>
 
 
            <div class="flex justify-center items-center">
-           <button type="submit" class="buttonsC w-36">Crear Tercero</button>
+           <button type="submit" class="buttonsC w-36 h-10">Crear Tercero</button>
         </div>
 </div>
 </form>
+</div>
