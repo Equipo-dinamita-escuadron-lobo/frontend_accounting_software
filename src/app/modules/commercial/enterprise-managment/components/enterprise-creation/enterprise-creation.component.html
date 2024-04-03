@@ -138,7 +138,7 @@
                                                 tributaria):</label>
                                             <input type="text" id="nit" name="nit"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ingrese NIT" formControlName="nit">
+                                                placeholder="Ej: 600.456.789-0" formControlName="nit">
                                             <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
@@ -154,7 +154,7 @@
                                             <label for="apellidos" class="block">Apellidos:</label>
                                             <input type="text" id="apellidos" name="apellidos"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ingrese los apellidos" formControlName="surnameOwner">
+                                                placeholder="Ej: Ruano" formControlName="surnameOwner">
                                             <div *ngIf="form.get('surnameOwner')?.invalid && form.get('surnameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form.get('surnameOwner')?.hasError('maxlength')">Supera
@@ -317,7 +317,8 @@
                                     <label for="direccion">Direccion</label>
                                     <input type="text" id="direccion" name="direccion"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="address">
+                                        formControlName="address"
+                                        placeholder="Ej: Calle 123 #45-67">
                                     <span class="text-red-500 text-sm font-medium -mt-1"
                                         *ngIf="form.get('address')?.hasError('required') && form.get('address')?.touched">
                                         Campo requerido
@@ -328,7 +329,8 @@
                                     <label for="telefono">Telefono</label>
                                     <input type="number" id="telefono" name="telefono"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="phone">
+                                        formControlName="phone"
+                                        placeholder="1234 5678">
                                     <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
                                         class="text-red-500 text-sm font-medium -mt-1">
                                         <div *ngIf="form.get('phone')?.hasError('maxlength')">Supera limite digitos
@@ -344,7 +346,8 @@
                                     <label for="email">Email</label>
                                     <input type="email" id="email" name="email"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="email">
+                                        formControlName="email"
+                                        placeholder="Ej. nombredeusuario@example.com">
                                     <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
                                         class="text-red-500 text-sm font-medium -mt-1">
                                         <div *ngIf="form.get('email')?.hasError('required')">El email es requerido.
