@@ -1,0 +1,51 @@
+image: docker
+services:
+  - name: docker:dind
+
+stages:
+  - test
+  - get_last_tag
+  - build_and_push
+
+
+test:
+  image: node:18-bullseye
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  before_script:
+    - apt update
+    - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome*.deb;
+    - export CHROME_BIN=/usr/bin/google-chrome
+  script:
+    - echo "Testing the app"
+    - npm ci
+    - npm run test -- --no-watch --browsers=ChromeHeadlessCI
+
+get_last_tag:
+  stage: get_last_tag
+  script:
+    - echo "Getting last tag"
+    - git fetch --tags
+    - echo $(git describe --tags --abbrev=0) > last_tag.txt
+  artifacts:
+    paths:
+      - last_tag.txt
+  only:
+    - main
+
+build_and_push:
+  stage: build_and_push
+  script:
+    - echo "Building the app"
+    - export LAST_TAG=$(cat last_tag.txt)
+    - echo $DOCKER_ACCESS_TOKEN | docker login --username $DOCKER_USERNAME --password-stdin
+    - docker build -t $DOCKER_USERNAME/$CI_PROJECT_NAME:$LAST_TAG -t $DOCKER_USERNAME/$CI_PROJECT_NAME:latest .
+
+    - echo "Pushing the app"
+    - docker push $DOCKER_USERNAME/$CI_PROJECT_NAME:$LAST_TAG
+    - docker push $DOCKER_USERNAME/$CI_PROJECT_NAME:latest
+  only:
+    - main
+
