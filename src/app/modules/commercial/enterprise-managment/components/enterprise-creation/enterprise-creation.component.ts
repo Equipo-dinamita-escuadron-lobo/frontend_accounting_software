@@ -106,15 +106,15 @@ export class EnterpriseCreationComponent {
         '',
         [
           Validators.required,
-          Validators.maxLength(15),
-          Validators.pattern(/^[a-zA-Z]+$/),
+          Validators.maxLength(50),
+          Validators.pattern(/^[a-zA-Z\s]+$/), 
         ],
       ],
       nit: [
         '',
         [
           Validators.required,
-          Validators.maxLength(15),
+          Validators.maxLength(20),
           Validators.pattern(/^\d+$/),
         ],
       ],
@@ -141,7 +141,7 @@ export class EnterpriseCreationComponent {
       selectedItemEnterpriseType: [null, [this.selectedValueValidator]],
       selectedItemTaxPayer: [null, [this.selectedValueValidator]],
       selectedItemTaxLiabilities: [null, [this.selectedValueValidator]],
-      selectedItemCity:  [null, [this.selectedValueValidator]],
+      selectedItemCity: [null, [this.selectedValueValidator]],
       branchSelected: [false],
     };
   }
@@ -152,13 +152,13 @@ export class EnterpriseCreationComponent {
         '',
         [
           Validators.required,
-          Validators.maxLength(15),
+          Validators.maxLength(50),
           Validators.pattern(/^[a-zA-Z]+$/),
         ],
       ],
       surnameOwner: [
         '',
-        [Validators.required, Validators.maxLength(15)],
+        [Validators.required, Validators.maxLength(50)],
         Validators.pattern(/^[a-zA-Z]+$/),
       ],
     };
@@ -166,7 +166,7 @@ export class EnterpriseCreationComponent {
 
   validationsLegal() {
     return {
-      businessName: ['', [Validators.required, Validators.maxLength(15)]],
+      businessName: ['', [Validators.required, Validators.maxLength(50)]],
     };
   }
 
@@ -317,7 +317,7 @@ export class EnterpriseCreationComponent {
       dv: this.form.value.dv,
       enterpriseType: this.form.value.selectedItemEnterpriseType.id,
     };
-    
+
     this.enterpriseService.createEnterprise(enterprise).subscribe(
       (data) => {
         // Caso de éxito (código de respuesta 200 OK)
