@@ -10,40 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EnterpriseListComponent {
   filterName: string = "";
-  listEnterprises: EnterpriseList[] = [{
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },{
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },{
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  },
-  {
-    id: 1, name: 'Exito', nit:'123', logo: ''
-  }];
+  listEnterprises: EnterpriseList[] = [ ];
   selecteEnterprise ?: EnterpriseList;
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;
@@ -54,7 +21,7 @@ export class EnterpriseListComponent {
   }
 
   ngOnInit():void{
-    //this.getEnterprises();
+    this.getEnterprises();
   }
 
   
