@@ -7,6 +7,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Product } from '../../models/Product';
 import { ThirdService } from '../../../third-parties-managment/services/third-service';
 import { Third } from '../../../third-parties-managment/models/third-model';
+import Swal from 'sweetalert2';
  @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -160,7 +161,11 @@ getThirdParties(): void {
     this.productService.createProduct(productData).subscribe(
       (response: any) => {
         // Mensaje de éxito con alert
-        alert('El producto se creó con éxito.');
+        Swal.fire({
+          title: 'Creación exitosa!',
+          text: 'Se ha creado el producto con éxito!',
+          icon: 'success',
+        });
         
         // Restablece el formulario con la fecha actual
         this.resetFormWithCurrentDate();        
@@ -172,7 +177,11 @@ getThirdParties(): void {
       },
       (error) => {
         // Mensaje de error con alert
-        alert('No se pudo crear el producto. Por favor revisa los campos.');
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error al crear la empresa.',
+          icon: 'error',
+        });
       }
     );
   } else {
