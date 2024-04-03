@@ -59,11 +59,11 @@ export class EnterpriseCreationComponent {
    * Placeholder
    */
 
-  placeTypeEnterprise: string = 'Seleccione el tipo de empresa';
-  placeTypePayer: string = 'Seleccione el tipo de contribuyente';
+  placeTypeEnterprise: string = 'Seleccione una opción';
+  placeTypePayer: string = 'Seleccione una opción';
   placeTaxLiaabilities: string = 'Seleccione una opción(es)';
-  placeDepartment: string = 'Seleccione un departamento';
-  placeCity: string = 'Seleccione una ciudad';
+  placeDepartment: string = 'Seleccione una opción';
+  placeCity: string = 'Seleccione una opción';
 
   /**
    *

@@ -12,5 +12,6 @@ export class HeaderComponent {
   sendStateSideBar() {
     this.varStateSideBar = !this.varStateSideBar;
     this.stateSideBar.emit(this.varStateSideBar);
+    
   }
 }

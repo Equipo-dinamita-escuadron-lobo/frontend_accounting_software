@@ -1,10 +1,11 @@
 <div id="sidebar" *ngIf="stateHidden"
-  class=" sticky top-0 left-0 z-40 w-64 h-screen  transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-white dark:border-white">
+  class="flex flex-col top-0 left-0 absolute z-40 sm:w-64 h-screen transition-transform bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-white dark:border-white sm:block sm:sticky">
   <div class="flex justify-center items-center py-5 border-b-2 border-gray-ligth w-48 text-xl font-bold">
     <h3 id="Empresa" class="">Comercial</h3>
-    
   </div>
-  <ng-container *ngFor="let link of links" >
-    <app-sidebar-selected [svgPath]="link.svgPath" [href]="link.href" [linkText]="link.linkText"  [subhref]="link.subHref" class="w-full"></app-sidebar-selected>
+  <ng-container *ngFor="let link of links">
+    <app-sidebar-selected [svgPath]="link.svgPath" [href]="link.href" [linkText]="link.linkText"
+      [subhref]="link.subHref" class="w-full"></app-sidebar-selected>
   </ng-container>
-</div>
+</div> 
+

@@ -1,12 +1,12 @@
 <div class="flex w-full  h-4/5 font-projectFont mb-5">
-    <div class="max-w-full mx-auto px-16 py-10">
+    <div class="max-w-full mx-auto px-16 py-10 w-full">
         <h1 class="text-3xl font-bold  text-blue-950">Creación de Empresa</h1>
         <p class="text-base  mb-7 ">Ingrese toda la información requerida en los siguientes formularios</p>
 
-        <section class="create-enterprise  rounded-xl shadow-xl   bg-white pb-6">
+        <section class="create-enterprise  rounded-xl shadow-xl   bg-white pb-6 w-full">
             <!-- mg--->
 
-            <div class="container">
+            <div class="container w-full">
                 <div class="container__basic__information">
                     <div class="p-2 flex justify-center pt-7">
                         <h2 class="relative font-bold text-2xl group pb-2 border-solid border-b-2 border-blue-950">
@@ -21,19 +21,25 @@
                                 class="object-cover icon-upload">
                         </div>
 
-                        <div class="basic__information__form flex flex-col justify-center mb-8 col-span-2 ">
-                            <div class="flex justify-center mb-5">
-                                <div class="bg-gray-500 rounded-full p-1">
-                                    <button type="button" id="legal-person" (click)="showLegalPersonForm()"
+                        <div class="basic__information__form flex flex-col justify-center mb-8 col-span-2 w-full">
+                            <div class="flex justify-center mb-5 ">
+                                <div class="sm:bg-gray-500 rounded-full p-1 justify-center grid-cols-1 grid sm:grid-cols-2 mt-7 sm:mt-0">
+                                    <div class="button-1">
+                                        <button type="button" id="legal-person" (click)="showLegalPersonForm()"
                                         [class.selected]="selectedButtonType === 'LEGAL_PERSON'"
                                         class="px-10 py-1 text-sm mr-3 font-medium rounded-full bg-white text-black hover:bg-blue-950 hover:text-white">
                                         Persona jurídica
                                     </button>
-                                    <button type="button" id="natural-person" (click)="showNaturalPersonForm()"
+                                    </div>
+                                    <div class="button-2">
+                                        <button type="button" id="natural-person" (click)="showNaturalPersonForm()"
                                         [class.selected]="selectedButtonType === 'NATURAL_PERSON'"
                                         class="px-10 py-1 text-sm font-medium rounded-full bg-white text-black hover:bg-blue-950 hover:text-white">
                                         Persona natural
                                     </button>
+                                    </div>
+                               
+                                   
                                 </div>
                             </div>
 
@@ -47,7 +53,7 @@
                                             <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ingrese el nombre de la empresa" formControlName="name"
+                                                placeholder="Ej: Pepsi " formControlName="name"
                                                 required>
                                             <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
@@ -66,7 +72,7 @@
                                                 Propietario:</label>
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ingrese nombre de propietario" formControlName="nameOwner"
+                                                placeholder="Ej: Julian" formControlName="nameOwner"
                                                 required>
                                             <div *ngIf="form.get('nameOwner')?.invalid && form.get('nameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
@@ -83,7 +89,7 @@
                                             <label for="businessName" class="block">Razon social:</label>
                                             <input type="text" id="businessName" name="businessName"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                placeholder="Ingrese la razón social" formControlName="businessName">
+                                                placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L." formControlName="businessName">
                                             <div *ngIf="form_legal.get('businessName')?.invalid && form.get('businessName')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">Supera
@@ -196,18 +202,18 @@
                     </div>
                 </div>
 
-                <div class="container__additional-information">
-                    <div class="flex justify-center ">
+                <div class="container__additional-information w-full">
+                    <div class="flex justify-center sm:mb-11 ">
                         <h2 class="relative font-bold text-2xl group pb-2 border-solid border-b-2 border-blue-950">
-                            Información básica
+                            Información Adicional
 
                         </h2>
                     </div>
 
-                    <div class="additional__information__content px-20 py-14">
+                    <div class="additional__information__content px-8 sm:px-20 sm:py-1 py-7  w-full">
                         <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
-                            class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 gap-20">
-                            <div class="form__enterprise__column-1">
+                            class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 sm:gap-20  w-full">
+                            <div class="form__enterprise__column-1 0">
 
                                 <div class="tax-liabilities w-full grid mb-3">
                                     <label>Responsabilidades tributarias:</label>
