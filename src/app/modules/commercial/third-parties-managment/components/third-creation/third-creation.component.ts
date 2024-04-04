@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Country } from 'country-state-city';
 import { State } from 'country-state-city';
 import { City } from 'country-state-city';
+import { get } from 'jquery';
 
 @Component({
   selector: 'app-third-creation',
@@ -18,7 +19,7 @@ export class ThirdCreationComponent implements OnInit {
 
   createdThirdForm!: FormGroup;
   submitted = false;
-  button1Checked = true;
+  button1Checked = false;
   button2Checked = false;
   showAdditionalDiv = false;
   countries: any[] = [];
@@ -36,7 +37,7 @@ export class ThirdCreationComponent implements OnInit {
 
     this.createdThirdForm = this.formBuilder.group(
       {
-        entId: ["", Validators.required],
+        entId: [""],
         typeId: ["",Validators.required],
         thirdTypes: ["",Validators.required],
         rutPath: [""],
@@ -47,7 +48,7 @@ export class ThirdCreationComponent implements OnInit {
         gender:[""],
         idNumber: ["",Validators.required],
         verificationNumber: [""], 
-        state: ["",Validators.required],
+        state: [""],
         photoPath:[""],
         country: ["",Validators.required],
         province: ["",Validators.required],
@@ -55,11 +56,12 @@ export class ThirdCreationComponent implements OnInit {
         address: ["",Validators.required],
         phoneNumber: ["",Validators.required], 
         email: ["",Validators.required], 
-        creationDate: ["",Validators.required],
-        updateDate: ["",Validators.required]
+        creationDate: [""],
+        updateDate: [""]
 
       }
-    );
+    )
+    ;
 
     this.countries = Country.getAllCountries();
   }
@@ -82,6 +84,7 @@ OnSubmit(){
   const currentDate = new Date();
   var third: Third = this.createdThirdForm.value;
   third.entId = 1121;
+  third.state = this.createdThirdForm.get('state')?.value === "Activo" ? true : false;
   third.gender = eThirdGender.masculino;
   third.verificationNumber = 0;
   third.photoPath = "";
