@@ -25,12 +25,12 @@ export class ThirdServiceService {
 
   getThirdParties(entId: String, numPage: number): Observable<Third[]> {
     
-    const data = {
-      entId: entId,
-      numPage: numPage
-    };
+    
+    let params = new HttpParams()
+    .set('entId', entId.toString())
+    .set('numPage', numPage.toString());
 
-    return this.http.post<any>(this.thirdApiUrl + 'listThird', data)
+    return this.http.get<any>(this.thirdApiUrl, {params})
     .pipe(
       map(response => response.content as Third[])
     );

@@ -42,6 +42,7 @@ export class ThirdsListComponent {
   ngOnInit() {
     this.thirdService.getThirdParties("1121",0).subscribe({
       next: (response: Third[])=>{
+        console.log(response)
         this.data = response;
       },
       error: (error) => {
