@@ -1,35 +1,59 @@
 import { Component } from '@angular/core';
 import { ThirdService } from '../../services/third-service';
-import { Third } from '../../models/third-model';
+import { Third } from '../../models/Third';
+import { ThirdServiceService } from '../../services/third-service.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
   styleUrls: ['./thirds-list.component.css']
 })
 export class ThirdsListComponent {
+  form: FormGroup;
   data: Third[] = [];
   columns: any[] = [
-    {title: 'Id', data: 'id'},
-    {title:'Nombres',data:'nombres'},
-    {title:'Apellidos',data:'apellidos'},
-    {title:'Razón Social',data:'razonSocial'},
-    {title:'Tipo Id',data:'tipoIdentificacion'},
-    {title:'Identificación',data:'numeroIdentificacion'},
-    {title:'DV',data:'digitoVerificacion'},
-    {title:'Estado',data:'estado'},
-    {title:'Pais',data:'pais'},
-    {title:'Departamento',data:'departamento'},
-    {title:'Ciudad',data:'ciudad'},
-    {title:'Direccion',data:'direccion'},
-    {title:'Celular',data:'celular'},
-    {title:'Correo',data:'correo'},
+     // { title: 'Id', data: 'entId' },
+     { title: 'Identificación', data: 'idNumber' },
+    { title: 'Nombres', data: 'names' },
+    { title: 'Apellidos', data: 'lastNames' },
+    { title: 'Razón Social', data: 'socialReason' },
+    { title: 'Tipo Id', data: 'typeId' },
+   // { title: 'DV', data: 'verificationNumber' },
+   // { title: 'Estado', data: 'state' },
+    //{ title: 'Pais', data: 'country' },
+    //{ title: 'Departamento', data: 'province' },
+    //{ title: 'Ciudad', data: 'city' },
+    //{ title: 'Direccion', data: 'address' },
+    { title: 'Celular', data: 'phoneNumber' },
+    { title: 'Correo', data: 'email' },
   ];
 
-  constructor(private thirdService: ThirdService) {}
+  constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router ) {
+    this.form = this.fb.group(this.validationsAll());
+  }
+
+  validationsAll(){
+    return {
+      stringSearch: ['']
+    };
+  }
 
   ngOnInit() {
-    this.thirdService.getThirdParties().subscribe((thirdParties) => {
-      this.data = thirdParties;
-    });
+    this.thirdService.getThirdParties("1121",0).subscribe({
+      next: (response: Third[])=>{
+        console.log(response)
+        this.data = response;
+      },
+      error: (error) => {
+        console.log(error)
+        alert("Failed to get Thirds")
+      }
+  });
+    
+  }
+
+  redirectTo(route: string): void {
+    this.router.navigateByUrl(route);
   }
 }
