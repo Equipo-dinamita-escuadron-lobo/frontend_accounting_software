@@ -1,0 +1,163 @@
+<div class="flex flex-col justify-start items-center w-full h-full">
+    <div class="items-start self-start ml-20 mb-5">
+        <h1 class="text-2xl font-bold text-blue-950 mt-8">Creación de Tercero</h1>
+
+        <p class="mt-4 font-projectFont">
+            Ingrese la información requerida para crear un nuevo Tercero:
+        </p>
+    </div>
+<form (submit)="OnSubmit()" [formGroup]="createdThirdForm" class="w-11/12">
+<div class="flex flex-col justify-center items-center font-projectFont m-2 p-3 bg-white rounded-xl  w-full shadow-xl ">
+
+    <div  id="ThirdType" class="flex flex-row justify-center items-center w-full">
+       <div class="flex flex-row justify-center items-center m-5">
+        <div class="flex flex-col justify-start items-center ">
+            <p>Tipo Terceros</p>
+            <select formControlName="thirdTypes" class="selectsC">
+                <option value="Cliente">Cliente</option>
+                <option value="Proveedor" selected>Provedoor</option>
+                <option value="Empleado">Empleado</option>
+            </select>
+        </div>
+        <div class="text-red-600" *ngIf="createdThirdForm.get('thirdTypes')?.invalid && (createdThirdForm.get('thirdTypes')?.dirty || createdThirdForm.get('thirdTypes')?.touched)">
+            El Tipo De Tecero Es Requerido
+        </div>
+        <button class="buttonsC w-36 h-10 mt-5 ml-4">Agregar Tecero</button>
+       </div>
+
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Tipo Persona</p>
+
+            
+        <div class="flex flex-row justify-center items-center">
+            <app-check-button [(isChecked)]="button1Checked" (isCheckedChange)="onCheckChange(1)" formControlName="personType" value="Juridica" texto="Juridica" value="Juridica" tailConfig="w-32 m-4 mt-1"></app-check-button>
+            <app-check-button [(isChecked)]="button2Checked" (isCheckedChange)="onCheckChange(2)" formControlName="personType" value="Natural" texto="Natural" value="Natural" tailConfig="w-32 m-4  mt-1"></app-check-button>
+        </div>
+        <div class="text-red-600" *ngIf="createdThirdForm.get('personType')?.invalid && (createdThirdForm.get('personType')?.dirty || createdThirdForm.get('personType')?.touched)">
+            El Tipo De Persona Es Requerido
+        </div>
+        </div>
+
+    </div>
+    
+    <!-----------------------DATOS TERCERO--------------------------------------->
+    <h2 class="relative font-bold text-2xl group pb-2 border-solid border-b-2 border-blue-950">Datos Tecero</h2>
+    <div *ngIf="button2Checked" class="flex flex-row justify-center items-center w-full">
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Nombre</p>
+            <input formControlName="names" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Apellidos</p>
+            <input formControlName="lastNames" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Estado</p>
+            <app-check-button formControlName="state" value="state" texto="Activo" value="Activo" tailConfig="w-32 m-4 mt-1" ></app-check-button>
+        </div>
+    </div>
+
+    <div *ngIf="button1Checked" class="flex flex-row justify-center items-center w-full">
+        <div class="flex flex-col justify-start items-center m-5 w-80">
+            <p>Razon Social</p>
+            <input formControlName="socialReason" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Estado</p>
+            <app-check-button formControlName="state" value="state" texto="Activo" value="Activo" tailConfig="w-32 m-4 mt-1" ></app-check-button>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-center items-center m-5">
+        <div class="flex flex-col justify-start items-center ">
+            <p>Tipo Identificación</p>
+            <select formControlName="typeId" class="selectsC" (change)="onTypeIdChange($event)">
+                <option value="CC">Cedula Ciudadana</option>
+                <option value="CE" selected>Cedula Extranjeria</option>
+                <option value="NIT">NIT</option>
+                <option value="pasaporte">Pasaporte</option>
+                <option value="TI">Tarjeta De Identidad</option>
+            </select>
+            <div class="text-red-600" *ngIf="createdThirdForm.get('typeId')?.invalid && (createdThirdForm.get('typeId')?.dirty || createdThirdForm.get('typeId')?.touched)">
+                El Tipo De Identificación Es Requerido
+            </div>
+        </div>
+        <div class="flex flex-col justify-start items-center m-5">
+            <p>Numero Identificación</p>
+            <input formControlName="idNumber" type="number" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 w-full p-2.5">
+            <div class="text-red-600" *ngIf="createdThirdForm.get('idNumber')?.invalid && (createdThirdForm.get('idNumber')?.dirty || createdThirdForm.get('idNumber')?.touched)">
+                El numero de identificacion es requerido
+            </div>
+        </div>
+        
+        <div *ngIf="showAdditionalDiv" class="flex flex-col justify-start items-center m-5">
+            <p>Digito Verificacion</p>
+            <input formControlName="verificationNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
+        </div>
+       </div>
+
+        <!-----------------------INFORMACION TERCEROS--------------------------------------->
+
+
+        <div class="flex flex-row justify-center items-center m-5">
+            <div class="flex flex-col justify-start items-center ">
+                <p>Pais</p>
+                <select  (change)="onCountryChange($event)" formControlName="country" class="selectsC">
+                    <option *ngFor="let country of countries" [value]="country.isoCode">{{country.name}}</option>
+                </select>
+                <div class="text-red-600" *ngIf="createdThirdForm.get('country')?.invalid && (createdThirdForm.get('country')?.dirty || createdThirdForm.get('country')?.touched)">
+                    <p>El pais es Requerido</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-start items-center ">
+                <p>Departamento</p>
+                <select (change)="onStateChange($event)" formControlName="province" class="selectsC">
+                    <option *ngFor="let state of states" [value]="state.isoCode">{{ state.name }}</option>
+                </select>
+                <div class="text-red-600" *ngIf="createdThirdForm.get('province')?.invalid && (createdThirdForm.get('province')?.dirty || createdThirdForm.get('province')?.touched)">
+                    <p>El Departamento es Requerido</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-start items-center ">
+                <p>Ciudad</p>
+                <select formControlName="city" class="selectsC">
+                    <option *ngFor="let city of citys" [value]="city.name">{{ city.name }}</option>
+                </select>
+                <div class="text-red-600" *ngIf="createdThirdForm.get('city')?.invalid && (createdThirdForm.get('city')?.dirty || createdThirdForm.get('city')?.touched)">
+                    <p>La Ciudad es requerida</p>
+                </div>
+            </div>
+           </div>
+<div class="flex flex-col justify-center items-center w-2/3">
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-4">Dirrección</p>
+            <input formControlName="address" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
+            <div class="text-red-600" *ngIf="createdThirdForm.get('address')?.invalid && (createdThirdForm.get('address')?.dirty || createdThirdForm.get('address')?.touched)">
+                <p>La Dirrección es Requerida</p>
+            </div>
+           </div>
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-7">Correo</p>
+            <input formControlName="email" type="email" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
+            <div class="text-red-600" *ngIf="createdThirdForm.get('email')?.invalid && (createdThirdForm.get('email')?.dirty || createdThirdForm.get('email')?.touched)">
+                <p>El Correo es Requerido</p>
+            </div>
+           </div>
+           <div class="flex flex-row justify-start items-center m-5 w-2/3">
+            <p class="m-7">Celular</p>
+            <input formControlName="phoneNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-3/4 p-2.5">
+            <div class="text-red-600" *ngIf="createdThirdForm.get('phoneNumber')?.invalid && (createdThirdForm.get('phoneNumber')?.dirty || createdThirdForm.get('phoneNumber')?.touched)">
+                <p>El Telefono Celuar Es Requerido</p>
+            </div>
+           </div>
+</div>
+
+
+           <div class="flex justify-center items-center">
+           <button type="submit" class="buttonsC w-36 h-10">Crear Tercero</button>
+        </div>
+</div>
+</form>
+</div>

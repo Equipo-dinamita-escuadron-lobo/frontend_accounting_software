@@ -1,0 +1,305 @@
+  <div class="px-14 py-5 bg-gray-100 font-projectFont">
+
+    
+    <h1 class="text-2xl font-bold text-blue-950  mt-8">Creación de Producto</h1>
+
+    <p class=" mt-4 font-projectFont">
+      Ingrese la información requerida para crear un nuevo producto:
+    </p>
+
+    <div class="container mx-auto mt-8">
+      <div class="grid grid-cols-1 m-6 gap-6">
+        <div class="p-4 bg-white rounded shadow">
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!--
+              <div>
+                <label for="id" class="block text-sm font-medium text-gray-700"
+                  >Id(campo temporal):</label
+                >
+                <input
+                  type="text"
+                  formControlName="id"
+                  id="id"
+                  hid="1"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-700 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('id')?.touched && productForm.get('id')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('id')?.errors?.['required']">
+                    El campo Id es requerido.
+                  </div>
+                </div>                   
+              </div>
+              -->
+              <div>
+                <label
+                  for="tipoItem"
+                  class="block text-sm font-medium text-gray-700"
+                  >Nombre:</label
+                >
+                <input
+                  type="text"
+                  formControlName="itemType"
+                  id="tipoItem"
+                  placeholder="Ej: Banano"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                    El campo Nombre es requerido.
+                  </div>
+                  
+                </div>
+              </div>
+              <div>
+                <label
+                  for="codigo"
+                  class="block text-sm font-medium text-gray-700"
+                  >Código:</label
+                >
+                <input
+                  type="text"
+                  formControlName="code"
+                  id="codigo"
+                  placeholder="Ej: BNN"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Código es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="descripcion"
+                  class="block text-sm font-medium text-gray-700"
+                  >Descripción:</label
+                >
+                <input
+                  type="text"
+                  formControlName="description"
+                  id="descripcion"
+                  placeholder="Ej: Fruta"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Descripción es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="minQuantity"
+                  class="block text-sm font-medium text-gray-700"
+                  >Cantidad Mínima:</label
+                >
+                <input
+                  type="number"
+                  formControlName="minQuantity"
+                  id="minQuantity"
+                  min="0"
+                  placeholder="Ej: 1"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('minQuantity')?.touched && productForm.get('minQuantity')?.errors" class="text-red-500">
+                  <div *ngIf="productForm.get('minQuantity')?.errors?.['required']">
+                    El campo Cantidad Mínima es requerido.
+                  </div>
+                  <div *ngIf="productForm.get('minQuantity')?.errors?.['min']">
+                    La Cantidad Mínima no puede ser negativa.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="maxQuantity"
+                  class="block text-sm font-medium text-gray-700"
+                  >Cantidad Máxima:</label
+                >
+                <input
+                  type="number"
+                  formControlName="maxQuantity"
+                  id="maxQuantity"
+                  min="0"
+                  placeholder="Ej: 12"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Cantidad Máxima es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="taxPercentage"
+                  class="block text-sm font-medium text-gray-700"
+                  >Porcentaje de IVA (%):</label
+                >
+                <input
+                  type="number"
+                  formControlName="taxPercentage"
+                  id="taxPercentage"
+                  min="0"
+                  max="100"
+                  placeholder="Ej: 0 - 100"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Porcentaje de IVA es requerido y debe estar entre 0 y
+                  100.
+                  </div>
+                </div>
+              </div>
+              <div>
+              <!--
+                <label
+                  for="creationDate"
+                  class="block text-sm font-medium text-gray-700"
+                  >Fecha de Creación (DD/MM/AÑO):</label
+                >
+                <input
+                  type="date"
+                  formControlName="creationDate"
+                  id="creationDate"
+                  readonly 
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Fecha de Creación es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+              -->
+                <label
+                  for="unitOfMeasure"
+                  class="block text-sm font-medium text-gray-700"
+                  >Unidad de Medida:</label
+                >
+                <input
+                  type="text"
+                  formControlName="unitOfMeasure"
+                  id="unitOfMeasure"
+                  placeholder="Ej: Kg "
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Unidad de Medida es requerido.
+                  </div>
+                </div>
+              </div>
+             
+              <!--
+              <div>
+                <label
+                  for="supplier"
+                  class="block text-sm font-medium text-gray-700"
+                  >Proveedor:</label
+                >
+                <input
+                  type="text"
+                  formControlName="supplier"
+                  id="supplier"
+                  placeholder="Bananera Doña Juli"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Proveedor es requerido.
+                  </div>
+                </div>
+                
+              </div>
+            -->
+
+            <div>
+              <label for="supplier" class="block text-sm font-medium text-gray-700">Proveedor:</label>
+              <select formControlName="supplier" id="supplier" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="">Selecciona un proveedor</option>
+                <option *ngFor="let provider of thirdParties" [value]="provider.id">{{ provider.nombres }}</option>
+              </select>
+              <div *ngIf="productForm.get('supplier')?.touched && productForm.get('supplier')?.invalid" class="text-red-500">
+                <div *ngIf="productForm.get('supplier')?.errors?.['required']">
+                  El campo Proveedor es requerido.
+                </div>
+              </div>
+            </div>
+            
+              <div>
+                <label
+                  for="category"
+                  class="block text-sm font-medium text-gray-700"
+                  >Categoría:</label
+                >
+                <input
+                  type="text"
+                  formControlName="category"
+                  id="category"
+                  placeholder="Ej: Comestibles"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Categoría es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="price"
+                  class="block text-sm font-medium text-gray-700"
+                  >Precio:</label
+                >
+                <input
+                  type="number"
+                  formControlName="price"
+                  id="price"
+                  min="0"
+                  max="100"
+                  placeholder="Ej: 12000"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
+                  El campo Precio es requerido y debe estar entre 0 y 100.
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <button type="submit" class="buttonsC h-10 w-auto">
+                  Crear Producto
+                </button>
+              </div>               
+               <!--
+               <div>
+                <button type="submit" class="buttonsC h-10 w-auto" (click)="onSubmit()">
+                  Crear Producto
+                </button>
+                <div *ngIf="formSubmitAttempt">
+                  <div *ngIf="submitSuccess" class="success-message">
+                    El producto se creó con éxito.
+                  </div>
+                  <div *ngIf="!submitSuccess" class="error-message">
+                    No se pudo crear el producto. Por favor revisa los campos.
+                  </div>
+                </div>
+              </div>
+              -->
+                            
+            </div>
+          </form>
+        </div>
+        <!-- 
+          <div class="p-4 bg-white rounded shadow">
+            <p class="text-lg font-semibold">Información del Producto</p>
+        </div>
+        -->
+      </div>
+    </div>
