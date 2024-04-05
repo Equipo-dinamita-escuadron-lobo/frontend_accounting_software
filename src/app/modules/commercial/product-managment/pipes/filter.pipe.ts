@@ -10,6 +10,10 @@ export class FilterList implements PipeTransform {
       return items;
     }
 
-    return items.filter(item => item.itemType.toLowerCase().includes(filterList.toLowerCase()));
+    return items.filter(item => item.itemType.toLowerCase().includes(filterList.toLowerCase()) 
+    || item.code.toLowerCase().includes(filterList.toLowerCase())
+    || item.Category.toString().toLowerCase().includes(filterList.toLowerCase())
+    || item.supplier.toLowerCase().includes(filterList.toLowerCase())
+    || item.unitOfMeasure.toString().toLowerCase.includes(filterList.toLowerCase()));
   }
 }

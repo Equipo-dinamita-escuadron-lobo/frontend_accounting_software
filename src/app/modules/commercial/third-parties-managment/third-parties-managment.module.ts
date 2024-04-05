@@ -6,11 +6,13 @@ import { ThirdsListComponent } from './components/thirds-list/thirds-list.compon
 import { ThirdCreationComponent } from './components/third-creation/third-creation.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FilterList } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
     ThirdsListComponent,
     ThirdCreationComponent,
+    FilterList
   ],
   imports: [
     CommonModule,

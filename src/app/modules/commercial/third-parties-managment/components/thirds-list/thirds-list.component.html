@@ -62,8 +62,7 @@
       <tbody class="bg-white divide-y divide-gray-200">
         <tr
           *ngFor="
-            let third of data
-          "
+            let third of data | filterList : form.value.stringSearch"
           class="hover:bg-gray-100"
         >
           <td class="px-6 py-4 whitespace-nowrap">{{ third.idNumber }}</td>
