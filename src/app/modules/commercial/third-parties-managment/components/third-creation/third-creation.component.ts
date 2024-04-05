@@ -85,8 +85,6 @@ OnSubmit(){
   var third: Third = this.createdThirdForm.value;
   third.entId = 1121;
   third.state = this.createdThirdForm.get('state')?.value === "Activo" ? true : false;
-  third.gender = eThirdGender.masculino;
-  third.verificationNumber = 0;
   third.photoPath = "";
   third.creationDate = this.datePipe.transform(currentDate, "yyyy-MM-dd")!;
   third.updateDate = this.datePipe.transform(currentDate, "yyyy-MM-dd")!;
@@ -96,7 +94,6 @@ OnSubmit(){
     next: (response) => {
       // Handle the successful response here
       console.log("Success:", response);
-      alert("Success Created Third" + JSON.stringify(this.createdThirdForm.value, null, 4));
     },
     error: (error) => {
       // Handle any errors here
@@ -104,8 +101,6 @@ OnSubmit(){
       alert("Failed to create Third.");
     }
   });
-
-  alert("Succes Created Third" + JSON.stringify(this.createdThirdForm.value,null,4));
 }
 
 onCheckChange(buttonId: number): void {

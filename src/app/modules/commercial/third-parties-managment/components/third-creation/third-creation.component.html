@@ -94,6 +94,14 @@
             <p>Digito Verificacion</p>
             <input formControlName="verificationNumber" type="text" class="border border-gray-400  text-sm rounded-lg focus:outline-none  focus:ring-1 focus:ring-blue-900 focus:text-blue-900 focus:border-blue-900 block w-full p-2.5">
         </div>
+        <div class="flex flex-col justify-start items-center ">
+            <p>Genero</p>
+            <select formControlName="gender" class="selectsC" (change)="onTypeIdChange($event)">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino" selected>Femenino</option>
+                <option value="otro">Otro</option>
+            </select>
+        </div>
        </div>
 
         <!-----------------------INFORMACION TERCEROS--------------------------------------->
