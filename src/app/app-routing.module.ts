@@ -10,7 +10,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), ProductManagmentModule, ThirdPartiesManagmentModule],
+  imports: [RouterModule.forRoot(routes,{useHash:true}), ProductManagmentModule, ThirdPartiesManagmentModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
