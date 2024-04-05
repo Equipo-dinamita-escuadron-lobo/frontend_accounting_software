@@ -67,11 +67,7 @@
           class="hover:bg-gray-100"
         >
           <td class="px-6 py-4 whitespace-nowrap">{{ third.idNumber }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.names }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.lastNames }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.socialReason}}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
           <td class="px-6 py-4 whitespace-nowrap">
             {{ third.typeId }}
           </td>

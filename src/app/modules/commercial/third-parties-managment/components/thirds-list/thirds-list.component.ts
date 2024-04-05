@@ -15,9 +15,7 @@ export class ThirdsListComponent {
   columns: any[] = [
      // { title: 'Id', data: 'entId' },
      { title: 'Identificación', data: 'idNumber' },
-    { title: 'Nombres', data: 'names' },
-    { title: 'Apellidos', data: 'lastNames' },
-    { title: 'Razón Social', data: 'socialReason' },
+    { title: 'Nombre/RazonSocial', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
    // { title: 'DV', data: 'verificationNumber' },
    // { title: 'Estado', data: 'state' },
