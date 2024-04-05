@@ -179,7 +179,7 @@ getThirdParties(): void {
         // Mensaje de error con alert
         Swal.fire({
           title: 'Error!',
-          text: 'Ha ocurrido un error al crear la empresa.',
+          text: 'Ha ocurrido un error al crear el producto.',
           icon: 'error',
         });
       }
@@ -191,9 +191,21 @@ getThirdParties(): void {
   }
   //Metodo para Resetear Fecha actual
   resetFormWithCurrentDate(): void {
+    // Obtener la fecha actual en UTC
+    const currentDateUTC = new Date();
+  
+    // Convertir la fecha UTC a la zona horaria GMT-5 (Hora Estándar del Este, EST)
+    const currentDateEST = new Date(currentDateUTC.getTime() - (5 * 60 * 60 * 1000));
+  
+    // Formatear la fecha EST como una cadena en formato ISO
+    const formattedDate = currentDateEST.toISOString().split('T')[0];
+  
+    // Restablecer el formulario con la fecha ajustada
     this.productForm.reset({
-      creationDate: new Date().toISOString().split('T')[0]
+      creationDate: formattedDate
     });
+
+    console.log('Fecha actual:', formattedDate);
   }
   
 }
