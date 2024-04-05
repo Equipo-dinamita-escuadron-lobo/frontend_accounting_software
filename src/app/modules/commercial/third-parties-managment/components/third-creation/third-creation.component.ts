@@ -8,6 +8,7 @@ import { Country } from 'country-state-city';
 import { State } from 'country-state-city';
 import { City } from 'country-state-city';
 import { get } from 'jquery';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-third-creation',
@@ -94,11 +95,21 @@ OnSubmit(){
     next: (response) => {
       // Handle the successful response here
       console.log("Success:", response);
+      Swal.fire({
+        title: 'Creación exitosa!',
+        text: 'Se ha creado el producto con éxito!',
+        icon: 'success',
+      });
     },
     error: (error) => {
       // Handle any errors here
       console.error("Error:", error);
-      alert("Failed to create Third.");
+       // Mensaje de éxito con alert
+       Swal.fire({
+        title: 'Error!',
+        text: 'Ha Ocurrido Un Erro Al Crear El Tercero!',
+        icon: 'error',
+      })
     }
   });
 }
