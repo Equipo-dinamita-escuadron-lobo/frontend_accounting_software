@@ -14,6 +14,6 @@ export class FilterList implements PipeTransform {
     || item.code.toLowerCase().includes(filterList.toLowerCase())
     || item.Category.toString().toLowerCase().includes(filterList.toLowerCase())
     || item.supplier.toLowerCase().includes(filterList.toLowerCase())
-    || item.unitOfMeasure.toString().toLowerCase.includes(filterList.toLowerCase()));
+    || item.unitOfMeasure.toString().toLowerCase().includes(filterList.toLowerCase()));
   }
 }
