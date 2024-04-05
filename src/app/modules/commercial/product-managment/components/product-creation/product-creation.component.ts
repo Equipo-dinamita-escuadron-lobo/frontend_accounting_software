@@ -8,6 +8,7 @@ import { Product } from '../../models/Product';
 import { ThirdService } from '../../../third-parties-managment/services/third-service';
 import { Third } from '../../../third-parties-managment/models/third-model';
 import Swal from 'sweetalert2';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
  @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -27,7 +28,7 @@ export class ProductCreationComponent implements OnInit {
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdService // Inyecta el servicio ThirdService en el constructor
+    private thirdService: ThirdServiceService // Inyecta el servicio ThirdService en el constructor
   ) {}
   
   ngOnInit(): void {
@@ -63,7 +64,7 @@ export class ProductCreationComponent implements OnInit {
   // Método para obtener la lista de proveedores
 getThirdParties(): void {
 
-  this.thirdService.getThirdParties().subscribe(
+  this.thirdService.getThirdParties("1121",0).subscribe(
     (thirdParties: any[]) => {
       // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
       this.thirdParties = thirdParties;
