@@ -1,29 +1,32 @@
 <section class="contenido px-10 py-10 font-projectFont">
-    <div class="flex w-10/12 justify-between mx-4 flex-auto">
-        <h1 class="text-3xl font-bold mb-8">Listado de empresas</h1>
+    <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
+        <h1 class="text-3xl font-bold mb-8 sm:grid-cols-1 text-blue-950 text-center sm:text-left">Listado de empresas</h1>
 
-        <button type="button" routerLink="/enterprise-management/create"
+        <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+            <button type="button" routerLink="/enterprise-management/create"
             class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-            Agregar empresa
+            Agregar
         </button>
+        </div>
+
     </div>
 
-    <form>
-        <div class=" mb-16 ml-8 flex border-b-2 border-blue-800 w-1/2 rounded-md">
+    <form class="flex justify-center sm:justify-start sm:ml-8 m-4 ">
+        <div class=" mb-16 flex border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md">
             <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <input type="text" class="mb-2 mr-3 ml-2  bg-transparent w-10/12 outline-none" id="search"
+            <input type="text" class="mb-2   bg-transparent w-10/12 outline-none" id="search"
                 placeholder="Ingrese el nombre de la empresa" name="filterEnterpriseList"
                 [(ngModel)]="filterEnterprise">
         </div>
     </form>
 
-    <div class="mostrador grid grid-cols-3 gap-4">
-        <div class="fila grid md:grid-cols-3 gap-4 col-span-2 tm:grid-cols-1">
-            <div class=" max-w-52 p-1 ml-8 mb-8 bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center min-w-52 shadow-xl"
+    <div class="mostrador grid md:grid-cols-4 gap-4  w-full justify-center">
+        <div class="fila grid sm:grid-cols-2 md:grid-cols-3 ld:grid-cols-4 gap-4 col-span-3 tm:grid-cols-1  w-full justify-center items-center p-6">
+            <div class=" max-w-52 p-1 mb-8 mr-8 bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center min-w-52 shadow-xl"
                 *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise ">
                 <div class="flex icon justify-center  content-center px-4 pt-4">
                     <a href="#" class="">

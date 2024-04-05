@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EnterpriseListComponent {
   filterName: string = "";
-  listEnterprises: EnterpriseList[] = [];
+  listEnterprises: EnterpriseList[] = [ ];
   selecteEnterprise ?: EnterpriseList;
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;

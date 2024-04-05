@@ -9,6 +9,8 @@ import { SidebarSelectedComponent } from './components/sidebar-selected/sidebar-
 import { CheckButtonComponent } from './components/check-button/check-button.component';
 import { DatatableComponent } from './components/datatable/datatable.component';
 import { DataTablesModule } from 'angular-datatables';
+import { ReactiveFormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -21,7 +23,8 @@ import { DataTablesModule } from 'angular-datatables';
     CommonModule,
     SharedRoutingModule,
     FormsModule,
-    DataTablesModule
+    DataTablesModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent,
