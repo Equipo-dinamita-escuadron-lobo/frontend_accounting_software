@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Third } from '../models/Third';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThirdServiceService {
 
-  private thirdApiUrl = "http://localhost:8080/api/thirds/"
+  private thirdApiUrl = environment.API_URL + 'thirds/'
 
   constructor(private http: HttpClient){
   }
