@@ -14,12 +14,12 @@ export class ProductService {
   constructor() { }
   // Método para obtener todos los productos
   getProducts(): Observable<Product[]> {
-    const url = `${environment.API_URL}product/GetAll`;
+    const url = `${environment.API_URL}products/findAllProducts`;
     return this.http.get<Product[]>(url);
   }
   // Método para crear un nuevo producto
   createProduct(product: Product): Observable<Product> {
-    const url = `${environment.API_URL}product/CreateProduct`;
+    const url = `${environment.API_URL}products/createProduct`;
     return this.http.post<Product>(url, product);
   }
 
