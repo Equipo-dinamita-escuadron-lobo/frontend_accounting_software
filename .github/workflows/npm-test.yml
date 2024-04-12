@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Node CI with NPM
 
 on:
   pull_request:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   test:
-    name: Build and Test Java with Maven
+    name: Build and Test NPM Angular with Karma
     runs-on: ubuntu-latest
 
     steps:
