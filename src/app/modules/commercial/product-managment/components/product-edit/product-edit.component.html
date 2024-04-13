@@ -73,9 +73,11 @@
                   </div>
                   <div *ngIf="editForm.get('minQuantity')?.errors?.['min']">
                     La Cantidad Mínima no puede ser negativa.
-                  </div>
+                  </div> 
+                  
                 </div>
               </div>
+
               <div>
                 <label for="maxQuantity" class="block text-sm font-medium text-gray-700">Cantidad Máxima:</label>
                 <input
@@ -86,12 +88,23 @@
                   placeholder="Ej: 12"
                   class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                <div *ngIf="editForm.get('maxQuantity')?.touched && editForm.get('maxQuantity')?.invalid" class="text-red-500">
-                  <div *ngIf="editForm.get('maxQuantity')?.errors?.['required']">
-                    El campo Cantidad Máxima es requerido.
+                  <div *ngIf="editForm.get('maxQuantity')?.touched && editForm.get('maxQuantity')?.invalid" class="text-red-500">
+                      <div *ngIf="editForm.get('maxQuantity')?.errors?.['required']">
+                        El campo Cantidad Máxima es requerido.
+                      </div>
+                      <div *ngIf="editForm.get('maxQuantity')?.errors?.['max']">
+                        La Cantidad Máxima no puede ser negativa.
+                      </div>                  
                   </div>
-                </div>
+
+                  <div *ngIf="editForm.get('maxQuantity')?.touched || editForm.get('minQuantity')?.touched  " class="text-red-500">
+                  <div *ngIf="+editForm.get('maxQuantity')?.value < +editForm.get('minQuantity')?.value || editForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
+                    La cantidad máxima debe ser mayor que la cantidad mínima.
+                  </div>
+                  </div>
+
               </div>
+              
               <div>
                 <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
                 <input
@@ -107,8 +120,14 @@
                   <div *ngIf="editForm.get('taxPercentage')?.errors?.['required']">
                     El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
                   </div>
+                  <div *ngIf="editForm.get('taxPercentage')?.errors?.['min']">
+                    El Porcentaje de IVA no puede ser negativo.
+                  </div>
+                  <div *ngIf="editForm.get('taxPercentage')?.errors?.['max']">
+                    El Porcentaje de IVA no puede ser mayor que 100.
                 </div>
               </div>
+            </div>
               <div>
                 <label for="unitOfMeasure" class="block text-sm font-medium text-gray-700">Unidad de Medida:</label>
                 <input

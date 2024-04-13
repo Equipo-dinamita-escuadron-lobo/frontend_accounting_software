@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/Product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-edit',
@@ -73,17 +74,31 @@ export class ProductEditComponent implements OnInit {
       // Agrega cualquier lógica adicional necesaria antes de enviar los datos al servidor
       this.productService.updateProduct(updatedProduct).subscribe(
         (response: Product) => {
-          // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje de éxito
-          console.log('Producto actualizado exitosamente:', response);
+          // Mostrar mensaje de éxito
+          Swal.fire({
+            title: 'Edición exitosa!',
+            text: 'Se ha editado el producto exitosamente!',
+            icon: 'success',
+          });
+          // Puedes redirigir al usuario a otra página aquí si lo deseas
         },
         (error) => {
-          console.error('Error al actualizar el producto:', error);
-          // Puedes mostrar un mensaje de error al usuario aquí si lo deseas
+          console.error('Error al editar el producto:', error);
+          // Mostrar mensaje de error
+          Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al editar el producto.',
+            icon: 'error',
+          });
         }
       );
     } else {
-      // Si el formulario no es válido, puedes mostrar un mensaje al usuario para corregir los campos
-      console.error('El formulario de edición no es válido.');
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor, completa correctamente el formulario antes de enviarlo.',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
     }
   }
   
