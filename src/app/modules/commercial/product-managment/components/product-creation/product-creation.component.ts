@@ -210,6 +210,19 @@ getThirdParties(): void {
 
     console.log('Fecha actual:', formattedDate);
   }
+
+  //Método para formatear el precio    
+  formatPrice(event: any) {
+    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedPrice = '';
+    if (priceInput !== '') {
+        formattedPrice = parseInt(priceInput).toLocaleString('es-ES'); // Formatear el precio solo si no está vacío
+    }
+    this.productForm.get('price')?.setValue(formattedPrice);
+}
+
+
+
   
 }
 
@@ -219,6 +232,7 @@ getThirdParties(): void {
     const max = group.controls['maxQuantity'].value;
     return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
   }
+
 
 
 
