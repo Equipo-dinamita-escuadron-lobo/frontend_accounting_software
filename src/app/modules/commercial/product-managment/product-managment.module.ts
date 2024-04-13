@@ -6,16 +6,19 @@ import { ProductCreationComponent } from './components/product-creation/product-
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { SharedModule } from "../../../shared/shared.module";
 import { FilterList } from './pipes/filter.pipe';
+import { ProductEditComponent } from './components/product-edit/product-edit.component';
 
 @NgModule({
     declarations: [
         ProductCreationComponent,
         ProductListComponent,
-        FilterList
+        FilterList,
+        ProductEditComponent
     ],
     exports: [
         ProductCreationComponent,
-        ProductListComponent
+        ProductListComponent,
+        ProductEditComponent
     ],
     imports: [
         CommonModule,

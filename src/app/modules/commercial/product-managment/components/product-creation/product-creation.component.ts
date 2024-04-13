@@ -14,6 +14,7 @@ import { ThirdServiceService } from '../../../third-parties-managment/services/t
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
 })
+
 export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
@@ -48,7 +49,8 @@ export class ProductCreationComponent implements OnInit {
       supplier: ['', [Validators.required]], // 'supplier' es un string
       category: [null, [Validators.required]], // 'category' es un objeto
       price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
-    }, { validators: minMaxValidator });  
+    }
+    ,{ validators: minMaxValidator });  
     this.initForm();
 
 

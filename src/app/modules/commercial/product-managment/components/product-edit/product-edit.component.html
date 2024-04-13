@@ -1,0 +1,185 @@
+<div class="px-14 py-5 bg-gray-100 font-projectFont">
+
+  
+    <h1 class="text-2xl font-bold text-blue-950 mt-8">Edición de Producto</h1>
+  
+    <p class="mt-4 font-projectFont">
+      Modifique la información del producto:
+    </p>
+  
+    <div class="container mx-auto mt-8">
+      <div class="grid grid-cols-1 m-6 gap-6">
+        <div class="p-4 bg-white rounded shadow">
+          <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="tipoItem" class="block text-sm font-medium text-gray-700">Nombre:</label>
+                <input
+                  type="text"
+                  formControlName="itemType"
+                  id="tipoItem"
+                  placeholder="Ej: Banano"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('itemType')?.touched && editForm.get('itemType')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('itemType')?.errors?.['required']">
+                    El campo Nombre es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="codigo" class="block text-sm font-medium text-gray-700">Código:</label>
+                <input
+                  type="text"
+                  formControlName="code"
+                  id="codigo"
+                  placeholder="Ej: BNN"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('code')?.touched && editForm.get('code')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('code')?.errors?.['required']">
+                    El campo Código es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción:</label>
+                <input
+                  type="text"
+                  formControlName="description"
+                  id="descripcion"
+                  placeholder="Ej: Fruta"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('description')?.touched && editForm.get('description')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('description')?.errors?.['required']">
+                    El campo Descripción es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="minQuantity" class="block text-sm font-medium text-gray-700">Cantidad Mínima:</label>
+                <input
+                  type="number"
+                  formControlName="minQuantity"
+                  id="minQuantity"
+                  min="0"
+                  placeholder="Ej: 1"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('minQuantity')?.touched && editForm.get('minQuantity')?.errors" class="text-red-500">
+                  <div *ngIf="editForm.get('minQuantity')?.errors?.['required']">
+                    El campo Cantidad Mínima es requerido.
+                  </div>
+                  <div *ngIf="editForm.get('minQuantity')?.errors?.['min']">
+                    La Cantidad Mínima no puede ser negativa.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="maxQuantity" class="block text-sm font-medium text-gray-700">Cantidad Máxima:</label>
+                <input
+                  type="number"
+                  formControlName="maxQuantity"
+                  id="maxQuantity"
+                  min="0"
+                  placeholder="Ej: 12"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('maxQuantity')?.touched && editForm.get('maxQuantity')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('maxQuantity')?.errors?.['required']">
+                    El campo Cantidad Máxima es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
+                <input
+                  type="number"
+                  formControlName="taxPercentage"
+                  id="taxPercentage"
+                  min="0"
+                  max="100"
+                  placeholder="Ej: 0 - 100"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('taxPercentage')?.touched && editForm.get('taxPercentage')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('taxPercentage')?.errors?.['required']">
+                    El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="unitOfMeasure" class="block text-sm font-medium text-gray-700">Unidad de Medida:</label>
+                <input
+                  type="text"
+                  formControlName="unitOfMeasure"
+                  id="unitOfMeasure"
+                  placeholder="Ej: Kg "
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('unitOfMeasure')?.touched && editForm.get('unitOfMeasure')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('unitOfMeasure')?.errors?.['required']">
+                    El campo Unidad de Medida es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="supplier" class="block text-sm font-medium text-gray-700">Proveedor:</label>
+                <input
+                  type="text"
+                  formControlName="supplier"
+                  id="supplier"
+                  placeholder="Bananera Doña Juli"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('supplier')?.touched && editForm.get('supplier')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('supplier')?.errors?.['required']">
+                    El campo Proveedor es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">Categoría:</label>
+                <input
+                  type="text"
+                  formControlName="category"
+                  id="category"
+                  placeholder="Ej: Comestibles"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('category')?.touched && editForm.get('category')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('category')?.errors?.['required']">
+                    El campo Categoría es requerido.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
+                <input
+                  type="number"
+                  formControlName="price"
+                  id="price"
+                  min="0"
+                  placeholder="Ej: 12000"
+                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="editForm.get('price')?.touched && editForm.get('price')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('price')?.errors?.['required']">
+                    El campo Precio es requerido.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <button type="submit" class="buttonsC h-10 w-auto">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

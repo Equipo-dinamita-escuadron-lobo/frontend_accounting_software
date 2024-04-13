@@ -56,5 +56,10 @@ validationsAll(){
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+
+  redirectToEdit(productId: string): void {
+  console.log('ID del producto seleccionado:', productId);
+  this.router.navigate(['/product-edit', productId]);
+}
 }
 

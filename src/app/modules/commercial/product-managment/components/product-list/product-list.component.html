@@ -90,7 +90,7 @@
               *ngFor="
                 let prod of products | filterList : form.value.stringSearch
               "
-              class="hover:bg-gray-100"
+              class="hover:bg-gray-100 " (click)=" redirectToEdit(prod.id)"
             >
               <td class="px-6 py-4 whitespace-nowrap">{{ prod.code }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ prod.itemType }}</td>
