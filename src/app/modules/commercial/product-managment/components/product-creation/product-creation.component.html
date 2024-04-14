@@ -130,30 +130,44 @@
                   <div *ngIf="productForm.get('itemType')?.errors?.['required']">
                   El campo Cantidad Máxima es requerido.
                   </div>
+                  <div *ngIf="productForm.get('maxQuantity')?.errors?.['max']">
+                    La Cantidad Máxima no puede ser negativa.
+                  </div>     
                 </div>
-              </div>
-              <div>
-                <label
-                  for="taxPercentage"
-                  class="block text-sm font-medium text-gray-700"
-                  >Porcentaje de IVA (%):</label
-                >
-                <input
-                  type="number"
-                  formControlName="taxPercentage"
-                  id="taxPercentage"
-                  min="0"
-                  max="100"
-                  placeholder="Ej: 0 - 100"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Porcentaje de IVA es requerido y debe estar entre 0 y
-                  100.
+
+                <div *ngIf="productForm.get('maxQuantity')?.touched || productForm.get('minQuantity')?.touched  " class="text-red-500">
+                  <div *ngIf="+productForm.get('maxQuantity')?.value < +productForm.get('minQuantity')?.value || productForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
+                    La cantidad máxima debe ser mayor que la cantidad mínima.
                   </div>
-                </div>
+                  </div>
+
               </div>
+
+              <div>
+                <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
+                <input
+                    type="number"
+                    formControlName="taxPercentage"
+                    id="taxPercentage"
+                    min="0"
+                    max="100"
+                    placeholder="Ej: 0 - 100"
+                    class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('taxPercentage')?.touched && productForm.get('taxPercentage')?.invalid" class="text-red-500">
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['required']">
+                        El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
+                    </div>
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['min']">
+                        El Porcentaje de IVA no puede ser negativo.
+                    </div>
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['max']">
+                        El Porcentaje de IVA no puede ser mayor que 100.
+                    </div>
+                </div>
+            </div>
+            
+
               <div>
               <!--
                 <label

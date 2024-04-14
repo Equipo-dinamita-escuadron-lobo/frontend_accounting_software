@@ -28,6 +28,10 @@ export class ProductListComponent implements OnInit {
 
   form: FormGroup;
 
+  //variables para el doble clic
+  selectedProductId: string | null = null;
+  timer: any;
+
   constructor(private productService: ProductService,  private router: Router, private fb: FormBuilder ) {
     this.form = this.fb.group(this.validationsAll());
    } // Inyecta el servicio ProductService en el constructor
@@ -57,9 +61,23 @@ validationsAll(){
     this.router.navigateByUrl(route);
   }
 
+// Método para redirigir a la página de edición de un producto
   redirectToEdit(productId: string): void {
-  console.log('ID del producto seleccionado:', productId);
-  this.router.navigate(['/product-edit', productId]);
-}
+    if (this.selectedProductId === productId) {
+      // Doble clic, navegar a la página de edición
+      this.router.navigate(['/product-edit', productId]);
+      // Reiniciar el temporizador y el ID del producto seleccionado
+      clearTimeout(this.timer);
+      this.selectedProductId = null;
+    } else {
+      // Primer clic, iniciar el temporizador
+      this.selectedProductId = productId;
+      this.timer = setTimeout(() => {
+        // Limpiar el temporizador si pasa un tiempo después del primer clic
+        clearTimeout(this.timer);
+        this.selectedProductId = null;
+      }, 300); // Tiempo en milisegundos para considerar un doble clic
+    }
+  }
 }
 

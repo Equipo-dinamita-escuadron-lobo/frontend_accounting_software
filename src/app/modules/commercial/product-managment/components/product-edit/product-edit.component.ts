@@ -101,6 +101,16 @@ export class ProductEditComponent implements OnInit {
       });
     }
   }
+
+  //Metodo para formatear el precio
+  formatPrice(event: any) {
+    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedPrice = '';
+    if (priceInput !== '') {
+        formattedPrice = parseInt(priceInput).toLocaleString('es-ES'); // Formatear el precio solo si no está vacío
+    }
+    this.editForm.get('price')?.setValue(formattedPrice);
+  }
   
 }
 
