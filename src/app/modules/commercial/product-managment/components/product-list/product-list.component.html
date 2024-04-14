@@ -47,7 +47,13 @@
         </form>
       </div>
 
-      <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+      <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
+        <button
+        class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+        (click)="redirectTo('category-list')"
+      >
+        Categorías
+      </button>
         <button
           class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
           (click)="redirectTo('product-creation')"
