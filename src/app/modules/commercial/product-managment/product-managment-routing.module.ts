@@ -4,16 +4,18 @@ import { ProductCreationComponent } from './components/product-creation/product-
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductEditComponent } from './components/product-edit/product-edit.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
-import { UnitOfMeasureListComponent } from './components/unit-of-measure-list/unit-of-measure-list.component';
 import { CategoryCreationComponent } from './components/category-creation/category-creation.component';
+import { UnitOfMeasureListComponent } from './components/unit-of-measure-list/unit-of-measure-list.component';
+import { UnitOfMeasureCreationComponent } from './components/unit-of-measure-creation/unit-of-measure-creation.component';
 const routes: Routes = [
   { path: 'product-creation', component: ProductCreationComponent },
   { path: 'product-list', component: ProductListComponent },
   { path: 'product-edit/:id', component: ProductEditComponent },
   { path: 'category-list', component: CategoryListComponent},
-  { path: 'unitOfMeasure-list', component: UnitOfMeasureListComponent},
   { path: 'category-creation', component: CategoryCreationComponent},
-  {path: 'category-edit/:id', component: CategoryCreationComponent}
+  { path: 'category-edit/:id', component: CategoryCreationComponent},
+  { path: 'unitOfMeasure-list', component: UnitOfMeasureListComponent},
+  { path: 'unitOfMeasure-creation', component: UnitOfMeasureCreationComponent}
 ];
 
 @NgModule({

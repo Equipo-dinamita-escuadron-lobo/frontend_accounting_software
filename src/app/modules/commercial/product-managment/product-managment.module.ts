@@ -13,6 +13,7 @@ import { FilterCategoryPipe } from './pipes/filter-category.pipe';
 import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
 import { CategoryCreationComponent } from './components/category-creation/category-creation.component';
 import { CategoryEditComponent } from './components/category-edit/category-edit.component';
+import { UnitOfMeasureCreationComponent } from './components/unit-of-measure-creation/unit-of-measure-creation.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { CategoryEditComponent } from './components/category-edit/category-edit.
         UnitOfMeasureListComponent,
         FilterUnitOfMeasurePipe,
         CategoryCreationComponent,
-        CategoryEditComponent
+        CategoryEditComponent,
+        UnitOfMeasureCreationComponent
     ],
     exports: [
         ProductCreationComponent,
@@ -35,8 +37,8 @@ import { CategoryEditComponent } from './components/category-edit/category-edit.
         FilterCategoryPipe,
         UnitOfMeasureListComponent,
         CategoryCreationComponent,
-        CategoryEditComponent
-
+        CategoryEditComponent,
+        UnitOfMeasureCreationComponent
     ],
     imports: [
         CommonModule,
