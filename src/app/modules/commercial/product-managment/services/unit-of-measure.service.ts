@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UnitOfMeasure } from '../models/UnitOfMeasure';
 
 @Injectable({
@@ -11,9 +11,24 @@ export class UnitOfMeasureService {
 
   constructor(private http: HttpClient) { }
 
+  private unitOfMeasures: UnitOfMeasure[] = [
+    {
+      id: 1,
+      name: 'Kilogramo',
+      abbreviation: 'kg',
+      description: 'Unidad de medida de masa'
+    },
+    {
+      id: 2,
+      name: 'Litro',
+      abbreviation: 'lt',
+      description: 'Unidad de medida de volumen'
+    },
+  ];
   // Método para obtener todas las unidades de medida
   getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
-    return this.http.get<UnitOfMeasure[]>(this.apiUrl);
+    //return this.http.get<UnitOfMeasure[]>(this.apiUrl);
+return of (this.unitOfMeasures);
   }
 
   // Método para crear una nueva unidad de medida
