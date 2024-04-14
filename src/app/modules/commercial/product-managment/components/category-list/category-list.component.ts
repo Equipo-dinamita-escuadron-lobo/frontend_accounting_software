@@ -54,4 +54,8 @@ getCategories(): void {
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+  redirectToEdit(categoryId: string): void {
+    console.log('ID de la categoría seleccionado:', categoryId);
+    this.router.navigate(['/category-edit', categoryId]);
+  }
 }

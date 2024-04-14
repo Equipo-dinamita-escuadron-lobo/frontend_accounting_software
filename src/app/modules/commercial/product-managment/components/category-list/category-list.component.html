@@ -64,7 +64,7 @@
               <tr
                 *ngFor="let cat of categories | filterCategory : form.value.stringSearchCategory
                 "
-                class="hover:bg-gray-100 ">
+                class="hover:bg-gray-100 " (click)=" redirectToEdit(cat.id)">
                 <td class="px-6 py-4 whitespace-nowrap">{{ cat.id }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ cat.name }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">{{ cat.description }}</td>

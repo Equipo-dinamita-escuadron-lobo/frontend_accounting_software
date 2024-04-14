@@ -11,6 +11,8 @@ import { UnitOfMeasureListComponent } from './components/unit-of-measure-list/un
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { FilterCategoryPipe } from './pipes/filter-category.pipe';
 import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
+import { CategoryCreationComponent } from './components/category-creation/category-creation.component';
+import { CategoryEditComponent } from './components/category-edit/category-edit.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +23,9 @@ import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
         CategoryListComponent,
         FilterCategoryPipe,
         UnitOfMeasureListComponent,
-        FilterUnitOfMeasurePipe
+        FilterUnitOfMeasurePipe,
+        CategoryCreationComponent,
+        CategoryEditComponent
     ],
     exports: [
         ProductCreationComponent,
@@ -29,7 +33,9 @@ import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
         ProductEditComponent,
         CategoryListComponent,
         FilterCategoryPipe,
-        UnitOfMeasureListComponent
+        UnitOfMeasureListComponent,
+        CategoryCreationComponent,
+        CategoryEditComponent
 
     ],
     imports: [
