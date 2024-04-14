@@ -7,6 +7,7 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { CategoryCreationComponent } from './components/category-creation/category-creation.component';
 import { UnitOfMeasureListComponent } from './components/unit-of-measure-list/unit-of-measure-list.component';
 import { UnitOfMeasureCreationComponent } from './components/unit-of-measure-creation/unit-of-measure-creation.component';
+import { UnitOfMeasureEditComponent } from './components/unit-of-measure-edit/unit-of-measure-edit.component';
 const routes: Routes = [
   { path: 'product-creation', component: ProductCreationComponent },
   { path: 'product-list', component: ProductListComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'category-creation', component: CategoryCreationComponent},
   { path: 'category-edit/:id', component: CategoryCreationComponent},
   { path: 'unitOfMeasure-list', component: UnitOfMeasureListComponent},
-  { path: 'unitOfMeasure-creation', component: UnitOfMeasureCreationComponent}
+  { path: 'unitOfMeasure-creation', component: UnitOfMeasureCreationComponent},
+  { path: 'unitOfMeasure-edit', component: UnitOfMeasureEditComponent}
 ];
 
 @NgModule({
