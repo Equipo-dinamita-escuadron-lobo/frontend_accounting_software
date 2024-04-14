@@ -24,7 +24,7 @@ export class UnitOfMeasureListComponent implements OnInit {
 
    validationsAll(){
     return {
-      stringSearch: ['']
+      stringSearchUnitOfMeasure: ['']
     };
   }
   ngOnInit(): void {

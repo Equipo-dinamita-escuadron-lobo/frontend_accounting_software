@@ -27,10 +27,10 @@
             <input
               type="text"
               class="mb-2 w-full outline-none bg-transparent"
-              id="stringSearch"
+              id="stringSearchUnitOfMeasure"
               placeholder="Buscar"
-              name="stringSearch"
-              formControlName= "stringSearch"
+              name="stringSearchUnitOfMeasure"
+              formControlName= "stringSearchUnitOfMeasure"
             />
           </form>
         </div>
@@ -63,7 +63,7 @@
             <tbody class="bg-white divide-y divide-gray-200">
               <tr
                 *ngFor="
-                  let unit of unitOfMeasures | filterList : form.value.stringSearch
+                  let unit of unitOfMeasures | filterUnitOfMeasure : form.value.stringSearchUnitOfMeasure
                 "
                 class="hover:bg-gray-100 " (click)=" redirectToEdit(unit.id)"
               >

@@ -10,6 +10,7 @@ import { ProductEditComponent } from './components/product-edit/product-edit.com
 import { UnitOfMeasureListComponent } from './components/unit-of-measure-list/unit-of-measure-list.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { FilterCategoryPipe } from './pipes/filter-category.pipe';
+import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { FilterCategoryPipe } from './pipes/filter-category.pipe';
         ProductEditComponent,
         CategoryListComponent,
         FilterCategoryPipe,
-        UnitOfMeasureListComponent
+        UnitOfMeasureListComponent,
+        FilterUnitOfMeasurePipe
     ],
     exports: [
         ProductCreationComponent,
