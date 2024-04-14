@@ -24,6 +24,26 @@ export class UnitOfMeasureService {
       abbreviation: 'lt',
       description: 'Unidad de medida de volumen'
     },
+    {
+      id: 3,
+      name: 'Metro',
+      abbreviation: 'm',
+      description: 'Unidad de medida de longitud'
+    },
+    {
+      id: 4,
+      name: 'Segundo',
+      abbreviation: 's',
+      description: 'Unidad de medida de tiempo'
+    },
+    {
+      id: 5,
+      name: 'Kelvin',
+      abbreviation: 'K',
+      description: 'Unidad de medida de temperatura'
+    }
+    
+    
   ];
   // Método para obtener todas las unidades de medida
   getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
