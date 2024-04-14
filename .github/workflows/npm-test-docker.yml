@@ -1,4 +1,4 @@
-name: Java Maven Build & Docker Image Push
+name: Build & Docker Image Push
 
 on:
   push:
