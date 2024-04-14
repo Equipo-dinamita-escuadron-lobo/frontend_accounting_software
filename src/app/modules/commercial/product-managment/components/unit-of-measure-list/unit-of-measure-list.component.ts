@@ -18,6 +18,10 @@ export class UnitOfMeasureListComponent implements OnInit {
   ];
 
   form: FormGroup;
+
+  //variables para el doble clic
+  selectedUnitId: string | null = null;
+  timer: any;
   constructor(private unitOfMeasureService: UnitOfMeasureService,  private router: Router, private fb: FormBuilder ) {
     this.form = this.fb.group(this.validationsAll());
    }
@@ -47,8 +51,21 @@ export class UnitOfMeasureListComponent implements OnInit {
       this.router.navigateByUrl(route);
     }
     redirectToEdit(unitId: string): void {
-      console.log('ID de la unidad seleccionada:', unitId);
-      this.router.navigate(['/unitOfMeasure-edit', unitId]);
+      if (this.selectedUnitId === unitId) {
+        // Doble clic, navegar a la página de edición
+        this.router.navigate(['/unitOfMeasure-edit', unitId]);
+        // Reiniciar el temporizador y el ID del producto seleccionado
+        clearTimeout(this.timer);
+        this.selectedUnitId = null;
+      } else {
+        // Primer clic, iniciar el temporizador
+        this.selectedUnitId = unitId;
+        this.timer = setTimeout(() => {
+          // Limpiar el temporizador si pasa un tiempo después del primer clic
+          clearTimeout(this.timer);
+          this.selectedUnitId = null;
+        }, 300); // Tiempo en milisegundos para considerar un doble clic
+      }
     }
 
 }

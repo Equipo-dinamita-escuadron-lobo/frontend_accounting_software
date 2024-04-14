@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'category-edit/:id', component: CategoryCreationComponent},
   { path: 'unitOfMeasure-list', component: UnitOfMeasureListComponent},
   { path: 'unitOfMeasure-creation', component: UnitOfMeasureCreationComponent},
-  { path: 'unitOfMeasure-edit', component: UnitOfMeasureEditComponent}
+  { path: 'unitOfMeasure-edit/:id', component: UnitOfMeasureEditComponent}
 ];
 
 @NgModule({

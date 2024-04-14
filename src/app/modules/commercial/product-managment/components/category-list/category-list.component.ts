@@ -24,6 +24,10 @@ export class CategoryListComponent implements OnInit {
 
   form: FormGroup;
 
+    //variables para el doble clic
+    selectedCategoryId: string | null = null;
+    timer: any;
+
   constructor(private categoryService : CategoryService,  private router: Router, private fb: FormBuilder ) {
     this.form = this.fb.group(this.validationsAll());
    }
@@ -54,8 +58,24 @@ getCategories(): void {
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+
+  // Método para redirigir a la página de edición de un producto
   redirectToEdit(categoryId: string): void {
-    console.log('ID de la categoría seleccionado:', categoryId);
-    this.router.navigate(['/category-edit', categoryId]);
+    if (this.selectedCategoryId === categoryId) {
+      // Doble clic, navegar a la página de edición
+      this.router.navigate(['/category-edit', categoryId]);
+      // Reiniciar el temporizador y el ID del producto seleccionado
+      clearTimeout(this.timer);
+      this.selectedCategoryId = null;
+    } else {
+      // Primer clic, iniciar el temporizador
+      this.selectedCategoryId = categoryId;
+      this.timer = setTimeout(() => {
+        // Limpiar el temporizador si pasa un tiempo después del primer clic
+        clearTimeout(this.timer);
+        this.selectedCategoryId = null;
+      }, 300); // Tiempo en milisegundos para considerar un doble clic
+    }
   }
+
 }
