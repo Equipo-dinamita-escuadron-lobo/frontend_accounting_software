@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UnitOfMeasure } from '../models/UnitOfMeasure';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +46,24 @@ export class UnitOfMeasureService {
     
     
   ];
-  // Método para obtener todas las unidades de medida
+
   getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
-    //return this.http.get<UnitOfMeasure[]>(this.apiUrl);
-return of (this.unitOfMeasures);
+    //return this.http.get<Category[]>(this.apiUrl);
+    return of(this.unitOfMeasures);
+  }
+  // Método para obtener todas las unidades de medida
+  getUnitOfMeasuresId(id: string): Observable<UnitOfMeasure> {
+    const url = `${environment.API_URL}products/findById/${id}`;
+    return this.http.get<UnitOfMeasure>(url);
   }
 
   // Método para crear una nueva unidad de medida
   createUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
     return this.http.post<UnitOfMeasure>(this.apiUrl, unitOfMeasure);
+  }
+
+  // Método para actualizar una Unidad de medida existente
+  updateUnitOfMeasure(id: string, unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
+    return this.http.put<UnitOfMeasure>(`${this.apiUrl}/${id}`, unitOfMeasure);
   }
 }

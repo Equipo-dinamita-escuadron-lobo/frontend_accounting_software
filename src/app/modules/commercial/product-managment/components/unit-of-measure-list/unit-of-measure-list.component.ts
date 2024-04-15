@@ -44,7 +44,7 @@ export class UnitOfMeasureListComponent implements OnInit {
         this.unitOfMeasures = data;
       },
       error => {
-        console.log('Error al obtener las unidades de medida:', error);
+        console.log('Erro al obtener las unidades de medida:', error);
       }
     );
   }
