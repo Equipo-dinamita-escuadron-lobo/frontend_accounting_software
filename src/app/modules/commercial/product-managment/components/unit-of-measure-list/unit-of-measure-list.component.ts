@@ -67,5 +67,8 @@ export class UnitOfMeasureListComponent implements OnInit {
         }, 300); // Tiempo en milisegundos para considerar un doble clic
       }
     }
+    goBack(): void {
+      this.router.navigate(['product-list']);
+    }
 
 }

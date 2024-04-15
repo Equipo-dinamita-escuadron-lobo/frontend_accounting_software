@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-unit-of-measure-creation',
@@ -13,7 +14,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
-    
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -35,5 +36,8 @@ export class UnitOfMeasureCreationComponent implements OnInit{
       );
     }
   }
-
+  
+  goBack(): void {
+    this.router.navigate(['/unitOfMeasure-list']);
+  }
 }
