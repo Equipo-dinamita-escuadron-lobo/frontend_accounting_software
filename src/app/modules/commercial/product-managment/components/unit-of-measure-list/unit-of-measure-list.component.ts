@@ -22,7 +22,10 @@ export class UnitOfMeasureListComponent implements OnInit {
   //variables para el doble clic
   selectedUnitId: string | null = null;
   timer: any;
-  constructor(private unitOfMeasureService: UnitOfMeasureService,  private router: Router, private fb: FormBuilder ) {
+  constructor(
+    private unitOfMeasureService: UnitOfMeasureService,  
+    private router: Router, private fb: FormBuilder 
+  ){
     this.form = this.fb.group(this.validationsAll());
    }
 
