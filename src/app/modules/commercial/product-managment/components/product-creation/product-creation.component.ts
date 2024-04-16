@@ -14,6 +14,7 @@ import { ThirdServiceService } from '../../../third-parties-managment/services/t
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
 })
+
 export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
@@ -48,7 +49,8 @@ export class ProductCreationComponent implements OnInit {
       supplier: ['', [Validators.required]], // 'supplier' es un string
       category: [null, [Validators.required]], // 'category' es un objeto
       price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
-    }, { validators: minMaxValidator });  
+    }
+    ,{ validators: minMaxValidator });  
     this.initForm();
 
 
@@ -208,6 +210,19 @@ getThirdParties(): void {
 
     console.log('Fecha actual:', formattedDate);
   }
+
+  //Método para formatear el precio    
+  formatPrice(event: any) {
+    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedPrice = '';
+    if (priceInput !== '') {
+        formattedPrice = parseInt(priceInput).toLocaleString('es-ES'); // Formatear el precio solo si no está vacío
+    }
+    this.productForm.get('price')?.setValue(formattedPrice);
+}
+
+
+
   
 }
 
@@ -217,6 +232,7 @@ getThirdParties(): void {
     const max = group.controls['maxQuantity'].value;
     return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
   }
+
 
 
 

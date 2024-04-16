@@ -1,3 +1,4 @@
+import { Enterprise } from "../../enterprise-managment/models/Enterprise";
 
 export interface UnitOfMeasure {
     id: number; 
