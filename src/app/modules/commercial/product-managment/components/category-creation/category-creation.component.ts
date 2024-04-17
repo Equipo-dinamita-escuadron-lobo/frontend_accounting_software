@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category-creation',
@@ -13,7 +14,8 @@ export class CategoryCreationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +64,10 @@ export class CategoryCreationComponent implements OnInit {
 
   resetForm(): void {
     this.categoryForm.reset();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/category-list']);
   }
 }
 
