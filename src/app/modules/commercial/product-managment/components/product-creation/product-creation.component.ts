@@ -29,7 +29,8 @@ export class ProductCreationComponent implements OnInit {
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService // Inyecta el servicio ThirdService en el constructor
+    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
+    private router: Router
   ) {}
   
   ngOnInit(): void {
@@ -221,6 +222,9 @@ getThirdParties(): void {
     this.productForm.get('price')?.setValue(formattedPrice);
 }
 
+  goBack(): void {
+    this.router.navigate(['/product-list']);
+  }
 
 
   

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/Product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -18,7 +18,8 @@ export class ProductEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.editForm = this.formBuilder.group({
       itemType: ['', Validators.required],
@@ -110,6 +111,10 @@ export class ProductEditComponent implements OnInit {
         formattedPrice = parseInt(priceInput).toLocaleString('es-ES'); // Formatear el precio solo si no está vacío
     }
     this.editForm.get('price')?.setValue(formattedPrice);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/product-list']);
   }
   
 }
