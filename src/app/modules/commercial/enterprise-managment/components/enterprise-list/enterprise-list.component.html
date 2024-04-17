@@ -4,7 +4,7 @@
         </h1>
 
         <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
-            <button type="button" routerLink="/enterprise-management/create"
+            <button type="button" (click)="goToCreateEnterprise()"
                 class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                 Agregar
             </button>
@@ -19,7 +19,7 @@
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <input type="text" class="mb-2   bg-transparent w-10/12 outline-none" id="search"
+            <input type="text" class="mb-2 px-2  bg-transparent w-10/12 outline-none" id="search"
                 placeholder="Ingrese el nombre de la empresa" name="filterEnterpriseList"
                 [(ngModel)]="filterEnterprise">
         </div>
