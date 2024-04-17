@@ -3,7 +3,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,3 +16,6 @@
         @apply border-solid border-2 border-grayP1 p-2 m-2 text-grayP1 rounded-lg focus:text-blue-950 focus:border-blue-950 focus:outline-none
     }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: "Roboto", "Helvetica Neue", sans-serif; }

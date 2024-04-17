@@ -21,6 +21,7 @@ import { Department } from '../../models/Department';
 import { City } from '../../models/City';
 import { EnterpriseType } from '../../models/EnterpriseType';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-enterprise-creation',
@@ -82,7 +83,8 @@ export class EnterpriseCreationComponent {
     private taxLiabilityService: TaxLiabilityService,
     private taxPayerService: TaxPayerTypeService,
     private cityService: CityService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private router: Router
   ) {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
@@ -107,7 +109,7 @@ export class EnterpriseCreationComponent {
         [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z\s]+$/), 
+          Validators.pattern(/^[a-zA-Z\s]+$/),
         ],
       ],
       nit: [
@@ -378,5 +380,9 @@ export class EnterpriseCreationComponent {
 
   getTypesEnterprise() {
     this.enterpriseTypesList = this.enterpriseService.getTypesEnterprise();
+  }
+
+  goToListEnterprises(){
+    this.router.navigate(['general/enterprises/list']);
   }
 }

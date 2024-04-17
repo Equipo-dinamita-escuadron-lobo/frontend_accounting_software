@@ -1,7 +1,7 @@
 <!-- Botones para agregar producto, categoría y unidad -->
 <div class="px-16 py-3 font-projectFont">
   <div class="mt-4">
-    <!-- Barra de búsqueda 
+    <!-- Barra de búsqueda
   <div
     class="flex flex-grow items-center bg-white border border-gray-300 rounded-lg overflow-hidden"
   >
@@ -9,7 +9,7 @@
       type="text"
       class="w-full py-2 px-4 focus:outline-none"
       placeholder="Buscar producto..."
-    /> 
+    />
     <button class="buttonsC h-10 w-auto">Buscar</button>
   </div>-->
 
@@ -63,7 +63,7 @@
 
         <button
           class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-          (click)="redirectTo('product-creation')"
+          (click)="redirectTo('/general/operations/products/create')"
         >
           Agregar
         </button>
@@ -125,17 +125,17 @@
       </div>
     </div>
 
-    <!-- 
-  <!-- Verificar si hay productos disponibles 
+    <!--
+  <!-- Verificar si hay productos disponibles
   <div *ngIf="products && products.length > 0; else noProducts" class="my-4">
-    <!-- Iterar sobre la lista de productos 
-  
+    <!-- Iterar sobre la lista de productos
+
     <div *ngFor="let product of products" class="bg-gray-100 rounded-lg p-4 mb-4">
-      <!-- Mostrar los datos del producto 
+      <!-- Mostrar los datos del producto
       <h3 class="text-xl font-bold">{{ product.itemType }}</h3>
       <p class="text-gray-700">{{ product.description }}</p>
       <p class="text-gray-700">Precio: {{ product.price }}</p>
-      <!-- Agregar más campos según sea necesario 
+      <!-- Agregar más campos según sea necesario
     </div>
   </div>
   -->
