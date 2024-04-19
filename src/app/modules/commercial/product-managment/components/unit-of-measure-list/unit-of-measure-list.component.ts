@@ -56,7 +56,7 @@ export class UnitOfMeasureListComponent implements OnInit {
     redirectToEdit(unitId: string): void {
       if (this.selectedUnitId === unitId) {
         // Doble clic, navegar a la página de edición
-        this.router.navigate(['/unitOfMeasure-edit', unitId]);
+        this.router.navigate(['/general/operations/unities/edit/', unitId]);
         // Reiniciar el temporizador y el ID del producto seleccionado
         clearTimeout(this.timer);
         this.selectedUnitId = null;

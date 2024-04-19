@@ -43,7 +43,7 @@ export class CategoryListComponent implements OnInit {
   }
 
 
-  
+
   ngOnInit(): void {
     this.getCategories();
   }
@@ -67,7 +67,7 @@ getCategories(): void {
   redirectToEdit(categoryId: string): void {
     if (this.selectedCategoryId === categoryId) {
       // Doble clic, navegar a la página de edición
-      this.router.navigate(['/category-edit', categoryId]);
+      this.router.navigate(['/general/operations/categories/edit/', categoryId]);
       // Reiniciar el temporizador y el ID del producto seleccionado
       clearTimeout(this.timer);
       this.selectedCategoryId = null;

@@ -57,7 +57,7 @@ const routes: Routes = [
         component: ProductCreationComponent
       },
       {
-        path: 'products/edit',
+        path: 'products/edit/:id',
         component: ProductEditComponent
       },
       {
@@ -69,7 +69,7 @@ const routes: Routes = [
         component: UnitOfMeasureCreationComponent
       },
       {
-        path: 'unities/edit',
+        path: 'unities/edit/:id',
         component: UnitOfMeasureEditComponent
       },
       {
@@ -81,7 +81,7 @@ const routes: Routes = [
         component: CategoryCreationComponent
       },
       {
-        path: 'categories/edit',
+        path: 'categories/edit/:id',
         component: CategoryEditComponent
       },
     ]
