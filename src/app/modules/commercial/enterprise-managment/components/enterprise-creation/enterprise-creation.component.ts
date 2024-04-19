@@ -20,6 +20,7 @@ import { DepartmentService } from '../../services/department.service';
 import { Department } from '../../models/Department';
 import { City } from '../../models/City';
 import { EnterpriseType } from '../../models/EnterpriseType';
+import { environment } from '../../../../../../environments/enviorment.development';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -257,38 +258,59 @@ export class EnterpriseCreationComponent {
   }
 
   /**
-   * @description Upload image
+   * @description Function to upload an image to Cloudinary.
+   * @return A promise that resolves to the URL of the uploaded image or is rejected with an error message.
    */
   upload(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    if (!this.file) {
-      resolve('');
-      return;
-    }
+    return new Promise((resolve, reject) => {
+      if (!this.file) {
+        resolve('');
+        return;
+      }
 
-    const fileData = this.file;
-    const data = new FormData();
-    data.append('file', fileData);
-    data.append('upload_preset', 'cloudinary-enterprise');
-    data.append('cloud_name', 'dz5pw4p7y');
-
-    this.uploadService.uploadImg(data).subscribe(
-      (response: any) => {
-        resolve(response.url);
-        console.log(response);
-      },
-      (error) => {
+      const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB en bytes
+      if (this.file.size > MAX_FILE_SIZE) {
         Swal.fire({
           title: 'Error!',
-          text: 'Ha ocurrido un error al subir el logo.',
+          text: 'El tamaño del archivo excede el límite de 5 MB.',
           icon: 'error',
         });
-        console.error('Error al subir el logo:', error);
-        reject(error);
+        reject('El tamaño del archivo excede el límite de 5 MB.');
+        return;
       }
-    );
-  });
-}
+
+      const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+      if (!ALLOWED_TYPES.includes(this.file.type)) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Solo se permiten archivos de tipo JPEG o PNG.',
+          icon: 'error',
+        });
+        reject('Solo se permiten archivos de tipo JPEG o PNG.');
+        return;
+      }
+
+      const fileData = this.file;
+      const data = new FormData();
+      data.append('file', fileData);
+      data.append('upload_preset', environment.storageDirectory);
+      data.append('cloud_name', environment.storageName);
+
+      this.uploadService.uploadImg(data).subscribe(
+        (response: any) => {
+          resolve(response.url);
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al subir el logo.',
+            icon: 'error',
+          });
+          reject(error);
+        }
+      );
+    });
+  }
 
   /**
    * @description Active select of city
@@ -348,67 +370,68 @@ export class EnterpriseCreationComponent {
   /**
    * @description Save enterprise using Enterprise service
    */
-
   async saveEnterprise() {
-  const personTypeForm: PersonType = {
-    type: this.selectedButtonType,
-    name: this.form.value.nameOwner,
-    businessName: this.form.value.businessName,
-    surname: this.form.value.surname,
-  };
+    try {
+      const personTypeForm: PersonType = {
+        type: this.selectedButtonType,
+        name: this.form.value.nameOwner,
+        businessName: this.form.value.businessName,
+        surname: this.form.value.surname,
+      };
 
-  const locationForm: Location = {
-    address: this.form.value.address,
-    country: 1,
-    department: this.form.value.selectedItemDepartment.id,
-    city: this.form.value.selectedItemCity.id,
-  };
+      const locationForm: Location = {
+        address: this.form.value.address,
+        country: 1,
+        department: this.form.value.selectedItemDepartment.id,
+        city: this.form.value.selectedItemCity.id,
+      };
 
-  var branchResponse: number = this.checkBranch();
+      var branchResponse: number = this.checkBranch();
 
-  // Esperar la URL de la imagen antes de crear la empresa
-  const logoUrl = await this.upload();
+      // Esperar la URL de la imagen antes de crear la empresa
+      const logoUrl = await this.upload();
 
-  const enterprise: Enterprise = {
-    name: this.form.value.name,
-    nit: this.form.value.nit,
-    phone: this.form.value.phone,
-    branch: '' + branchResponse,
-    email: this.form.value.email,
-    logo: logoUrl,
-    taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
-      (item: TaxLiability) => item.id
-    ),
-    taxPayerType: this.form.value.selectedItemTaxPayer.id,
-    personType: personTypeForm,
-    location: locationForm,
-    dv: this.form.value.dv,
-    enterpriseType: this.form.value.selectedItemEnterpriseType.id,
-  };
+      const enterprise: Enterprise = {
+        name: this.form.value.name,
+        nit: this.form.value.nit,
+        phone: this.form.value.phone,
+        branch: '' + branchResponse,
+        email: this.form.value.email,
+        logo: logoUrl,
+        taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
+          (item: TaxLiability) => item.id
+        ),
+        taxPayerType: this.form.value.selectedItemTaxPayer.id,
+        personType: personTypeForm,
+        location: locationForm,
+        dv: this.form.value.dv,
+        enterpriseType: this.form.value.selectedItemEnterpriseType.id,
+      };
 
-  this.enterpriseService.createEnterprise(enterprise).subscribe(
-    (data) => {
-      // Caso de éxito (código de respuesta 200 OK)
-      console.log(data)
-      Swal.fire({
-        title: 'Creación exitosa!',
-        text: 'Se ha creado la empresa con éxito!',
-        icon: 'success',
-      });
-      this.form.reset();
-    },
-    (error) => {
-      // Caso de error
-      Swal.fire({
-        title: 'Error!',
-        text: 'Ha ocurrido un error al crear la empresa.',
-        icon: 'error',
-      });
-      console.error('Error al crear la empresa:', error);
+      this.enterpriseService.createEnterprise(enterprise).subscribe(
+        (data) => {
+          // Caso de éxito (código de respuesta 200 OK)
+          Swal.fire({
+            title: 'Creación exitosa!',
+            text: 'Se ha creado la empresa con éxito!',
+            icon: 'success',
+          });
+          this.form.reset();
+          this.file = null;
+        },
+        (error) => {
+          // Caso de error
+          Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al crear la empresa.',
+            icon: 'error',
+          });
+        }
+      );
+    } catch (error) {
+      console.error('Error al cargar la imagen:', error);
     }
-  );
-}
-
+  }
   /**
    * Use the Taxlibility service to list in the select interface.
    */
