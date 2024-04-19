@@ -107,7 +107,7 @@ export class EnterpriseCreationComponent {
         [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z\s]+$/), 
+          Validators.pattern(/^[a-zA-Z0-9\s\-.,&()']+$/),
         ],
       ],
       nit: [
@@ -127,7 +127,14 @@ export class EnterpriseCreationComponent {
           Validators.pattern(/^\d+$/),
         ],
       ],
-      email: ['', [Validators.required, Validators.email]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(/^[a-zA-Z0-9\s\-.]+$/),
+        ],
+      ],
       country: [
         { value: 'Colombia', disabled: true },
         [Validators.maxLength(50)],
