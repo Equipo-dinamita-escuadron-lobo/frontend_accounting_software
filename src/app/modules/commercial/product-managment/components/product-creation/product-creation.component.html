@@ -6,6 +6,18 @@
     <p class=" mt-4 font-projectFont">
       Ingrese la información requerida para crear un nuevo producto:
     </p>
+    <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+      <button
+        class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
+        (click)="goBack()"
+      >
+        <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-950 transform rotate-180" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 0 1 1.414 1.414L5.414 10l3.293 3.293a1 1 0 0 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 0 1 0 1.414z" clip-rule="evenodd" />
+            </svg>
+        </span>
+      </button>
+    </div>
 
     <div class="container mx-auto mt-8">
       <div class="grid grid-cols-1 m-6 gap-6">
@@ -130,30 +142,44 @@
                   <div *ngIf="productForm.get('itemType')?.errors?.['required']">
                   El campo Cantidad Máxima es requerido.
                   </div>
+                  <div *ngIf="productForm.get('maxQuantity')?.errors?.['max']">
+                    La Cantidad Máxima no puede ser negativa.
+                  </div>     
                 </div>
-              </div>
-              <div>
-                <label
-                  for="taxPercentage"
-                  class="block text-sm font-medium text-gray-700"
-                  >Porcentaje de IVA (%):</label
-                >
-                <input
-                  type="number"
-                  formControlName="taxPercentage"
-                  id="taxPercentage"
-                  min="0"
-                  max="100"
-                  placeholder="Ej: 0 - 100"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Porcentaje de IVA es requerido y debe estar entre 0 y
-                  100.
+
+                <div *ngIf="productForm.get('maxQuantity')?.touched || productForm.get('minQuantity')?.touched  " class="text-red-500">
+                  <div *ngIf="+productForm.get('maxQuantity')?.value < +productForm.get('minQuantity')?.value || productForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
+                    La cantidad máxima debe ser mayor que la cantidad mínima.
                   </div>
-                </div>
+                  </div>
+
               </div>
+
+              <div>
+                <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
+                <input
+                    type="number"
+                    formControlName="taxPercentage"
+                    id="taxPercentage"
+                    min="0"
+                    max="100"
+                    placeholder="Ej: 0 - 100"
+                    class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                />
+                <div *ngIf="productForm.get('taxPercentage')?.touched && productForm.get('taxPercentage')?.invalid" class="text-red-500">
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['required']">
+                        El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
+                    </div>
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['min']">
+                        El Porcentaje de IVA no puede ser negativo.
+                    </div>
+                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['max']">
+                        El Porcentaje de IVA no puede ser mayor que 100.
+                    </div>
+                </div>
+            </div>
+            
+
               <div>
               <!--
                 <label
@@ -250,27 +276,33 @@
                   </div>
                 </div>
               </div>
+
               <div>
-                <label
-                  for="price"
-                  class="block text-sm font-medium text-gray-700"
-                  >Precio:</label
-                >
-                <input
-                  type="number"
-                  formControlName="price"
-                  id="price"
-                  min="0"
-                  max="100"
-                  placeholder="Ej: 12000"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Precio es requerido y debe estar entre 0 y 100.
-                  </div>
+                <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-700">
+                        $
+                    </span>
+                    <input
+                        type="text"
+                        formControlName="price"
+                        id="price"
+                        min="0"
+                        placeholder="Ej: 12000"
+                        class="pl-8 pr-1 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        inputmode="numeric"
+                        (input)="formatPrice($event)"
+                    />
                 </div>
-              </div>
+                <div *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid" class="text-red-500">
+                    <div *ngIf="productForm.get('price')?.errors?.['required']">
+                        El campo Precio es requerido 
+                    </div>
+                </div>
+            </div>
+            
+            
+            
               
               <div>
                 <button type="submit" class="buttonsC h-10 w-auto">
