@@ -50,7 +50,7 @@
                                     <div class="">
 
                                         <div class="col-1-name grid mb-3">
-                                            <label for="nombre_empresa" class="block">Nombre de Empresa:</label>
+                                            <label for="nombre_empresa" class="block">Nombre de Empresa *</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ej: Pepsi " formControlName="name"
@@ -61,15 +61,14 @@
                                                     caracteres</div>
                                                 <div *ngIf="form.get('name')?.hasError('required')">El nombre es
                                                     requerido.</div>
-                                                <div *ngIf="form.get('name')?.hasError('pattern')">El nombre solo puede
-                                                    contener letras.</div>
+                                                <div *ngIf="form.get('name')?.hasError('pattern')">Algunos carácteres son inválidos.</div>
                                             </div>
                                         </div>
 
 
                                         <form [formGroup]="form_natural" class="col-1-owner grid mb-3" *ngIf="showNaturalForm">
                                             <label for="nombre_propietario" class="block">Nombre de
-                                                Propietario:</label>
+                                                Propietario *</label>
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ej: Julian" formControlName="nameOwner"
@@ -80,13 +79,13 @@
                                                     caracteres</div>
                                                 <div *ngIf="form.get('nameOwner')?.hasError('required')">El nombre es
                                                     requerido.</div>
-                                                <div *ngIf="form.get('nameOwner')?.hasError('pattern')">El nombre solo
+                                                <div *ngIf="form.get('nameOwner')?.hasError('pattern')">El nombre sólo
                                                     puede contener letras.</div>
                                             </div>
                                         </form>
 
                                         <form [formGroup]="form_legal" class="col-1-business grid mb-3" *ngIf="showLegalForm">
-                                            <label for="businessName" class="block">Razon social:</label>
+                                            <label for="businessName" class="block">Razón social *</label>
                                             <input type="text" id="businessName" name="businessName"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L." formControlName="businessName">
@@ -101,7 +100,7 @@
 
 
                                         <div class="col-1-type grid mb-3 ">
-                                            <label for="tipo_empresa" class="block">Tipo de Empresa:</label>
+                                            <label for="tipo_empresa" class="block">Tipo de Empresa *</label>
 
                                             <div class="icon flex">
                                                 <ng-select name="type-enterprise" [items]="enterpriseTypesList"
@@ -134,11 +133,11 @@
 
                                     <div class="">
                                         <div class="col-2-nit grid mb-3 ">
-                                            <label for="nit" class="block">NIT(Numero de identificacion
-                                                tributaria):</label>
+                                            <label for="nit" class="block">NIT(Número de identificación
+                                                tributaria) *</label>
                                             <input type="text" id="nit" name="nit"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: 600.456.789-0" formControlName="nit">
+                                                placeholder="Ej: 6004567890" formControlName="nit">
                                             <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
@@ -151,7 +150,7 @@
                                         </div>
 
                                         <form [formGroup]="form_natural" class="col-2-surname grid mb-3" *ngIf="showNaturalForm">
-                                            <label for="apellidos" class="block">Apellidos:</label>
+                                            <label for="apellidos" class="block">Apellidos *</label>
                                             <input type="text" id="apellidos" name="apellidos"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ej: Ruano" formControlName="surnameOwner">
@@ -168,7 +167,7 @@
 
                                         <div class="col-2-payer grid mb-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de
-                                                Contribuyente:</label>
+                                                Contribuyente *</label>
                                             <div class="icon flex">
                                                 <ng-select name="tax-payer" [items]="taxPayersList" bindLabel="name"
                                                     [searchable]="true" formControlName="selectedItemTaxPayer"
@@ -216,7 +215,7 @@
                             <div class="form__enterprise__column-1 0">
 
                                 <div class="tax-liabilities w-full grid mb-3">
-                                    <label>Responsabilidades tributarias:</label>
+                                    <label>Responsabilidades tributarias *</label>
                                     <div class="icon flex">
                                         <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
                                             [searchable]="true" formControlName="selectedItemTaxLiabilities"
@@ -239,13 +238,13 @@
                                     </div>
                                     <div *ngIf="form.get('selectedItemTaxLiabilities')?.touched && form.get('selectedItemTaxLiabilities')?.errors?.['noValueSelected']"
                                         class="text-red-500 text-sm font-medium -mt-1">
-                                        Por favor, seleccione al menos un item.
+                                        Por favor, seleccione al menos un ítem.
                                     </div>
 
                                 </div>
 
                                 <div class="col-1 country w-full grid mb-3">
-                                    <label for="country1">Pais</label>
+                                    <label for="country1">País</label>
                                     <input type="text" id="country1" name="country1"
                                         class="border border-gray-400 rounded-md px-3 mt-1 py-1 w-full max-h-9"
                                         value="Colombia" disabled>
@@ -253,7 +252,7 @@
 
 
                                 <div class="col-1-department w-full grid mb-3">
-                                    <label>Departamento</label>
+                                    <label>Departamento *</label>
                                     <div class="icon flex">
                                         <ng-select [items]="departmenList" bindLabel="name"
                                             (clear)="onSelectionDepartmentClear()"
@@ -284,7 +283,7 @@
 
 
                                 <div class="col-1-city w-full grid mb-3">
-                                    <label *ngIf="enabledSelectCity" for="municipio">Ciudad</label>
+                                    <label *ngIf="enabledSelectCity" for="municipio">Ciudad *</label>
                                     <div class="icon flex">
                                         <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList"
                                             bindLabel="name" (clear)="onSelectionCityClear()" [searchable]="true"
@@ -314,7 +313,7 @@
                             <div class="form__enterprise__column-2 ">
 
                                 <div class="col-2address grid mb-3">
-                                    <label for="direccion">Direccion</label>
+                                    <label for="direccion">Dirección *</label>
                                     <input type="text" id="direccion" name="direccion"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="address"
@@ -326,24 +325,24 @@
                                 </div>
 
                                 <div class="col-2-phone grid mb-3">
-                                    <label for="telefono">Telefono</label>
+                                    <label for="telefono">Teléfono *</label>
                                     <input type="number" id="telefono" name="telefono"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="phone"
-                                        placeholder="1234 5678">
+                                        placeholder="Ej: 12345678">
                                     <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
                                         class="text-red-500 text-sm font-medium -mt-1">
                                         <div *ngIf="form.get('phone')?.hasError('maxlength')">Supera limite digitos
                                         </div>
                                         <div *ngIf="form.get('phone')?.hasError('required')">El Telefono es requerido.
                                         </div>
-                                        <div *ngIf="form.get('phone')?.hasError('pattern')">El Telefono solo debe
+                                        <div *ngIf="form.get('phone')?.hasError('pattern')">El Teléfono solo debe
                                             contener numeros</div>
                                     </div>
                                 </div>
 
                                 <div class="col-2-email grid mb-3">
-                                    <label for="email">Email</label>
+                                    <label for="email">Email *</label>
                                     <input type="email" id="email" name="email"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                         formControlName="email"
@@ -353,6 +352,7 @@
                                         <div *ngIf="form.get('email')?.hasError('required')">El email es requerido.
                                         </div>
                                         <div *ngIf="form.get('email')?.hasError('email')">El email no es válido.</div>
+                                        <div *ngIf="form.get('email')?.hasError('pattern')">Algunos carácteres son inválidos.</div>
                                     </div>
                                 </div>
 
