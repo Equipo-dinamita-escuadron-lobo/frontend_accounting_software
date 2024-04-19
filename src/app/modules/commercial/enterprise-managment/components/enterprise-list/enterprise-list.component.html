@@ -1,6 +1,7 @@
 <section class="contenido px-10 py-10 font-projectFont">
     <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
-        <h1 class="text-3xl font-bold mb-8 sm:grid-cols-1 text-blue-950 text-center sm:text-left">Listado de empresas</h1>
+        <h1 class="text-3xl font-bold mb-8 sm:grid-cols-1 text-blue-950 text-center sm:text-left">Listado de empresas
+        </h1>
 
         <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
             <button type="button" (click)="goToCreateEnterprise()"
@@ -24,58 +25,35 @@
         </div>
     </form>
 
-    <div class="mostrador grid md:grid-cols-4 gap-4  w-full justify-center">
-        <div class="fila grid sm:grid-cols-2 md:grid-cols-3 ld:grid-cols-4 gap-4 col-span-3 tm:grid-cols-1  w-full justify-center items-center p-6">
-            <div class=" max-w-52 p-1 mb-8 mr-8 bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center min-w-52 shadow-xl"
-                *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise ">
-                <div class="flex icon justify-center  content-center px-4 pt-4" (click)="selectEnterprise(empresa)">
-                    <a class="">
-                        <img class="rounded-full w-21 h-21 object-cover shadow-sm" src="../../../../../../assets/Iconos/enterprise/icon-default.png" alt="" />
-                    </a>
-                </div>
+    <div
+        class="mostrador grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2          ld:grid-cols-4 gap-4 tm:grid-cols-1 justify-center">
 
-                <div class="pl-4 py-2 mr-4">
-                    <a>
-                        <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
-                            }}</h5>
-                    </a>
-                    <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">Número de Identificación
-                        Tributario: {{ empresa.nit }}
-                    </p>
-                    <a  (click)="logInEnterprise()"
-                        class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
-                        Acceder
-                        <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
+        <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-xl"
+            *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
+            <div class="flex icon justify-center  content-center px-4 pt-4">
+                <a href="#" routerLink="/enterprise-management/detail" class="">
+                    <img *ngIf="empresa.logo != ''; else defaultLogo"
+                        class="rounded-full w-21 h-21 object-cover shadow-sm" [src]="empresa.logo" alt="" />
+                    <ng-template #defaultLogo>
+                        <img class="rounded-full w-21 h-21 object-cover shadow-sm"
+                            src="../../../../../../assets/Iconos/enterprise/icon-default.png" alt="Logo por defecto" />
+                    </ng-template>
+                </a>
             </div>
-        </div>
-
-        <div class="information-enterprise col-span-1 shadow-xl rounded-lg flex flex-col"
-            [ngClass]="{'visible': selectedEnterprise}"
-            *ngIf="selectedEnterprise">
-            <div class="flex items-center justify-between p-3">
-              <h1 class="text-md font-bold text-blue-950">Detalles de {{selectedEnterprise.name}}</h1>
-              <button class="close-button" (click)="closeInfoEnterprise()">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <!-- Resto del contenido de 'information-enterprise' -->
-
-            <!-- Contenedor para el botón 'Acceder' -->
-            <div class="mt-auto p-3">
-              <div class="flex justify-center">
-                <button type="button"
-                (click)="logInEnterprise()"
-                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white">
-                  Acceder
-                </button>
-              </div>
+            <div class="pl-4 py-2 mr-4">
+                <a href=" #" routerLink="/enterprise-management/detail">
+                    <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
+                        }}</h5>
+                </a>
+                <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}
+                </p>
+                <a href="#" routerLink="/enterprise-management/detail"
+                    class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
+                    Acceder
+                    <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
