@@ -8,6 +8,13 @@ import { ProductListComponent } from '../../commercial/product-managment/compone
 import { ThirdsListComponent } from '../../commercial/third-parties-managment/components/thirds-list/thirds-list.component';
 import { ThirdCreationComponent } from '../../commercial/third-parties-managment/components/third-creation/third-creation.component';
 import { ProductCreationComponent } from '../../commercial/product-managment/components/product-creation/product-creation.component';
+import { UnitOfMeasureListComponent } from '../../commercial/product-managment/components/unit-of-measure-list/unit-of-measure-list.component';
+import { UnitOfMeasureCreationComponent } from '../../commercial/product-managment/components/unit-of-measure-creation/unit-of-measure-creation.component';
+import { UnitOfMeasureEditComponent } from '../../commercial/product-managment/components/unit-of-measure-edit/unit-of-measure-edit.component';
+import { ProductEditComponent } from '../../commercial/product-managment/components/product-edit/product-edit.component';
+import { CategoryListComponent } from '../../commercial/product-managment/components/category-list/category-list.component';
+import { CategoryCreationComponent } from '../../commercial/product-managment/components/category-creation/category-creation.component';
+import { CategoryEditComponent } from '../../commercial/product-managment/components/category-edit/category-edit.component';
 
 const routes: Routes = [
   {
@@ -48,7 +55,35 @@ const routes: Routes = [
       {
         path: 'products/create',
         component: ProductCreationComponent
-      }
+      },
+      {
+        path: 'products/edit',
+        component: ProductEditComponent
+      },
+      {
+        path: 'unities',
+        component: UnitOfMeasureListComponent
+      },
+      {
+        path: 'unities/create',
+        component: UnitOfMeasureCreationComponent
+      },
+      {
+        path: 'unities/edit',
+        component: UnitOfMeasureEditComponent
+      },
+      {
+        path: 'categories',
+        component: CategoryListComponent
+      },
+      {
+        path: 'categories/create',
+        component: CategoryCreationComponent
+      },
+      {
+        path: 'categories/edit',
+        component: CategoryEditComponent
+      },
     ]
   }
 ];

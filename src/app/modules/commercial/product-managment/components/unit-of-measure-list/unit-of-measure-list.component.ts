@@ -23,8 +23,8 @@ export class UnitOfMeasureListComponent implements OnInit {
   selectedUnitId: string | null = null;
   timer: any;
   constructor(
-    private unitOfMeasureService: UnitOfMeasureService,  
-    private router: Router, private fb: FormBuilder 
+    private unitOfMeasureService: UnitOfMeasureService,
+    private router: Router, private fb: FormBuilder
   ){
     this.form = this.fb.group(this.validationsAll());
    }
@@ -71,7 +71,7 @@ export class UnitOfMeasureListComponent implements OnInit {
       }
     }
     goBack(): void {
-      this.router.navigate(['product-list']);
+      this.router.navigate(['/general/operations/products']);
     }
 
 }

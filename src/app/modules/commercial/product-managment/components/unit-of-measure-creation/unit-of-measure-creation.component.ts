@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class UnitOfMeasureCreationComponent implements OnInit{
   unitOfMeasureForm: FormGroup = this.formBuilder.group({});
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
@@ -24,7 +24,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
       description: ['', [Validators.required]]
     });
   }
-  
+
   onSubmit(): void {
     if (this.unitOfMeasureForm.valid) {
       const unitOfMeasureData = this.unitOfMeasureForm.value;
@@ -57,9 +57,9 @@ export class UnitOfMeasureCreationComponent implements OnInit{
       });
     }
   }
-  
+
   goBack(): void {
-    this.router.navigate(['/unitOfMeasure-list']);
+    this.router.navigate(['/general/operations/unities']);
   }
 
   resetForm(): void {
