@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EnterpriseListComponent } from './components/enterprise-list/enterprise-list.component';
 import { FilterEnterpriseList } from './components/filter.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     EnterpriseManagmentRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxDropzoneModule
   ]
 })
 export class EnterpriseManagmentModule { }
