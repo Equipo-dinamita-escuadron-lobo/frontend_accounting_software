@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { Enterprise } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
-//import { environment } from '../../../../../environments/environment';
-import { environment } from '../../../../../environments/enviorment.development'
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +23,8 @@ export class EnterpriseService {
 ];
 
   //Route API
-  //private apiUrl = environment.API_URL + 'enterprises/';  
-  //Local
-  private apiUrl = environment.myAppUrl + 'enterprises/'; 
-  
+  private apiUrl = environment.API_URL + 'enterprises/';  
+
   //Route cloudinary
   private urlCloudinary = environment.myStorageUrl;
 
