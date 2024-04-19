@@ -61,7 +61,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
     }
   }
   goBack(): void {
-    this.router.navigate(['/unitOfMeasure-list']);
+    this.router.navigate(['/general/operations/unities']);
   }
 
 }
