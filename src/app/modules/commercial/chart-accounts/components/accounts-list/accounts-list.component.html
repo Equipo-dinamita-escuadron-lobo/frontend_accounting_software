@@ -3,24 +3,25 @@
         <div class="grid sm:grid-cols-2 justify-between">
             <div>
                 <h1 class="text-3xl text-blue-950">Catalogo de cuentas</h1>
-                <p class="font-normal text-gray-600">Informacion sobre catalogo de cuentas, se puede colocar una descripcion </p>
+                <p class="font-normal text-gray-600">Informacion sobre catalogo de cuentas, se puede colocar una
+                    descripcion </p>
             </div>
             <div class="sm:grid-cols-1 flex sm:justify-end">
                 <button type="button" routerLink="/enterprise-management/create"
-                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                Exportar
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    Exportar
                 </button>
                 <button type="button" routerLink="/enterprise-management/create"
-                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                Crear
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    Crear
                 </button>
             </div>
         </div>
 
         <form class="flex justify-center sm:justify-start sm:ml-8 mt-8 ">
             <div class=" mb-16 -ml-7 flex border-b-2 border-blue-800 w-full sm:w-2/6 rounded-md">
-                <svg class="h-5 w-5 text-blue-800 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-5 w-5 text-blue-800 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8" />
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
@@ -30,14 +31,148 @@
         </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2">
-            <div class="list-account overscroll-auto border-r-4 border-blue-950 mr-6">
-                <p>Aqui va todo lo de listar</p>
+            <div class="list-account overscroll-auto border-r-4 border-blue-950 mr-6 p-3">
+                <div class="w-full flex text-blue-950">
+                    <div class="w-1/2 border-b-2 border-blue-950">Código</div>
+                    <div class="w-1/2 border-b-2 border-blue-950">Nombre de la cuenta</div>
+                </div>
+                <div class="w-full flex font-normal">
+                    <!--list of class type accounts C:-->
+                    <ul class="w-full mt-2">
+                        <li class="list_class mb-2" *ngFor="let class of listAccounts">
+                            <div class="w-full flex">
+                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(class)">
+                                    <div class="code w-1/2 flex">
+                                        <svg class="h-5 w-5 mt-1 transform"
+                                            [ngClass]="{'text-white': !class.subAccounts, 'rotate-180': class.showSubAccounts}"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                            stroke="currentColor" fill="none" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                        {{ class.code }}
+                                    </div>
+                                    <div class="name w-1/2">{{ class.name }}</div>
+                                </button>
+                            </div>
+                            <!--list of group type accounts C:-->
+                            <ul class="ml-5 mt-2" *ngIf="class.showSubAccounts">
+                                <li class="list-group mb-2" *ngFor="let group of class.subAccounts">
+                                    <div class="w-full flex">
+                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(group)">
+                                            <div class="code w-1/2 flex">
+                                                <svg class="h-5 w-5 mt-1 transform"
+                                                    [ngClass]="{'text-white': !group.subAccounts, 'rotate-180': group.showSubAccounts}"
+                                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                    stroke="currentColor" fill="none" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                                {{ group.code }}
+                                            </div>
+                                            <div class="name w-1/2 -ml-3">{{ group.name }}</div>
+                                        </button>
+                                    </div>
+                                    <!--list of account type accounts C:-->
+                                    <ul class="ml-5 mt-2" *ngIf="group.showSubAccounts">
+                                        <li class="list-account mb-2" *ngFor="let account of group.subAccounts">
+                                            <div class="w-full flex">
+                                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(account)">
+                                                    <div class="code w-1/2 flex">
+                                                        <svg class="h-5 w-5 mt-1 transform"
+                                                            [ngClass]="{'text-white': !account.subAccounts, 'rotate-180': account.showSubAccounts}"
+                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                            stroke="currentColor" fill="none" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                            <polyline points="6 9 12 15 18 9" />
+                                                        </svg>
+                                                        {{ account.code }}
+                                                    </div>
+                                                    <div class="name w-1/2 -ml-6">{{ account.name }}</div>
+                                                </button>
+                                            </div>
+                                            <!--list of subAccount type accounts C:-->
+                                            <ul class="ml-5 mt-2" *ngIf="account.showSubAccounts">
+                                                <li class="list-sub-account mb-2" *ngFor="let subAccount of account.subAccounts">
+                                                    <div class="w-full flex">
+                                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" hover:text-blue-900 (click)="toggleSubAccounts(subAccount)">
+                                                            <div class="code w-1/2 flex">
+                                                                <svg class="h-5 w-5 mt-1 transform"
+                                                                    [ngClass]="{'text-white': !subAccount.subAccounts, 'rotate-180': subAccount.showSubAccounts}"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    stroke-width="1" stroke="currentColor" fill="none"
+                                                                    stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                </svg>
+                                                                {{ subAccount.code }}
+                                                            </div>
+                                                            <div class="name w-1/2 -ml-8">{{ subAccount.name }}</div>
+                                                        </button>
+                                                    </div>
+                                                    <!--list of aux1 type accounts C:-->
+                                                    <ul class="ml-5 mt-2" *ngIf="subAccount.showSubAccounts">
+                                                        <li class="list-aux1 mb-2" *ngFor="let aux1 of subAccount.subAccounts">
+                                                            <div class="w-full flex">
+                                                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(aux1)">
+                                                                    <div class="code w-1/2 flex">
+                                                                        <svg class="h-5 w-5 mt-1 transform"
+                                                                            [ngClass]="{'text-white': !aux1.subAccounts, 'rotate-180': aux1.showSubAccounts}"
+                                                                            width="24" height="24" viewBox="0 0 24 24"
+                                                                            stroke-width="1" stroke="currentColor"
+                                                                            fill="none" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                                            <polyline points="6 9 12 15 18 9" />
+                                                                        </svg>
+                                                                        {{ aux1.code }}
+                                                                    </div>
+                                                                    <div class="name w-1/2 -ml-10">{{ aux1.name }}
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                            <!--list of aux2 type accounts C:-->
+                                                            <ul class="ml-5 mt-2" *ngIf="aux1.showSubAccounts">
+                                                                <li class="list-aux2 mb-2" *ngFor="let aux2 of aux1.subAccounts">
+                                                                    <div class="w-full flex">
+                                                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                                            (click)="toggleSubAccounts(aux2)">
+                                                                            <div class="code w-1/2 flex">
+                                                                                <svg class="h-5 w-5 mt-1 transform"
+                                                                                    [ngClass]="{'text-transparent': !aux2.subAccounts, 'rotate-180': aux2.showSubAccounts}"
+                                                                                    width="24" height="24"
+                                                                                    viewBox="0 0 24 24" stroke-width="1"
+                                                                                    stroke="currentColor" fill="none"
+                                                                                    stroke-linejoin="round">
+                                                                                    <path stroke="none"
+                                                                                        d="M0 0h24v24H0z" />
+                                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                                </svg>
+                                                                                {{ aux2.code }}
+                                                                            </div>
+                                                                            <div class="name w-1/2 -ml-12">{{ aux2.name }}
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
             <div class="create-account ">
                 <p>Aqui va todo los de crear empresa</p>
             </div>
         </div>
-        
+
 
     </div>
 </div>
