@@ -140,7 +140,7 @@ export class EnterpriseCreationComponent {
         [
           Validators.required,
           Validators.email,
-          Validators.pattern(/^[a-zA-Z0-9\s\-.]+$/),
+          Validators.pattern(/^[a-zA-Z0-9\s\-.@]+$/),
         ],
       ],
       country: [
