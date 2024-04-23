@@ -65,7 +65,7 @@ validationsAll(){
   redirectToEdit(productId: string): void {
     if (this.selectedProductId === productId) {
       // Doble clic, navegar a la página de edición
-      this.router.navigate(['/product-edit', productId]);
+      this.router.navigate(['/general/operations/products/edit/', productId]);
       // Reiniciar el temporizador y el ID del producto seleccionado
       clearTimeout(this.timer);
       this.selectedProductId = null;

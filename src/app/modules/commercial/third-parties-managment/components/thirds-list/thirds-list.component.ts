@@ -25,6 +25,7 @@ export class ThirdsListComponent {
     //{ title: 'Direccion', data: 'address' },
     { title: 'Celular', data: 'phoneNumber' },
     { title: 'Correo', data: 'email' },
+    { title: 'Acciones'}
   ];
 
   constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router ) {
@@ -48,7 +49,7 @@ export class ThirdsListComponent {
         alert("Failed to get Thirds")
       }
   });
-    
+
   }
 
   redirectTo(route: string): void {

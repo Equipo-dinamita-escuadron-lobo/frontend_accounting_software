@@ -1,0 +1,10 @@
+.information-enterprise {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.information-enterprise.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

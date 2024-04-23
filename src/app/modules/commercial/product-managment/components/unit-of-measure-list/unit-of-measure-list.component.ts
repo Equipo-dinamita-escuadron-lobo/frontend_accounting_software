@@ -23,8 +23,8 @@ export class UnitOfMeasureListComponent implements OnInit {
   selectedUnitId: string | null = null;
   timer: any;
   constructor(
-    private unitOfMeasureService: UnitOfMeasureService,  
-    private router: Router, private fb: FormBuilder 
+    private unitOfMeasureService: UnitOfMeasureService,
+    private router: Router, private fb: FormBuilder
   ){
     this.form = this.fb.group(this.validationsAll());
    }
@@ -56,7 +56,7 @@ export class UnitOfMeasureListComponent implements OnInit {
     redirectToEdit(unitId: string): void {
       if (this.selectedUnitId === unitId) {
         // Doble clic, navegar a la página de edición
-        this.router.navigate(['/unitOfMeasure-edit', unitId]);
+        this.router.navigate(['/general/operations/unities/edit/', unitId]);
         // Reiniciar el temporizador y el ID del producto seleccionado
         clearTimeout(this.timer);
         this.selectedUnitId = null;
@@ -71,7 +71,7 @@ export class UnitOfMeasureListComponent implements OnInit {
       }
     }
     goBack(): void {
-      this.router.navigate(['product-list']);
+      this.router.navigate(['/general/operations/products']);
     }
 
 }

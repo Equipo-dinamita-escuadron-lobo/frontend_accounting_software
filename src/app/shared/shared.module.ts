@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { SharedRoutingModule } from './shared-routing.module';
 import { HeaderComponent } from './components/header/header.component';
+import { HeaderEnterprisesComponent } from './components/header-enterprises/header-enterprises.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarSelectedComponent } from './components/sidebar-selected/sidebar-selected.component';
 import { CheckButtonComponent } from './components/check-button/check-button.component';
@@ -14,6 +15,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   declarations: [
     HeaderComponent,
+    HeaderEnterprisesComponent,
     SidebarComponent,
     SidebarSelectedComponent,
     CheckButtonComponent,
@@ -28,6 +30,7 @@ import { ReactiveFormsModule} from '@angular/forms';
   ],
   exports: [
     HeaderComponent,
+    HeaderEnterprisesComponent,
     SidebarComponent,
     CheckButtonComponent,
     DatatableComponent

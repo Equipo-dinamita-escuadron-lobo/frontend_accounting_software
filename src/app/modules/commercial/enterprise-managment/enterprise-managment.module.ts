@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { EnterpriseManagmentRoutingModule } from './enterprise-managment-routing.module';
 import { EnterpriseCreationComponent } from './components/enterprise-creation/enterprise-creation.component';
-import { PrincipalComponent } from './components/principal/principal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EnterpriseListComponent } from './components/enterprise-list/enterprise-list.component';
 import { FilterEnterpriseList } from './components/filter.pipe';
@@ -15,7 +14,6 @@ import { EnterpriseDetailsComponent } from './components/enterprise-details/ente
 @NgModule({
   declarations: [
     EnterpriseCreationComponent,
-    PrincipalComponent,
     EnterpriseListComponent,
     FilterEnterpriseList,
     EnterpriseDetailsComponent
@@ -27,6 +25,12 @@ import { EnterpriseDetailsComponent } from './components/enterprise-details/ente
     ReactiveFormsModule,
     NgSelectModule,
     NgxDropzoneModule
+
+  ],
+  exports:[
+    EnterpriseListComponent,
+    EnterpriseCreationComponent,
+    EnterpriseDetailsComponent
   ]
 })
 export class EnterpriseManagmentModule { }

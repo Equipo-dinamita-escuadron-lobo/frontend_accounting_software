@@ -1,11 +1,11 @@
 <!-- Botones para agregar producto, categoría y unidad -->
 <div class="px-16 py-3 font-projectFont">
-    <div class="mt-4">  
+    <div class="mt-4">
       <div class="mb-6">
         <span class="text-4xl text-blue-950">Unidades de Medida</span>
       </div>
-      
-      
+
+
       <div
         class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
       >
@@ -35,11 +35,24 @@
             />
           </form>
         </div>
+<<<<<<< HEAD
   
         <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg space-x-4">          
+=======
+
+        <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+
           <button
             class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-            (click)="redirectTo('unitOfMeasure-creation')"
+            (click)="goBack()"
+          >
+            Volver
+          </button>
+
+>>>>>>> main
+          <button
+            class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+            (click)="redirectTo('/general/operations/unities/create')"
           >
             Agregar
           </button>
@@ -54,9 +67,9 @@
             </span>
           </button>
         </div>
-        
+
       </div>
-  
+
       <div class="lg:text-md mx-auto">
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
@@ -92,4 +105,3 @@
       </ng-template>
     </div>
   </div>
-  
