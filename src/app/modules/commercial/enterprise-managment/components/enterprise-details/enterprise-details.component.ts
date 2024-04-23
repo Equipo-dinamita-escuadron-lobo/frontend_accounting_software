@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class EnterpriseDetailsComponent {
   enterpriseSelected?: EnterpriseDetails;
+  typePerson:string = '';
   id: string = '-1';
 
   constructor(private enterpriseService: EnterpriseService) {
@@ -27,9 +28,20 @@ export class EnterpriseDetailsComponent {
       this.enterpriseService.getEnterpriseById(this.id).subscribe({
         next: (enterpriseData) => {
           this.enterpriseSelected = enterpriseData;
-          console.log(this.enterpriseSelected);
+          this.getTypePerson(enterpriseData.personType.type);
+          console.log(enterpriseData)
         },
       });
+    }
+  }
+
+  getTypePerson(value:string){
+    if(value === 'LEGAL_PERSON'){
+      this.typePerson = 'Persona Jurídica';
+    }else if((value === 'NATURAL_PERSON')){
+      this.typePerson = 'Persona natural';
+    }else{
+      this.typePerson = ''
     }
   }
 

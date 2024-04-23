@@ -2,9 +2,9 @@
     <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
         <div class="tile text-center mb-3 sg:text-start">
             <h1 class="text-3xl   font-bold  text-blue-950">Listado de empresas</h1>
-        <p class="text-base mb-3  sg:mb-7 ">Elija una empresa para acceder a sus funcionalidades</p>
+            <p class="text-base mb-3  sg:mb-7 ">Elija una empresa para acceder a sus funcionalidades</p>
         </div>
-      
+
 
         <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
             <button type="button" routerLink="/enterprise-management/create"
@@ -31,22 +31,29 @@
 
     <div class="container-all grid  bg-white rounded-lg grid-cols-1 sg:grid-cols-5 shadow-lg p-4 mx-3">
         <div class="container-list-menu grid  col-span-4 grid-cols-1">
-            <form class="flex justify-center sm:justify-start sm:ml-8 mx-4 my-5 ">
-                <div class="flex border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md">
-                    <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                    <input type="text" class="mb-2   bg-transparent w-10/12 outline-none" id="search"
+            <form class="flex justify-center sm:justify-start sm:ml-8 mx-4 my-5">
+                <div class="flex justify-start border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md max-h-10">
+                    <div class="icon mr-1">
+                        <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </div>
+
+                    <div class="input w-full">
+                        <input type="text" class="mb-2   w-10/12 outline-none" id="search"
                         placeholder="Ingrese el nombre de la empresa" name="filterEnterpriseList"
                         [(ngModel)]="filterEnterprise">
+                    </div>
+               
                 </div>
             </form>
-            <div class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 gap-10 justify-center p-7">
+            <div
+                class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 gap-10 justify-center p-7">
 
                 <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-xl  col-span-1 max-w-60"
-                    *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
+                    *ngFor="let empresa of listEnterprisesActive | filterEnterpriseList:filterEnterprise">
                     <div class="flex icon justify-center  content-center px-4 pt-4">
                         <a href="#" routerLink="/enterprise-management/detail" class="">
                             <img *ngIf="empresa.logo != ''; else defaultLogo"
@@ -65,11 +72,13 @@
                         </a>
                         <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}
                         </p>
-                        <a href="#" (click)="updateEnterpriseSelected(empresa.id)" routerLink="/enterprise-management/details"
+                        <a href="#" (click)="updateEnterpriseSelected(empresa.id)"
+                            routerLink="/enterprise-management/details"
                             class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
                             Acceder
                             <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
                     </div>

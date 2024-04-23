@@ -72,7 +72,7 @@
                                 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tipo de persona</p>
-                                    <p class=""> {{enterpriseSelected?.personType?.type}}</p>
+                                    <p class=""> {{typePerson}}</p>
                                 </div>
                             </div>
 
@@ -94,7 +94,7 @@
 
                                 <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'LEGAL_PERSON'">
                                     <p class="text-gray-500 mb-2">Razon social</p>
-                                    <p class=""> {{enterpriseSelected?.personType?.businessName}}</p>
+                                    <p class=""> {{enterpriseSelected?.personType?.bussinessName}}</p>
                                 </div>
                             </div>
                             
@@ -110,7 +110,7 @@
                             <div class="column-1 col-span-1">
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Responsabilidades tributarias</p>
-                                    <p class="" *ngFor="let item for enterpriseSelected?.taxLiabilities"> {{item.name}}</p>
+                                    <p class="" *ngFor="let item of enterpriseSelected?.taxLiabilities"> {{item.name}}</p>
                                 </div>
 
                                 <div class="detail mb-4">

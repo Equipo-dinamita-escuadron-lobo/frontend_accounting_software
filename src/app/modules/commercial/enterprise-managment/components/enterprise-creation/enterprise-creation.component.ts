@@ -187,9 +187,12 @@ export class EnterpriseCreationComponent {
 
   validationsForm(): boolean {
     if (this.form.valid) {
-      if (this.selectedButtonType == 'LEGAL_PERSON') {
+      if (this.selectedButtonType === 'LEGAL_PERSON') {
+        console.log('juridica')
         return this.form_legal.invalid;
-      } else {
+      } else if (this.selectedButtonType === 'NATURAL_PERSON') {
+        console.log('natural')
+        console.log( this.form_natural.invalid)
         return this.form_natural.invalid;
       }
     }
@@ -372,9 +375,9 @@ export class EnterpriseCreationComponent {
     try {
       const personTypeForm: PersonType = {
         type: this.selectedButtonType,
-        name: this.form.value.nameOwner,
-        businessName: this.form.value.businessName,
-        surname: this.form.value.surname,
+        name: this.form_natural.value.nameOwner,
+        bussinessName: this.form_legal.value.businessName,
+        surname: this.form_natural.value.surname,
       };
 
       const locationForm: Location = {

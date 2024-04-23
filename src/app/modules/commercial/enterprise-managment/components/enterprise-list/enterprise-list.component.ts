@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class EnterpriseListComponent {
   filterName: string = "";
-  listEnterprises: EnterpriseList[] = [ ];
+  listEnterprisesActive: EnterpriseList[] = [ ];
+  listEnterprisesInctive: EnterpriseList[] = [ ];
   selecteEnterprise ?: EnterpriseList;
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;
@@ -27,9 +28,9 @@ export class EnterpriseListComponent {
   
   
   getEnterprises(){
-    this.enterpriseServide.getEnterprises().subscribe({
+    this.enterpriseServide.getEnterprisesActive().subscribe({
       next:(enterpriseData) =>{
-        this.listEnterprises = enterpriseData;
+        this.listEnterprisesActive = enterpriseData;
       }
     })
   }
@@ -40,7 +41,7 @@ export class EnterpriseListComponent {
 
   /*
   getEnterprises(){
-    this.listEnterprises = this.enterpriseServide.getEnterprises();
+    this.listEnterprisesActive = this.enterpriseServide.getEnterprises();
   }*/
 
 }

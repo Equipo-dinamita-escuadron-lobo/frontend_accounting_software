@@ -37,7 +37,7 @@ export class EnterpriseService {
   
 
   
-  getEnterprises(): Observable<EnterpriseList[]> {
+  getEnterprisesActive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
   }
 
@@ -72,12 +72,13 @@ export class EnterpriseService {
    * @returns respond from the backend of creation enterprise
    */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
+    console.log(enterprise);
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }
 
   updateStatusEnterprise(id:string, status:string) {
-    //const url = `${this.apiUrl}update/status/${id}/${status}`;
-    return this.http.put(id, status);
+    const url = `${this.apiUrl}update/status/${id}/${status}`;
+    return this.http.put(url,null);
   }
 
   
