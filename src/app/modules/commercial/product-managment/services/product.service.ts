@@ -25,7 +25,8 @@ export class ProductService {
 
    // Método para actualizar un producto existente
    updateProduct(product: Product): Observable<Product> {
-    const url = `${environment.API_URL}products/update/`; // Suponiendo que el backend espera el ID del producto en la URL
+    const id = product.id; // Obtenemos el ID del producto
+    const url = `${environment.API_URL}products/update/${id}`; // Suponiendo que el backend espera el ID del producto en la URL
     console.log(product);
     return this.http.put<Product>(url, product); // Usamos el método PUT para actualizar el producto
 
