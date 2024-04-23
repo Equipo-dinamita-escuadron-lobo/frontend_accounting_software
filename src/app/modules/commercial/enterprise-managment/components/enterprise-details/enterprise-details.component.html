@@ -1,4 +1,4 @@
-<div class="flex w-full  h-4/5 font-projectFont mb-5">
+<div class="flex w-full  h-4/5 font-projectFont mb-5" *ngIf="id !== '-1'">
     <div class="container max-w-full mx-auto px-7 sg:px-16 py-10 w-full">
         <div class="container__title text-center sm:text-left grid grid-cols-1 justify-between mx-4 sg:grid-cols-2 ">
             <div class="title">
@@ -41,9 +41,9 @@
                         </div>
 
                         <div class="more-info col-span-1 sg:col-span-2 sg:ml-5 opm:ml-0">
-                            <p class="font-bold">Nombre de la empresa</p>
-                            <p>Nit</p>
-                            <p>Departamento, ciudad</p>
+                            <p class="font-bold">{{enterpriseSelected?.name}}</p>
+                            <p>Nit: {{enterpriseSelected?.nit}}</p>
+                            <p>{{enterpriseSelected?.location?.department?.name}}, {{enterpriseSelected?.location?.city?.name}}</p>
                         </div>
                     </div>
 
@@ -56,34 +56,45 @@
                             <div class="column-1 col-span-1">
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Nombre de la empresa</p>
-                                    <p class="">Exito</p>
+                                    <p class="">{{enterpriseSelected?.name}}</p>
                                 </div>
 
-                                <div class="detail mb-4">
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
                                     <p class="text-gray-500 mb-2">Nombre del propietario</p>
-                                    <p class="">Juan Carlos</p>
+                                    <p class="">{{enterpriseSelected?.personType?.name}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tipo de empresa</p>
-                                    <p class="">Privada</p>
+                                    <p class=""> {{enterpriseSelected?.enterpriseType?.name}}</p>
+                                </div>
+
+                                
+                                <div class="detail mb-4">
+                                    <p class="text-gray-500 mb-2">Tipo de persona</p>
+                                    <p class=""> {{enterpriseSelected?.personType?.type}}</p>
                                 </div>
                             </div>
 
                             <div class="column-2 col-span-1">
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">NIT</p>
-                                    <p class="">1234567</p>
+                                    <p class=""> {{enterpriseSelected?.nit}}</p>
                                 </div>
 
-                                <div class="detail mb-4">
-                                    <p class="text-gray-500 mb-2">Apellido del propietario</p>
-                                    <p class="">Cruz Peña</p>
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
+                                    <p class="text-gray-500 mb-2" >Apellido del propietario</p>
+                                    <p class="">{{enterpriseSelected?.personType?.surname}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tipo de contribuyente</p>
-                                    <p class="">Responsable de IVA</p>
+                                    <p class=""> {{enterpriseSelected?.taxPayerType?.name}}</p>
+                                </div>
+
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'LEGAL_PERSON'">
+                                    <p class="text-gray-500 mb-2">Razon social</p>
+                                    <p class=""> {{enterpriseSelected?.personType?.businessName}}</p>
                                 </div>
                             </div>
                             
@@ -99,21 +110,21 @@
                             <div class="column-1 col-span-1">
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Responsabilidades tributarias</p>
-                                    <p class="">Facturador Electrónico</p>
+                                    <p class="" *ngFor="let item for enterpriseSelected?.taxLiabilities"> {{item.name}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">País</p>
-                                    <p class="">Colombia</p>
+                                    <p class="">{{enterpriseSelected?.location?.country?.name}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Departamento</p>
-                                    <p class="">Popayan</p>
+                                    <p class="">{{enterpriseSelected?.location?.department?.name}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
-                                    <p class="text-gray-500 mb-2">Ciudad</p>
+                                    <p class="text-gray-500 mb-2">{{enterpriseSelected?.location?.city?.name}}</p>
                                     <p class="">Cauca</p>
                                 </div>
 
@@ -126,22 +137,22 @@
                             <div class="column-2 col-span-1">
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Dirección</p>
-                                    <p class="">Cra 5 #3-45</p>
+                                    <p class="">{{enterpriseSelected?.location?.address}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Teléfono</p>
-                                    <p class="">123456789</p>
+                                    <p class="">{{enterpriseSelected?.phone}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Email</p>
-                                    <p class="">userunicauca.edu.co</p>
+                                    <p class="">{{enterpriseSelected?.email}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Digito de verificación</p>
-                                    <p class="">1234</p>
+                                    <p class="">{{enterpriseSelected?.dv}}</p>
                                 </div>
                             </div>
                             
@@ -156,10 +167,10 @@
                             <p class="text-blue-950 font-bold">Mi empresa</p>
                         </div>
                         <div class="edit mb-3">
-                            <p class="text-gray-500 font-semibold text-base">Editar</p>
+                            <a href="" class="text-gray-500 font-semibold text-base">Editar</a>
                         </div>
                         <div class="edit mb-3">
-                            <p class="text-red-500 font-bold text-base">Archivar</p>
+                            <a (click)="archiveEnterprise()" class="text-red-500 font-bold text-base">Archivar</a>
                         </div>
                     </div>
                 </aside>

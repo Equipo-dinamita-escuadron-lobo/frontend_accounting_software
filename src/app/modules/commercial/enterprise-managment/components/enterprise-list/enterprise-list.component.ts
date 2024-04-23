@@ -34,6 +34,10 @@ export class EnterpriseListComponent {
     })
   }
 
+  updateEnterpriseSelected(id:string){
+    this.enterpriseServide.setSelectedEnterprise(id);
+  }
+
   /*
   getEnterprises(){
     this.listEnterprises = this.enterpriseServide.getEnterprises();
