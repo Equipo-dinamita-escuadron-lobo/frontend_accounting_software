@@ -23,6 +23,14 @@ export class SidebarComponent {
 
     {
       iconName: 'groups',
+      href: '/general/operations/home',
+      linkText: 'Inicio',
+      subHref: [
+      ]
+    },
+
+    {
+      iconName: 'groups',
       href: '/general/operations/third-parties',
       linkText: 'Terceros',
       subHref: [
