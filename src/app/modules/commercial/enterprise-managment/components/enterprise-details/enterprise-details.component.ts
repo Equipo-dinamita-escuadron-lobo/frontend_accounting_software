@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { Enterprise, EnterpriseDetails } from '../../models/Enterprise';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-enterprise-details',
@@ -13,7 +14,9 @@ export class EnterpriseDetailsComponent {
   typePerson:string = '';
   id: string = '-1';
 
-  constructor(private enterpriseService: EnterpriseService) {
+  constructor(private enterpriseService: EnterpriseService,
+    private router: Router
+  ) {
     this.ngOnInit();
   }
 
@@ -45,6 +48,10 @@ export class EnterpriseDetailsComponent {
     }
   }
 
+  goToListEnterprises(){
+    this.router.navigate(['general/enterprises/list']);
+  }
+
 
   archiveEnterprise() {
     Swal.fire({
@@ -66,6 +73,7 @@ export class EnterpriseDetailsComponent {
               icon: 'success',
               confirmButtonColor: 'rgb(23 37 84)',
             });
+            this.goToListEnterprises();
           },
         });
 

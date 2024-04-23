@@ -34,11 +34,6 @@ const routes: Routes = [
       {
         path: 'create',
         component: EnterpriseCreationComponent
-      },
-      
-      {
-        path: 'details',
-        component: EnterpriseDetailsComponent
       }
     ]
   },
@@ -90,6 +85,11 @@ const routes: Routes = [
         path: 'categories/edit/:id',
         component: CategoryEditComponent
       },
+      
+      {
+        path: 'home',
+        component: EnterpriseDetailsComponent
+      }
     ]
   }
 ];

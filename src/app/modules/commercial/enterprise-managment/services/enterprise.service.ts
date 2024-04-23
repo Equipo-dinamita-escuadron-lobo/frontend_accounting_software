@@ -41,6 +41,10 @@ export class EnterpriseService {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
   }
 
+  getEnterprisesInactive(): Observable<EnterpriseList[]> {
+    return this.http.get<EnterpriseList[]>(this.apiUrl+'inactive');
+  }
+
   /*
   getEnterprises():EnterpriseList[]{
     return [
