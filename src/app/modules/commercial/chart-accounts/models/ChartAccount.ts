@@ -3,4 +3,5 @@ export interface Account {
     name: string;
     subAccounts?: Account[];
     showSubAccounts?: boolean;
-}
+    parent?: Account; // Nueva propiedad para mantener una referencia al padre
+  }

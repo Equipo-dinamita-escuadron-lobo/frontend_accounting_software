@@ -3,15 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { ChartAccountsRoutingModule } from './chart-accounts-routing.module';
 import { AccountsListComponent } from './components/accounts-list/accounts-list.component';
+import { FilterPipe } from './components/filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    AccountsListComponent
+    AccountsListComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,
-    ChartAccountsRoutingModule
+    ChartAccountsRoutingModule,
+    FormsModule
   ]
 })
 export class ChartAccountsModule { }
