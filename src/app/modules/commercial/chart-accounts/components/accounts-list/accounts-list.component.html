@@ -44,7 +44,7 @@
                                 <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(class)">
                                     <div class="code w-1/2 flex">
                                         <svg class="h-5 w-5 mt-1 transform"
-                                            [ngClass]="{'text-white': !class.subAccounts, 'rotate-180': class.showSubAccounts}"
+                                            [ngClass]="{'text-transparent': !class.subAccounts, 'rotate-180': class.showSubAccounts}"
                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                                             stroke="currentColor" fill="none" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" />
@@ -62,7 +62,7 @@
                                         <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(group)">
                                             <div class="code w-1/2 flex">
                                                 <svg class="h-5 w-5 mt-1 transform"
-                                                    [ngClass]="{'text-white': !group.subAccounts, 'rotate-180': group.showSubAccounts}"
+                                                    [ngClass]="{'text-transparent': !group.subAccounts, 'rotate-180': group.showSubAccounts}"
                                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                                                     stroke="currentColor" fill="none" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -80,7 +80,7 @@
                                                 <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(account)">
                                                     <div class="code w-1/2 flex">
                                                         <svg class="h-5 w-5 mt-1 transform"
-                                                            [ngClass]="{'text-white': !account.subAccounts, 'rotate-180': account.showSubAccounts}"
+                                                            [ngClass]="{'text-transparent': !account.subAccounts, 'rotate-180': account.showSubAccounts}"
                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                                                             stroke="currentColor" fill="none" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" />
@@ -98,7 +98,7 @@
                                                         <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" hover:text-blue-900 (click)="toggleSubAccounts(subAccount)">
                                                             <div class="code w-1/2 flex">
                                                                 <svg class="h-5 w-5 mt-1 transform"
-                                                                    [ngClass]="{'text-white': !subAccount.subAccounts, 'rotate-180': subAccount.showSubAccounts}"
+                                                                    [ngClass]="{'text-transparent': !subAccount.subAccounts, 'rotate-180': subAccount.showSubAccounts}"
                                                                     width="24" height="24" viewBox="0 0 24 24"
                                                                     stroke-width="1" stroke="currentColor" fill="none"
                                                                     stroke-linejoin="round">
@@ -117,7 +117,7 @@
                                                                 <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(aux1)">
                                                                     <div class="code w-1/2 flex">
                                                                         <svg class="h-5 w-5 mt-1 transform"
-                                                                            [ngClass]="{'text-white': !aux1.subAccounts, 'rotate-180': aux1.showSubAccounts}"
+                                                                            [ngClass]="{'text-transparent': !aux1.subAccounts, 'rotate-180': aux1.showSubAccounts}"
                                                                             width="24" height="24" viewBox="0 0 24 24"
                                                                             stroke-width="1" stroke="currentColor"
                                                                             fill="none" stroke-linejoin="round">
@@ -168,8 +168,8 @@
                 </div>
             </div>
 
-            <div class="create-account ">
-                <p>Aqui va todo los de crear empresa</p>
+            <div class="create-account font-normal">
+                
             </div>
         </div>
 
