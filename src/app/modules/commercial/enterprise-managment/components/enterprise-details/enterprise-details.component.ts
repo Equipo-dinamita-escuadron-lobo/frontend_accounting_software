@@ -52,6 +52,11 @@ export class EnterpriseDetailsComponent {
     this.router.navigate(['general/enterprises/list']);
   }
 
+  goToEditEnterprise(){
+    this.router.navigate(['general/operations/home/edit']);
+
+  }
+
 
   archiveEnterprise() {
     Swal.fire({

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef  } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { EnterpriseList } from '../../models/EnterpriseList';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +16,8 @@ export class EnterpriseListComponent {
   listEnterprises: EnterpriseList[] = [];
   listEnterprisesInctive: EnterpriseList[] = [];
   typeList = 'ACTIVE';
+  title: string = 'Listado de empresas';
+  subtitle: string = 'Elija una empresa para acceder a sus funcionalidades';
 
   selecteEnterprise?: EnterpriseList;
   showLegalForm: boolean = true;
@@ -34,7 +36,9 @@ export class EnterpriseListComponent {
     this.getEnterprisesActive();
   }
 
-  getEnterprisesActive() {
+  getEnterprisesActive() {    
+    this.title = 'Listado de empresas';
+    this.subtitle = 'Elija una empresa para acceder a sus funcionalidades';
     this.enterpriseServide.getEnterprisesActive().subscribe({
       next: (enterpriseData) => {
         this.typeList = 'ACTIVE';
@@ -44,6 +48,8 @@ export class EnterpriseListComponent {
   }
 
   getEnterprisesInactive() {
+    this.title = 'Empresas archivadas';
+    this.subtitle = 'Lista de empresas archivadas.';
     this.enterpriseServide.getEnterprisesInactive().subscribe({
       next: (enterpriseData) => {
         this.listEnterprises = enterpriseData;
@@ -65,10 +71,10 @@ export class EnterpriseListComponent {
     this.router.navigate(['general/operations/home']);
   }
 
-  activeEnterprise(id:string){
+  activeEnterprise(id: string) {
     Swal.fire({
       title: 'Deseas activar esta empresa?',
-      text: "Tu empresa pasará al estado activo!",
+      text: 'Tu empresa pasará al estado activo!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: 'rgb(23 37 84)',
@@ -88,7 +94,6 @@ export class EnterpriseListComponent {
             this.cdRef.detectChanges();
           },
         });
-
       }
     });
   }

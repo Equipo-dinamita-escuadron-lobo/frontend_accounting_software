@@ -9,6 +9,7 @@ import { FilterEnterpriseList } from './components/filter.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { EnterpriseDetailsComponent } from './components/enterprise-details/enterprise-details.component';
+import { EnterpriseEditComponent } from './components/enterprise-edit/enterprise-edit.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { EnterpriseDetailsComponent } from './components/enterprise-details/ente
     EnterpriseCreationComponent,
     EnterpriseListComponent,
     FilterEnterpriseList,
-    EnterpriseDetailsComponent
+    EnterpriseDetailsComponent,
+    EnterpriseEditComponent
   ],
   imports: [
     CommonModule,

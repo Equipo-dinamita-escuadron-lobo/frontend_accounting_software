@@ -1,7 +1,24 @@
 <div class="flex w-full  h-4/5 font-projectFont mb-5">
     <div class="max-w-full mx-auto px-16 py-10 w-full">
-        <h1 class="text-3xl font-bold  text-blue-950">Creación de Empresa</h1>
-        <p class="text-base  mb-7 ">Ingrese toda la información requerida en los siguientes formularios</p>
+        <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
+            <div class="tile text-center mb-3 sg:text-start">
+                <h1 class="text-3xl   font-bold  text-blue-950">{{title}}</h1>
+                <p class="text-base mb-3  sg:mb-7 ">{{subtitle}}</p>
+            </div>
+    
+    
+            <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+    
+                <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+                    <button type="button" (click)="goToListEnterprises()"
+                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                        Regresar
+                    </button>
+                </div>
+    
+            </div>
+    
+        </div>
 
         <section class="create-enterprise  rounded-xl shadow-xl   bg-white pb-6 w-full">
             <!-- mg--->
@@ -18,7 +35,7 @@
                         <div
                             class="basic__information__picture col-span-1 flex w-3/5  justify-center items-center  content-center mx-auto">
                             <ngx-dropzone (change)="onSelect($event)" [multiple]="false">
-                                <ngx-dropzone-label>Arrastra y suelta tu logo!</ngx-dropzone-label>
+                                <ngx-dropzone-label class="p-3">Arrastra y suelta tu logo!</ngx-dropzone-label>
                                 <ng-container *ngIf="file">
                                     <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove()"
                                         ngProjectAs="ngx-dropzone-preview" [file]="file">
@@ -47,8 +64,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="divA mt-5">
                                 <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
                                     class="grid grid-cols-1 md:grid-cols-2 gap-9">
@@ -78,13 +93,13 @@
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                 placeholder="Ej: Julian" formControlName="nameOwner" required>
-                                            <div *ngIf="form.get('nameOwner')?.invalid && form.get('nameOwner')?.touched"
+                                            <div *ngIf="form_natural.get('nameOwner')?.invalid && form_natural.get('nameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form.get('nameOwner')?.hasError('maxlength')">Supera limite
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('maxlength')">Supera limite
                                                     caracteres</div>
-                                                <div *ngIf="form.get('nameOwner')?.hasError('required')">El nombre es
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('required')">El nombre es
                                                     requerido.</div>
-                                                <div *ngIf="form.get('nameOwner')?.hasError('pattern')">El nombre sólo
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('pattern')">El nombre sólo
                                                     puede contener letras.</div>
                                             </div>
                                         </form>
@@ -97,7 +112,7 @@
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L."
                                                 formControlName="businessName">
-                                            <div *ngIf="form_legal.get('businessName')?.invalid && form.get('businessName')?.touched"
+                                            <div *ngIf="form_legal.get('businessName')?.invalid && form_legal.get('businessName')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">
                                                     Supera
@@ -161,18 +176,18 @@
 
                                         <form [formGroup]="form_natural" class="col-2-surname grid mb-3"
                                             *ngIf="showNaturalForm">
-                                            <label for="apellidos" class="block">Apellidos *</label>
+                                            <label for="surnameOwner" class="block">Apellidos *</label>
 
-                                            <input type="text" id="apellidos" name="apellidos"
+                                            <input type="text" id="surnameOwner" name="surnameOwner"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Ruano" formControlName="surnameOwner">
-                                            <div *ngIf="form.get('surnameOwner')?.invalid && form.get('surnameOwner')?.touched"
+                                                placeholder="Ej: Ruano" formControlName="surnameOwner" required>
+                                            <div *ngIf="form_natural.get('surnameOwner')?.invalid && form_natural.get('surnameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form.get('surnameOwner')?.hasError('maxlength')">Supera
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('maxlength')">Supera
                                                     limite caracteres</div>
-                                                <div *ngIf="form.get('surnameOwner')?.hasError('required')">El apellido
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('required')">El apellido
                                                     es obligatorio.</div>
-                                                <div *ngIf="form.get('surnameOwner')?.hasError('pattern')">El nombre
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('pattern')">El apellido
                                                     solo puede contener letras.</div>
                                             </div>
                                         </form>
@@ -212,7 +227,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="container__additional-information w-full">
                     <div class="flex justify-center sm:mb-11 ">
                         <h2 class="relative font-bold text-2xl group pb-2 border-solid border-b-2 border-blue-950">
@@ -392,7 +406,7 @@
                 <div class="buttons-create-cancel flex justify-center mx-10 my-3">
                     <button
                         class="save-enterprise text-white bg-gradient-to-r from-blue-900 via-blue-800 to-blue-950 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-900 dark:focus:ring-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        (click)="saveEnterprise()" [disabled]="validationsForm()">Guardar</button>
+                        (click)="saveEnterprise()">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-800 via-red-700 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         (click)="goToListEnterprises()">Cancelar</button>

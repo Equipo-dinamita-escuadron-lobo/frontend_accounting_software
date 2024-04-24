@@ -8,3 +8,14 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.selected {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  border-radius: 0.5rem/* 8px */;
+  --tw-text-opacity: 1;
+    color: rgb(23 37 84 / var(--tw-text-opacity));
+    padding: 0.5rem/* 8px */;
+    margin:1rem 0rem/* 16px */;
+}
+
