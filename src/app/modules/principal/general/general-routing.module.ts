@@ -15,6 +15,8 @@ import { ProductEditComponent } from '../../commercial/product-managment/compone
 import { CategoryListComponent } from '../../commercial/product-managment/components/category-list/category-list.component';
 import { CategoryCreationComponent } from '../../commercial/product-managment/components/category-creation/category-creation.component';
 import { CategoryEditComponent } from '../../commercial/product-managment/components/category-edit/category-edit.component';
+import { EnterpriseDetailsComponent } from '../../commercial/enterprise-managment/components/enterprise-details/enterprise-details.component';
+import { EnterpriseEditComponent } from '../../commercial/enterprise-managment/components/enterprise-edit/enterprise-edit.component';
 
 const routes: Routes = [
   {
@@ -84,6 +86,15 @@ const routes: Routes = [
         path: 'categories/edit/:id',
         component: CategoryEditComponent
       },
+
+      {
+        path: 'home',
+        component: EnterpriseDetailsComponent
+      },
+      {
+        path: 'home/edit',
+        component: EnterpriseEditComponent
+      }
     ]
   }
 ];

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Enterprise } from '../models/Enterprise';
+import { Enterprise, EnterpriseDetails } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
 import { environment } from '../../../../../environments/environment';
@@ -21,9 +21,12 @@ export class EnterpriseService {
     { id: 2, name: 'Oficial' },
     { id: 3, name: 'Mixta' }
 ];
-
+  private selectedEnterprise:string = '-1';
   //Route API
-  private apiUrl = environment.API_URL + 'enterprises/';  
+  private apiUrl = environment.API_URL + 'enterprises/';
+
+  //Route cloudinary
+  private urlCloudinary = environment.myStorageUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -31,11 +34,15 @@ export class EnterpriseService {
    * @description Method to get all enterprises.
    * @returns all tax payer types from the backend
    */
-  
 
-  
-  getEnterprises(): Observable<EnterpriseList[]> {
+
+
+  getEnterprisesActive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
+  }
+
+  getEnterprisesInactive(): Observable<EnterpriseList[]> {
+    return this.http.get<EnterpriseList[]>(this.apiUrl+'inactive');
   }
 
   /*
@@ -53,27 +60,50 @@ export class EnterpriseService {
   }*/
 
   /**
-   * 
+   *
    * @param id enterprise´s identifier
-   * @description  Method to get one enterprise by its ID. 
+   * @description  Method to get one enterprise by its ID.
    * @returns one enterprise with id
    */
-  getEnterpriseById(id: number): Observable<Enterprise> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get<Enterprise>(url);
+  getEnterpriseById(id: string): Observable<EnterpriseDetails> {
+    const url = `${this.apiUrl}enterprise/${id}`;
+    console.log(url)
+    return this.http.get<EnterpriseDetails>(url);
   }
 
   /**
-   * @param enterprise 
+   * @param enterprise
    * @returns respond from the backend of creation enterprise
    */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
+    console.log(enterprise);
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }
 
-  
+  updateStatusEnterprise(id:string, status:string) {
+    const url = `${this.apiUrl}update/status/${id}/${status}`;
+    return this.http.put(url,null);
+  }
+
+
   getTypesEnterprise(){
     return this.enterpriseTypes;
+  }
+
+  uploadImg(data: any): Observable<any>{
+    return this.http.post(this.urlCloudinary, data);
+  }
+
+  getSelectedEnterprise(){
+    return this.selectedEnterprise;
+  }
+
+  setSelectedEnterprise(value:string){
+    this.selectedEnterprise = value;
+  }
+
+  restartSelectedEnterprise(){
+    this.selectedEnterprise = '-1';
   }
 
 }

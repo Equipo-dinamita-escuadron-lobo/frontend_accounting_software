@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/Category';
 
@@ -17,7 +17,8 @@ editForm: FormGroup;
 constructor(
   private route: ActivatedRoute,
   private categoryService: CategoryService,
-  private formBuilder: FormBuilder
+  private formBuilder: FormBuilder,
+  private router: Router
 ) {
   this.editForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -66,5 +67,9 @@ constructor(
         }
       );
     }
+  }
+  
+  goBack(): void {
+    this.router.navigate(['/category-list']);
   }
 }

@@ -5,3 +5,8 @@ export interface City{
   name: string;
   cities: { id: number, name: string }[];
 }
+
+export interface CityShort{
+  id: number;
+  name: string;
+}

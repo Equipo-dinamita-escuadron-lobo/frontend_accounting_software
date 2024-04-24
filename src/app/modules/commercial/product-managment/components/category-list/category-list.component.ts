@@ -28,7 +28,11 @@ export class CategoryListComponent implements OnInit {
     selectedCategoryId: string | null = null;
     timer: any;
 
-  constructor(private categoryService : CategoryService,  private router: Router, private fb: FormBuilder ) {
+  constructor(
+    private categoryService : CategoryService,
+      private router: Router, 
+      private fb: FormBuilder 
+    ) {
     this.form = this.fb.group(this.validationsAll());
    }
 
@@ -76,6 +80,10 @@ getCategories(): void {
         this.selectedCategoryId = null;
       }, 300); // Tiempo en milisegundos para considerar un doble clic
     }
+  }
+  
+  goBack(): void {
+    this.router.navigate(['/product-list']);
   }
 
 }

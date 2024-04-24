@@ -20,6 +20,7 @@ import { DepartmentService } from '../../services/department.service';
 import { Department } from '../../models/Department';
 import { City } from '../../models/City';
 import { EnterpriseType } from '../../models/EnterpriseType';
+import { environment } from '../../../../../../environments/enviorment.development';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
@@ -36,6 +37,10 @@ export class EnterpriseCreationComponent {
   form: FormGroup;
   form_legal: FormGroup;
   form_natural: FormGroup;
+  
+
+  title:string = 'Creacion de Empresa'
+  subtitle:string = 'Ingrese toda la información requerida en los siguientes formularios'
 
   /**
    * Arrays with information of services
@@ -47,6 +52,11 @@ export class EnterpriseCreationComponent {
   departmenList: Department[] = [];
   cityList: { id: number; name: string }[] = [];
   enterpriseTypesList: EnterpriseType[] = [];
+
+  /**
+   * variables for the logo
+   */
+  file: File | null = null;
 
   /**
    * Variables to indicates what type of person
@@ -84,6 +94,7 @@ export class EnterpriseCreationComponent {
     private taxPayerService: TaxPayerTypeService,
     private cityService: CityService,
     private departmentService: DepartmentService,
+    private uploadService: EnterpriseService,
     private router: Router
   ) {
     this.form = this.fb.group(this.validationsAll());
@@ -109,7 +120,7 @@ export class EnterpriseCreationComponent {
         [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z\s]+$/),
+          Validators.pattern(/^[a-zA-Z0-9\s\-.,&()']+$/),
         ],
       ],
       nit: [
@@ -129,15 +140,19 @@ export class EnterpriseCreationComponent {
           Validators.pattern(/^\d+$/),
         ],
       ],
-      email: ['', [Validators.required, Validators.email]],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email,
+          Validators.pattern(/^[a-zA-Z0-9\s\-.@]+$/),
+        ],
+      ],
       country: [
         { value: 'Colombia', disabled: true },
         [Validators.maxLength(50)],
       ],
-      department: [
-        { id: -1, name: '' },
-        [Validators.required, Validators.maxLength(50)],
-      ],
+
       dv: ['', [Validators.maxLength(10)]],
       selectedItemDepartment: [null, [this.selectedValueValidator]],
       selectedItemEnterpriseType: [null, [this.selectedValueValidator]],
@@ -155,13 +170,16 @@ export class EnterpriseCreationComponent {
         [
           Validators.required,
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z]+$/),
+          Validators.pattern(/^[a-zA-Z\s]+$/),
         ],
       ],
       surnameOwner: [
         '',
-        [Validators.required, Validators.maxLength(50)],
-        Validators.pattern(/^[a-zA-Z]+$/),
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern(/^[a-zA-Z\s]+$/), // Modificada para permitir espacios
+        ],
       ],
     };
   }
@@ -174,9 +192,12 @@ export class EnterpriseCreationComponent {
 
   validationsForm(): boolean {
     if (this.form.valid) {
-      if (this.selectedButtonType == 'LEGAL_PERSON') {
+      if (this.selectedButtonType === 'LEGAL_PERSON') {
+        console.log('juridica');
         return this.form_legal.invalid;
-      } else {
+      } else if (this.selectedButtonType === 'NATURAL_PERSON') {
+        console.log('natural');
+        console.log(this.form_natural.invalid);
         return this.form_natural.invalid;
       }
     }
@@ -205,6 +226,9 @@ export class EnterpriseCreationComponent {
     this.showLegalForm = true;
     this.showNaturalForm = false;
     this.selectedButtonType = 'LEGAL_PERSON';
+    this.form.reset();
+    this.form_legal.reset();
+    this.form_natural.reset();
   }
 
   /**
@@ -214,6 +238,9 @@ export class EnterpriseCreationComponent {
     this.selectedButtonType = 'NATURAL_PERSON';
     this.showLegalForm = false;
     this.showNaturalForm = true;
+    this.form.reset();
+    this.form_legal.reset();
+    this.form_natural.reset();
   }
 
   /**
@@ -225,6 +252,76 @@ export class EnterpriseCreationComponent {
       return 1;
     }
     return 0;
+  }
+
+  /**
+   * @description Handle file selection event
+   * @param event Event containing selected files
+   */
+  onSelect(event: any) {
+    this.file = event.addedFiles[0];
+  }
+
+  /**
+   * @description remove image
+   */
+  onRemove() {
+    this.file = null;
+  }
+
+  /**
+   * @description Function to upload an image to Cloudinary.
+   * @return A promise that resolves to the URL of the uploaded image or is rejected with an error message.
+   */
+  upload(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.file) {
+        resolve('');
+        return;
+      }
+
+      const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB en bytes
+      if (this.file.size > MAX_FILE_SIZE) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'El tamaño del archivo excede el límite de 5 MB.',
+          icon: 'error',
+        });
+        reject('El tamaño del archivo excede el límite de 5 MB.');
+        return;
+      }
+
+      const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
+      if (!ALLOWED_TYPES.includes(this.file.type)) {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Solo se permiten archivos de tipo JPEG o PNG.',
+          icon: 'error',
+        });
+        reject('Solo se permiten archivos de tipo JPEG o PNG.');
+        return;
+      }
+
+      const fileData = this.file;
+      const data = new FormData();
+      data.append('file', fileData);
+      data.append('upload_preset', environment.storageDirectory);
+      data.append('cloud_name', environment.storageName);
+
+      this.uploadService.uploadImg(data).subscribe(
+        (response: any) => {
+          resolve(response.url);
+        },
+        (error) => {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al subir el logo.',
+            icon: 'error',
+          });
+          reject(error);
+        }
+      );
+    });
   }
 
   /**
@@ -285,63 +382,94 @@ export class EnterpriseCreationComponent {
   /**
    * @description Save enterprise using Enterprise service
    */
-
-  saveEnterprise() {
-    const personTypeForm: PersonType = {
-      type: this.selectedButtonType,
-      name: this.form.value.nameOwner,
-      businessName: this.form.value.businessName,
-      surname: this.form.value.surname,
-    };
-
-    const locationForm: Location = {
-      address: this.form.value.address,
-      country: 1,
-      department: this.form.value.selectedItemDepartment.id,
-      city: this.form.value.selectedItemCity.id,
-    };
-
-    var branchResponse: number = this.checkBranch();
-
-    const enterprise: Enterprise = {
-      name: this.form.value.name,
-      nit: this.form.value.nit,
-      phone: this.form.value.phone,
-      branch: '' + branchResponse,
-      email: this.form.value.email,
-      logo: this.form.value.logo,
-      taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
-        (item: TaxLiability) => item.id
-      ),
-      taxPayerType: this.form.value.selectedItemTaxPayer.id,
-      personType: personTypeForm,
-      location: locationForm,
-      dv: this.form.value.dv,
-      enterpriseType: this.form.value.selectedItemEnterpriseType.id,
-    };
-
-    this.enterpriseService.createEnterprise(enterprise).subscribe(
-      (data) => {
-        // Caso de éxito (código de respuesta 200 OK)
-        Swal.fire({
-          title: 'Creación exitosa!',
-          text: 'Se ha creado la empresa con éxito!',
-          icon: 'success',
-        });
-        this.form.reset();
-      },
-      (error) => {
-        // Caso de error
-        Swal.fire({
-          title: 'Error!',
-          text: 'Ha ocurrido un error al crear la empresa.',
-          icon: 'error',
-        });
-        console.error('Error al crear la empresa:', error);
+  async saveEnterprise() {
+    if(!this.validationsForm()){
+      try {
+        const personTypeForm: PersonType = {
+          type: this.selectedButtonType,
+          name: this.form_natural.value.nameOwner,
+          bussinessName: this.form_legal.value.businessName,
+          surname: this.form_natural.value.surnameOwner,
+        };
+  
+        const locationForm: Location = {
+          address: this.form.value.address,
+          country: 1,
+          department: this.form.value.selectedItemDepartment.id,
+          city: this.form.value.selectedItemCity.id,
+        };
+  
+        var branchResponse: number = this.checkBranch();
+  
+        // Esperar la URL de la imagen antes de crear la empresa
+        const logoUrl: string = await this.upload();
+  
+        const enterprise: Enterprise = {
+          name: this.form.value.name,
+          nit: this.form.value.nit,
+          phone: this.form.value.phone,
+          branch: '' + branchResponse,
+          email: this.form.value.email,
+          logo: logoUrl,
+          taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
+            (item: TaxLiability) => item.id
+          ),
+          taxPayerType: this.form.value.selectedItemTaxPayer.id,
+          personType: personTypeForm,
+          location: locationForm,
+          dv: this.form.value.dv,
+          enterpriseType: this.form.value.selectedItemEnterpriseType.id,
+        };
+  
+        this.enterpriseService.createEnterprise(enterprise).subscribe(
+          (data) => {
+            // Caso de éxito (código de respuesta 200 OK)
+            Swal.fire({
+              title: 'Creación exitosa!',
+              text: 'Se ha creado la empresa con éxito!',
+              icon: 'success',
+            });
+            this.form.reset();
+            this.form_legal.reset();
+            this.form_natural.reset();
+            this.file = null;
+          },
+          (error) => {
+            // Caso de error
+            Swal.fire({
+              title: 'Error!',
+              text: 'Ha ocurrido un error al crear la empresa.',
+              icon: 'error',
+            });
+          }
+        );
+      } catch (error) {
+        console.error('Error al cargar la imagen:', error);
       }
-    );
-  }
+    }else{
+       // Caso de error
+       Swal.fire({
+        position: "top-end",
+        text: 'Faltan campos por llenar',
+        icon: 'error',
+        timer: 1500,
+        showConfirmButton: false,
+      });
 
+      console.log(this.form.errors)
+      console.log(this.form_legal.errors)
+      console.log(this.form_natural.errors)
+
+      if (this.selectedButtonType === 'LEGAL_PERSON') {
+        this.form_legal.markAllAsTouched;
+        this.form.markAllAsTouched;
+      } else if (this.selectedButtonType === 'NATURAL_PERSON') {
+        this.form_natural.markAllAsTouched;
+        this.form.markAllAsTouched;
+      }
+    }
+    
+  }
   /**
    * Use the Taxlibility service to list in the select interface.
    */
