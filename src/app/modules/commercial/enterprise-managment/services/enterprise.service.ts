@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Enterprise, EnterpriseDetails } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
-import { environment } from '../../../../../environments/enviorment.development';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class EnterpriseService {
 ];
   private selectedEnterprise:string = '-1';
   //Route API
-  private apiUrl = environment.myAppUrl + 'enterprises/';  
+  private apiUrl = environment.API_URL + 'enterprises/';
 
   //Route cloudinary
   private urlCloudinary = environment.myStorageUrl;
@@ -34,9 +34,9 @@ export class EnterpriseService {
    * @description Method to get all enterprises.
    * @returns all tax payer types from the backend
    */
-  
 
-  
+
+
   getEnterprisesActive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
   }
@@ -60,9 +60,9 @@ export class EnterpriseService {
   }*/
 
   /**
-   * 
+   *
    * @param id enterprise´s identifier
-   * @description  Method to get one enterprise by its ID. 
+   * @description  Method to get one enterprise by its ID.
    * @returns one enterprise with id
    */
   getEnterpriseById(id: string): Observable<EnterpriseDetails> {
@@ -72,7 +72,7 @@ export class EnterpriseService {
   }
 
   /**
-   * @param enterprise 
+   * @param enterprise
    * @returns respond from the backend of creation enterprise
    */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
@@ -85,7 +85,7 @@ export class EnterpriseService {
     return this.http.put(url,null);
   }
 
-  
+
   getTypesEnterprise(){
     return this.enterpriseTypes;
   }

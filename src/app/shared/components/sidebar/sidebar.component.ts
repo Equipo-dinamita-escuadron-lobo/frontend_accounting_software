@@ -59,6 +59,6 @@ export class SidebarComponent {
   }
 
   goHome(){
-    this.router.navigateByUrl('/general/operations');
+    this.router.navigateByUrl('/general/operations/home');
   }
 }
