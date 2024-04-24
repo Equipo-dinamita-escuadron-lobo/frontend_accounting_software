@@ -26,7 +26,8 @@
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
                 <input type="text" class="mb-1 font-normal bg-transparent w-10/12 outline-none" id="search"
-                    placeholder="Buscar cuenta(codigo/nombre)" name="filterEnterpriseList" name="filterAccount" [(ngModel)]="filterAccount">
+                    placeholder="Buscar cuenta(codigo/nombre)" name="filterEnterpriseList" name="filterAccount"
+                    [(ngModel)]="filterAccount">
             </div>
         </form>
 
@@ -41,8 +42,10 @@
                     <ul class="w-full mt-2">
                         <li class="list_class mb-2" *ngFor="let class of listAccounts | filterAccounts: filterAccount">
                             <div class="w-full flex">
-                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(class)">
-                                    <div class="code w-1/2 flex">
+                                <button
+                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation()">
+                                    <div class=" code w-1/2 flex">
                                         <svg class="h-5 w-5 mt-1 transform"
                                             [ngClass]="{'text-transparent': !class.subAccounts, 'rotate-180': class.showSubAccounts}"
                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
@@ -59,7 +62,9 @@
                             <ul class="ml-5 mt-2" *ngIf="class.showSubAccounts">
                                 <li class="list-group mb-2" *ngFor="let group of class.subAccounts">
                                     <div class="w-full flex">
-                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(group)">
+                                        <button
+                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation()">
                                             <div class="code w-1/2 flex">
                                                 <svg class="h-5 w-5 mt-1 transform"
                                                     [ngClass]="{'text-transparent': !group.subAccounts, 'rotate-180': group.showSubAccounts}"
@@ -77,7 +82,9 @@
                                     <ul class="ml-5 mt-2" *ngIf="group.showSubAccounts">
                                         <li class="list-account mb-2" *ngFor="let account of group.subAccounts">
                                             <div class="w-full flex">
-                                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(account)">
+                                                <button
+                                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation()">
                                                     <div class="code w-1/2 flex">
                                                         <svg class="h-5 w-5 mt-1 transform"
                                                             [ngClass]="{'text-transparent': !account.subAccounts, 'rotate-180': account.showSubAccounts}"
@@ -93,9 +100,13 @@
                                             </div>
                                             <!--list of subAccount type accounts C:-->
                                             <ul class="ml-5 mt-2" *ngIf="account.showSubAccounts">
-                                                <li class="list-sub-account mb-2" *ngFor="let subAccount of account.subAccounts">
+                                                <li class="list-sub-account mb-2"
+                                                    *ngFor="let subAccount of account.subAccounts">
                                                     <div class="w-full flex">
-                                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" hover:text-blue-900 (click)="toggleSubAccounts(subAccount)">
+                                                        <button
+                                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                            hover:text-blue-900
+                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation()">
                                                             <div class="code w-1/2 flex">
                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                     [ngClass]="{'text-transparent': !subAccount.subAccounts, 'rotate-180': subAccount.showSubAccounts}"
@@ -112,9 +123,12 @@
                                                     </div>
                                                     <!--list of aux1 type accounts C:-->
                                                     <ul class="ml-5 mt-2" *ngIf="subAccount.showSubAccounts">
-                                                        <li class="list-aux1 mb-2" *ngFor="let aux1 of subAccount.subAccounts">
+                                                        <li class="list-aux1 mb-2"
+                                                            *ngFor="let aux1 of subAccount.subAccounts">
                                                             <div class="w-full flex">
-                                                                <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900" (click)="toggleSubAccounts(aux1)">
+                                                                <button
+                                                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation()">
                                                                     <div class="code w-1/2 flex">
                                                                         <svg class="h-5 w-5 mt-1 transform"
                                                                             [ngClass]="{'text-transparent': !aux1.subAccounts, 'rotate-180': aux1.showSubAccounts}"
@@ -132,10 +146,12 @@
                                                             </div>
                                                             <!--list of aux2 type accounts C:-->
                                                             <ul class="ml-5 mt-2" *ngIf="aux1.showSubAccounts">
-                                                                <li class="list-aux2 mb-2" *ngFor="let aux2 of aux1.subAccounts">
+                                                                <li class="list-aux2 mb-2"
+                                                                    *ngFor="let aux2 of aux1.subAccounts">
                                                                     <div class="w-full flex">
-                                                                        <button class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                                            (click)="toggleSubAccounts(aux2)">
+                                                                        <button
+                                                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation()">
                                                                             <div class="code w-1/2 flex">
                                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                                     [ngClass]="{'text-transparent': !aux2.subAccounts, 'rotate-180': aux2.showSubAccounts}"
@@ -149,7 +165,8 @@
                                                                                 </svg>
                                                                                 {{ aux2.code }}
                                                                             </div>
-                                                                            <div class="name w-1/2 -ml-12">{{ aux2.name }}
+                                                                            <div class="name w-1/2 -ml-12">{{ aux2.name
+                                                                                }}
                                                                             </div>
                                                                         </button>
                                                                     </div>
@@ -169,7 +186,89 @@
             </div>
 
             <div class="create-account font-normal">
-                
+                <form [formGroup]="accountForm">
+                    <div class="mb-4">
+                        <div *ngIf="accountForm.get('class')"
+                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-2 items-center mt-6 gap-4">
+                            <div>
+                                <input type="text" formControlName="classCode" placeholder="Código"
+                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div>
+                                <input type="text" formControlName="class" placeholder="Nombre"
+                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
+                        </div>
+                        <div *ngIf="accountForm.get('group')"
+                            class="relative border border-gray-300 rounded-md p-4 grid xl:grid-cols-3 md:grid-cols-2 tm:grid-cols-1 items-center mt-6 gap-4">
+                            <div>
+                                <label for="grupo"
+                                    class="col-span-1 mr-4">{{accountForm.get('groupCode')?.value}}</label>
+                            </div>
+                            <div>
+                                <input type="text" formControlName="groupCode" placeholder="Código"
+                                    class="col-span-1 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div>
+                                <input type="text" formControlName="group" placeholder="Nombre"
+                                    class="col-span-1 flex-grow py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo</div>
+                        </div>
+                        <div *ngIf="accountForm.get('account')"
+                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
+                            <div>
+                                <label for="cuenta"
+                                    class="col-span-1 mr-4">{{accountForm.get('accountCode')?.value}}</label>
+                            </div>
+                            <div>
+                                <input type="text" formControlName="codeAccount" placeholder="Código"
+                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div>
+                                <input type="text" formControlName="account" placeholder="Nombre"
+                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta
+                            </div>
+                        </div>
+                        <div *ngIf="accountForm.get('subAccount')"
+                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
+                            <div>
+                                <label for="subcuenta"
+                                    class="col-span-1 mr-4">{{accountForm.get('subAccountCode')?.value}}</label>
+                            </div>
+                            <div>
+                                <input type="text" formControlName="codeSubAccount" placeholder="Código"
+                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div>
+                                <input type="text" formControlName="subAccount" placeholder="Nombre"
+                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Subcuenta
+                            </div>
+                        </div>
+                        <div *ngIf="accountForm.get('auxiliary')"
+                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
+                            <div>
+                                <label for="auxiliar1"
+                                    class="col-span-1 mr-4">{{accountForm.get('auxiliaryCode')?.value}}</label>
+                            </div>
+                            <div>
+                                <input type="text" formControlName="codeAuxiliary" placeholder="Código"
+                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div>
+                                <input type="text" formControlName="auxiliary" placeholder="Nombre"
+                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Auxiliar
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
