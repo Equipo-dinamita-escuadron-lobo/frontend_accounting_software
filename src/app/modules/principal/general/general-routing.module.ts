@@ -86,7 +86,7 @@ const routes: Routes = [
         path: 'categories/edit/:id',
         component: CategoryEditComponent
       },
-      
+
       {
         path: 'home',
         component: EnterpriseDetailsComponent
