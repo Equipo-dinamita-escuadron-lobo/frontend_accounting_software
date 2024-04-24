@@ -1,12 +1,12 @@
 <div class="flex w-full h-full">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
-        <div class="grid sm:grid-cols-2 justify-between">
-            <div>
+        <div class="grid sm:grid-cols-2 sm:justify-between">
+            <div class="items-center">
                 <h1 class="text-3xl text-blue-950">Catalogo de cuentas</h1>
                 <p class="font-normal text-gray-600">Informacion sobre catalogo de cuentas, se puede colocar una
                     descripcion </p>
             </div>
-            <div class="sm:grid-cols-1 flex sm:justify-end">
+            <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
                 <button type="button" routerLink="/enterprise-management/create"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                     Exportar
@@ -32,7 +32,7 @@
         </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2">
-            <div class="list-account overscroll-auto border-r-4 border-blue-950 mr-6 p-3">
+            <div class="list-account overscroll-auto border-r-4 sm:border-blue-950 sm:mr-6 sm:p-3">
                 <div class="w-full flex text-blue-950">
                     <div class="w-1/2 border-b-2 border-blue-950">Código</div>
                     <div class="w-1/2 border-b-2 border-blue-950">Nombre de la cuenta</div>
@@ -189,84 +189,81 @@
                 <form [formGroup]="accountForm">
                     <div class="mb-4">
                         <div *ngIf="accountForm.get('class')"
-                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-2 items-center mt-6 gap-4">
-                            <div>
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="classCode" placeholder="Código"
-                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
                             </div>
-                            <div>
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="class" placeholder="Nombre"
-                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
                         </div>
+
                         <div *ngIf="accountForm.get('group')"
-                            class="relative border border-gray-300 rounded-md p-4 grid xl:grid-cols-3 md:grid-cols-2 tm:grid-cols-1 items-center mt-6 gap-4">
-                            <div>
+                            class="group relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
                                 <label for="grupo"
-                                    class="col-span-1 mr-4">{{accountForm.get('groupCode')?.value}}</label>
-                            </div>
-                            <div>
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('groupCode')?.value}}</label>
+
                                 <input type="text" formControlName="groupCode" placeholder="Código"
-                                    class="col-span-1 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
                             </div>
-                            <div>
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="group" placeholder="Nombre"
-                                    class="col-span-1 flex-grow py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo</div>
                         </div>
+
                         <div *ngIf="accountForm.get('account')"
-                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
-                            <div>
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
                                 <label for="cuenta"
-                                    class="col-span-1 mr-4">{{accountForm.get('accountCode')?.value}}</label>
-                            </div>
-                            <div>
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('accountCode')?.value}}</label>
                                 <input type="text" formControlName="codeAccount" placeholder="Código"
-                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
                             </div>
-                            <div>
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="account" placeholder="Nombre"
-                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
                             </div>
-                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta
-                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta</div>
                         </div>
+
                         <div *ngIf="accountForm.get('subAccount')"
-                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
-                            <div>
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
                                 <label for="subcuenta"
-                                    class="col-span-1 mr-4">{{accountForm.get('subAccountCode')?.value}}</label>
-                            </div>
-                            <div>
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('subAccountCode')?.value}}</label>
                                 <input type="text" formControlName="codeSubAccount" placeholder="Código"
-                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
                             </div>
-                            <div>
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="subAccount" placeholder="Nombre"
-                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Subcuenta
                             </div>
                         </div>
+
                         <div *ngIf="accountForm.get('auxiliary')"
-                            class="relative border border-gray-300 rounded-md p-4 grid grid-cols-3 items-center mt-6 gap-4">
-                            <div>
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
                                 <label for="auxiliar1"
-                                    class="col-span-1 mr-4">{{accountForm.get('auxiliaryCode')?.value}}</label>
-                            </div>
-                            <div>
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('auxiliaryCode')?.value}}</label>
                                 <input type="text" formControlName="codeAuxiliary" placeholder="Código"
-                                    class="col-span-1 px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
                             </div>
-                            <div>
+                            <div class="w-full sm:w-auto">
                                 <input type="text" formControlName="auxiliary" placeholder="Nombre"
-                                    class="col-span-1 flex-grow px-3 py-2 border border-gray-300 rounded-md mr-4">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Auxiliar
                             </div>
                         </div>
+
                     </div>
                 </form>
             </div>
