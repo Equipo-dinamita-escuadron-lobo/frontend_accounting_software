@@ -510,7 +510,7 @@ export class EnterpriseCreationComponent {
     this.enterpriseTypesList = this.enterpriseService.getTypesEnterprise();
   }
 
-  goToListEnterprises() {
+  goToListEnterprises(){
     this.router.navigate(['general/enterprises/list']);
   }
 }
