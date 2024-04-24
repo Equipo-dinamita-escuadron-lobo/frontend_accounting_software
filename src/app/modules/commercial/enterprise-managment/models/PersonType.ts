@@ -4,5 +4,5 @@ export interface PersonType {
     type: string;
     name?: string;
     surname?: string;
-    businessName?: string;
+    bussinessName?: string;
 }

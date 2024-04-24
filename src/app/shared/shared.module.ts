@@ -6,11 +6,13 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { HeaderComponent } from './components/header/header.component';
 import { HeaderEnterprisesComponent } from './components/header-enterprises/header-enterprises.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SidebarSelectedComponent } from './components/sidebar-selected/sidebar-selected.component';
 import { CheckButtonComponent } from './components/check-button/check-button.component';
 import { DatatableComponent } from './components/datatable/datatable.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule} from '@angular/forms';
+import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { ReactiveFormsModule} from '@angular/forms';
     HeaderEnterprisesComponent,
     SidebarComponent,
     SidebarSelectedComponent,
+    SidenavComponent,
+    SublevelMenuComponent,
     CheckButtonComponent,
     DatatableComponent
   ],
@@ -32,6 +36,7 @@ import { ReactiveFormsModule} from '@angular/forms';
     HeaderComponent,
     HeaderEnterprisesComponent,
     SidebarComponent,
+    SidenavComponent,
     CheckButtonComponent,
     DatatableComponent
   ]

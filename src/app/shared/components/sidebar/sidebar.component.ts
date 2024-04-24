@@ -23,6 +23,14 @@ export class SidebarComponent {
 
     {
       iconName: 'groups',
+      href: '/general/operations/home',
+      linkText: 'Inicio',
+      subHref: [
+      ]
+    },
+
+    {
+      iconName: 'groups',
       href: '/general/operations/third-parties',
       linkText: 'Terceros',
       subHref: [
@@ -51,6 +59,6 @@ export class SidebarComponent {
   }
 
   goHome(){
-    this.router.navigateByUrl('/general/operations');
+    this.router.navigateByUrl('/general/operations/home');
   }
 }

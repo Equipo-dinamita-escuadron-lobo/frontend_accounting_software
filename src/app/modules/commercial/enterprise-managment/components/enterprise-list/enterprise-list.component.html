@@ -1,60 +1,119 @@
 <section class="contenido px-10 py-10 font-projectFont">
     <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
-        <h1 class="text-3xl font-bold mb-8 sm:grid-cols-1 text-blue-950 text-center sm:text-left">Listado de empresas
-        </h1>
+        <div class="tile text-center mb-3 sg:text-start">
+            <h1 class="text-3xl   font-bold  text-blue-950">{{title}}</h1>
+            <p class="text-base mb-3  sg:mb-7 ">{{subtitle}}</p>
+        </div>
+
 
         <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
-            <button type="button" (click)="goToCreateEnterprise()"
-            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-            Agregar
-        </button>
+
+            <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+                <button type="button" (click)="goToCreateEnterprise()"
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    Agregar
+                </button>
+            </div>
+
         </div>
 
     </div>
 
-    <form class="flex justify-center sm:justify-start sm:ml-8 m-4 ">
-        <div class=" mb-16 flex border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md">
-            <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" class="mb-2 px-2  bg-transparent w-10/12 outline-none" id="search"
-                placeholder="Ingrese el nombre de la empresa" name="filterEnterpriseList"
-                [(ngModel)]="filterEnterprise">
-        </div>
-    </form>
 
-    <div
-        class="mostrador grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2          ld:grid-cols-4 gap-4 tm:grid-cols-1 justify-center">
-
-        <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-xl"
-            *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
-            <div class="flex icon justify-center  content-center px-4 pt-4">
-                <a href="#" routerLink="/enterprise-management/detail" class="">
-                    <img *ngIf="empresa.logo != ''; else defaultLogo"
-                        class="rounded-full w-21 h-21 object-cover shadow-sm" [src]="empresa.logo" alt="" />
-                    <ng-template #defaultLogo>
-                        <img class="rounded-full w-21 h-21 object-cover shadow-sm"
-                            src="../../../../../../assets/Iconos/enterprise/icon-default.png" alt="Logo por defecto" />
-                    </ng-template>
-                </a>
+    <aside class="options col-span-1 sg:hidden">
+        <div class="list-options p-4 grid grid-cols-1 mm:grid-cols-3 justify-center items-center text-center">
+            <div class="edit "  [class.selected]="typeList === 'ACTIVE'">
+                <a (click)="getEnterprisesActive()" class="text-blue-950 font-bold">Mis empresas</a>
             </div>
-            <div class="pl-4 py-2 mr-4">
-                <a href=" #" routerLink="/enterprise-management/detail">
-                    <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
-                        }}</h5>
-                </a>
-                <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}
-                </p>
-                <a href="#" routerLink="/enterprise-management/detail"
-                    class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
-                    Acceder
-                    <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
+            <div class="edit mb-3" [class.selected]="typeList === 'INACTIVE'">
+                <a (click)="getEnterprisesInactive()" class="text-gray-500 font-semibold text-base">Archivadas</a>
+            </div>
+            <div class="edit mb-3">
+                <a  class="text-red-500 font-bold text-base">Suspendidas</a>
+            </div>
+
+        </div>
+    </aside>
+
+    <div class="container-all grid  bg-white rounded-lg grid-cols-1 sg:grid-cols-5 shadow-lg p-4 pr-0 mx-3">
+        <div class="container-list-menu grid  col-span-4 grid-cols-1">
+            <form class="flex justify-center sm:justify-start sm:ml-8 mx-4 my-5">
+                <div class="flex justify-start border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md max-h-10">
+                    <div class="icon mr-1">
+                        <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+
+                        </svg>
+                    </div>
+
+                    <div class="input w-full">
+                        <input type="text" class="mb-2   w-10/12 outline-none" id="search"
+                            placeholder="Ingrese el nombre de la empresa" name="filterEnterpriseList"
+                            [(ngModel)]="filterEnterprise">
+                    </div>
+
+                </div>
+            </form>
+            <div
+                class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 gap-10 justify-center p-7">
+
+                <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-2xl  col-span-1 max-w-60"
+                    *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
+                    <div class="flex icon justify-center  content-center px-4 pt-4">
+                        <a href="#" class="">
+                            <img *ngIf="empresa.logo != ''; else defaultLogo"
+                                class="rounded-full w-21 h-21 object-cover shadow-sm" [src]="empresa.logo" alt="" />
+                            <ng-template #defaultLogo>
+                                <img class="rounded-full w-21 h-21 object-cover shadow-sm"
+                                    src="../../../../../../assets/Iconos/enterprise/icon-default.png"
+                                    alt="Logo por defecto" />
+                            </ng-template>
+                        </a>
+                    </div>
+                    <div class="pl-4 py-2 mr-4">
+                        <a href=" #" routerLink="/enterprise-management/detail">
+                            <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
+                                }}</h5>
+                        </a>
+                        <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}
+                        </p>
+                        <button *ngIf="typeList === 'ACTIVE'" href="#" (click)="updateEnterpriseSelected(empresa.id)"
+                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
+                            Acceder
+                            <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <button *ngIf="typeList === 'INACTIVE'" href="#" (click)="activeEnterprise(empresa.id)"
+                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
+                            Activar
+                            <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <aside class="options col-span-1  mr-0 border-l-2 hidden sg:block">
+            <div class="list-options p-4 grid justify-center items-center text-center">
+                <div class="edit "  [class.selected]="typeList === 'ACTIVE'">
+                    <a (click)="getEnterprisesActive()" class="text-blue-950 font-bold cursor-pointer">Mis empresas</a>
+                </div>
+                <div class="edit mb-3" [class.selected]="typeList === 'INACTIVE'">
+                    <a (click)="getEnterprisesInactive()"
+                        class="text-gray-500 font-semibold text-base cursor-pointer">Archivadas</a>
+                </div>
+                <div class="edit mb-3">
+                    <a class="text-red-500 font-bold text-base cursor-pointer">Suspendidas</a>
+                </div>
+            </div>
+        </aside>
+
     </div>
 </section>

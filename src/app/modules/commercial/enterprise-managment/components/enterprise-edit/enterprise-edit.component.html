@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <div class="divA mt-5">
-                                <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
+                                <form [formGroup]="form"
                                     class="grid grid-cols-1 md:grid-cols-2 gap-9">
                                     <div class="">
 
@@ -236,7 +236,7 @@
                     </div>
 
                     <div class="additional__information__content px-8 sm:px-20 sm:py-1 py-7  w-full">
-                        <form [formGroup]="form" (ngSubmit)="saveEnterprise()"
+                        <form [formGroup]="form"
                             class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 sm:gap-20  w-full">
                             <div class="form__enterprise__column-1 0">
 
@@ -406,7 +406,7 @@
                 <div class="buttons-create-cancel flex justify-center mx-10 my-3">
                     <button
                         class="save-enterprise text-white bg-gradient-to-r from-blue-900 via-blue-800 to-blue-950 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-900 dark:focus:ring-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        (click)="saveEnterprise()">Guardar</button>
+                        (click)="editEnterprise()">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-800 via-red-700 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         (click)="goToListEnterprises()">Cancelar</button>

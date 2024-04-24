@@ -8,26 +8,33 @@ import { EnterpriseListComponent } from './components/enterprise-list/enterprise
 import { FilterEnterpriseList } from './components/filter.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { EnterpriseDetailsComponent } from './components/enterprise-details/enterprise-details.component';
+import { EnterpriseEditComponent } from './components/enterprise-edit/enterprise-edit.component';
 
 
 @NgModule({
   declarations: [
     EnterpriseCreationComponent,
     EnterpriseListComponent,
-    FilterEnterpriseList
+    FilterEnterpriseList,
+    EnterpriseDetailsComponent,
+    EnterpriseEditComponent
   ],
   imports: [
     CommonModule,
     EnterpriseManagmentRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxDropzoneModule
+
   ],
   exports:[
     EnterpriseListComponent,
     EnterpriseCreationComponent,
     NgSelectModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    EnterpriseDetailsComponent
   ]
 })
 export class EnterpriseManagmentModule { }
