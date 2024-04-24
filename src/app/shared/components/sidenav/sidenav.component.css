@@ -113,11 +113,14 @@
 .active{
   background-color: #fff;
 
-  .menu-collapse-icon
   .sidenav-link-icon,
   .sidenav-link-text{
     color: #000;
   }
+}
+
+.sidenav-nav-link.active .sidenav-link-icon {
+  color: #000; /* Aquí también asegúrate de que el icono cambie a negro (o el color que desees) */
 }
 
 .menu-collapse-icon{
@@ -127,6 +130,15 @@
   margin: auto 0.5rem auto auto;
   text-align: center;
   color: #000;
+}
+
+.sidenav-collapsed .sidenav-nav-link .menu-collapse-icon {
+  color: #fff; /* Color blanco por defecto */
+}
+
+/* Cuando el sidenav está colapsado y el item está seleccionado */
+.sidenav-collapsed .sidenav-nav-link.active .menu-collapse-icon {
+  color: #000; /* Cambia a negro cuando el item está activo */
 }
 
 .sublevel-nav{
