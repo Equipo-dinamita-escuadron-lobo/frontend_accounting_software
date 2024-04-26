@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { City } from '../models/City';
 import { Observable } from 'rxjs';
-//import { environment } from '../../../../../environments/environment';
-import { environment } from '../../../../../environments/environment'
+import { environment } from '../../../../../environments/environment';
+//import { environment } from '../../../../../environments/enviorment.development'
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,9 @@ import { environment } from '../../../../../environments/environment'
 export class CityService {
 
   //Production
-  //private apiUrl = environment.API_URL + 'address/cities'; 
+  private apiUrl = environment.API_URL + 'address/cities'; 
   //Local
-  private apiUrl = environment.myAppUrl + 'address/cities'
+  //private apiUrl = environment.myAppUrl + 'address/cities'
   constructor(private http: HttpClient) {
 
    }
