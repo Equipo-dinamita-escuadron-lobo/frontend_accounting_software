@@ -17,6 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ChartAccountsRoutingModule,
     ReactiveFormsModule,
     FormsModule
+  ],
+  exports:[
+    AccountsListComponent
   ]
 })
 export class ChartAccountsModule { }
