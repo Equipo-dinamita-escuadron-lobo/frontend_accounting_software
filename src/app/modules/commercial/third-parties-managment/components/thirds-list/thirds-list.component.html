@@ -63,17 +63,32 @@
         <tr
           *ngFor="
             let third of data | filterList : form.value.stringSearch"
-          class="hover:bg-gray-100"
+            class="hover:bg-gray-100"
         >
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.idNumber }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ third.idNumber }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
+          </td>
           <td class="px-6 py-4 whitespace-nowrap">
             {{ third.typeId }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.phoneNumber }}
+            {{ third.idNumber }}
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.email }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <p *ngIf="third.state">
+              Activo
+            </p>
+            <p *ngIf="!third.state">
+              Inactivo
+            </p>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+
+            {{ third.email }}
+          </td>
           <td class="py-4 whitespace-nowrap flex justify-center items-center">
             <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600  mr-2 relative overflow-hidden">
               <span class="material-icons flex justify-center items-center text-white">visibility</span>
@@ -87,11 +102,19 @@
                 Editar
               </span>
             </button>
-            <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white mr-2 flex items-center">
+            <button
+              class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white mr-2 flex items-center"
+              *ngIf="third.state === true"
+              (click)="changeThirdPartieState(third.thId)"
+            >
               <span class="material-icons">toggle_on</span>
               <p class="ml-2">Inactivar</p>
             </button>
-            <button class="px-2 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white mr-2 flex items-center">
+            <button
+              class="px-2 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white mr-2 flex items-center"
+              *ngIf="third.state === false"
+              (click)="changeThirdPartieState(third.thId)"
+            >
               <span class="material-icons">toggle_off</span>
               <p class="ml-2">Activar</p>
             </button>
