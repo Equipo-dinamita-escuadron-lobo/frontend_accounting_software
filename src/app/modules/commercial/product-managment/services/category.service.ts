@@ -14,25 +14,25 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
   private categories: Category[] = [
     {
-      id: 1, name: 'Category 1', description: 'Description for Category 1',
+      id: 1, name: 'Category 1', description: 'Description 1',
       inventory: 'cuenta de inventario',
       cost: 'cuenta de costo',
       sale: 'cuenta de venta',
       return: 'cuenta de devolución'
     },
-    { id: 2, name: 'Category 2', description: 'Description for Category 2',inventory: 'cuenta de inventario',
+    { id: 2, name: 'Category 2', description: 'Description 2',inventory: 'cuenta de inventario',
     cost: 'cuenta de costo',
     sale: 'cuenta de venta',
     return: 'cuenta de devolución' },
-    { id: 3, name: 'Category 3', description: 'Description for Category 3',inventory: 'cuenta de inventario',
+    { id: 3, name: 'Category 3', description: 'Description 3',inventory: 'cuenta de inventario',
     cost: 'cuenta de costo',
     sale: 'cuenta de venta',
     return: 'cuenta de devolución' },
-    { id: 4, name: 'Category 4', description: 'Description for Category 4',inventory: 'cuenta de inventario',
+    { id: 4, name: 'Category 4', description: 'Description 4',inventory: 'cuenta de inventario',
     cost: 'cuenta de costo',
     sale: 'cuenta de venta',
     return: 'cuenta de devolución' },
-    { id: 5, name: 'Category 5', description: 'Description for Category 5',inventory: 'cuenta de inventario',
+    { id: 5, name: 'Category 5', description: 'Description 5',inventory: 'cuenta de inventario',
     cost: 'cuenta de costo',
     sale: 'cuenta de venta',
     return: 'cuenta de devolución'}
