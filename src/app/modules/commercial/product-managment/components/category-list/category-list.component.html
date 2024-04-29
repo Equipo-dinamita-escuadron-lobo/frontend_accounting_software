@@ -35,32 +35,23 @@
  </div>
 
  <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
-
-   <button
-     class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-     (click)="redirectTo('/general/operations/categories/create')"
+    <button
+      class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
+      (click)= goBack()
     >
-     Agregar
-   </button>
-   
-   <button
-     class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-     (click)="goBack()"
-   >
-     Volver
-   </button>
-   <button
-     class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
-     (click)="goBack()"
-    >
-     <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
-         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-950" viewBox="0 0 20 20" fill="currentColor">
-           <path fill-rule="evenodd" d="M12.707 15.707a1 1 0 0 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 0 1 1.414 1.414L9.414 11l3.293 3.293z" clip-rule="evenodd" />
-         </svg>
-     </span>
-   </button>
-
- </div>
+      <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-950" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.707 15.707a1 1 0 0 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 0 1 1.414 1.414L9.414 11l3.293 3.293z" clip-rule="evenodd" />
+          </svg>
+      </span>
+    </button>
+    <button
+      class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+      (click)="redirectTo('/general/operations/categories/create')"
+      >
+      Agregar
+    </button>
+  </div>
 </div>
 
 <div class="lg:text-md mx-auto">

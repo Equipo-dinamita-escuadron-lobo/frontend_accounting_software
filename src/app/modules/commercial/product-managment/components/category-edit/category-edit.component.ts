@@ -70,6 +70,6 @@ constructor(
   }
   
   goBack(): void {
-    this.router.navigate(['/category-list']);
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }
