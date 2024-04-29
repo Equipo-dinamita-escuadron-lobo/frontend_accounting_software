@@ -188,87 +188,197 @@
             <div class="create-account font-normal">
                 <form [formGroup]="accountForm">
                     <div class="mb-4">
-                        <div *ngIf="accountForm.get('class')"
+                        <div *ngIf="accountForm.get('className')"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="classCode" placeholder="Código"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
+                                <input type="text" id="classCode" formControlName="classCode" placeholder="Código"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.class" [class.cursor-not-allowed]="inputAccess.class">
                             </div>
                             <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="class" placeholder="Nombre"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+                                <input type="text" id="className" formControlName="className" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [class.cursor-not-allowed]="inputAccess.class" [readOnly]="inputAccess.class">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('group')"
+                        <div *ngIf="accountForm.get('groupName')"
                             class="group relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
-                                <label for="grupo"
+                                <label for="grupo" id="groupCode"
                                     class="col-span-1 mr-4 mt-1">{{accountForm.get('groupCode')?.value}}</label>
 
                                 <input type="text" formControlName="groupCode" placeholder="Código"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.group" [class.cursor-not-allowed]="inputAccess.group">
                             </div>
                             <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="group" placeholder="Nombre"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+                                <input type="text" formControlName="groupName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.group" [class.cursor-not-allowed]="inputAccess.group">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('account')"
+                        <div *ngIf="accountForm.get('accountName')"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
                                 <label for="cuenta"
                                     class="col-span-1 mr-4 mt-1">{{accountForm.get('accountCode')?.value}}</label>
                                 <input type="text" formControlName="codeAccount" placeholder="Código"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.account" [class.cursor-not-allowed]="inputAccess.account">
                             </div>
                             <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="account" placeholder="Nombre"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+                                <input type="text" formControlName="accountName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.account" [class.cursor-not-allowed]="inputAccess.account">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('subAccount')"
+                        <div *ngIf="accountForm.get('subAccountName')"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
                                 <label for="subcuenta"
                                     class="col-span-1 mr-4 mt-1">{{accountForm.get('subAccountCode')?.value}}</label>
                                 <input type="text" formControlName="codeSubAccount" placeholder="Código"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.subAccount"
+                                    [class.cursor-not-allowed]="inputAccess.subAccount">
                             </div>
                             <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="subAccount" placeholder="Nombre"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+                                <input type="text" formControlName="subAccountName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.subAccount"
+                                    [class.cursor-not-allowed]="inputAccess.subAccount">
                             </div>
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Subcuenta
                             </div>
                         </div>
 
-                        <div *ngIf="accountForm.get('auxiliary')"
-                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
-                            <div class="w-full flex sm:w-auto">
-                                <label for="auxiliar1"
-                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('auxiliaryCode')?.value}}</label>
-                                <input type="text" formControlName="codeAuxiliary" placeholder="Código"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0">
-                            </div>
-                            <div class="w-full sm:w-auto">
-                                <input type="text" formControlName="auxiliary" placeholder="Nombre"
-                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
-                            </div>
-                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Auxiliar
+                        <div *ngIf="accountForm.get('auxiliaryName')">
+                            <div
+                                class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                                <div class="w-full flex sm:w-auto">
+                                    <label for="auxiliar1"
+                                        class="col-span-1 mr-4 mt-1">{{accountForm.get('auxiliaryCode')?.value}}</label>
+                                    <input type="text" formControlName="codeAuxiliary" placeholder="Código"
+                                        class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0 "
+                                        [readOnly]="inputAccess.auxiliary"
+                                        [class.cursor-not-allowed]="inputAccess.auxiliary">
+                                </div>
+                                <div class="w-full sm:w-auto">
+                                    <input type="text" formControlName="auxiliaryName" placeholder="Nombre"
+                                        class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                        [readOnly]="inputAccess.auxiliary"
+                                        [class.cursor-not-allowed]="inputAccess.auxiliary">
+                                </div>
+                                <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Auxiliar
+                                </div>
                             </div>
                         </div>
 
+                        <div *ngIf="showFormTransactional">
+                            <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
+                            <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
+                            <form [formGroup]="formTransactional">
+                                <div class="mb-4">
+                                    <label for="nature" class="block">Naturaleza*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="nature" [items]="listNature" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedNatureType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionNatureType($event)"
+                                            (clear)="onSelectionNatureTypeClear()" [clearable]="false"
+                                            [placeholder]="placeNatureType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedNatureType')?.touched && formTransactional.get('selectedNatureType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de naturaleza.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="financialState" class="block">Estado Financiero*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="financialState" [items]="listFinancialState" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedFinancialStateType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionFinancialStateType($event)"
+                                            (clear)="onSelectionFinancialStateTypeClear()" [clearable]="false"
+                                            [placeholder]="placeFinancialStateType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedFinancialStateType')?.touched && formTransactional.get('selectedFinancialStateType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de estado financiero.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="clasification" class="block">Clasificación*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="clasification" [items]="listClasification" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedClasificationType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionClasificationType($event)"
+                                            (clear)="onSelectionclasificationTypeClear()" [clearable]="false"
+                                            [placeholder]="placeClasificationType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedClasificationType')?.touched && formTransactional.get('selectedClasificationType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de clasificación.
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button"
+                                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                                (click)="saveAccount()" [class.hidden]="!showButton" [class.block]="showButton">
+                                Guardar
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
-
-
     </div>
 </div>
