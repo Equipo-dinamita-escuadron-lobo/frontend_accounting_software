@@ -3,6 +3,8 @@ import { Category } from '../../models/Category';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-category-list',
@@ -19,7 +21,8 @@ export class CategoryListComponent implements OnInit {
     { title: 'Inventario', data: 'inventory' },
     { title: 'Costo', data: 'cost' },
     { title: 'Venta', data: 'sale' },
-    { title: 'Devolución', data: 'return' }
+    { title: 'Devolución', data: 'return' },
+    { title: 'Acciones', data: 'actions' }
   ];
 
   form: FormGroup;

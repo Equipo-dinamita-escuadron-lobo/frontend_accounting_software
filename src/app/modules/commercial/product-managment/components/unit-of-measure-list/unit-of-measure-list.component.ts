@@ -14,7 +14,8 @@ export class UnitOfMeasureListComponent implements OnInit {
   columns: any[] = [
     {title: 'Id', data: 'id'},
     {title: 'Nombre', data: 'name'},
-    {title: 'Descripción', data: 'description'}
+    {title: 'Descripción', data: 'description'},
+    {title: 'Acciones', data: 'actions'}
   ];
 
   form: FormGroup;

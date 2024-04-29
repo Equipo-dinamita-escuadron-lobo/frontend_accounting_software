@@ -18,12 +18,13 @@ export class ProductListComponent implements OnInit {
     {title:'Descripción',data:'description'},
     {title:'Precio',data:'price'},
     {title:'Min',data:'minQuantity'},
-   // {title:'max',data:'maxQuantity'},
+    //{title:'max',data:'maxQuantity'},
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
     {title:'Unidad',data:'unitOfMeasure'},
     {title:'Prov',data:'supplier'},
     {title:'Cat',data:'category'},
+    {title:'Acciones',data:'actions'},
   ];
 
   form: FormGroup;
