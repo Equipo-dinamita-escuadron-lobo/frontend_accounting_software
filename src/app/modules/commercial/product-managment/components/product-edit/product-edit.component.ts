@@ -114,7 +114,7 @@ export class ProductEditComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/product-list']);
+    this.router.navigate(['/general/operations/products']);
   }
   
 }
