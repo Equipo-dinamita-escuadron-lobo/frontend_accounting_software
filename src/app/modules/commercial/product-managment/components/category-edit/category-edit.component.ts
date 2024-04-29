@@ -70,6 +70,7 @@ constructor(
   }
   
   goBack(): void {
-    this.router.navigate(['../../'], { relativeTo: this.route });
+    //this.router.navigate(['../../'], { relativeTo: this.route });
+    this.router.navigate(['/general/operations/categories']);
   }
 }

@@ -4,6 +4,7 @@ import { CategoryService } from '../../services/category.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-category-creation',
   templateUrl: './category-creation.component.html',
@@ -67,7 +68,8 @@ export class CategoryCreationComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['../categories']);
+    //this.router.navigate(['../category-list']);
+    this.router.navigate(['/general/operations/categories']);
   }
 }
 
