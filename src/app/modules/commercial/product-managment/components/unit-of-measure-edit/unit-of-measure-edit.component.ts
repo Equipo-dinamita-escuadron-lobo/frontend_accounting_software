@@ -41,6 +41,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
         this.editForm.patchValue({
           name: unitOfMeasure.name,
           description: unitOfMeasure.description,
+          abbreviation: unitOfMeasure.abbreviation,
           return: unitOfMeasure.abbreviation
         });
       },
@@ -53,7 +54,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
 
   onSubmit(): void {
     if (this.editForm.valid) {
-      this.unitOfMeasureService.updateUnitOfMeasure(this.unitOfMeasureId, this.editForm.value).subscribe(
+      this.unitOfMeasureService.updateUnitOfMeasureId(this.unitOfMeasureId, this.editForm.value).subscribe(
         (unitOfMeasure: UnitOfMeasure) => {
           console.log('Category updated successfully: ', unitOfMeasure);
           Swal.fire({
