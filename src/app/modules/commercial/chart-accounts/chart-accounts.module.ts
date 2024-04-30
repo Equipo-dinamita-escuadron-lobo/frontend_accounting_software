@@ -6,6 +6,7 @@ import { AccountsListComponent } from './components/accounts-list/accounts-list.
 import { FilterPipe } from './components/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ChartAccountsRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule
   ],
   exports:[
     AccountsListComponent
