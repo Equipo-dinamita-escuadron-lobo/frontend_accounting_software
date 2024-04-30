@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
-import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-accounts-list',
@@ -8,16 +9,18 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
   styleUrl: './accounts-list.component.css'
 })
 export class AccountsListComponent {
-  filterAccount:string = '';
+  filterAccount: string = '';
+  listExcel: Account[] = [];
+  listAccountsToShow: Account[] = [];
 
   //
   selectedAccount: Account | null = null;
   accountForm: FormGroup;
   //
-  className = ''; 
-  groupName = ''; 
-  accountName = ''; 
-  subAccountName = ''; 
+  className = '';
+  groupName = '';
+  accountName = '';
+  subAccountName = '';
   auxiliaryName = '';
 
   constructor(private fb: FormBuilder) {
@@ -44,7 +47,7 @@ export class AccountsListComponent {
                   code: '110501',
                   name: 'Caja general',
                   subAccounts: [
-                    {code: '11050101',name: 'Caja principal'},
+                    { code: '11050101', name: 'Caja principal' },
                     { code: '11050102', name: 'Caja chica' }
                   ]
                 },
@@ -95,43 +98,43 @@ export class AccountsListComponent {
       ]
     }
   ];
-  
+
   toggleSubAccounts(account: Account) {
     account.showSubAccounts = !account.showSubAccounts;
   }
 
-  selectAccount(account: Account) { 
-    this.createForm(account); 
-  } 
-  createForm(selectedAccount: Account) { 
-    this.accountForm = this.fb.group({}); 
+  selectAccount(account: Account) {
+    this.createForm(account);
+  }
+  createForm(selectedAccount: Account) {
+    this.accountForm = this.fb.group({});
 
     this.assignName(selectedAccount.code, selectedAccount.name)
-    this.accountForm.addControl('class', new FormControl(this.className)); 
-    this.accountForm.addControl('classCode', new FormControl(selectedAccount.code.slice(0, 1))); 
+    this.accountForm.addControl('class', new FormControl(this.className));
+    this.accountForm.addControl('classCode', new FormControl(selectedAccount.code.slice(0, 1)));
 
-    if (selectedAccount.code.length >= 2) { 
-      this.accountForm.addControl('group', new FormControl(this.groupName)); 
-      this.accountForm.addControl('groupCode', new FormControl(selectedAccount.code.slice(0, 2))); 
+    if (selectedAccount.code.length >= 2) {
+      this.accountForm.addControl('group', new FormControl(this.groupName));
+      this.accountForm.addControl('groupCode', new FormControl(selectedAccount.code.slice(0, 2)));
 
-      if (selectedAccount.code.length >= 4) { 
-        this.accountForm.addControl('account', new FormControl(this.accountName)); 
-        this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4))); 
-        this.accountForm.addControl('codeAccount', new FormControl(selectedAccount.code.slice(2,4))); 
+      if (selectedAccount.code.length >= 4) {
+        this.accountForm.addControl('account', new FormControl(this.accountName));
+        this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4)));
+        this.accountForm.addControl('codeAccount', new FormControl(selectedAccount.code.slice(2, 4)));
 
-        if (selectedAccount.code.length >= 6) { 
-          this.accountForm.addControl('subAccount', new FormControl(this.subAccountName)); 
-          this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6))); 
-          this.accountForm.addControl('codeSubAccount', new FormControl(selectedAccount.code.slice(4,6))); 
-          
-          if (selectedAccount.code.length >= 8) { 
-            this.accountForm.addControl('auxiliary', new FormControl(this.auxiliaryName)); 
-            this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8))); 
-            this.accountForm.addControl('codeAuxiliary', new FormControl(selectedAccount.code.slice(6,8))); 
-          } 
-        } 
-      } 
-    } 
+        if (selectedAccount.code.length >= 6) {
+          this.accountForm.addControl('subAccount', new FormControl(this.subAccountName));
+          this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6)));
+          this.accountForm.addControl('codeSubAccount', new FormControl(selectedAccount.code.slice(4, 6)));
+
+          if (selectedAccount.code.length >= 8) {
+            this.accountForm.addControl('auxiliary', new FormControl(this.auxiliaryName));
+            this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8)));
+            this.accountForm.addControl('codeAuxiliary', new FormControl(selectedAccount.code.slice(6, 8)));
+          }
+        }
+      }
+    }
   }
 
   assignName(code: string, name: string) {
@@ -153,4 +156,69 @@ export class AccountsListComponent {
         break;
     }
   }
+
+  ReadExcel(event: any) {
+    let file = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.readAsBinaryString(file);
+
+    fileReader.onload = (e) => {
+      var workBook = XLSX.read(fileReader.result, { type: 'binary' });
+      var sheetNames = workBook.SheetNames;
+      let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
+
+      this.listExcel = jsonData.map((item: any) => ({
+        code: item['Código'],
+        name: item['Nombre'],
+      }));
+      console.log(this.createHierarchyWithParent(this.listExcel));
+      this.listAccounts = this.createHierarchyWithParent(this.listExcel);
+    };
+  }
+
+  createHierarchyWithParent(accounts: Account[]): Account[] {
+    const hierarchy: Record<string, Account> = {};
+  
+    // Agrupar cuentas por código
+    for (const account of accounts) {
+      const code = account.code;
+      const level = code.length / 2;
+  
+      if (!hierarchy[code]) {
+        hierarchy[code] = { ...account, subAccounts: [] };
+      } else {
+        hierarchy[code].name = account.name;
+      }
+  
+      if (level >= 1) {
+        const parentCode = code.slice(0, -2);
+        if (!hierarchy[parentCode]) {
+          hierarchy[parentCode] = { code: parentCode, name: '', subAccounts: [] };
+        }
+        hierarchy[parentCode].subAccounts?.push(hierarchy[code]);
+      }
+    }
+  
+    // Asociar cada cuenta principal al padre con un solo dígito en el código
+    for (const account of Object.values(hierarchy)) {
+      if (account.code.length === 2) {
+        const parentCode = account.code[0];
+        const parentAccount = hierarchy[parentCode];
+        if (parentAccount) {
+          parentAccount.subAccounts?.push(account);
+        }
+      }
+    }
+  
+    // Obtener cuentas de nivel superior (clases)
+    const topLevelAccounts: Account[] = [];
+    for (const account of Object.values(hierarchy)) {
+      if (account.code.length === 1) {
+        topLevelAccounts.push(account);
+      }
+    }
+  
+    return topLevelAccounts;
+  }
+  
 }
