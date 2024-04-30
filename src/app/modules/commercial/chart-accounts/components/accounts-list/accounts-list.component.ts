@@ -15,6 +15,7 @@ export class AccountsListComponent {
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
+  importedAccounts: boolean = false;
 
   //
   accountForm: FormGroup;
@@ -45,6 +46,7 @@ export class AccountsListComponent {
   //Arrays with information of services
   listFinancialState: ClasificationType[] = [];
   listAccounts: Account[] = [];
+  listAccountsAux: Account[] = [];
   listNature: NatureType[] = [];
   listClasification: ClasificationType[] = [];
 
@@ -179,11 +181,18 @@ export class AccountsListComponent {
       this.listExcel = jsonData.map((item: any) => ({
         code: item['Código'],
         name: item['Nombre'],
-        nature: '',
-        financialState: '',
-        clasification: ''
+        nature: item['Naturaleza'],
+        financialState: item['Estado Financiero'],
+        clasification: item['Clasificación']
       }));
+
+      if(this.listExcel){
+        this.importedAccounts=true;
+        console.log(this.importedAccounts);
+      }
+
       console.log(this.createHierarchyWithParent(this.listExcel));
+      this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
     };
   }
@@ -335,5 +344,15 @@ export class AccountsListComponent {
 
   saveAccount(){
     console.log(this.accountForm.value);
+  }
+
+  saveImportAccounts(){
+    this.importedAccounts = false;
+    this._accountService.saveAccountsImport(this.listAccounts)
+  }
+
+  cancelImportAccounts(){
+    this.importedAccounts = false;
+    this.listAccounts = this.listAccountsAux;
   }
 }

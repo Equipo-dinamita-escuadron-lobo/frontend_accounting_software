@@ -284,4 +284,10 @@ export class ChartAccountService {
         return this.listFinancialState;
     }
 
+    saveAccountsImport(accounts:Account[]): boolean{
+        this.listAccounts = accounts;
+        //TODO: ver la confirmacion desde el backend de que se guardo las cuentas importadas
+        return true;
+    }
+
 }
