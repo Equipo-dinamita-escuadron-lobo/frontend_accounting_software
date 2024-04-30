@@ -41,6 +41,15 @@
                   </div>
                 </div>
               </div>
+              <div>
+                <label for="abbreviation" class="block text-sm font-medium text-gray-700">Abreviatura:</label>
+                <input type="text" formControlName="abbreviation" id="abbreviation" placeholder="Ej: kg" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                <div *ngIf="editForm.get('abbreviation')?.touched && editForm.get('abbreviation')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('abbreviation')?.errors?.['required']">
+                    El campo Abreviatura es requerido.
+                  </div>
+                </div>
+              </div>
   
               <!-- Botón de envío -->
               <div>
