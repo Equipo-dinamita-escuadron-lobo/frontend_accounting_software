@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UnitOfMeasure } from '../models/UnitOfMeasure';
 import { environment } from '../../../../../environments/environment';
+import { Category } from '../models/Category';
 
 @Injectable({
   providedIn: 'root'
@@ -47,10 +48,14 @@ export class UnitOfMeasureService {
     
   ];
 
+
   getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
-    //return this.http.get<Category[]>(this.apiUrl);
-    return of(this.unitOfMeasures);
+    const url = `${environment.API_URL}unit-measures/findAll`;
+    return this.http.get<UnitOfMeasure[]>(url);
   }
+
+
+
   // Método para obtener todas las unidades de medida
   getUnitOfMeasuresId(id: string): Observable<UnitOfMeasure> {
     const url = `${environment.API_URL}products/findById/${id}`;
