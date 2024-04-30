@@ -97,11 +97,11 @@ export class EnterpriseEditComponent {
     private departmentService: DepartmentService,
     private uploadService: EnterpriseService,
     private router: Router
-  ) {;
+  ) {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
-    this.getEnterpriseEdit()
+    this.getEnterpriseEdit();
   }
 
   ngOnInit(): void {
@@ -426,7 +426,7 @@ export class EnterpriseEditComponent {
           enterpriseType: this.form.value.selectedItemEnterpriseType.id,
         };
 
-        console.log(enterprise)
+        console.log(enterprise);
 
         this.enterpriseService
           .updateEnterprise(this.enterpriseEdit?.id, enterprise)
@@ -534,17 +534,16 @@ export class EnterpriseEditComponent {
       });
   }
 
-  loadLogo(url:string){
-    if(url!== ''){
-      this.enterpriseService.downloadLogo(url).subscribe(imagenArchivo => {
+  loadLogo(url: string) {
+    if (url !== '') {
+      this.enterpriseService.downloadLogo(url).subscribe((imagenArchivo) => {
         this.file = imagenArchivo;
       });
     }
   }
 
-
   fillFieldsWithValues() {
-    console.log('Se ejecuta')
+    console.log('Se ejecuta');
     this.form.setValue({
       name: this.enterpriseEdit?.name,
       nit: this.enterpriseEdit?.nit,
@@ -558,7 +557,7 @@ export class EnterpriseEditComponent {
       selectedItemCity: this.enterpriseEdit?.location.city,
       selectedItemTaxLiabilities: this.enterpriseEdit?.taxLiabilities,
       country: this.enterpriseEdit?.location.country,
-      branchSelected: false
+      branchSelected: false,
     });
     this.form.markAllAsTouched();
 
