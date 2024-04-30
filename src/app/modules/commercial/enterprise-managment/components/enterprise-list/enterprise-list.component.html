@@ -57,12 +57,12 @@
                 </div>
             </form>
             <div
-                class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 gap-10 justify-center p-7">
+                class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 oem:grid-cols-5 gap-10 justify-center p-7">
 
                 <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-2xl  col-span-1 max-w-60"
                     *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
                     <div class="flex icon justify-center  content-center px-4 pt-4">
-                        <a href="#" class="">
+                        <a  (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer">
                             <img *ngIf="empresa.logo != ''; else defaultLogo"
                                 class="rounded-full w-21 h-21 object-cover shadow-sm" [src]="empresa.logo" alt="" />
                             <ng-template #defaultLogo>
@@ -72,8 +72,8 @@
                             </ng-template>
                         </a>
                     </div>
-                    <div class="pl-4 py-2 mr-4">
-                        <a href=" #" routerLink="/enterprise-management/detail">
+                    <div class="pl-4 py-2 mr-4 mb-3">
+                        <a (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer" >
                             <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
                                 }}</h5>
                         </a>
@@ -106,7 +106,7 @@
                     <a (click)="getEnterprisesActive()" class="text-blue-950 font-bold cursor-pointer">Mis empresas</a>
                 </div>
                 <div class="edit mb-3" [class.selected]="typeList === 'INACTIVE'">
-                    <a (click)="getEnterprisesInactive()"
+                    <a #buttonArchive (click)="getEnterprisesInactive()"
                         class="text-gray-500 font-semibold text-base cursor-pointer">Archivadas</a>
                 </div>
                 <div class="edit mb-3">
