@@ -57,6 +57,7 @@ export class EnterpriseEditComponent {
    * variables for the logo
    */
   file: File | null = null;
+  imagenUrl: string | null = 'hol';
 
   /**
    * Variables to indicates what type of person
@@ -75,7 +76,6 @@ export class EnterpriseEditComponent {
   placeTaxLiaabilities: string = 'Seleccione una opción(es)';
   placeDepartment: string = 'Seleccione una opción';
   placeCity: string = 'Seleccione una opción';
-
 
   /**
    *
@@ -97,11 +97,11 @@ export class EnterpriseEditComponent {
     private departmentService: DepartmentService,
     private uploadService: EnterpriseService,
     private router: Router
-  ) {
-    this.getEnterpriseEdit();
+  ) {;
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
+    this.getEnterpriseEdit()
   }
 
   ngOnInit(): void {
@@ -111,13 +111,12 @@ export class EnterpriseEditComponent {
     this.getAllTaxLiabilities();
   }
 
-  changePlaceholderSelect(){
-    this.placeTypeEnterprise =''+ this.enterpriseEdit?.enterpriseType.name;
-    this.placeTypePayer = ''+ this.enterpriseEdit?.taxPayerType.name;
-    this.placeTaxLiaabilities =''+ this.enterpriseEdit?.taxLiabilities;
-    this.placeDepartment = ''+ this.enterpriseEdit?.location.department.name;
-    this.placeCity = ''+ this.enterpriseEdit?.location.city.name;
-  
+  changePlaceholderSelect() {
+    this.placeTypeEnterprise = '' + this.enterpriseEdit?.enterpriseType.name;
+    this.placeTypePayer = '' + this.enterpriseEdit?.taxPayerType.name;
+    this.placeTaxLiaabilities = '' + this.enterpriseEdit?.taxLiabilities;
+    this.placeDepartment = '' + this.enterpriseEdit?.location.department.name;
+    this.placeCity = '' + this.enterpriseEdit?.location.city.name;
   }
 
   /**
@@ -236,7 +235,7 @@ export class EnterpriseEditComponent {
   showLegalPersonForm() {
     this.showLegalForm = true;
     this.showNaturalForm = false;
-    this.selectedButtonType = 'LEGAL_PERSON';;
+    this.selectedButtonType = 'LEGAL_PERSON';
   }
 
   /**
@@ -416,6 +415,7 @@ export class EnterpriseEditComponent {
           branch: '' + branchResponse,
           email: this.form.value.email,
           logo: logoUrl,
+          state: 'ACTIVE',
           taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
             (item: TaxLiability) => item.id
           ),
@@ -426,28 +426,29 @@ export class EnterpriseEditComponent {
           enterpriseType: this.form.value.selectedItemEnterpriseType.id,
         };
 
-        this.enterpriseService.createEnterprise(enterprise).subscribe(
-          (data) => {
-            // Caso de éxito (código de respuesta 200 OK)
-            Swal.fire({
-              title: 'Creación exitosa!',
-              text: 'Se ha creado la empresa con éxito!',
-              icon: 'success',
-            });
-            this.form.reset();
-            this.form_legal.reset();
-            this.form_natural.reset();
-            this.file = null;
-          },
-          (error) => {
-            // Caso de error
-            Swal.fire({
-              title: 'Error!',
-              text: 'Ha ocurrido un error al crear la empresa.',
-              icon: 'error',
-            });
-          }
-        );
+        console.log(enterprise)
+
+        this.enterpriseService
+          .updateEnterprise(this.enterpriseEdit?.id, enterprise)
+          .subscribe(
+            (data) => {
+              // Caso de éxito (código de respuesta 200 OK)
+              Swal.fire({
+                title: 'Edición exitosa!',
+                text: 'Se ha editado la empresa con éxito!',
+                icon: 'success',
+              });
+              this.router.navigate(['general/operations/home']);
+            },
+            (error) => {
+              // Caso de error
+              Swal.fire({
+                title: 'Error!',
+                text: 'Ha ocurrido un error al editar la empresa.',
+                icon: 'error',
+              });
+            }
+          );
       } catch (error) {
         console.error('Error al cargar la imagen:', error);
       }
@@ -525,29 +526,52 @@ export class EnterpriseEditComponent {
         this.enterpriseEdit = data;
         this.changePlaceholderSelect();
         this.fillFieldsWithValues();
-        this.selectedButtonType = this.enterpriseEdit.personType.type
-        if(this.selectedButtonType === 'NATURAL_PERSON'){
+        this.selectedButtonType = this.enterpriseEdit.personType.type;
+        this.loadLogo(this.enterpriseEdit.logo);
+        if (this.selectedButtonType === 'NATURAL_PERSON') {
           this.showNaturalPersonForm();
         }
       });
   }
 
-  fillFieldsWithValues() {
-    this.form.value.name = this.enterpriseEdit?.name;
-    this.form.value.nit = this.enterpriseEdit?.nit;
-    this.form.value.address = this.enterpriseEdit?.location.address;
-    this.form.value.phone = this.enterpriseEdit?.phone;
-    this.form.value.email = this.enterpriseEdit?.email;
-    this.form.value.dv = this.enterpriseEdit?.dv;
-    this.form.value.selectedItemDepartment = this.enterpriseEdit?.location.department;
-    this.form.value.selectedItemEnterpriseType = this.enterpriseEdit?.enterpriseType;
-    this.form.value.selectedItemTaxPayer = this.enterpriseEdit?.taxPayerType;
-    this.form.value.selectedItemCity = this.enterpriseEdit?.location.city;
-    this.form.value.branch = this.enterpriseEdit?.branch;
-    this.form.value.selectedItemTaxLiabilities = this.enterpriseEdit?.taxLiabilities;
-    this.form_legal.value.businessName = this.enterpriseEdit?.personType.bussinessName;
-    this.form_legal.value.surnameOwner = this.enterpriseEdit?.personType.surname;
-    this.form_legal.value.nameOwner = this.enterpriseEdit?.personType.name;
+  loadLogo(url:string){
+    if(url!== ''){
+      this.enterpriseService.downloadLogo(url).subscribe(imagenArchivo => {
+        this.file = imagenArchivo;
+      });
+    }
+  }
 
+
+  fillFieldsWithValues() {
+    console.log('Se ejecuta')
+    this.form.setValue({
+      name: this.enterpriseEdit?.name,
+      nit: this.enterpriseEdit?.nit,
+      address: this.enterpriseEdit?.location.address,
+      phone: this.enterpriseEdit?.phone,
+      email: this.enterpriseEdit?.email,
+      dv: this.enterpriseEdit?.dv,
+      selectedItemDepartment: this.enterpriseEdit?.location.department,
+      selectedItemEnterpriseType: this.enterpriseEdit?.enterpriseType,
+      selectedItemTaxPayer: this.enterpriseEdit?.taxPayerType,
+      selectedItemCity: this.enterpriseEdit?.location.city,
+      selectedItemTaxLiabilities: this.enterpriseEdit?.taxLiabilities,
+      country: this.enterpriseEdit?.location.country,
+      branchSelected: false
+    });
+    this.form.markAllAsTouched();
+
+    this.form_legal.setValue({
+      businessName: this.enterpriseEdit?.personType.bussinessName,
+    });
+
+    this.form_natural.setValue({
+      surnameOwner: this.enterpriseEdit?.personType.surname,
+      nameOwner: this.enterpriseEdit?.personType.name,
+    });
+
+    this.form_legal.markAllAsTouched();
+    this.form_natural.markAllAsTouched();
   }
 }

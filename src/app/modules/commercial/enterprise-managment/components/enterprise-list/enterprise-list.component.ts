@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { EnterpriseList } from '../../models/EnterpriseList';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,8 @@ export class EnterpriseListComponent {
   filterEnterprise: string = '';
 
   selectedEnterprise: EnterpriseList | null = null;
+
+  @ViewChild('buttonArchive') buttonArchive!: ElementRef;
 
   constructor(
     private enterpriseServide: EnterpriseService,
@@ -92,6 +94,7 @@ export class EnterpriseListComponent {
               confirmButtonColor: 'rgb(23 37 84)',
             });
             this.cdRef.detectChanges();
+            this.buttonArchive.nativeElement.click();
           },
         });
       }
