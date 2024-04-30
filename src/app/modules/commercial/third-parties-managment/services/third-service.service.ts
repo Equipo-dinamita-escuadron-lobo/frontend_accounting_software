@@ -36,6 +36,10 @@ export class ThirdServiceService {
     );
   }
 
+  getThirdPartie(thId:number): Observable<Third>{
+    return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
+  }
+
   changeThirdPartieState(thId:number): Observable<Boolean>{
     let params = new HttpParams()
     .set('thId', thId);
