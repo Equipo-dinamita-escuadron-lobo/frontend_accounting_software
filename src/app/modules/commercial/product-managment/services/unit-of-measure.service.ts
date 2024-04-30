@@ -9,7 +9,7 @@ import { Category } from '../models/Category';
   providedIn: 'root'
 })
 export class UnitOfMeasureService {
-  private apiUrl = ''; //la URL de tu API 
+  //private apiUrl = ''; //la URL de tu API 
 
   constructor(private http: HttpClient) { }
 
@@ -48,27 +48,40 @@ export class UnitOfMeasureService {
     
   ];
 
-
+  // Método para obtener todas las unidades de medida
   getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
     const url = `${environment.API_URL}unit-measures/findAll`;
     return this.http.get<UnitOfMeasure[]>(url);
   }
 
-
-
-  // Método para obtener todas las unidades de medida
+  // Método para obtener por Id las unidades de medida
   getUnitOfMeasuresId(id: string): Observable<UnitOfMeasure> {
-    const url = `${environment.API_URL}products/findById/${id}`;
+    const url = `${environment.API_URL}unit-measures/findById/${id}`;
     return this.http.get<UnitOfMeasure>(url);
   }
 
   // Método para crear una nueva unidad de medida
   createUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
-    return this.http.post<UnitOfMeasure>(this.apiUrl, unitOfMeasure);
+    const url = `${environment.API_URL}unit-measures/create`;
+    return this.http.post<UnitOfMeasure>(url, unitOfMeasure);
   }
 
   // Método para actualizar una Unidad de medida existente
-  updateUnitOfMeasure(id: string, unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
-    return this.http.put<UnitOfMeasure>(`${this.apiUrl}/${id}`, unitOfMeasure);
+  updateUnitOfMeasure(id: string, unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {    
+    const url = `${environment.API_URL}unit-measures/update/${id}`;
+    console.log(unitOfMeasure);
+    return this.http.put<UnitOfMeasure>(url, unitOfMeasure);
+  }
+
+  // Método para Eliminar una Unidad de medida existente por ID
+  deleteUnitOfMeasureId(id: string): Observable<UnitOfMeasure> {
+    const url = `${environment.API_URL}unit-measures/delete/${id}`;
+    return this.http.delete<UnitOfMeasure>(url );
+  }
+
+  // Método para Eliminar una Unidad de medida existente
+  deleteUnitOfMeasure(): Observable<UnitOfMeasure> {
+    const url = `${environment.API_URL}unit-measures/deleteAll`;
+    return this.http.delete<UnitOfMeasure>(url );
   }
 }

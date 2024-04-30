@@ -3,6 +3,7 @@ import { UnitOfMeasure } from '../../models/UnitOfMeasure';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-unit-of-measure-list',
@@ -72,6 +73,23 @@ export class UnitOfMeasureListComponent implements OnInit {
         }, 300); // Tiempo en milisegundos para considerar un doble clic
       }
     }
+
+    redirectToDelete(unitId: string): void {
+      // Aquí puedes mostrar un cuadro de diálogo de confirmación antes de eliminar
+      if (confirm('¿Estás seguro de que deseas eliminar este elemento?')) {
+        this.unitOfMeasureService.deleteUnitOfMeasureId(unitId).subscribe(
+          (data: UnitOfMeasure) => {
+            console.log('Unidad de medida eliminada con éxito: ', data);
+            this.getUnitOfMeasures();
+          },
+          error => {
+            console.error('Error al eliminar la unidad de medida:', error);
+          }
+        );
+      }
+    }
+    
+
     goBack(): void {
       this.router.navigate(['/general/operations/products']);
     }

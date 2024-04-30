@@ -21,7 +21,8 @@ export class UnitOfMeasureCreationComponent implements OnInit{
   ngOnInit(): void {
     this.unitOfMeasureForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]]
+      description: ['', [Validators.required]],
+      abbreviation: ['', [Validators.required]],
     });
   }
 
@@ -66,3 +67,4 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     this.unitOfMeasureForm.reset();
   }
 }
+  
