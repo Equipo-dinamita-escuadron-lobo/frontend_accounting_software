@@ -93,7 +93,8 @@
               Editar
             </span>
           </button>
-          <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden">
+          <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden"
+          (click)=" deleteCategory(cat.id)">
             <span class="material-icons flex justify-center items-center text-white">delete</span>
             <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
               Eliminar

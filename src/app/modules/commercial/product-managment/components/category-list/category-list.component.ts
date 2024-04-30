@@ -89,4 +89,18 @@ getCategories(): void {
     this.router.navigate(['/general/operations/products']);
   }
 
+  deleteCategory(categoryId: string): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+      this.categoryService.deleteCategory(categoryId).subscribe(
+        (data: Category) => {
+          console.log('Categoría eliminada con éxito: ', data);
+          this.getCategories();
+        },
+        error => {
+          console.error('Error al eliminar la categoría: ', error);
+        }
+      );
+    }
+  }
+
 }

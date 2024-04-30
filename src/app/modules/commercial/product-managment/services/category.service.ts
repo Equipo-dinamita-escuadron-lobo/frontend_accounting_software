@@ -1,63 +1,81 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Category } from '../models/Category'; 
+import { Category } from '../models/Category';
 import { environment } from '../../../../../environments/environment';
 
+interface Cuenta {
+  id: number;
+  name: string;
+  description: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = ''; // URL de tu API de categorías
+
+  private cuentas: Cuenta[] = [
+    {
+      id: 1,
+      name: 'Cuentas por cobrar',
+      description: 'Cuentas por cobrar a clientes'
+    },
+    {
+      id: 2,
+      name: 'Cuentas por pagar',
+      description: 'Cuentas por pagar a proveedores'
+    },
+    {
+      id: 3,
+      name: 'Caja',
+      description: 'Caja chica'
+    },
+    {
+      id: 4,
+      name: 'Bancos',
+      description: 'Cuentas bancarias'
+    },
+    {
+      id: 5,
+      name: 'Inventario',
+      description: 'Inventario de productos'
+    }
+  ];
 
   constructor(private http: HttpClient) { }
-  private categories: Category[] = [
-    {
-      id: 1, name: 'Category 1', description: 'Description 1',
-      inventory: 'cuenta de inventario',
-      cost: 'cuenta de costo',
-      sale: 'cuenta de venta',
-      return: 'cuenta de devolución'
-    },
-    { id: 2, name: 'Category 2', description: 'Description 2',inventory: 'cuenta de inventario',
-    cost: 'cuenta de costo',
-    sale: 'cuenta de venta',
-    return: 'cuenta de devolución' },
-    { id: 3, name: 'Category 3', description: 'Description 3',inventory: 'cuenta de inventario',
-    cost: 'cuenta de costo',
-    sale: 'cuenta de venta',
-    return: 'cuenta de devolución' },
-    { id: 4, name: 'Category 4', description: 'Description 4',inventory: 'cuenta de inventario',
-    cost: 'cuenta de costo',
-    sale: 'cuenta de venta',
-    return: 'cuenta de devolución' },
-    { id: 5, name: 'Category 5', description: 'Description 5',inventory: 'cuenta de inventario',
-    cost: 'cuenta de costo',
-    sale: 'cuenta de venta',
-    return: 'cuenta de devolución'}
-  ];
+
+  getCuentas(): Observable<Cuenta[]> {
+    return of(this.cuentas);
+  }
 
   // Método para obtener todas las categorías
   getCategories(): Observable<Category[]> {
-    //return this.http.get<Category[]>(this.apiUrl);
-    return of(this.categories);
+    const url = `${environment.API_URL}categories/findAll`;
+    return this.http.get<Category[]>(url);
   }
-  // Método para obtener todas las categorías
+
+  // Método para obtener una categoría por su ID
   getCategoryById(id: string): Observable<Category> {
-    //return of(this.categories.find(category => category.id === Number(id)));
-    const url = `${environment.API_URL}products/findById/${id}`;
+    const url = `${environment.API_URL}categories/findById/${id}`;
     return this.http.get<Category>(url);
   }
+
   // Método para crear una nueva categoría
   createCategory(category: Category): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl, category);
+    const url = `${environment.API_URL}categories/create`;
+    return this.http.post<Category>(url, category);
   }
 
   // Método para actualizar una categoría existente
-  updateCategory(id: string, category: Category): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/${id}`, category);
+  updateCategory(category: Category): Observable<Category> {
+    const url = `${environment.API_URL}categories/update/${category.id}`;
+    return this.http.post<Category>(url, category);
   }
 
-
+  // Método para eliminar una categoría
+  deleteCategory(id: string): Observable<Category> {
+    const url = `${environment.API_URL}categories/delete/${id}`;
+    return this.http.delete<Category>(url);
+  }
 }

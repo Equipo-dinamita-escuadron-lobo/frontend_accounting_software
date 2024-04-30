@@ -58,7 +58,7 @@ constructor(
 
   onSubmit(): void {
     if (this.editForm.valid) {
-      this.categoryService.updateCategory(this.categoryId, this.editForm.value).subscribe(
+      this.categoryService.updateCategory( this.editForm.value).subscribe(
         (category: Category) => {
           console.log('Category updated successfully: ', category);
         },
