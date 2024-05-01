@@ -5,13 +5,15 @@ import { Enterprise, EnterpriseDetails } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
 import { environment } from '../../../../../environments/environment';
+import { map } from 'rxjs/operators';
+//import { environment } from '../../../../../environments/enviorment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnterpriseService {
-
-  logoDefault:string = "../../../../../../assets/Iconos/enterprise/icon-default.png";
+  logoDefault: string =
+    '../../../../../../assets/Iconos/enterprise/icon-default.png';
   /**
    * Test of service
    */
@@ -19,30 +21,28 @@ export class EnterpriseService {
   enterpriseTypes: EnterpriseType[] = [
     { id: 1, name: 'Privada' },
     { id: 2, name: 'Oficial' },
-    { id: 3, name: 'Mixta' }
-];
-  private selectedEnterprise:string = '-1';
+    { id: 3, name: 'Mixta' },
+  ];
+  private selectedEnterprise: string = '-1';
   //Route API
   private apiUrl = environment.API_URL + 'enterprises/';
 
   //Route cloudinary
   private urlCloudinary = environment.myStorageUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    /**
+  /**
    * @description Method to get all enterprises.
    * @returns all tax payer types from the backend
    */
-
-
 
   getEnterprisesActive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl);
   }
 
   getEnterprisesInactive(): Observable<EnterpriseList[]> {
-    return this.http.get<EnterpriseList[]>(this.apiUrl+'inactive');
+    return this.http.get<EnterpriseList[]>(this.apiUrl + 'inactive');
   }
 
   /*
@@ -67,7 +67,7 @@ export class EnterpriseService {
    */
   getEnterpriseById(id: string): Observable<EnterpriseDetails> {
     const url = `${this.apiUrl}enterprise/${id}`;
-    console.log(url)
+    console.log(url);
     return this.http.get<EnterpriseDetails>(url);
   }
 
@@ -80,30 +80,46 @@ export class EnterpriseService {
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }
 
-  updateStatusEnterprise(id:string, status:string) {
+  updateStatusEnterprise(id: string, status: string) {
     const url = `${this.apiUrl}update/status/${id}/${status}`;
-    return this.http.put(url,null);
+    return this.http.put(url, null);
   }
 
+  updateEnterprise(id?: string, enterprise?: Enterprise) {
+    const url = `${this.apiUrl}update/${id}`;
+    return this.http.put(url, enterprise);
+  }
 
-  getTypesEnterprise(){
+  getTypesEnterprise() {
     return this.enterpriseTypes;
   }
 
-  uploadImg(data: any): Observable<any>{
+  uploadImg(data: any): Observable<any> {
     return this.http.post(this.urlCloudinary, data);
   }
 
-  getSelectedEnterprise(){
+  downloadLogo(url: string): Observable<File> {
+    return this.http.get(url, { responseType: 'blob' }).pipe(
+      map(blob => {
+        const tipoMIME = blob.type;
+        const extension = tipoMIME.split('/')[1];
+        const nombreArchivo = `imagen.${extension}`;
+        return new File([blob], nombreArchivo, {
+          type: 'image/jpeg',
+        });
+      })
+    );
+  }
+
+  getSelectedEnterprise() {
     return this.selectedEnterprise;
   }
 
-  setSelectedEnterprise(value:string){
+  setSelectedEnterprise(value: string) {
     this.selectedEnterprise = value;
   }
 
-  restartSelectedEnterprise(){
+  restartSelectedEnterprise() {
     this.selectedEnterprise = '-1';
   }
-
 }

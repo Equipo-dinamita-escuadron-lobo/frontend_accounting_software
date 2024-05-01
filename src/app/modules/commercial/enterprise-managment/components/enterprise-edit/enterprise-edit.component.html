@@ -5,20 +5,21 @@
                 <h1 class="text-3xl   font-bold  text-blue-950">{{title}}</h1>
                 <p class="text-base mb-3  sg:mb-7 ">{{subtitle}}</p>
             </div>
-    
-    
+
+
             <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
-    
+
                 <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
-                    <button type="button" (click)="goToListEnterprises()"
+                    <button type="button" (click)="goToDetailsEnterprises()"
                         class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                         Regresar
                     </button>
                 </div>
-    
+
             </div>
-    
+
         </div>
+        {{selectedButtonType | json}}
 
         <section class="create-enterprise  rounded-xl shadow-xl   bg-white pb-6 w-full">
             <!-- mg--->
@@ -34,7 +35,9 @@
                     <div class="basic__information__content p-8 grid grid-cols-1 md:grid-cols-3 w-full">
                         <div
                             class="basic__information__picture col-span-1 flex w-3/5  justify-center items-center  content-center mx-auto">
+                     
                             <ngx-dropzone (change)="onSelect($event)" [multiple]="false">
+                                
                                 <ngx-dropzone-label class="p-3">Arrastra y suelta tu logo!</ngx-dropzone-label>
                                 <ng-container *ngIf="file">
                                     <ngx-dropzone-image-preview [removable]="true" (removed)="onRemove()"
@@ -65,15 +68,15 @@
                                 </div>
                             </div>
                             <div class="divA mt-5">
-                                <form [formGroup]="form"
-                                    class="grid grid-cols-1 md:grid-cols-2 gap-9">
+                                <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-9">
                                     <div class="">
 
                                         <div class="col-1-name grid mb-3">
                                             <label for="nombre_empresa" class="block">Nombre de Empresa *</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Pepsi " formControlName="name" required>
+                                                placeholder="Ej: Pepsi " formControlName="name" required
+                                                [value]="enterpriseEdit?.name">
                                             <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form.get('name')?.hasError('maxlength')">Supera limite
@@ -92,14 +95,18 @@
                                                 Propietario *</label>
                                             <input type="text" id="nombre_propietario" name="nombre_propietario"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Julian" formControlName="nameOwner" required>
+                                                placeholder="Ej: Julian" formControlName="nameOwner" required
+                                                [value]="enterpriseEdit?.personType?.name">
                                             <div *ngIf="form_natural.get('nameOwner')?.invalid && form_natural.get('nameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('maxlength')">Supera limite
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('maxlength')">Supera
+                                                    limite
                                                     caracteres</div>
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('required')">El nombre es
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('required')">El
+                                                    nombre es
                                                     requerido.</div>
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('pattern')">El nombre sólo
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('pattern')">El
+                                                    nombre sólo
                                                     puede contener letras.</div>
                                             </div>
                                         </form>
@@ -111,7 +118,8 @@
                                             <input type="text" id="businessName" name="businessName"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
                                                 placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L."
-                                                formControlName="businessName">
+                                                formControlName="businessName"
+                                                [value]="enterpriseEdit?.personType?.bussinessName">
                                             <div *ngIf="form_legal.get('businessName')?.invalid && form_legal.get('businessName')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">
@@ -133,8 +141,7 @@
                                                     formControlName="selectedItemEnterpriseType"
                                                     class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
                                                     (change)="onEnterpriseTypeSelect($event)"
-                                                    (clear)="onSelectionTypeEnterpriseClear()" [clearable]="false"
-                                                    [placeholder]="placeTypeEnterprise">
+                                                    (clear)="onSelectionTypeEnterpriseClear()" [clearable]="false">
                                                     <ng-template ng-option-tmp let-item="item">
                                                         <div
                                                             class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -162,7 +169,8 @@
                                                 tributaria) *</label>
                                             <input type="text" id="nit" name="nit"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: 6004567890" formControlName="nit">
+                                                placeholder="Ej: 6004567890" formControlName="nit"
+                                                [value]="enterpriseEdit?.nit">
                                             <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
@@ -180,14 +188,18 @@
 
                                             <input type="text" id="surnameOwner" name="surnameOwner"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Ruano" formControlName="surnameOwner" required>
+                                                placeholder="Ej: Ruano" formControlName="surnameOwner" required
+                                                [value]="enterpriseEdit?.personType?.surname">
                                             <div *ngIf="form_natural.get('surnameOwner')?.invalid && form_natural.get('surnameOwner')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('maxlength')">Supera
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('maxlength')">
+                                                    Supera
                                                     limite caracteres</div>
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('required')">El apellido
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('required')">El
+                                                    apellido
                                                     es obligatorio.</div>
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('pattern')">El apellido
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('pattern')">El
+                                                    apellido
                                                     solo puede contener letras.</div>
                                             </div>
                                         </form>
@@ -200,8 +212,7 @@
                                                     [searchable]="true" formControlName="selectedItemTaxPayer"
                                                     class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full "
                                                     (change)="onTaxPayerSelect($event)"
-                                                    (clear)="onSelectionTaxPayerClear()" [clearable]="false"
-                                                    [placeholder]="placeTypePayer">
+                                                    (clear)="onSelectionTaxPayerClear()" [clearable]="false">
                                                     <ng-template ng-option-tmp let-item="item">
                                                         <div
                                                             class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -248,8 +259,7 @@
                                             (change)="onTaxLiabilitySelect($event)"
                                             class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
                                             [maxSelectedItems]="7" [multiple]="true"
-                                            formControlName="selectedItemTaxLiabilities" [clearable]="false"
-                                            [placeholder]="placeTaxLiaabilities">
+                                            formControlName="selectedItemTaxLiabilities" [clearable]="false">
                                             <ng-template ng-option-tmp let-item="item">
                                                 <div
                                                     class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -285,8 +295,7 @@
                                             formControlName="selectedItemDepartment" [searchable]="true"
                                             [clearable]="false"
                                             class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
-                                            (change)="onDepartmentSelect($event)" name="department"
-                                            [placeholder]="placeDepartment">
+                                            (change)="onDepartmentSelect($event)" name="department">
                                             <ng-template ng-option-tmp let-item="item">
                                                 <div
                                                     class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -309,14 +318,13 @@
 
 
                                 <div class="col-1-city w-full grid mb-3">
-                                    <label *ngIf="enabledSelectCity" for="municipio">Ciudad *</label>
+                                    <label for="municipio">Ciudad *</label>
                                     <div class="icon flex">
-                                        <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList"
-                                            bindLabel="name" (clear)="onSelectionCityClear()" [searchable]="true"
+                                        <ng-select name="city" [items]="cityList" bindLabel="name"
+                                            (clear)="onSelectionCityClear()" [searchable]="true"
                                             formControlName="selectedItemCity"
                                             class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-full max-h-9"
-                                            (change)="onCitySelect($event)" [clearable]="false"
-                                            [placeholder]="placeCity">
+                                            (change)="onCitySelect($event)" [clearable]="false">
                                             <ng-template ng-option-tmp let-item="item">
                                                 <div
                                                     class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
@@ -342,7 +350,8 @@
                                     <label for="direccion">Dirección *</label>
                                     <input type="text" id="direccion" name="direccion"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="address" placeholder="Ej: Calle 123 #45-67">
+                                        formControlName="address" placeholder="Ej: Calle 123 #45-67"
+                                        [value]="enterpriseEdit?.location?.address">
                                     <span class="text-red-500 text-sm font-medium -mt-1"
                                         *ngIf="form.get('address')?.hasError('required') && form.get('address')?.touched">
                                         Campo requerido
@@ -353,7 +362,8 @@
                                     <label for="telefono">Teléfono *</label>
                                     <input type="number" id="telefono" name="telefono"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="phone" placeholder="Ej: 12345678">
+                                        formControlName="phone" placeholder="Ej: 12345678"
+                                        [value]="enterpriseEdit?.phone">
 
                                     <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
                                         class="text-red-500 text-sm font-medium -mt-1">
@@ -370,7 +380,8 @@
                                     <label for="email">Email *</label>
                                     <input type="email" id="email" name="email"
                                         class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                        formControlName="email" placeholder="Ej. nombredeusuario@example.com">
+                                        formControlName="email" placeholder="Ej. nombredeusuario@example.com"
+                                        [value]="enterpriseEdit?.email">
                                     <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched"
                                         class="text-red-500 text-sm font-medium -mt-1">
                                         <div *ngIf="form.get('email')?.hasError('required')">El email es requerido.
@@ -394,7 +405,7 @@
                                         <label for="dv">Digito de verificación</label>
                                         <input type="number" id="dv" name="dv"
                                             class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                            formControlName="dv">
+                                            formControlName="dv" [value]="enterpriseEdit?.dv">
                                     </div>
                                 </div>
 
@@ -409,7 +420,7 @@
                         (click)="editEnterprise()">Guardar</button>
                     <button
                         class="cancel-create text-white bg-gradient-to-r from-red-800 via-red-700 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                        (click)="goToListEnterprises()">Cancelar</button>
+                        (click)="goToDetailsEnterprises()">Cancelar</button>
                 </div>
             </div>
         </section>

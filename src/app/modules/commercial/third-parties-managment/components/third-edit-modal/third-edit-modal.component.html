@@ -1,0 +1,94 @@
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopUp()"></div>
+<div class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center">
+  <div class="relative w-auto my-6 mx-auto max-w-6xl">
+    <!--content-->
+    <div class="bg-white rounded-lg shadow-lg">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t">
+        <h3 class="text-2xl font-semibold text-gray-900">
+          {{ inputData.title }}
+        </h3>
+        <button class="p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" (click)="closePopUp()">
+          <span class="text-2xl">×</span>
+        </button>
+      </div>
+      <!--body-->
+      <form [formGroup]="thirdForm" class="p-8">
+        <div class="grid grid-cols-3 gap-8">
+          <div class="flex justify-items-center space-x-6">
+            <img src="../../../../../../assets/Iconos/third-parties/third-partie-icon-default.png" alt="Icon" class="w-32 h-32 ">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Tipo de identificación:</label>
+            <input type="text" formControlName="typeId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Numero de identificación:</label>
+            <input type="text" formControlName="idNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Tipo de persona:</label>
+            <input type="text" formControlName="personType" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Tipos de Tercero:</label>
+            <input type="text" formControlName="thirdTypes" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div  *ngIf="thirdData.personType === 'Natural'">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
+            <input type="text" formControlName="names" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div  *ngIf="thirdData.personType === 'Natural'">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Apellidos:</label>
+            <input type="text" formControlName="lastNames" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div  *ngIf="thirdData.personType === 'Juridica'">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Razón Social:</label>
+            <input type="text" formControlName="socialReason" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Número de verificación:</label>
+            <input type="text" formControlName="verificationNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Género:</label>
+            <input type="text" formControlName="gender" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">País:</label>
+            <input type="text" formControlName="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Provincia/Departamento:</label>
+            <input type="text" formControlName="province" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Ciudad:</label>
+            <input type="text" formControlName="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Dirrección:</label>
+            <input type="text" formControlName="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Teléfono:</label>
+            <input type="text" formControlName="phoneNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+            <input type="text" formControlName="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+        </div>
+      </form>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-gray-200">
+        <button class="m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out" type="button" (click)="closePopUp()">
+          CANCELAR
+        </button>
+        <button class="m-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out" type="button" (click)="closePopUp()">
+          GUARDAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

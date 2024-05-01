@@ -4,25 +4,26 @@ import { eTypeId } from "./eTypeId";
 
 
 export interface Third {
-    entId: number;
-    typeId: eTypeId; 
+    thId: number;
+    entId: String;
+    typeId: eTypeId;
     thirdTypes: string[];// You'll need to define or reference the actual enum or replace this with the correct type.
-    rutPath?: string; 
+    rutPath?: string;
     personType: ePersonType; // Same as above, define or reference the actual enum.
-    names?: string; 
-    lastNames?: string; 
-    socialReason?: string; 
+    names?: string;
+    lastNames?: string;
+    socialReason?: string;
     gender?: eThirdGender; // And again, define or reference the actual enum.
     idNumber: number;
-    verificationNumber?: number; 
+    verificationNumber?: number;
     state: boolean;
     photoPath?: string;
     country: string;
     province: string;
-    city: string; 
+    city: string;
     address: string;
-    phoneNumber: string; 
-    email: string; 
+    phoneNumber: string;
+    email: string;
     creationDate: string;
     updateDate: string;
   }

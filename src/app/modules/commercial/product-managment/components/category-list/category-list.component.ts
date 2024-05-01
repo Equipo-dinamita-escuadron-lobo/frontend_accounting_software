@@ -3,6 +3,8 @@ import { Category } from '../../models/Category';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-category-list',
@@ -19,7 +21,8 @@ export class CategoryListComponent implements OnInit {
     { title: 'Inventario', data: 'inventory' },
     { title: 'Costo', data: 'cost' },
     { title: 'Venta', data: 'sale' },
-    { title: 'Devolución', data: 'return' }
+    { title: 'Devolución', data: 'return' },
+    { title: 'Acciones', data: 'actions' }
   ];
 
   form: FormGroup;
@@ -83,7 +86,21 @@ getCategories(): void {
   }
   
   goBack(): void {
-    this.router.navigate(['/product-list']);
+    this.router.navigate(['/general/operations/products']);
+  }
+
+  deleteCategory(categoryId: string): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+      this.categoryService.deleteCategory(categoryId).subscribe(
+        (data: Category) => {
+          console.log('Categoría eliminada con éxito: ', data);
+          this.getCategories();
+        },
+        error => {
+          console.error('Error al eliminar la categoría: ', error);
+        }
+      );
+    }
   }
 
 }
