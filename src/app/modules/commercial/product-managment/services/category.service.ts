@@ -71,7 +71,7 @@ export class CategoryService {
   // Método para actualizar una categoría existente
   updateCategory(category: Category): Observable<Category> {
     const url = `${environment.API_URL}categories/update/${category.id}`;
-    return this.http.post<Category>(url, category);
+    return this.http.put<Category>(url, category);
   }
 
   // Método para eliminar una categoría
