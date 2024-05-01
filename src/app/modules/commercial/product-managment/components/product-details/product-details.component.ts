@@ -40,11 +40,15 @@ export class ProductDetailsModalComponent {
   }
 
   ngOnInit(): void {
-    this.data = this.data;
-    if(this.data.id > 0){
-      this.service.getProductById(this.inputData.id).subscribe(product => {
+    this.inputData = this.data;
+    console.log(this.inputData);
+    if(this.inputData.productId > 0){
+
+      this.service.getProductById(this.inputData.productId).subscribe(
+        product => {
         this.productData = product;
       });
     } 
+    console.log(this.productData);
   }
 }

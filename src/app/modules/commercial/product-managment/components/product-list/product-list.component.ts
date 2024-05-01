@@ -98,19 +98,19 @@ validationsAll(){
     }
   }
 
-  openDetailsModal(productId: any){
-    this.OpenPopUp(productId, 'Detalles del producto', ProductDetailsModalComponent)
+  openDetailsModal(id: any){
+    this.OpenPopUp(id, 'Detalles del producto', ProductDetailsModalComponent)
   }
 
 
-  OpenPopUp(productId: any, title: any, component: any){
+  OpenPopUp(id: any, title: any, component: any){
       var _popUp = this.dialog.open(component, {
         width: '40%',
         enterAnimationDuration: '0ms',
         exitAnimationDuration: '600ms',
         data:{
           title: title,
-          productId: productId
+          productId: id
         }
       });
       _popUp.afterClosed().subscribe()
