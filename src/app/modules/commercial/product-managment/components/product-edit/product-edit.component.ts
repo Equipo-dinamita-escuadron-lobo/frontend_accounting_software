@@ -56,9 +56,9 @@ export class ProductEditComponent implements OnInit {
           maxQuantity: product.maxQuantity,
           taxPercentage: product.taxPercentage,
           creationDate: product.creationDate,
-          unitOfMeasure: product.unitOfMeasure,
-          supplier: product.supplier,
-          category: product.category,
+          unitOfMeasureId: product.unitOfMeasureId,
+          supplierId: product.supplierId,
+          categoryId: product.categoryId,
           price: product.price
         });
       },

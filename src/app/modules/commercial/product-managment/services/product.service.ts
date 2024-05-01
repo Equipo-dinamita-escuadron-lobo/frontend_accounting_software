@@ -20,6 +20,9 @@ export class ProductService {
   // Método para crear un nuevo producto
   createProduct(product: Product): Observable<Product> {
     const url = `${environment.API_URL}products/create`;
+    product.enterpriseId = 1; 
+    console.log(product);
+
     return this.http.post<Product>(url, product);
   }
 
