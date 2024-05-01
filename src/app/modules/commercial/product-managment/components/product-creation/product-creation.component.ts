@@ -3,12 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa 
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { CategoryService } from '../../services/category.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { Product } from '../../models/Product';
-import { ThirdService } from '../../../third-parties-managment/services/third-service';
-import { Third } from '../../../third-parties-managment/models/third-model';
 import Swal from 'sweetalert2';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
  @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -24,6 +23,10 @@ export class ProductCreationComponent implements OnInit {
   submitSuccess: boolean = false;
   nextProductId: number = 1; // Inicializa el contador del ID del producto
 
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -32,6 +35,8 @@ export class ProductCreationComponent implements OnInit {
     private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
     private router: Router
   ) {}
+
+
   
   ngOnInit(): void {
     // Inicializa el formulario reactivo y define las validaciones necesarias para cada campo
@@ -54,10 +59,14 @@ export class ProductCreationComponent implements OnInit {
     ,{ validators: minMaxValidator });  
     this.initForm();
 
-
+  this.entData = this.localStorageMethods.loadEnterpriseData();
+  if(this.entData){
   this.getThirdParties();
   this.getUnitOfMeasures();
   this.getCategories();
+  }
+
+   console.log(this.entData)
   }
 
 
@@ -76,7 +85,7 @@ export class ProductCreationComponent implements OnInit {
   // Método para obtener la lista de proveedores
 getThirdParties(): void {
 
-  this.thirdService.getThirdParties("1121",0).subscribe(
+  this.thirdService.getThirdParties(this.entData.entId,0).subscribe(
     (thirdParties: any[]) => {
       // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
       this.thirdParties = thirdParties;
@@ -162,6 +171,7 @@ getUnitOfMeasures(): void {
     formData.price = parseInt(formData.price.replace(/\D/g, ''), 10); 
 
     const productData: Product = formData;
+    productData.enterpriseId = this.entData.entId;
 
     console.log('Datos del producto:', productData);
     this.productService.createProduct(productData).subscribe(

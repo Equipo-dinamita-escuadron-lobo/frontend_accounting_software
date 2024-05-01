@@ -16,5 +16,6 @@ export interface Product {
     categoryId: number;
     enterpriseId: number;
     price: number;
+    state: string;
   }
   

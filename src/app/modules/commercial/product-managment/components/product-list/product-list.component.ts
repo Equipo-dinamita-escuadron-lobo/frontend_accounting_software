@@ -3,6 +3,8 @@ import { ProductService } from '../../services/product.service'; // Importa el s
 import { Product } from '../../models/Product'; // Importa el modelo Product
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog'; 
+import { ProductDetailsModalComponent } from '../product-details/product-details.component';
 
 @Component({
   selector: 'app-product-list',
@@ -33,7 +35,7 @@ export class ProductListComponent implements OnInit {
   selectedProductId: string | null = null;
   timer: any;
 
-  constructor(private productService: ProductService,  private router: Router, private fb: FormBuilder ) {
+  constructor(private productService: ProductService,  private router: Router, private fb: FormBuilder, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
    } // Inyecta el servicio ProductService en el constructor
 
@@ -80,5 +82,38 @@ validationsAll(){
       }, 300); // Tiempo en milisegundos para considerar un doble clic
     }
   }
-}
+
+  
+  deleteProduct(productId: string): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+      this.productService.deleteProduct(productId).subscribe(
+        (data: Product) => {
+          console.log('Producto eliminado con éxito: ', data);
+          this.router.navigate(['/general/operations/products']);
+        },
+        error => {
+          console.error('Error al eliminar el producto: ', error);
+        }
+      );
+    }
+  }
+
+  openDetailsModal(productId: any){
+    this.OpenPopUp(productId, 'Detalles del producto', ProductDetailsModalComponent)
+  }
+
+
+  OpenPopUp(productId: any, title: any, component: any){
+      var _popUp = this.dialog.open(component, {
+        width: '40%',
+        enterAnimationDuration: '0ms',
+        exitAnimationDuration: '600ms',
+        data:{
+          title: title,
+          productId: productId
+        }
+      });
+      _popUp.afterClosed().subscribe()
+    }
+  }
 
