@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
   styleUrl: './accounts-list.component.css'
 })
 export class AccountsListComponent {
+  //variables xd
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
