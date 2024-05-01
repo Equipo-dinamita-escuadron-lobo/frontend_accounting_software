@@ -7,14 +7,31 @@ import { Router } from '@angular/router';
   styleUrl: './login-view.component.css'
 })
 export class LoginViewComponent {
-  email: string = '';
-  password: string = '';
 
-  constructor(private router: Router) {}
+  loading: any = true
 
-  login() {
-    console.log(this.email);
-    console.log(this.password);
-    this.router.navigate(['/general/'])
+  constructor(public router:Router) { }
+
+  perfil: any[] = []
+
+  contenedor: any
+
+  erroStatus: boolean = false
+  erroMsg: any = ""
+
+  ngOnInit(): void {  }
+
+  async onLoginUser() {
+    this.router.navigate(['/general/']);
   }
+
+  showPassword() {//ocultar password
+    const change = document.getElementById('password') as HTMLInputElement
+    if (change.type === 'password') {
+      change.type = 'text'
+    } else {
+      change.type = 'password'
+    }
+  }
+
 }

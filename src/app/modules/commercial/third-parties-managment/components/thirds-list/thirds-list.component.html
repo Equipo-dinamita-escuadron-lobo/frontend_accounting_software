@@ -63,37 +63,61 @@
         <tr
           *ngFor="
             let third of data | filterList : form.value.stringSearch"
-          class="hover:bg-gray-100"
+            class="hover:bg-gray-100"
         >
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.idNumber }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
           <td class="px-6 py-4 whitespace-nowrap">
+            {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center">
             {{ third.typeId }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.phoneNumber }}
+            {{ third.idNumber }}
           </td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ third.email }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            {{ third.email }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <p *ngIf="third.state" class="px-2 py-2 rounded-lg bg-green-500 text-white text-center">
+              Activo
+            </p>
+            <p *ngIf="!third.state" class="px-2 py-2 rounded-lg bg-red-500 text-white text-center">
+              Inactivo
+            </p>
+          </td>
           <td class="py-4 whitespace-nowrap flex justify-center items-center">
-            <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600  mr-2 relative overflow-hidden">
+            <button class="px-2 py-2 rounded-lg bg-blue-400 hover:bg-blue-500  mr-2 relative overflow-hidden" (click)="openModalDetails(third.thId)">
               <span class="material-icons flex justify-center items-center text-white">visibility</span>
-              <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
+              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
                 Ver
               </span>
             </button>
-            <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden">
+            <button
+              class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden" (click)="openModalEdit(third.thId)">
               <span class="material-icons flex justify-center items-center text-white ">edit</span>
-              <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
                 Editar
               </span>
             </button>
-            <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white mr-2 flex items-center">
-              <span class="material-icons">toggle_on</span>
-              <p class="ml-2">Inactivar</p>
+            <button
+              class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600  mr-2 relative overflow-hidden flex justify-center items-center"
+              *ngIf="third.state === true"
+              (click)="changeThirdPartieState(third.thId)"
+            >
+              <span class="material-icons flex justify-center items-center text-white ">toggle_off</span>
+              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                Estado
+              </span>
             </button>
-            <button class="px-2 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white mr-2 flex items-center">
-              <span class="material-icons">toggle_off</span>
-              <p class="ml-2">Activar</p>
+            <button
+              class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
+              *ngIf="third.state === false"
+              (click)="changeThirdPartieState(third.thId)"
+            >
+              <span class="material-icons text-white">toggle_on</span>
+              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                Estado
+              </span>
             </button>
           </td>
         </tr>

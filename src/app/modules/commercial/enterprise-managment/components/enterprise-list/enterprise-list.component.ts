@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Enterprise } from '../../models/Enterprise';
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 @Component({
   selector: 'app-enterprise-list',
@@ -27,9 +28,10 @@ export class EnterpriseListComponent {
   selectedEnterprise: EnterpriseList | null = null;
 
   @ViewChild('buttonArchive') buttonArchive!: ElementRef;
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
 
   constructor(
-    private enterpriseServide: EnterpriseService,
+    private enterpriseService: EnterpriseService,
     private router: Router,
     private cdRef: ChangeDetectorRef
   ) {}
@@ -38,10 +40,10 @@ export class EnterpriseListComponent {
     this.getEnterprisesActive();
   }
 
-  getEnterprisesActive() {    
+  getEnterprisesActive() {
     this.title = 'Listado de empresas';
     this.subtitle = 'Elija una empresa para acceder a sus funcionalidades';
-    this.enterpriseServide.getEnterprisesActive().subscribe({
+    this.enterpriseService.getEnterprisesActive().subscribe({
       next: (enterpriseData) => {
         this.typeList = 'ACTIVE';
         this.listEnterprises = enterpriseData;
@@ -52,7 +54,7 @@ export class EnterpriseListComponent {
   getEnterprisesInactive() {
     this.title = 'Empresas archivadas';
     this.subtitle = 'Lista de empresas archivadas.';
-    this.enterpriseServide.getEnterprisesInactive().subscribe({
+    this.enterpriseService.getEnterprisesInactive().subscribe({
       next: (enterpriseData) => {
         this.listEnterprises = enterpriseData;
         this.typeList = 'INACTIVE';
@@ -65,8 +67,9 @@ export class EnterpriseListComponent {
   }
 
   updateEnterpriseSelected(id: string) {
+    this.localStorageMethods.saveEnterpriseData(id);
     this.logInEnterprise();
-    this.enterpriseServide.setSelectedEnterprise(id);
+    this.enterpriseService.setSelectedEnterprise(id);
   }
 
   logInEnterprise() {
@@ -85,7 +88,7 @@ export class EnterpriseListComponent {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.enterpriseServide.updateStatusEnterprise(id, 'ACTIVE').subscribe({
+        this.enterpriseService.updateStatusEnterprise(id, 'ACTIVE').subscribe({
           next: () => {
             Swal.fire({
               title: 'Empresa activada!',

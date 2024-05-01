@@ -9,7 +9,8 @@ import { environment } from '../../../../../environments/environment';
 })
 export class ThirdServiceService {
 
-  private thirdApiUrl = environment.API_URL + 'thirds/'
+  //private thirdApiUrl = environment.API_URL + 'thirds/'
+  private thirdApiUrl = 'http://localhost:8080/api/thirds/'
 
   constructor(private http: HttpClient){
   }
@@ -25,11 +26,9 @@ export class ThirdServiceService {
   }
 
   getThirdParties(entId: String, numPage: number): Observable<Third[]> {
-    
-    
     let params = new HttpParams()
     .set('entId', entId.toString())
-    .set('numPage', numPage.toString());
+    .set('numPage', numPage);
 
     return this.http.get<any>(this.thirdApiUrl, {params})
     .pipe(
@@ -37,4 +36,16 @@ export class ThirdServiceService {
     );
   }
 
+  getThirdPartie(thId:number): Observable<Third>{
+    return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
+  }
+
+  changeThirdPartieState(thId:number): Observable<Boolean>{
+    let params = new HttpParams()
+    .set('thId', thId);
+
+    const response = this.http.put<any>(this.thirdApiUrl,null,{params})
+
+    return response;
+  }
 }
