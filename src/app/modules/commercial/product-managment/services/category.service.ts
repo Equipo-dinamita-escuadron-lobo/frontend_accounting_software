@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Category } from '../models/Category';
 import { environment } from '../../../../../environments/environment';
 
+//interface temporal para simular la respuesta de la API
 interface Cuenta {
   id: number;
   name: string;
