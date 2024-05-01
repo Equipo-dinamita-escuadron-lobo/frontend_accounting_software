@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
-import {FormBuilder,FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ChartAccountService } from '../../services/chart-account.service';
 import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
 import * as XLSX from 'xlsx';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-accounts-list',
@@ -12,11 +13,11 @@ import * as XLSX from 'xlsx';
   styleUrl: './accounts-list.component.css'
 })
 export class AccountsListComponent {
-  //variables xd
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
   importedAccounts: boolean = false;
+  importedFailed: boolean = false;
 
   //
   accountForm: FormGroup;
@@ -59,13 +60,13 @@ export class AccountsListComponent {
   placeClasificationType: string = '';
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private _accountService: ChartAccountService) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
   }
 
-  vallidationsFormTansactional(){
+  vallidationsFormTansactional() {
     return {
       selectedNatureType: [null, [this.selectedValueValidator]],
       selectedFinancialStateType: [null, [this.selectedValueValidator]],
@@ -93,45 +94,45 @@ export class AccountsListComponent {
       return { noValueSelected: true }; // El valor no es válido
     }
   }
-  
+
   toggleSubAccounts(account: Account) {
     account.showSubAccounts = !account.showSubAccounts;
   }
 
-  selectAccount(account: Account) { 
+  selectAccount(account: Account) {
     this.accountHasInformation(account);
-    this.createForm(account); 
+    this.createForm(account);
     this.showFormTransactional = true;
-  } 
-  createForm(selectedAccount: Account) { 
-    this.accountForm = this.fb.group({}); 
+  }
+  createForm(selectedAccount: Account) {
+    this.accountForm = this.fb.group({});
     this.showButton = true;
 
     this.assignName(selectedAccount.code, selectedAccount.name);
     this.updateInputAccess(selectedAccount.code.length);
 
     this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class }));
-    this.accountForm.addControl('classCode', new FormControl({value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class })); 
-      
-    if (selectedAccount.code.length >= 2) { 
-    this.accountForm.addControl('groupName', new FormControl({value: this.groupName, disabled: this.inputAccess.group })); 
-    this.accountForm.addControl('groupCode', new FormControl({value: selectedAccount.code.slice(0, 2), disabled: this.inputAccess.group })); 
+    this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class }));
 
-      if (selectedAccount.code.length >= 4) { 
-        this.accountForm.addControl('accountName', new FormControl({value: this.accountName, disabled: this.inputAccess.account })); 
-        this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0,4) )); 
-        this.accountForm.addControl('codeAccount', new FormControl({value: selectedAccount.code.slice(2,4), disabled: this.inputAccess.account })); 
+    if (selectedAccount.code.length >= 2) {
+      this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group }));
+      this.accountForm.addControl('groupCode', new FormControl({ value: selectedAccount.code.slice(0, 2), disabled: this.inputAccess.group }));
 
-        if (selectedAccount.code.length >= 6) { 
-          this.accountForm.addControl('subAccountName', new FormControl({value: this.subAccountName, disabled: this.inputAccess.subAccount })); 
-          this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6))); 
-          this.accountForm.addControl('codeSubAccount', new FormControl({value: selectedAccount.code.slice(4,6), disabled: this.inputAccess.subAccount }));
-          
-          if (selectedAccount.code.length >= 8) { 
-            this.accountForm.addControl('auxiliaryName', new FormControl({value: this.auxiliaryName, disabled: this.inputAccess.auxiliary })); 
-            this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8))); 
-            this.accountForm.addControl('codeAuxiliary', new FormControl({value: selectedAccount.code.slice(6,8), disabled: this.inputAccess.auxiliary })); 
-          } 
+      if (selectedAccount.code.length >= 4) {
+        this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account }));
+        this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4)));
+        this.accountForm.addControl('codeAccount', new FormControl({ value: selectedAccount.code.slice(2, 4), disabled: this.inputAccess.account }));
+
+        if (selectedAccount.code.length >= 6) {
+          this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount }));
+          this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6)));
+          this.accountForm.addControl('codeSubAccount', new FormControl({ value: selectedAccount.code.slice(4, 6), disabled: this.inputAccess.subAccount }));
+
+          if (selectedAccount.code.length >= 8) {
+            this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary }));
+            this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8)));
+            this.accountForm.addControl('codeAuxiliary', new FormControl({ value: selectedAccount.code.slice(6, 8), disabled: this.inputAccess.auxiliary }));
+          }
         }
       }
     }
@@ -171,56 +172,86 @@ export class AccountsListComponent {
 
   ReadExcel(event: any) {
     let file = event.target.files[0];
+  
+    // Verificar si el archivo es de tipo xlsx
+    if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      console.error('El archivo debe ser de tipo xlsx.');
+      return;
+    }
+  
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
-
+  
     fileReader.onload = (e) => {
       var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
       let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
-
+  
+      // Verificar campos obligatorios
+      const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
+      const missingFields = requiredFields.filter(field => {
+        const obj = jsonData[0] as { [key: string]: any };
+        return !Object.keys(obj).includes(field);
+      });
+  
+      if (missingFields.length > 0) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "El documento que quieres importar le falta algunos campos!",
+          footer: '<a href="#" class="text-purple-500">Obtener mas informacion!</a>'
+        });
+        console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
+        return;
+      }
+  
       this.listExcel = jsonData.map((item: any) => ({
         code: item['Código'],
         name: item['Nombre'],
         nature: item['Naturaleza'],
         financialState: item['Estado Financiero'],
-        clasification: item['Clasificación']
+        clasification: item['Clasificación'] // Corregido el nombre del campo
       }));
-
-      if(this.listExcel){
-        this.importedAccounts=true;
+  
+      if (this.listExcel) {
+        this.importedAccounts = true;
         console.log(this.importedAccounts);
       }
-
+  
       console.log(this.createHierarchyWithParent(this.listExcel));
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
+  
+      // Resetear el valor del input de archivo
+      event.target.value = null;
     };
   }
+  
+
 
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
-  
+
     // Agrupar cuentas por código
     for (const account of accounts) {
       const code = account.code;
       const level = code.length / 2;
-  
+
       if (!hierarchy[code]) {
         hierarchy[code] = { ...account, subAccounts: [] };
       } else {
         hierarchy[code].name = account.name;
       }
-  
+
       if (level >= 1) {
         const parentCode = code.slice(0, -2);
         if (!hierarchy[parentCode]) {
-          hierarchy[parentCode] = { code: parentCode, name: '',nature: '', financialState: '', clasification: '', subAccounts: [] };
+          hierarchy[parentCode] = { code: parentCode, name: '', nature: '', financialState: '', clasification: '', subAccounts: [] };
         }
         hierarchy[parentCode].subAccounts?.push(hierarchy[code]);
       }
     }
-  
+
     // Asociar cada cuenta principal al padre con un solo dígito en el código
     for (const account of Object.values(hierarchy)) {
       if (account.code.length === 2) {
@@ -231,7 +262,7 @@ export class AccountsListComponent {
         }
       }
     }
-  
+
     // Obtener cuentas de nivel superior (clases)
     const topLevelAccounts: Account[] = [];
     for (const account of Object.values(hierarchy)) {
@@ -239,10 +270,10 @@ export class AccountsListComponent {
         topLevelAccounts.push(account);
       }
     }
-  
+
     return topLevelAccounts;
   }
-  
+
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
       if (account.code === code) {
@@ -323,36 +354,36 @@ export class AccountsListComponent {
     this.placeFinancialStateType = 'Seleccione una opción';
     this.placeClasificationType = 'Seleccione una opción';
 
-    this.formTransactional.patchValue({'selectedNatureType': null});
-    this.formTransactional.patchValue({'selectedFinancialStateType': null});
-    this.formTransactional.patchValue({'selectedClasificationType': null});
+    this.formTransactional.patchValue({ 'selectedNatureType': null });
+    this.formTransactional.patchValue({ 'selectedFinancialStateType': null });
+    this.formTransactional.patchValue({ 'selectedClasificationType': null });
 
     if (selectedAccount.nature.length > 0) {
-      this.formTransactional.patchValue({'selectedNatureType': selectedAccount.nature});
+      this.formTransactional.patchValue({ 'selectedNatureType': selectedAccount.nature });
       this.placeNatureType = '';
     }
 
     if (selectedAccount.financialState.length > 0) {
-      this.formTransactional.patchValue({'selectedFinancialStateType': selectedAccount.financialState});
+      this.formTransactional.patchValue({ 'selectedFinancialStateType': selectedAccount.financialState });
       this.placeFinancialStateType = '';
     }
 
     if (selectedAccount.clasification.length > 0) {
-      this.formTransactional.patchValue({'selectedClasificationType': selectedAccount.clasification});
+      this.formTransactional.patchValue({ 'selectedClasificationType': selectedAccount.clasification });
       this.placeClasificationType = '';
     }
   }
 
-  saveAccount(){
+  saveAccount() {
     console.log(this.accountForm.value);
   }
 
-  saveImportAccounts(){
+  saveImportAccounts() {
     this.importedAccounts = false;
     this._accountService.saveAccountsImport(this.listAccounts)
   }
 
-  cancelImportAccounts(){
+  cancelImportAccounts() {
     this.importedAccounts = false;
     this.listAccounts = this.listAccountsAux;
   }

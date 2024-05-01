@@ -9,7 +9,7 @@
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
                 <label for="fileInput"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
-                    <input type="file" id="fileInput" (change)="ReadExcel($event)"
+                    <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
                         class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
                     Importar
                 </label>
@@ -33,11 +33,10 @@
             </div>
         </form>
 
-        <div *ngIf="importedAccounts" class="grid sm:grid-rows-2 bg-red-300 mb-5 px-4 py-2 text-sm rounded-lg bg-opacity-50 ">
-            <div class="flex">
+        <div *ngIf="importedAccounts" class="grid grid-rows-1 sm:grid-rows-2 bg-red-300 mb-5 px-4 py-2 text-sm rounded-lg bg-opacity-50">
+            <div class="flex text-red-800">
                 <svg class="h-0 w-0 mr-0 sm:h-10 sm:w-10 sm:mr-2 displ text-red-800"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />  <line x1="12" y1="9" x2="12" y2="13" />  <line x1="12" y1="17" x2="12.01" y2="17" /></svg>
-                <label for="" class="text-red-800">Querido usuario, usted ha cargado un catálogo de cuentas desde su ordenador. Presione "Guardar" si desea seguir trabajando con ese catálogo de cuentas, de lo contrario, presione el
-                    botón "Restablecer".</label>
+                    Querido usuario, usted ha cargado un catálogo de cuentas desde su ordenador. Presione "Guardar" si desea seguir trabajando con ese catálogo de cuentas, de lo contrario, presione el botón "Restablecer".
             </div>
             
             <div class="flex justify-center mt-2 sm:mt-0">
