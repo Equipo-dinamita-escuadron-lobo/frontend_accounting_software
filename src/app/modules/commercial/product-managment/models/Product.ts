@@ -1,3 +1,4 @@
+import { Third } from "../../third-parties-managment/models/third-model";
 import { Category } from "./Category";
 import { UnitOfMeasure } from "./UnitOfMeasure";
 
@@ -10,9 +11,11 @@ export interface Product {
     maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
-    unitOfMeasure: UnitOfMeasure;
-    supplier: string;
-    category: Category;
+    unitOfMeasureId: number;
+    supplierId:  number;
+    categoryId: number;
+    enterpriseId: number;
     price: number;
+    state: string;
   }
   

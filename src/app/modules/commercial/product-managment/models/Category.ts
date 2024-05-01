@@ -3,9 +3,9 @@ export interface Category {
     name: string; 
     description: string; 
     //cuentas
-    inventory:string; //Todo: Agregar el atributo inventory de tipo inventario
-    cost:string //Todo: Agregar el atributo cost de tipo costo
-    sale:string //Todo: Agregar el atributo Sale de tipo venta
-    return:string //Todo: Agregar el atributo return de tipo devolución
+    inventoryId:number; //Todo: Agregar el atributo inventory de tipo inventario
+    costId:number //Todo: Agregar el atributo cost de tipo costo
+    saleId:number //Todo: Agregar el atributo Sale de tipo venta
+    returnId:number //Todo: Agregar el atributo return de tipo devolución
 }
   

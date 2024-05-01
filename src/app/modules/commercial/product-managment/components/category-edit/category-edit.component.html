@@ -44,6 +44,8 @@
                 <label for="inventory" class="block text-sm font-medium text-gray-700">Inventario:</label>
                 <select formControlName="inventory" id="inventory" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                   <option value="">Selecciona una opción</option>
+                  <option *ngFor="let inv of inventory" [value]="inv.id">{{ inv.name }}</option>
+
                   <!-- Agrega opciones según sea necesario -->
                 </select>
                 <div *ngIf="editForm.get('inventory')?.touched && editForm.get('inventory')?.invalid" class="text-red-500">
@@ -57,6 +59,7 @@
                 <label for="cost" class="block text-sm font-medium text-gray-700">Costo:</label>
                 <select formControlName="cost" id="cost" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                   <option value="">Selecciona una opción</option>
+                  <option *ngFor="let cos of cost" [value]="cos.id">{{ cos.name }}</option>
                   <!-- Agrega opciones según sea necesario -->
                 </select>
                 <div *ngIf="editForm.get('cost')?.touched && editForm.get('cost')?.invalid" class="text-red-500">
@@ -71,6 +74,8 @@
                 <select formControlName="sale" id="sale" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                   <option value="">Selecciona una opción</option>
                   <!-- Agrega opciones según sea necesario -->
+                  <option *ngFor="let sal of sale" [value]="sal.id">{{ sal.name }}</option>
+
                 </select>
                 <div *ngIf="editForm.get('sale')?.touched && editForm.get('sale')?.invalid" class="text-red-500">
                   <div *ngIf="editForm.get('sale')?.errors?.['required']">
@@ -84,6 +89,7 @@
                 <select formControlName="return" id="return" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                   <option value="">Selecciona una opción</option>
                   <!-- Agrega opciones según sea necesario -->
+                  <option *ngFor="let ret of return" [value]="ret.id">{{ ret.name }}</option>
                 </select>
                 <div *ngIf="editForm.get('return')?.touched && editForm.get('return')?.invalid" class="text-red-500">
                   <div *ngIf="editForm.get('return')?.errors?.['required']">

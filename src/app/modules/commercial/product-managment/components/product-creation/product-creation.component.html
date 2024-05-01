@@ -22,25 +22,7 @@
         <div class="p-4 bg-white rounded shadow">
           <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!--
-              <div>
-                <label for="id" class="block text-sm font-medium text-gray-700"
-                  >Id(campo temporal):</label
-                >
-                <input
-                  type="text"
-                  formControlName="id"
-                  id="id"
-                  hid="1"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-700 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('id')?.touched && productForm.get('id')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('id')?.errors?.['required']">
-                    El campo Id es requerido.
-                  </div>
-                </div>                   
-              </div>
-              -->
+        
               <div>
                 <label
                   for="tipoItem"
@@ -178,102 +160,48 @@
             </div>
             
 
-              <div>
-              <!--
-                <label
-                  for="creationDate"
-                  class="block text-sm font-medium text-gray-700"
-                  >Fecha de Creación (DD/MM/AÑO):</label
-                >
-                <input
-                  type="date"
-                  formControlName="creationDate"
-                  id="creationDate"
-                  readonly 
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Fecha de Creación es requerido.
+            <div>
+              <label for="unitOfMeasureId" class="block text-sm font-medium text-gray-700">Unidad de Medida:</label>
+              <select formControlName="unitOfMeasureId" id="unitOfMeasureId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  <option value="">Selecciona una unidad de medida</option>
+                  <option *ngFor="let unit of unitOfMeasures" [value]=unit.id>{{ unit.name }}</option>
+              </select>
+              <div *ngIf="productForm.get('unitOfMeasureId')?.touched && productForm.get('unitOfMeasureId')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('unitOfMeasureId')?.errors?.['required']">
+                      El campo Unidad de Medida es requerido.
                   </div>
-                </div>
               </div>
-              <div>
-              -->
-                <label
-                  for="unitOfMeasure"
-                  class="block text-sm font-medium text-gray-700"
-                  >Unidad de Medida:</label
-                >
-                <input
-                  type="text"
-                  formControlName="unitOfMeasure"
-                  id="unitOfMeasure"
-                  placeholder="Ej: Kg "
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Unidad de Medida es requerido.
-                  </div>
-                </div>
-              </div>
+          </div>
+          
              
-              <!--
-              <div>
-                <label
-                  for="supplier"
-                  class="block text-sm font-medium text-gray-700"
-                  >Proveedor:</label
-                >
-                <input
-                  type="text"
-                  formControlName="supplier"
-                  id="supplier"
-                  placeholder="Bananera Doña Juli"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Proveedor es requerido.
-                  </div>
-                </div>
-                
-              </div>
-            -->
+          
 
             <div>
-              <label for="supplier" class="block text-sm font-medium text-gray-700">Proveedor:</label>
-              <select formControlName="supplier" id="supplier" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+              <label for="supplierId" class="block text-sm font-medium text-gray-700">Proveedor:</label>
+              <select formControlName="supplierId" id="supplierId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="">Selecciona un proveedor</option>
                 <option *ngFor="let provider of thirdParties" [value]="provider.idNumber">{{ provider.names ? provider.names + ' ' + provider.lastNames : provider.socialReason }}</option>
               </select>
-              <div *ngIf="productForm.get('supplier')?.touched && productForm.get('supplier')?.invalid" class="text-red-500">
-                <div *ngIf="productForm.get('supplier')?.errors?.['required']">
+              <div *ngIf="productForm.get('supplierId')?.touched && productForm.get('supplierId')?.invalid" class="text-red-500">
+                <div *ngIf="productForm.get('supplierId')?.errors?.['required']">
                   El campo Proveedor es requerido.
                 </div>
               </div>
             </div>
             
-              <div>
-                <label
-                  for="category"
-                  class="block text-sm font-medium text-gray-700"
-                  >Categoría:</label
-                >
-                <input
-                  type="text"
-                  formControlName="category"
-                  id="category"
-                  placeholder="Ej: Comestibles"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Categoría es requerido.
+          
+            <div>
+              <label for="categoryId" class="block text-sm font-medium text-gray-700">Categoría:</label>
+              <select formControlName="categoryId" id="categoryId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  <option value="">Selecciona una categoría</option>
+                  <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+              </select>
+              <div *ngIf="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid" class="text-red-500">
+                  <div *ngIf="productForm.get('categoryId')?.errors?.['required']">
+                      El campo Categoría es requerido.
                   </div>
-                </div>
               </div>
+          </div>
 
               <div>
                 <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
@@ -307,29 +235,11 @@
                   Crear Producto
                 </button>
               </div>               
-               <!--
-               <div>
-                <button type="submit" class="buttonsC h-10 w-auto" (click)="onSubmit()">
-                  Crear Producto
-                </button>
-                <div *ngIf="formSubmitAttempt">
-                  <div *ngIf="submitSuccess" class="success-message">
-                    El producto se creó con éxito.
-                  </div>
-                  <div *ngIf="!submitSuccess" class="error-message">
-                    No se pudo crear el producto. Por favor revisa los campos.
-                  </div>
-                </div>
-              </div>
-              -->
+         
                             
             </div>
           </form>
         </div>
-        <!-- 
-          <div class="p-4 bg-white rounded shadow">
-            <p class="text-lg font-semibold">Información del Producto</p>
-        </div>
-        -->
+       
       </div>
     </div>
