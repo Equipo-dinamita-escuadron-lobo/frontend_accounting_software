@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import Swal from 'sweetalert2';
 import { ThirdEditModalComponent } from '../third-edit-modal/third-edit-modal.component';
+import { ThirdDetailsModalComponent } from '../third-details-modal/third-details-modal.component';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
@@ -71,7 +72,11 @@ export class ThirdsListComponent{
   }
 
   openModalDetails(thId:number):void{
-    this.openPopUp(thId,'Detalles del tercero',ThirdEditModalComponent)
+    this.openPopUp(thId,'Detalles del tercero',ThirdDetailsModalComponent)
+  }
+
+  openModalEdit(thId:number):void{
+    this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
 
   changeThirdPartieState(thId:number):void{

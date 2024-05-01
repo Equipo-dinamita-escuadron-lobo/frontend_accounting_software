@@ -4,7 +4,7 @@ import { ThirdServiceService } from '../../services/third-service.service';
 import { Third } from '../../models/Third';
 import { eTypeId } from '../../models/eTypeId';
 import { ePersonType } from '../../models/ePersonType';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-third-edit-modal',
   templateUrl: './third-edit-modal.component.html',
@@ -28,22 +28,35 @@ export class ThirdEditModalComponent {
     verificationNumber: undefined,
     state: false,
     photoPath: undefined,
-    country: 'SV',
-    province: 'AH',
-    city: 'Atiquizaya',
-    address: 'Calle Principal',
-    phoneNumber: '1234567890',
-    email: 'email@example.com',
-    creationDate: '2024-04-27',
-    updateDate: '2024-04-29'
+    country: '',
+    province: '',
+    city: '',
+    address: '',
+    phoneNumber: '',
+    email: '',
+    creationDate: '',
+    updateDate: ''
   };
+  thirdForm: FormGroup = this.fb.group({
+    typeId: [this.thirdData.typeId],
+    idNumber: [this.thirdData.idNumber],
+    personType: [this.thirdData.personType],
+    thirdTypes: [this.thirdData.thirdTypes],
+    names: [this.thirdData.names],
+    lastNames: [this.thirdData.lastNames],
+    socialReason: [this.thirdData.socialReason],
+    verificationNumber: [this.thirdData.verificationNumber],
+    gender: [this.thirdData.gender],
+    country: [this.thirdData.country],
+    province: [this.thirdData.province],
+    city: [this.thirdData.city],
+    address: [this.thirdData.address],
+    phoneNumber: [this.thirdData.phoneNumber],
+    email: [this.thirdData.email]
+  });
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdEditModalComponent>, private service:ThirdServiceService){
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdEditModalComponent>, private service:ThirdServiceService, private fb:FormBuilder){
 
-  }
-
-  closePopUp(){
-    this.ref.close('closing from modal details');
   }
 
   ngOnInit(){
@@ -51,7 +64,28 @@ export class ThirdEditModalComponent {
     if(this.inputData.thId > 0){
       this.service.getThirdPartie(this.inputData.thId).subscribe(third => {
         this.thirdData = third;
+        this.thirdForm = this.fb.group({
+          typeId: [this.thirdData.typeId],
+          idNumber: [this.thirdData.idNumber],
+          personType: [this.thirdData.personType],
+          thirdTypes: [this.thirdData.thirdTypes],
+          names: [this.thirdData.names],
+          lastNames: [this.thirdData.lastNames],
+          socialReason: [this.thirdData.socialReason],
+          verificationNumber: [this.thirdData.verificationNumber],
+          gender: [this.thirdData.gender],
+          country: [this.thirdData.country],
+          province: [this.thirdData.province],
+          city: [this.thirdData.city],
+          address: [this.thirdData.address],
+          phoneNumber: [this.thirdData.phoneNumber],
+          email: [this.thirdData.email]
+        });
       })
     }
+  }
+
+  closePopUp(){
+    this.ref.close('closing from modal details');
   }
 }
