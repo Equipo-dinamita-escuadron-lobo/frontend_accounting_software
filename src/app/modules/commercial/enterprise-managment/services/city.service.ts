@@ -11,9 +11,9 @@ import { environment } from '../../../../../environments/environment';
 export class CityService {
 
   //Production
-  private apiUrl = environment.API_URL + 'address/cities'; 
+  //private apiUrl = environment.API_URL + 'address/cities'; 
   //Local
-  //private apiUrl = environment.myAppUrl + 'address/cities'
+  private apiUrl = environment.API_URL + 'address/cities'
   constructor(private http: HttpClient) {
 
    }

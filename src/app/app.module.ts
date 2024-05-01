@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -24,7 +24,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     DataTablesModule,
     NgSelectModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
   providers: [
     provideAnimationsAsync()

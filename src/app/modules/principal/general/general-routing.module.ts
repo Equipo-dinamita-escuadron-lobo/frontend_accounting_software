@@ -17,6 +17,7 @@ import { CategoryCreationComponent } from '../../commercial/product-managment/co
 import { CategoryEditComponent } from '../../commercial/product-managment/components/category-edit/category-edit.component';
 import { EnterpriseDetailsComponent } from '../../commercial/enterprise-managment/components/enterprise-details/enterprise-details.component';
 import { EnterpriseEditComponent } from '../../commercial/enterprise-managment/components/enterprise-edit/enterprise-edit.component';
+import { AccountsListComponent } from '../../commercial/chart-accounts/components/accounts-list/accounts-list.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
       {
         path: 'third-parties/create',
         component: ThirdCreationComponent
+      },
+      {
+        path: 'accounts',
+        component: AccountsListComponent
       },
       {
         path: 'products',

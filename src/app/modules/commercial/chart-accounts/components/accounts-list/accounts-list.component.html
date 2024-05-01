@@ -1,0 +1,401 @@
+<div class="flex w-full h-full">
+    <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
+        <div class="grid sm:grid-cols-2 sm:justify-between">
+            <div class="items-center">
+                <h1 class="text-3xl text-blue-950">Catalogo de cuentas</h1>
+                <p class="font-normal text-gray-600">Informacion sobre catalogo de cuentas, se puede colocar una
+                    descripcion </p>
+            </div>
+            <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
+                <label for="fileInput"
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
+                    <input type="file" id="fileInput" (change)="ReadExcel($event)"
+                        class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
+                    Importar
+                </label>
+                <button type="button" routerLink="/enterprise-management/create"
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    Crear
+                </button>
+            </div>
+        </div>
+
+        <form class="flex justify-center sm:justify-start sm:ml-8 mt-8 ">
+            <div class=" mb-16 -ml-7 flex border-b-2 border-blue-800 w-full sm:w-2/6 rounded-md">
+                <svg class="h-5 w-5 text-blue-800 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input type="text" class="mb-1 font-normal bg-transparent w-10/12 outline-none" id="search"
+                    placeholder="Buscar cuenta(codigo/nombre)" name="filterEnterpriseList" name="filterAccount"
+                    [(ngModel)]="filterAccount">
+            </div>
+        </form>
+
+        <div *ngIf="importedAccounts" class="grid sm:grid-rows-2 bg-red-300 mb-5 px-4 py-2 text-sm rounded-lg bg-opacity-50 ">
+            <div class="flex">
+                <svg class="h-0 w-0 mr-0 sm:h-10 sm:w-10 sm:mr-2 displ text-red-800"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />  <line x1="12" y1="9" x2="12" y2="13" />  <line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+                <label for="" class="text-red-800">Querido usuario, usted ha cargado un catálogo de cuentas desde su ordenador. Presione "Guardar" si desea seguir trabajando con ese catálogo de cuentas, de lo contrario, presione el
+                    botón "Restablecer".</label>
+            </div>
+            
+            <div class="flex justify-center mt-2 sm:mt-0">
+                <button (click)="saveImportAccounts()"
+                    class="text-xs focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-2 font-medium rounded-lg px-5 py-1 mx-2 dark:bg-green-600 dark:hover:bg-green-700 ">Guardar</button>
+                <button (click)="cancelImportAccounts()"
+                    class="text-xs focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-2 font-medium rounded-lg px-5 py-1 mx-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Restablecer</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2">
+            <div class="list-account overscroll-auto border-r-4 sm:border-blue-950 sm:mr-6 sm:p-3">
+                <div class="w-full flex text-blue-950">
+                    <div class="w-1/2 border-b-2 border-blue-950">Código</div>
+                    <div class="w-1/2 border-b-2 border-blue-950">Nombre de la cuenta</div>
+                </div>
+                <div class="w-full flex font-normal">
+                    <!--list of class type accounts C:-->
+                    <ul class="w-full mt-2">
+                        <li class="list_class mb-2" *ngFor="let class of listAccounts | filterAccounts: filterAccount">
+                            <div class="w-full flex">
+                                <button
+                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation()">
+                                    <div class=" code w-1/2 flex">
+                                        <svg class="h-5 w-5 mt-1 transform"
+                                            [ngClass]="{'text-transparent': !class.subAccounts, 'rotate-180': class.showSubAccounts}"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                            stroke="currentColor" fill="none" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                        {{ class.code }}
+                                    </div>
+                                    <div class="name w-1/2">{{ class.name }}</div>
+                                </button>
+                            </div>
+                            <!--list of group type accounts C:-->
+                            <ul class="ml-5 mt-2" *ngIf="class.showSubAccounts">
+                                <li class="list-group mb-2" *ngFor="let group of class.subAccounts">
+                                    <div class="w-full flex">
+                                        <button
+                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation()">
+                                            <div class="code w-1/2 flex">
+                                                <svg class="h-5 w-5 mt-1 transform"
+                                                    [ngClass]="{'text-transparent': !group.subAccounts, 'rotate-180': group.showSubAccounts}"
+                                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                    stroke="currentColor" fill="none" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                                {{ group.code }}
+                                            </div>
+                                            <div class="name w-1/2 -ml-3">{{ group.name }}</div>
+                                        </button>
+                                    </div>
+                                    <!--list of account type accounts C:-->
+                                    <ul class="ml-5 mt-2" *ngIf="group.showSubAccounts">
+                                        <li class="list-account mb-2" *ngFor="let account of group.subAccounts">
+                                            <div class="w-full flex">
+                                                <button
+                                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation()">
+                                                    <div class="code w-1/2 flex">
+                                                        <svg class="h-5 w-5 mt-1 transform"
+                                                            [ngClass]="{'text-transparent': !account.subAccounts, 'rotate-180': account.showSubAccounts}"
+                                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+                                                            stroke="currentColor" fill="none" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                            <polyline points="6 9 12 15 18 9" />
+                                                        </svg>
+                                                        {{ account.code }}
+                                                    </div>
+                                                    <div class="name w-1/2 -ml-6">{{ account.name }}</div>
+                                                </button>
+                                            </div>
+                                            <!--list of subAccount type accounts C:-->
+                                            <ul class="ml-5 mt-2" *ngIf="account.showSubAccounts">
+                                                <li class="list-sub-account mb-2"
+                                                    *ngFor="let subAccount of account.subAccounts">
+                                                    <div class="w-full flex">
+                                                        <button
+                                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                            hover:text-blue-900
+                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation()">
+                                                            <div class="code w-1/2 flex">
+                                                                <svg class="h-5 w-5 mt-1 transform"
+                                                                    [ngClass]="{'text-transparent': !subAccount.subAccounts, 'rotate-180': subAccount.showSubAccounts}"
+                                                                    width="24" height="24" viewBox="0 0 24 24"
+                                                                    stroke-width="1" stroke="currentColor" fill="none"
+                                                                    stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                </svg>
+                                                                {{ subAccount.code }}
+                                                            </div>
+                                                            <div class="name w-1/2 -ml-8">{{ subAccount.name }}</div>
+                                                        </button>
+                                                    </div>
+                                                    <!--list of aux1 type accounts C:-->
+                                                    <ul class="ml-5 mt-2" *ngIf="subAccount.showSubAccounts">
+                                                        <li class="list-aux1 mb-2"
+                                                            *ngFor="let aux1 of subAccount.subAccounts">
+                                                            <div class="w-full flex">
+                                                                <button
+                                                                    class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation()">
+                                                                    <div class="code w-1/2 flex">
+                                                                        <svg class="h-5 w-5 mt-1 transform"
+                                                                            [ngClass]="{'text-transparent': !aux1.subAccounts, 'rotate-180': aux1.showSubAccounts}"
+                                                                            width="24" height="24" viewBox="0 0 24 24"
+                                                                            stroke-width="1" stroke="currentColor"
+                                                                            fill="none" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                                                            <polyline points="6 9 12 15 18 9" />
+                                                                        </svg>
+                                                                        {{ aux1.code }}
+                                                                    </div>
+                                                                    <div class="name w-1/2 -ml-10">{{ aux1.name }}
+                                                                    </div>
+                                                                </button>
+                                                            </div>
+                                                            <!--list of aux2 type accounts C:-->
+                                                            <ul class="ml-5 mt-2" *ngIf="aux1.showSubAccounts">
+                                                                <li class="list-aux2 mb-2"
+                                                                    *ngFor="let aux2 of aux1.subAccounts">
+                                                                    <div class="w-full flex">
+                                                                        <button
+                                                                            class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
+                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation()">
+                                                                            <div class="code w-1/2 flex">
+                                                                                <svg class="h-5 w-5 mt-1 transform"
+                                                                                    [ngClass]="{'text-transparent': !aux2.subAccounts, 'rotate-180': aux2.showSubAccounts}"
+                                                                                    width="24" height="24"
+                                                                                    viewBox="0 0 24 24" stroke-width="1"
+                                                                                    stroke="currentColor" fill="none"
+                                                                                    stroke-linejoin="round">
+                                                                                    <path stroke="none"
+                                                                                        d="M0 0h24v24H0z" />
+                                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                                </svg>
+                                                                                {{ aux2.code }}
+                                                                            </div>
+                                                                            <div class="name w-1/2 -ml-12">{{ aux2.name
+                                                                                }}
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div *ngIf="!importedAccounts" class="create-account font-normal">
+                <form [formGroup]="accountForm">
+                    <div class="mb-4">
+                        <div *ngIf="accountForm.get('className')"
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full sm:w-auto">
+                                <input type="text" id="classCode" formControlName="classCode" placeholder="Código"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.class" [class.cursor-not-allowed]="inputAccess.class">
+                            </div>
+                            <div class="w-full sm:w-auto">
+                                <input type="text" id="className" formControlName="className" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [class.cursor-not-allowed]="inputAccess.class" [readOnly]="inputAccess.class">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
+                        </div>
+
+                        <div *ngIf="accountForm.get('groupName')"
+                            class="group relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
+                                <label for="grupo" id="groupCode"
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('groupCode')?.value}}</label>
+
+                                <input type="text" formControlName="groupCode" placeholder="Código"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.group" [class.cursor-not-allowed]="inputAccess.group">
+                            </div>
+                            <div class="w-full sm:w-auto">
+                                <input type="text" formControlName="groupName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.group" [class.cursor-not-allowed]="inputAccess.group">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo</div>
+                        </div>
+
+                        <div *ngIf="accountForm.get('accountName')"
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
+                                <label for="cuenta"
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('accountCode')?.value}}</label>
+                                <input type="text" formControlName="codeAccount" placeholder="Código"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.account" [class.cursor-not-allowed]="inputAccess.account">
+                            </div>
+                            <div class="w-full sm:w-auto">
+                                <input type="text" formControlName="accountName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.account" [class.cursor-not-allowed]="inputAccess.account">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta</div>
+                        </div>
+
+                        <div *ngIf="accountForm.get('subAccountName')"
+                            class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                            <div class="w-full flex sm:w-auto">
+                                <label for="subcuenta"
+                                    class="col-span-1 mr-4 mt-1">{{accountForm.get('subAccountCode')?.value}}</label>
+                                <input type="text" formControlName="codeSubAccount" placeholder="Código"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                    [readOnly]="inputAccess.subAccount"
+                                    [class.cursor-not-allowed]="inputAccess.subAccount">
+                            </div>
+                            <div class="w-full sm:w-auto">
+                                <input type="text" formControlName="subAccountName" placeholder="Nombre"
+                                    class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                    [readOnly]="inputAccess.subAccount"
+                                    [class.cursor-not-allowed]="inputAccess.subAccount">
+                            </div>
+                            <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Subcuenta
+                            </div>
+                        </div>
+
+                        <div *ngIf="accountForm.get('auxiliaryName')">
+                            <div
+                                class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                                <div class="w-full flex sm:w-auto">
+                                    <label for="auxiliar1"
+                                        class="col-span-1 mr-4 mt-1">{{accountForm.get('auxiliaryCode')?.value}}</label>
+                                    <input type="text" formControlName="codeAuxiliary" placeholder="Código"
+                                        class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0 "
+                                        [readOnly]="inputAccess.auxiliary"
+                                        [class.cursor-not-allowed]="inputAccess.auxiliary">
+                                </div>
+                                <div class="w-full sm:w-auto">
+                                    <input type="text" formControlName="auxiliaryName" placeholder="Nombre"
+                                        class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
+                                        [readOnly]="inputAccess.auxiliary"
+                                        [class.cursor-not-allowed]="inputAccess.auxiliary">
+                                </div>
+                                <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Auxiliar
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showFormTransactional">
+                            <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
+                            <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
+                            <form [formGroup]="formTransactional">
+                                <div class="mb-4">
+                                    <label for="nature" class="block">Naturaleza*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="nature" [items]="listNature" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedNatureType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionNatureType($event)"
+                                            (clear)="onSelectionNatureTypeClear()" [clearable]="false"
+                                            [placeholder]="placeNatureType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedNatureType')?.touched && formTransactional.get('selectedNatureType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de naturaleza.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="financialState" class="block">Estado Financiero*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="financialState" [items]="listFinancialState" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedFinancialStateType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionFinancialStateType($event)"
+                                            (clear)="onSelectionFinancialStateTypeClear()" [clearable]="false"
+                                            [placeholder]="placeFinancialStateType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedFinancialStateType')?.touched && formTransactional.get('selectedFinancialStateType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de estado financiero.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="clasification" class="block">Clasificación*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="clasification" [items]="listClasification" bindLabel="name"
+                                            [searchable]="true" formControlName="selectedClasificationType"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="onSelectionClasificationType($event)"
+                                            (clear)="onSelectionclasificationTypeClear()" [clearable]="false"
+                                            [placeholder]="placeClasificationType">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactional.get('selectedClasificationType')?.touched && formTransactional.get('selectedClasificationType')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione un tipo de clasificación.
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="flex justify-center mt-4">
+                            <button type="button"
+                                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                                (click)="saveAccount()" [class.hidden]="!showButton" [class.block]="showButton">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
