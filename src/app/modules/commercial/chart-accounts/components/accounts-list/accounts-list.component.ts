@@ -6,6 +6,8 @@ import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { AccountImportComponent } from '../account-import/account-import.component';
 
 @Component({
   selector: 'app-accounts-list',
@@ -61,9 +63,27 @@ export class AccountsListComponent {
 
   constructor(
     private fb: FormBuilder,
-    private _accountService: ChartAccountService) {
+    private _accountService: ChartAccountService,
+    private dialog:MatDialog) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
+  }
+
+  openModalDetails():void{
+    this.OpenDetailsImport('Detalles de importación ',AccountImportComponent)
+  }
+
+  OpenDetailsImport(title:any ,component: any){
+    var _popUp = this.dialog.open(component, {
+      width: '40%',
+      height: '100px',
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '600ms',
+      data:{
+        title: title
+      }
+    });
+    _popUp.afterClosed().subscribe()
   }
 
   vallidationsFormTansactional() {
@@ -199,7 +219,7 @@ export class AccountsListComponent {
           icon: "error",
           title: "Oops...",
           text: "El documento que quieres importar le falta algunos campos!",
-          footer: '<a href="#" class="text-purple-500">Obtener mas informacion!</a>'
+          footer: '<button (click)="openModalDetails() class="text-purple-500">Obtener mas informacion!</button>'
         });
         console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
         return;
@@ -226,8 +246,6 @@ export class AccountsListComponent {
       event.target.value = null;
     };
   }
-  
-
 
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
