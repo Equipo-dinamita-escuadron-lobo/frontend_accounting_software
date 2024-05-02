@@ -7,11 +7,13 @@ import { FilterPipe } from './components/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AccountImportComponent } from './components/account-import/account-import.component';
 
 @NgModule({
   declarations: [
     AccountsListComponent,
-    FilterPipe
+    AccountImportComponent,
+    FilterPipe,
   ],
   imports: [
     CommonModule,
