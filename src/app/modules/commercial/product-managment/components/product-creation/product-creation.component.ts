@@ -8,6 +8,7 @@ import { Product } from '../../models/Product';
 import Swal from 'sweetalert2';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+
  @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -22,7 +23,6 @@ export class ProductCreationComponent implements OnInit {
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -39,7 +39,10 @@ export class ProductCreationComponent implements OnInit {
 
   
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+
     // Inicializa el formulario reactivo y define las validaciones necesarias para cada campo
+
     // TypeScript: Agregando validaciones para campos no negativos y no vacíos
     const today = new Date().toISOString().split('T')[0];
     this.productForm = this.formBuilder.group({
@@ -57,22 +60,21 @@ export class ProductCreationComponent implements OnInit {
       price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
     }
     ,{ validators: minMaxValidator });  
-    this.initForm();
+    if (this.entData) {
 
-  this.entData = this.localStorageMethods.loadEnterpriseData();
-  if(this.entData){
+    this.initForm();
   this.getThirdParties();
   this.getUnitOfMeasures();
   this.getCategories();
-  }
+    }
+  
 
-   console.log(this.entData)
-  }
+}
 
 
   // Método para obtener la lista de categorías
   getCategories(): void {
-    this.categoryService.getCategories().subscribe(
+    this.categoryService.getCategories(this.entData.entId).subscribe(
       (categories: any[]) => {
         this.categories = categories;
       },
@@ -100,7 +102,7 @@ getThirdParties(): void {
 
 // Método para obtener la lista de unidades de medida
 getUnitOfMeasures(): void {
-  this.unitOfMeasureService.getUnitOfMeasures().subscribe(
+  this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
     (unitOfMeasures: any[]) => {
       this.unitOfMeasures = unitOfMeasures;
     },
@@ -157,6 +159,7 @@ getUnitOfMeasures(): void {
 
     return areTextFieldsValid && areNumberFieldsValid && isDateValid && isMinMaxQuantityValid;
   }
+
   //Método para enviar el formulario y crear un nuevo producto
   onSubmit(): void {
   this.formSubmitAttempt = true;
@@ -168,13 +171,12 @@ getUnitOfMeasures(): void {
     formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.price = parseInt(formData.price.replace(/\D/g, ''), 10); 
+    formData.price = parseInt(formData.price, 10); 
 
-    const productData: Product = formData;
-    productData.enterpriseId = this.entData.entId;
+    formData.enterpriseId = this.entData.entId;
 
-    console.log('Datos del producto:', productData);
-    this.productService.createProduct(productData).subscribe(
+
+    this.productService.createProduct(formData).subscribe(
       (response: any) => {
         // Mensaje de éxito con alert
         Swal.fire({
@@ -234,15 +236,9 @@ getUnitOfMeasures(): void {
     this.productForm.get('price')?.setValue(formattedPrice);
 }
 
-  
-
-
-
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
   }
-
-
   
 }
 

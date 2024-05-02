@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { error } from 'jquery';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 @Component({
   selector: 'app-unit-of-measure-list',
@@ -12,6 +13,8 @@ import { error } from 'jquery';
 })
 export class UnitOfMeasureListComponent implements OnInit {
  unitOfMeasures: UnitOfMeasure[] = [];
+ localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+ entData: any | null = null;
   columns: any[] = [
     {title: 'Id', data: 'id'},
     {title: 'Nombre', data: 'name'},
@@ -38,11 +41,14 @@ export class UnitOfMeasureListComponent implements OnInit {
     };
   }
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+    if(this.entData){
     this.getUnitOfMeasures();
+    }
   }
 
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures().subscribe(
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
       (data: UnitOfMeasure[]) => {
         this.unitOfMeasures = data;
       },

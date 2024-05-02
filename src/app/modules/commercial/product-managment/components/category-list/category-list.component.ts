@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 
 @Component({
@@ -13,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
 
   columns: any[] = [
     { title: 'Id', data: 'id' },
@@ -48,11 +51,14 @@ export class CategoryListComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+    if(this.entData){
     this.getCategories();
+    }
   }
 
 getCategories(): void {
-  this.categoryService.getCategories().subscribe(
+  this.categoryService.getCategories(this.entData.entId).subscribe(
     (data: Category[]) => {
       this.categories = data;
     },

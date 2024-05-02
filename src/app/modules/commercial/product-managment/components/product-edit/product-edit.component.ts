@@ -73,7 +73,7 @@ export class ProductEditComponent implements OnInit {
 
     // Método para obtener la lista de categorías
     getCategories(): void {
-      this.categoryService.getCategories().subscribe(
+      this.categoryService.getCategories(this.entData.entId).subscribe(
         (categories: any[]) => {
           this.categories = categories;
         },
@@ -101,7 +101,7 @@ export class ProductEditComponent implements OnInit {
   
   // Método para obtener la lista de unidades de medida
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures().subscribe(
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
       (unitOfMeasures: any[]) => {
         this.unitOfMeasures = unitOfMeasures;
       },

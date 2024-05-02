@@ -12,44 +12,44 @@ export class UnitOfMeasureService {
 
   constructor(private http: HttpClient) { }
 
-  private unitOfMeasures: UnitOfMeasure[] = [
-    {
-      id: 1,
-      name: 'Kilogramo',
-      abbreviation: 'kg',
-      description: 'Unidad de medida de masa'
-    },
-    {
-      id: 2,
-      name: 'Litro',
-      abbreviation: 'lt',
-      description: 'Unidad de medida de volumen'
-    },
-    {
-      id: 3,
-      name: 'Metro',
-      abbreviation: 'm',
-      description: 'Unidad de medida de longitud'
-    },
-    {
-      id: 4,
-      name: 'Segundo',
-      abbreviation: 's',
-      description: 'Unidad de medida de tiempo'
-    },
-    {
-      id: 5,
-      name: 'Kelvin',
-      abbreviation: 'K',
-      description: 'Unidad de medida de temperatura'
-    }
+  // private unitOfMeasures: UnitOfMeasure[] = [
+  //   {
+  //     id: 1,
+  //     name: 'Kilogramo',
+  //     abbreviation: 'kg',
+  //     description: 'Unidad de medida de masa'
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Litro',
+  //     abbreviation: 'lt',
+  //     description: 'Unidad de medida de volumen'
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Metro',
+  //     abbreviation: 'm',
+  //     description: 'Unidad de medida de longitud'
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Segundo',
+  //     abbreviation: 's',
+  //     description: 'Unidad de medida de tiempo'
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Kelvin',
+  //     abbreviation: 'K',
+  //     description: 'Unidad de medida de temperatura'
+  //   }
     
     
-  ];
+  // ];
 
   // GET
   // Método para obtener todas las unidades de medida
-  getUnitOfMeasures(): Observable<UnitOfMeasure[]> {
+  getUnitOfMeasures(enterpriseId:string): Observable<UnitOfMeasure[]> {
     const url = `${environment.API_URL}unit-measures/findAll`;
     return this.http.get<UnitOfMeasure[]>(url);
   }
@@ -65,21 +65,22 @@ export class UnitOfMeasureService {
     const url = `${environment.API_URL}unit-measures/update/${id}`;
     return this.http.put<UnitOfMeasure>(url, unitOfMeasure);
   }
-  // Método para actualizar una Unidad de medida existente 
-  updateUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {    
-    const url = `${environment.API_URL}unit-measures/findAll`;
-    return this.http.put<UnitOfMeasure>(url, unitOfMeasure );
-  }
-  // Método para activar una Unidad de medida existente 
-  updateUnitOfMeasureActivate(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {    
-    const url = `${environment.API_URL}unit-measures/findActivate`;
-    return this.http.put<UnitOfMeasure>(url , unitOfMeasure);
-  }
+  // // Método para actualizar una Unidad de medida existente por ID
+  // updateUnitOfMeasure(): Observable<UnitOfMeasure> {    
+  //   const url = `${environment.API_URL}unit-measures/findAll`;
+  //   return this.http.put<UnitOfMeasure>(url, this.unitOfMeasures);
+  // }
+  // // Método para actualizar una Unidad de medida existente por ID
+  // updateUnitOfMeasureActivate(): Observable<UnitOfMeasure> {    
+  //   const url = `${environment.API_URL}unit-measures/findActivate`;
+  //   return this.http.put<UnitOfMeasure>(url , this.unitOfMeasures);
+  // }
 
   // POST
   // Método para crear una nueva unidad de medida
   createUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
     const url = `${environment.API_URL}unit-measures/create`;
+    console.log('unitOfMeasure', unitOfMeasure);
     return this.http.post<UnitOfMeasure>(url, unitOfMeasure);
   }
 

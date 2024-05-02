@@ -14,7 +14,7 @@ export interface Product {
     unitOfMeasureId: number;
     supplierId:  number;
     categoryId: number;
-    enterpriseId: number;
+    enterpriseId: string;
     price: number;
     state: string;
   }

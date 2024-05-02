@@ -24,7 +24,7 @@ export class ProductDetailsModalComponent {
     supplierId: 0,
     categoryId: 0,
     price: 0,
-    enterpriseId:0,
+    enterpriseId:'',
     state: ''
   };
 
