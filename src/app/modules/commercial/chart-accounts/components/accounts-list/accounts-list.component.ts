@@ -6,6 +6,7 @@ import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import { AccountData } from '../../models/AccountData';
 
 @Component({
   selector: 'app-accounts-list',
@@ -22,6 +23,9 @@ export class AccountsListComponent {
   //
   accountForm: FormGroup;
   formTransactional: FormGroup;
+
+  selectedAccount?: Account;
+  account?: Account;
 
   //
   showFormTransactional: boolean = false;
@@ -100,6 +104,7 @@ export class AccountsListComponent {
   }
 
   selectAccount(account: Account) {
+    this.selectedAccount = account;
     this.accountHasInformation(account);
     this.createForm(account);
     this.showFormTransactional = true;
@@ -107,35 +112,74 @@ export class AccountsListComponent {
   createForm(selectedAccount: Account) {
     this.accountForm = this.fb.group({});
     this.showButton = true;
-
     this.assignName(selectedAccount.code, selectedAccount.name);
     this.updateInputAccess(selectedAccount.code.length);
 
+    const accountData: AccountData = {
+      code: selectedAccount.code,
+      description: selectedAccount.name,
+      nature: selectedAccount.nature,
+      financialStatus: selectedAccount.financialState,
+      classification: selectedAccount.clasification
+    };
+
     this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class }));
     this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class }));
+    accountData.code = selectedAccount.code.slice(0, 1);
+    accountData.description = this.className;
 
     if (selectedAccount.code.length >= 2) {
       this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group }));
       this.accountForm.addControl('groupCode', new FormControl({ value: selectedAccount.code.slice(0, 2), disabled: this.inputAccess.group }));
-
-      if (selectedAccount.code.length >= 4) {
-        this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account }));
-        this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4)));
-        this.accountForm.addControl('codeAccount', new FormControl({ value: selectedAccount.code.slice(2, 4), disabled: this.inputAccess.account }));
-
-        if (selectedAccount.code.length >= 6) {
-          this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount }));
-          this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6)));
-          this.accountForm.addControl('codeSubAccount', new FormControl({ value: selectedAccount.code.slice(4, 6), disabled: this.inputAccess.subAccount }));
-
-          if (selectedAccount.code.length >= 8) {
-            this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary }));
-            this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8)));
-            this.accountForm.addControl('codeAuxiliary', new FormControl({ value: selectedAccount.code.slice(6, 8), disabled: this.inputAccess.auxiliary }));
-          }
-        }
-      }
+      accountData.grupo = {
+        code: selectedAccount.code.slice(0, 2),
+        description: this.groupName,
+        nature: selectedAccount.nature,
+        financialStatus: selectedAccount.financialState,
+        classification: selectedAccount.clasification
+      };
     }
+
+    if (selectedAccount.code.length >= 4) {
+      this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account }));
+      this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4)));
+      this.accountForm.addControl('codeAccount', new FormControl({ value: selectedAccount.code.slice(2, 4), disabled: this.inputAccess.account }));
+      accountData.cuenta = {
+        code: selectedAccount.code.slice(0, 4),
+        description: this.accountName,
+        nature: selectedAccount.nature,
+        financialStatus: selectedAccount.financialState,
+        classification: selectedAccount.clasification
+      };
+    }
+
+    if (selectedAccount.code.length >= 6) {
+      this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount }));
+      this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6)));
+      this.accountForm.addControl('codeSubAccount', new FormControl({ value: selectedAccount.code.slice(4, 6), disabled: this.inputAccess.subAccount }));
+      accountData.subcuenta = {
+        code: selectedAccount.code.slice(0, 6),
+        description: this.subAccountName,
+        nature: selectedAccount.nature,
+        financialStatus: selectedAccount.financialState,
+        classification: selectedAccount.clasification
+      };
+    }
+
+    if (selectedAccount.code.length >= 8) {
+      this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary }));
+      this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8)));
+      this.accountForm.addControl('codeAuxiliary', new FormControl({ value: selectedAccount.code.slice(6, 8), disabled: this.inputAccess.auxiliary }));
+      accountData.auxiliar = {
+        code: selectedAccount.code.slice(0, 8),
+        description: this.auxiliaryName,
+        nature: selectedAccount.nature,
+        financialStatus: selectedAccount.financialState,
+        classification: selectedAccount.clasification
+      };
+    }
+    console.log(accountData);
+    return accountData;
   }
 
   assignName(code: string, name: string) {
@@ -375,7 +419,9 @@ export class AccountsListComponent {
   }
 
   saveAccount() {
-    console.log(this.accountForm.value);
+    if(this.selectedAccount){
+      console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
+    }
   }
 
   saveImportAccounts() {
