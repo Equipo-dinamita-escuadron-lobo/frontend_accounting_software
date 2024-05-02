@@ -26,7 +26,6 @@ export class ProductCreationComponent implements OnInit {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,

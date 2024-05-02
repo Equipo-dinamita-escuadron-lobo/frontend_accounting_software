@@ -49,6 +49,17 @@ export class CategoryService {
   getCuentas(): Observable<Cuenta[]> {
     return of(this.cuentas);
   }
+  getCuentaById(id: number): Observable<Cuenta> {
+
+    const cuenta: Cuenta = {
+      id: 0,
+      name: '',
+      description: ''
+    };
+    this.cuentas.find(cuenta => cuenta.id === id);
+
+    return of(cuenta);
+  }
 
   // Método para obtener todas las categorías
   getCategories(enterpriseId:string): Observable<Category[]> {

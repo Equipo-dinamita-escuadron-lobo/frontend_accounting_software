@@ -10,4 +10,15 @@ export interface Category {
     saleId:number //Todo: Agregar el atributo Sale de tipo venta
     returnId:number //Todo: Agregar el atributo return de tipo devolución
 }
-  
+export interface CategoryList {
+    id: number; 
+    name: string; 
+    description: string;
+    enterpriseId:string;
+    state:string;
+        //cuentas
+    inventoryName:string; 
+    costName:string 
+    saleName:string 
+    returnName:string 
+}
