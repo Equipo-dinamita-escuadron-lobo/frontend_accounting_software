@@ -65,15 +65,15 @@ export class UnitOfMeasureService {
     const url = `${environment.API_URL}unit-measures/update/${id}`;
     return this.http.put<UnitOfMeasure>(url, unitOfMeasure);
   }
-  // Método para actualizar una Unidad de medida existente por ID
-  updateUnitOfMeasure(): Observable<UnitOfMeasure> {    
+  // Método para actualizar una Unidad de medida existente 
+  updateUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {    
     const url = `${environment.API_URL}unit-measures/findAll`;
-    return this.http.put<UnitOfMeasure>(url, this.unitOfMeasures);
+    return this.http.put<UnitOfMeasure>(url, unitOfMeasure );
   }
-  // Método para actualizar una Unidad de medida existente por ID
-  updateUnitOfMeasureActivate(): Observable<UnitOfMeasure> {    
+  // Método para activar una Unidad de medida existente 
+  updateUnitOfMeasureActivate(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {    
     const url = `${environment.API_URL}unit-measures/findActivate`;
-    return this.http.put<UnitOfMeasure>(url , this.unitOfMeasures);
+    return this.http.put<UnitOfMeasure>(url , unitOfMeasure);
   }
 
   // POST
