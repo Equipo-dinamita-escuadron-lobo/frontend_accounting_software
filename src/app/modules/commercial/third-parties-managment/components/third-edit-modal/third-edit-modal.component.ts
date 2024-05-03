@@ -137,8 +137,7 @@ export class ThirdEditModalComponent {
   this.thirdServiceConfiguration.getTypeIds("0").subscribe({
       next: (response: TypeId[])=>{
         response.forEach(elemento => this.typeIds.push(elemento));
-        console.log(this.typeIds)
-
+        console.log(response)
       },
       error: (error) => {
         console.log(error)
@@ -158,7 +157,8 @@ export class ThirdEditModalComponent {
     var third: Third = this.thirdForm.value;
     third.thId = this.thirdData.thId;
     third.entId = this.entData.entId;
-    let typeIdValue = this.typeIds.find(typeId => typeId.typeIdname === this.thirdForm.get('typeId')?.value);
+    let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.thirdForm.get('typeId')?.value);
+    console.log(typeIdValue)
     let thirdTypeId = this.thirdTypes.find(thirdType=> thirdType.thirdTypeName === this.thirdForm.get("thirdTypes")?.value);
     if(typeIdValue !== null && typeIdValue !== undefined){
       third.typeId = typeIdValue;

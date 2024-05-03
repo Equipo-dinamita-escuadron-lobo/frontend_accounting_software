@@ -119,7 +119,7 @@ export class ThirdCreationComponent implements OnInit {
   this.thirdServiceConfiguration.getTypeIds("0").subscribe({
       next: (response: TypeId[])=>{
         response.forEach(elemento => this.typeIds.push(elemento));
-        console.log(this.typeIds)
+        console.log(response)
         
       },
       error: (error) => {
