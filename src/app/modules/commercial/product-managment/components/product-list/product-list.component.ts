@@ -10,6 +10,7 @@ import { UnitOfMeasure } from '../../models/UnitOfMeasure';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { Category } from '../../models/Category';
 import { CategoryService } from '../../services/category.service';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -66,17 +67,32 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  getUnitOfMeasureName(id: number): string {
-    this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).subscribe(
-      (data: UnitOfMeasure) => {
+  // getUnitOfMeasureName(id: number): string {
+  //   this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).subscribe(
+  //     (data: UnitOfMeasure) => {
+  //       return data.name;
+  //     },
+  //     (error) => {
+  //       console.log('Error al obtener la unidad de medida:', error);
+  //     }
+  //   );
+  //   return '';
+  // }
+
+  getUnitOfMeasureName(id: number): Observable<string> {
+    return this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).pipe(
+      map((data: UnitOfMeasure) => {
         return data.name;
-      },
-      (error) => {
+      }),
+      catchError(error => {
         console.log('Error al obtener la unidad de medida:', error);
-      }
+        return of('Error al obtener la unidad de medida');
+      })
     );
-    return '';
   }
+  
+
+
 getCategoryName(id: number): string {
     this.categoryService.getCategoryById(id.toString()).subscribe(
       (data: Category) => {
@@ -128,7 +144,8 @@ getCategoryName(id: number): string {
       this.productService.deleteProduct(productId).subscribe(
         (data: Product) => {
           console.log('Producto eliminado con éxito: ', data);
-          this.router.navigate(['/general/operations/products']);
+          this.getProducts();
+          //this.router.navigate(['/general/operations/products']);
         },
         (error) => {
           console.error('Error al eliminar el producto: ', error);

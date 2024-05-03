@@ -86,9 +86,9 @@
             <td class="px-6 py-4 whitespace-nowrap">
               {{ prod.minQuantity }}
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              {{prod.unitOfMeasureId  }}
-            </td>
+            
+            <td class="px-6 py-4 whitespace-nowrap">{{ getUnitOfMeasureName(prod.unitOfMeasureId) }}</td>
+
             <td class="px-6 py-4 whitespace-nowrap">{{ prod.supplierId }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ prod.categoryId }}</td>
             <td class="py-4 whitespace-nowrap flex justify-center items-center">
@@ -110,12 +110,15 @@
                   Editar
                 </span>
               </button>
-              <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden">
-                <span class="material-icons flex justify-center items-center text-white">delete</span>
-                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+              
+              <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden" 
+              (click)="deleteProduct(prod.id)">
+              <span class="material-icons flex justify-center items-center text-white">delete</span>
+              <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
                   Eliminar
-                </span>
+              </span>
               </button>
+      
             </td>
           </tr>
         </tbody>
