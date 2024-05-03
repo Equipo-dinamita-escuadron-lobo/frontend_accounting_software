@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 @Component({
   selector: 'app-unit-of-measure-edit',
@@ -15,7 +16,9 @@ export class UnitOfMeasureEditComponent implements OnInit{
   unitOfMeasure: UnitOfMeasure = {} as UnitOfMeasure;
   editForm: FormGroup;
   unitOfMeasureForm: FormGroup = this.formBuilder.group({});
-
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
+  
   constructor(
     private route: ActivatedRoute,
     private unitOfMeasureService: UnitOfMeasureService,
@@ -29,10 +32,14 @@ export class UnitOfMeasureEditComponent implements OnInit{
     });
   }
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+
+    if (this.entData) {
     this.route.params.subscribe(params => {
       this.unitOfMeasureId = params['id'];
       this.unitOfMeasureDetails();
     });
+  }
   }
   unitOfMeasureDetails(): void {
     this.unitOfMeasureService.getUnitOfMeasuresId(this.unitOfMeasureId).subscribe(
@@ -54,7 +61,12 @@ export class UnitOfMeasureEditComponent implements OnInit{
 
   onSubmit(): void {
     if (this.editForm.valid) {
-      this.unitOfMeasureService.updateUnitOfMeasureId(this.unitOfMeasureId, this.editForm.value).subscribe(
+      const formData = this.editForm.value;
+
+      formData.enterpriseId = this.entData.entId;
+      formData.state = 'true';
+
+      this.unitOfMeasureService.updateUnitOfMeasureId(this.unitOfMeasureId, formData).subscribe(
         (unitOfMeasure: UnitOfMeasure) => {
           console.log('Category updated successfully: ', unitOfMeasure);
           Swal.fire({
