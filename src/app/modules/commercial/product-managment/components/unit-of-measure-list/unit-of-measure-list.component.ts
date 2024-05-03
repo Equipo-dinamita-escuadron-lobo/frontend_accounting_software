@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { error } from 'jquery';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-unit-of-measure-list',
@@ -81,18 +82,40 @@ export class UnitOfMeasureListComponent implements OnInit {
     }
 
     redirectToDelete(unitId: string): void {
-      // Aquí puedes mostrar un cuadro de diálogo de confirmación antes de eliminar
-      if (confirm('¿Estás seguro de que deseas eliminar este elemento?')) {
-        this.unitOfMeasureService.deleteUnitOfMeasureId(unitId).subscribe(
-          (data: UnitOfMeasure) => {
-            console.log('Unidad de medida eliminada con éxito: ', data);
-            this.getUnitOfMeasures();
-          },
-          error => {
-            console.error('Error al eliminar la unidad de medida:', error);
-          }
-        );
-      }
+      // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Estás seguro de que deseas eliminar esta elemento?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        // Si el usuario confirma la eliminación
+        if (result.isConfirmed) {
+          this.unitOfMeasureService.deleteUnitOfMeasureId(unitId).subscribe(
+            (data: UnitOfMeasure) => {
+              console.log('Unidad de medida eliminada con éxito: ', data);
+              this.getUnitOfMeasures();
+              Swal.fire({
+                title: 'Se eliminó con éxito!',
+                text: 'Se ha eliminado la Unidad de medida con éxito!',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              });
+            },
+            error => {
+              console.error('Error al eliminar la unidad de medida:', error);
+              Swal.fire({
+                title: 'No se puede eliminar ',
+                text: 'La unidad de medida esta siendo usada',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+              });
+            }
+          );
+        }
+      });
     }
     
 
