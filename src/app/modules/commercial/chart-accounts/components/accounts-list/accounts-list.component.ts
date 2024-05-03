@@ -36,6 +36,8 @@ export class AccountsListComponent implements OnInit {
   financeStatusSelect: string = '';
   selectClassification: string = '';
 
+  showPrincipalForm: boolean = false;
+
   //
   accountForm: FormGroup;
   formTransactional: FormGroup;
@@ -108,6 +110,21 @@ export class AccountsListComponent implements OnInit {
   showInputClassStatus() {
     this.showInputClass = true;
     this.showInputNewAccount = true;
+    this.showPrincipalForm = false;
+  }
+
+  noShowPrincipalFormF(){
+    this.showPrincipalForm = false;
+  }
+
+  showPrincipalFormF(){
+    this.showPrincipalForm = true;
+  }
+
+  noShowInputClassStatus(){
+    this.showInputClass = false;
+    this.showInputNewAccount = false;
+    this.showPrincipalForm = true;
   }
 
   openModalDetails(): void {

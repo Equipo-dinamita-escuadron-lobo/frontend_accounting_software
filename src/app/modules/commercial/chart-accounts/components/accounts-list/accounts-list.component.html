@@ -6,7 +6,7 @@
                 <p class="font-normal text-gray-600">Guia detallada del manejo financiero y transacciones economicas  </p>
             </div>
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
-                <button type="button" (click)="showInputClassStatus()"
+                <button type="button" (click)="showInputClassStatus(); noShowPrincipalFormF()"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                     Crear
                 </button>
@@ -77,7 +77,7 @@
                             <div class="w-full flex">
                                 <button
                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation()">
+                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation();noShowInputClassStatus();">
                                     <div class=" code w-1/2 flex">
                                         <svg class="h-5 w-5 mt-1 transform"
                                             [ngClass]="{'text-transparent': !class.children, 'rotate-180': class.showSubAccounts}"
@@ -97,7 +97,7 @@
                                     <div class="w-full flex">
                                         <button
                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation()">
+                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation();noShowInputClassStatus();">
                                             <div class="code w-1/2 flex">
                                                 <svg class="h-5 w-5 mt-1 transform"
                                                     [ngClass]="{'text-white': !group.children || group.children.length === 0, 'rotate-180': group.showSubAccounts}"
@@ -117,7 +117,7 @@
                                             <div class="w-full flex">
                                                 <button
                                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation()">
+                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation();noShowInputClassStatus();">
                                                     <div class="code w-1/2 flex">
                                                         <svg class="h-5 w-5 mt-1 transform"
                                                             [ngClass]="{'text-white': !account.children || account.children.length === 0, 'rotate-180': account.showSubAccounts}"
@@ -139,7 +139,7 @@
                                                         <button
                                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
                                                             hover:text-blue-900
-                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation()">
+                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation();noShowInputClassStatus();">
                                                             <div class="code w-1/2 flex">
                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                     [ngClass]="{'text-white': !subAccount.children || subAccount.children.length === 0, 'rotate-180': subAccount.showSubAccounts}"
@@ -162,7 +162,7 @@
                                                             <div class="w-full flex">
                                                                 <button
                                                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation()">
+                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation();noShowInputClassStatus();">
                                                                     <div class="code w-1/2 flex">
                                                                         <svg class="h-5 w-5 mt-1 transform"
                                                                             [ngClass]="{'text-transparent': !aux1.children, 'rotate-180': aux1.showSubAccounts}"
@@ -186,7 +186,7 @@
                                                                     <div class="w-full flex">
                                                                         <button
                                                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation()">
+                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation();noShowInputClassStatus();">
                                                                             <div class="code w-1/2 flex">
                                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                                     [ngClass]="{'text-transparent': !aux2.children, 'rotate-180': aux2.showSubAccounts}"
@@ -255,7 +255,7 @@
 
                 <form [formGroup]="accountForm">
                     <div class="mb-4">
-                        <div *ngIf="accountForm.get('className')"
+                        <div *ngIf="accountForm.get('className') && showPrincipalForm"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full sm:w-auto">
                                 <input type="text" id="classCode" formControlName="classCode" placeholder="Código"
@@ -270,7 +270,7 @@
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('groupName')"
+                        <div *ngIf="accountForm.get('groupName') && showPrincipalForm"
                             class="group relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
                                 <label for="grupo" id="groupCode"
@@ -288,7 +288,7 @@
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('accountName')"
+                        <div *ngIf="accountForm.get('accountName') && showPrincipalForm"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
                                 <label for="cuenta"
@@ -305,7 +305,7 @@
                             <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta</div>
                         </div>
 
-                        <div *ngIf="accountForm.get('subAccountName')"
+                        <div *ngIf="accountForm.get('subAccountName') && showPrincipalForm"
                             class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                             <div class="w-full flex sm:w-auto">
                                 <label for="subcuenta"
@@ -325,7 +325,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="accountForm.get('auxiliaryName')">
+                        <div *ngIf="accountForm.get('auxiliaryName') && showPrincipalForm">
                             <div
                                 class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                                 <div class="w-full flex sm:w-auto">
@@ -347,7 +347,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="showFormTransactional">
+                        <div *ngIf="showFormTransactional && showPrincipalForm">
                             <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
                             <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
                             <form [formGroup]="formTransactional">
@@ -524,7 +524,7 @@
 
                             </form>
                         </div>
-                        <div class="flex justify-center mt-4">
+                        <div *ngIf="showPrincipalForm" class="flex justify-center mt-4">
                             <button type="button"
                                 class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
                                 (click)="saveAccount()" [class.hidden]="!showButton" [class.block]="showButton">
