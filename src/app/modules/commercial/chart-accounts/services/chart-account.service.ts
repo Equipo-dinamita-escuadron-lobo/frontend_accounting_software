@@ -31,42 +31,42 @@ export class ChartAccountService {
         description: 'Activos',
         nature: 'Débito',
         financialStatus: 'Estado de Situación Financiero',
-        clasification: 'Activo Corriente',
+        classification: 'Activo Corriente',
         children: [
             {
             code: '11',
             description: 'Activos corrientes',
             nature: 'Crédito',
             financialStatus: 'Estado de Resultados',
-            clasification: 'Patrimonio',
+            classification: 'Patrimonio',
             children: [
                 {
                 code: '1105',
                 description: 'Efectivo y equivalentes de efectivo',
                 nature: '',
                 financialStatus: '',
-                clasification: '',
+                classification: '',
                 children: [
                     {
                     code: '110501',
                     description: 'Caja general',
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [
                         {
                             code: '11050101',
                             description: 'Caja principal',
                             nature: '',
                             financialStatus: '',
-                            clasification: '',
+                            classification: '',
                         },
                         { 
                             code: '11050102', 
                             description: 'Caja chica',
                             nature: '',
                             financialStatus: '',
-                            clasification: ''
+                            classification: ''
                         }
                     ]
                     },
@@ -75,7 +75,7 @@ export class ChartAccountService {
                         description: 'Bancos' ,
                         nature: '',
                         financialStatus: '',
-                        clasification: ''
+                        classification: ''
                     }
                 ]
                 },
@@ -84,7 +84,7 @@ export class ChartAccountService {
                     description: 'Cuentas por cobrar', 
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [] 
                 }
             ]
@@ -94,14 +94,14 @@ export class ChartAccountService {
             description: 'Activos no corrientes',
             nature: '',
             financialStatus: '',
-            clasification: '',
+            classification: '',
             children: [
                 { 
                     code: '1205', 
                     description: 'Propiedades, planta y equipo',
                     nature: '',
                     financialStatus: '',
-                    clasification: '', 
+                    classification: '', 
                     children: [] 
                 },
                 { 
@@ -109,7 +109,7 @@ export class ChartAccountService {
                     description: 'Activos intangibles', 
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [] 
                 }
             ]
@@ -121,21 +121,21 @@ export class ChartAccountService {
         description: 'Pasivos',
         nature: 'Crédito',
         financialStatus: 'Estado de Resultados',
-        clasification: 'Pasivo Corriente',
+        classification: 'Pasivo Corriente',
         children: [
             {
             code: '21',
             description: 'Pasivos corrientes',
             nature: '',
             financialStatus: '',
-            clasification: '',
+            classification: '',
             children: [
                 { 
                     code: '2105', 
                     description: 'Cuentas por pagar', 
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [] 
                 },
                 { 
@@ -143,7 +143,7 @@ export class ChartAccountService {
                     description: 'Obligaciones financieras corrientes', 
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [] 
                 }
             ]
@@ -153,14 +153,14 @@ export class ChartAccountService {
             description: 'Pasivos no corrientes',
             nature: '',
             financialStatus: '',
-            clasification: '',
+            classification: '',
             children: [
                 { 
                     code: '2205', 
                     description: 'Obligaciones financieras no corrientes',
                     nature: '',
                     financialStatus: '',
-                    clasification: '', 
+                    classification: '', 
                     children: [] 
                 },
                 { 
@@ -168,7 +168,7 @@ export class ChartAccountService {
                     description: 'Beneficios a empleados a largo plazo', 
                     nature: '',
                     financialStatus: '',
-                    clasification: '',
+                    classification: '',
                     children: [] 
                 }
             ]
@@ -180,14 +180,14 @@ export class ChartAccountService {
         description: 'Patrimonio',
         nature: '',
         financialStatus: '',
-        clasification: '',
+        classification: '',
         children: [
             { 
                 code: '31', 
                 description: 'Capital social', 
                 nature: '',
                 financialStatus: '',
-                clasification: '',
+                classification: '',
                 children: [] 
             },
             { 
@@ -195,7 +195,7 @@ export class ChartAccountService {
                 description: 'Utilidades acumuladas', 
                 nature: '',
                 financialStatus: '',
-                clasification: '',
+                classification: '',
                 children: [] 
             }
         ]
@@ -205,7 +205,7 @@ export class ChartAccountService {
         description: 'Ingresos',
         nature: '',
         financialStatus: '',
-        clasification: '',
+        classification: '',
         children: []
         },
         {
@@ -213,14 +213,14 @@ export class ChartAccountService {
         description: 'Gastos',
         nature: '',
         financialStatus: '',
-        clasification: '',
+        classification: '',
         children: [
             { 
                 code: '51', 
                 description: 'De Administración', 
                 nature: '',
                 financialStatus: '',
-                clasification: '',
+                classification: '',
                 children: [] 
             },
             { 
@@ -228,7 +228,7 @@ export class ChartAccountService {
                 description: 'De Operación', 
                 nature: '',
                 financialStatus: '',
-                clasification: '',
+                classification: '',
                 children: [] 
             }
         ]
@@ -238,7 +238,7 @@ export class ChartAccountService {
         description: 'Costos de venta y operación',
         nature: 'Débito',
         financialStatus: 'Estado de Situación Financiero',
-        clasification: 'Activo No Corriente',
+        classification: 'Activo No Corriente',
         children: []
         }
     ];

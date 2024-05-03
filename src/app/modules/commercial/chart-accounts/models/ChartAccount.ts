@@ -3,7 +3,7 @@ export interface Account {
   description: string;
   nature: string;
   financialStatus: string;
-  clasification: string;
+  classification: string;
   children?: Account[];
   showSubAccounts?: boolean;
   parent?: Account; // Nueva propiedad para mantener una referencia al padre

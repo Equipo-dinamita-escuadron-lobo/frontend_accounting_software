@@ -145,7 +145,7 @@ export class AccountsListComponent implements OnInit {
       description: selectedAccount.description,
       nature: selectedAccount.nature,
       financialStatus: selectedAccount.financialStatus,
-      classification: selectedAccount.clasification
+      classification: selectedAccount.classification
     };
 
     this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class })); //Crea el input del nombre 
@@ -161,7 +161,7 @@ export class AccountsListComponent implements OnInit {
         description: this.groupName,
         nature: selectedAccount.nature,
         financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.clasification
+        classification: selectedAccount.classification
       };
     }
 
@@ -174,7 +174,7 @@ export class AccountsListComponent implements OnInit {
         description: this.accountName,
         nature: selectedAccount.nature,
         financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.clasification
+        classification: selectedAccount.classification
       };
     }
 
@@ -187,7 +187,7 @@ export class AccountsListComponent implements OnInit {
         description: this.subAccountName,
         nature: selectedAccount.nature,
         financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.clasification
+        classification: selectedAccount.classification
       };
     }
 
@@ -200,7 +200,7 @@ export class AccountsListComponent implements OnInit {
         description: this.auxiliaryName,
         nature: selectedAccount.nature,
         financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.clasification
+        classification: selectedAccount.classification
       };
     }
 
@@ -211,8 +211,6 @@ export class AccountsListComponent implements OnInit {
     } else {
       console.log("No se encontró la cuenta correspondiente en la lista.");
     }
-
-    //console.log(accountData);
     return accountData;
   }
 
@@ -261,7 +259,7 @@ export class AccountsListComponent implements OnInit {
             description: subAccount.description,
             nature: subAccount.nature,
             financialStatus: subAccount.financialStatus,
-            clasification: subAccount.clasification
+            classification: subAccount.classification
           };
         }
         if (subAccount.children) {
@@ -274,7 +272,7 @@ export class AccountsListComponent implements OnInit {
               description: subAccount.description,
               nature: subAccount.nature,
               financialStatus: subAccount.financialStatus,
-              clasification: subAccount.clasification,
+              classification: subAccount.classification,
               children: [foundAccount]
             };
           }
@@ -335,15 +333,15 @@ export class AccountsListComponent implements OnInit {
         description: item['Nombre'],
         nature: item['Naturaleza'],
         financialStatus: item['Estado Financiero'],
-        clasification: item['Clasificación'] // Corregido el nombre del campo
+        classification: item['Clasificación'] // Corregido el nombre del campo
       }));
 
       if (this.listExcel) {
         this.importedAccounts = true;
-        console.log(this.importedAccounts);
+        //console.log(this.importedAccounts);
       }
 
-      console.log(this.createHierarchyWithParent(this.listExcel));
+      //console.log(this.createHierarchyWithParent(this.listExcel));
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
 
@@ -369,7 +367,7 @@ export class AccountsListComponent implements OnInit {
       if (level >= 1) {
         const parentCode = code.slice(0, -2);
         if (!hierarchy[parentCode]) {
-          hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', clasification: '', children: [] };
+          hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', classification: '', children: [] };
         }
         hierarchy[parentCode].children?.push(hierarchy[code]);
       }
@@ -499,8 +497,8 @@ export class AccountsListComponent implements OnInit {
     }
 
     // Verifica que selectedAccount no sea undefined y que tenga la propiedad clasification definida
-    if (selectedAccount && selectedAccount.clasification && selectedAccount.clasification.length > 0) {
-      this.formTransactional.patchValue({ 'selectedClasificationType': selectedAccount.clasification });
+    if (selectedAccount && selectedAccount.classification && selectedAccount.classification.length > 0) {
+      this.formTransactional.patchValue({ 'selectedClasificationType': selectedAccount.classification });
       this.placeClasificationType = '';
     }
   }
@@ -508,7 +506,7 @@ export class AccountsListComponent implements OnInit {
 
   saveAccount() {
     if (this.selectedAccount) {
-      console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
+      //console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
     }
   }
 
