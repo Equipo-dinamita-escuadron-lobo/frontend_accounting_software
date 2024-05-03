@@ -24,6 +24,14 @@ export const navbarData: INavbarData[] = [
       {
         routeLink: '/general/operations/products',
         label: 'Productos',
+      },
+      {
+        routeLink: '/general/operations/categories',
+        label: 'Categorias',
+      },
+      {
+        routeLink: '/general/operations/unities',
+        label: 'Unidades de medida',
       }
     ]
   },

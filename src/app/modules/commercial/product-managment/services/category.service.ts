@@ -49,10 +49,21 @@ export class CategoryService {
   getCuentas(): Observable<Cuenta[]> {
     return of(this.cuentas);
   }
+  getCuentaById(id: number): Observable<Cuenta> {
+
+    const cuenta: Cuenta = {
+      id: 0,
+      name: '',
+      description: ''
+    };
+    this.cuentas.find(cuenta => cuenta.id === id);
+
+    return of(cuenta);
+  }
 
   // Método para obtener todas las categorías
-  getCategories(): Observable<Category[]> {
-    const url = `${environment.API_URL}categories/findAll`;
+  getCategories(enterpriseId:string): Observable<Category[]> {
+    const url = `${environment.API_URL}categories/findAll/${enterpriseId}`;
     return this.http.get<Category[]>(url);
   }
 
@@ -71,7 +82,7 @@ export class CategoryService {
   // Método para actualizar una categoría existente
   updateCategory(category: Category): Observable<Category> {
     const url = `${environment.API_URL}categories/update/${category.id}`;
-    return this.http.post<Category>(url, category);
+    return this.http.put<Category>(url, category);
   }
 
   // Método para eliminar una categoría

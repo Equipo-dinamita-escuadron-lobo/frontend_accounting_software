@@ -8,6 +8,7 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import Swal from 'sweetalert2';
 import { ThirdEditModalComponent } from '../third-edit-modal/third-edit-modal.component';
 import { ThirdDetailsModalComponent } from '../third-details-modal/third-details-modal.component';
+import { ThirdConfigModalComponent } from '../third-config-modal/third-config-modal.component';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
@@ -77,6 +78,10 @@ export class ThirdsListComponent{
 
   openModalEdit(thId:number):void{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
+  }
+
+  openConfigTPModal():void{
+    this.openPopUp(0, 'Configuración de Terceros',ThirdConfigModalComponent)
   }
 
   changeThirdPartieState(thId:number):void{

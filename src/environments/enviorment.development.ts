@@ -1,5 +1,5 @@
 export const environment = {
-    production:false,
+    production:true,
     myAppUrl: 'http://localhost:8080/api/', // La URL del backend 
     myStorageUrl: 'https://api.cloudinary.com/v1_1/dz5pw4p7y/image/upload',
     storageName: 'dz5pw4p7y',

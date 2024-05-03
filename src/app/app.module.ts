@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-
 @NgModule({
   declarations: [
     AppComponent,

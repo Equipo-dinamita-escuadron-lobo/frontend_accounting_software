@@ -2,7 +2,7 @@ import { Component,Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { Third } from '../../models/Third';
-import { eTypeId } from '../../models/eTypeId';
+import { TypeId } from '../../models/TypeId';
 import { ePersonType } from '../../models/ePersonType';
 
 @Component({
@@ -16,7 +16,11 @@ export class ThirdDetailsModalComponent {
   thirdData: Third = {
     thId: 0,
     entId: '',
-    typeId: eTypeId.cc,  // Utiliza uno de los valores definidos en el enum
+    typeId: { 
+      entId: "0",
+      typeId: "CC",
+      typeIdname: "CC"
+    },  // Utiliza uno de los valores definidos en el enum
     thirdTypes: [],       // Array vacío o podrías iniciar con valores predeterminados si aplica
     rutPath: undefined,
     personType: ePersonType.natural,

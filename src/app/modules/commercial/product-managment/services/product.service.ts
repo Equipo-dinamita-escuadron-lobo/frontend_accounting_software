@@ -12,23 +12,16 @@ import { LocalStorageMethods } from '../../../../shared/methods/local-storage.me
 export class ProductService {
   //constructor(private http: HttpClient) { };
   private http = inject(HttpClient);
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
-  
   constructor() { }
   // Método para obtener todos los productos
-  getProducts(): Observable<Product[]> {
-    const url = `${environment.API_URL}products/findAll`;
+  getProducts(enterpriseId:string): Observable<Product[]> {
+    const url = `${environment.API_URL}products/findAll/${enterpriseId}`;
     return this.http.get<Product[]>(url);
   }
+  
   // Método para crear un nuevo producto
   createProduct(product: Product): Observable<Product> {
     const url = `${environment.API_URL}products/create`;
-    this.entData = this.localStorageMethods.loadEnterpriseData();
-    if(this.entData){
-    product.enterpriseId = this.entData.id; }
-    console.log(product);
-
     return this.http.post<Product>(url, product);
   }
 

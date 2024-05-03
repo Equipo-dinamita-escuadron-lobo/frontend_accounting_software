@@ -1,17 +1,17 @@
 import { Component, Inject, defineInjectable } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms'; 
-import { Product } from '../../models/Product';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Product, ProductList } from '../../models/Product';
 import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-details-modal',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
 })
 export class ProductDetailsModalComponent {
   inputData: any;
-  productData: Product = {
+  productData: ProductList = {
     id: '',
     itemType: '',
     code: '',
@@ -20,12 +20,15 @@ export class ProductDetailsModalComponent {
     maxQuantity: 0,
     taxPercentage: 0,
     creationDate: new Date(),
-    unitOfMeasureId: 0,
-    supplierId: 0,
-    categoryId: 0,
+
+    unitOfMeasureName: '',
+    supplierName: '',
+    categoryName: '',
+
+    enterpriseId: '',
+
     price: 0,
-    enterpriseId:0,
-    state: ''
+    state: '',
   };
 
   constructor(
@@ -33,18 +36,19 @@ export class ProductDetailsModalComponent {
     private dialogRef: MatDialogRef<ProductDetailsModalComponent>,
     private formBuilder: FormBuilder,
     private service: ProductService
-  ) { }
+  ) {}
 
   closePopup(): void {
     this.dialogRef.close('closing from modal details');
   }
 
   ngOnInit(): void {
-    this.data = this.data;
-    if(this.data.id > 0){
-      this.service.getProductById(this.inputData.id).subscribe(product => {
-        this.productData = product;
-      });
-    } 
+    this.inputData = this.data;
+    console.log(this.inputData);
+    if (this.inputData.product.id > 0) {
+      this.productData = this.inputData.product;
+    }
+
+    console.log(this.productData);
   }
 }
