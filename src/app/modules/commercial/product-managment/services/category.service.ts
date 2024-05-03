@@ -63,7 +63,7 @@ export class CategoryService {
 
   // Método para obtener todas las categorías
   getCategories(enterpriseId:string): Observable<Category[]> {
-    const url = `${environment.API_URL}categories/findAll`;
+    const url = `${environment.API_URL}categories/findAll/${enterpriseId}`;
     return this.http.get<Category[]>(url);
   }
 
