@@ -101,7 +101,7 @@ export class ProductEditComponent implements OnInit {
   
   // Método para obtener la lista de unidades de medida
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasure(this.entData.entId).subscribe(
       (unitOfMeasures: any[]) => {
         this.unitOfMeasures = unitOfMeasures;
       },

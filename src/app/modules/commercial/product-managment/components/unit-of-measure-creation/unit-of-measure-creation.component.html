@@ -49,6 +49,15 @@
                 </div>
               </div>
             </div>
+            <div>
+              <label for="enterpriseId" class="block text-sm font-medium text-gray-700">Empresa:</label>
+              <input type="text" formControlName="enterpriseId" id="enterpriseId" placeholder="Ej: Kg" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+              <div *ngIf="unitOfMeasureForm.get('enterpriseId')?.touched && unitOfMeasureForm.get('enterpriseId')?.invalid" class="text-red-500">
+                <div *ngIf="unitOfMeasureForm.get('enterpriseId')?.errors?.['required']">
+                  El campo Empresaes requerido.
+                </div>
+              </div>
+            </div>
             <!-- Botón de envío -->
             <div>
               <button type="submit" class="buttonsC h-10 w-auto">Crear Unidad</button>
