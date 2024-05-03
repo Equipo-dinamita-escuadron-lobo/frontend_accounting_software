@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ChartAccountService } from '../../services/chart-account.service';
@@ -15,7 +15,7 @@ import { AccountData } from '../../models/AccountData';
   templateUrl: './accounts-list.component.html',
   styleUrl: './accounts-list.component.css'
 })
-export class AccountsListComponent {
+export class AccountsListComponent implements OnInit{
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
@@ -253,46 +253,46 @@ export class AccountsListComponent {
   findAccountByCode2(code: string, accounts: Account[]): Account | undefined {
     // Función auxiliar para buscar la cuenta por código
     function findAccount(account: Account[]): Account | undefined {
-        for (const subAccount of account) {
-            if (subAccount.code === code) {
-                // Si se encuentra la cuenta, devuelve solo esa cuenta
-                return {
-                    code: subAccount.code,
-                    name: subAccount.name,
-                    nature: subAccount.nature,
-                    financialState: subAccount.financialState,
-                    clasification: subAccount.clasification
-                };
-            }
-            if (subAccount.subAccounts) {
-                // Realiza la búsqueda en las subcuentas
-                const foundAccount = findAccount(subAccount.subAccounts);
-                if (foundAccount) {
-                    // Si se encuentra la cuenta en las subcuentas, devuelve la cuenta principal con la ruta hasta la cuenta encontrada
-                    return {
-                        code: subAccount.code,
-                        name: subAccount.name,
-                        nature: subAccount.nature,
-                        financialState: subAccount.financialState,
-                        clasification: subAccount.clasification,
-                        subAccounts: [foundAccount]
-                    };
-                }
-            }
+      for (const subAccount of account) {
+        if (subAccount.code === code) {
+          // Si se encuentra la cuenta, devuelve solo esa cuenta
+          return {
+            code: subAccount.code,
+            name: subAccount.name,
+            nature: subAccount.nature,
+            financialState: subAccount.financialState,
+            clasification: subAccount.clasification
+          };
         }
-        return undefined;
+        if (subAccount.subAccounts) {
+          // Realiza la búsqueda en las subcuentas
+          const foundAccount = findAccount(subAccount.subAccounts);
+          if (foundAccount) {
+            // Si se encuentra la cuenta en las subcuentas, devuelve la cuenta principal con la ruta hasta la cuenta encontrada
+            return {
+              code: subAccount.code,
+              name: subAccount.name,
+              nature: subAccount.nature,
+              financialState: subAccount.financialState,
+              clasification: subAccount.clasification,
+              subAccounts: [foundAccount]
+            };
+          }
+        }
+      }
+      return undefined;
     }
 
     // Inicia la búsqueda en las cuentas principales
     for (const account of accounts) {
-        const foundAccount = findAccount([account]); // Llama a la función auxiliar para buscar la cuenta
-        if (foundAccount) {
-            return foundAccount; // Devuelve la cuenta principal hasta la cuenta encontrada
-        }
+      const foundAccount = findAccount([account]); // Llama a la función auxiliar para buscar la cuenta
+      if (foundAccount) {
+        return foundAccount; // Devuelve la cuenta principal hasta la cuenta encontrada
+      }
     }
 
     return undefined; // Devuelve undefined si no se encuentra la cuenta
-}
+  }
 
 
   ReadExcel(event: any) {
@@ -434,7 +434,11 @@ export class AccountsListComponent {
   }
 
   getAccounts() {
-    this.listAccounts = this._accountService.getAccounts();
+    this._accountService.getListAccounts().subscribe({
+      next: (accounts) => {
+        this.listAccounts = accounts;
+      },
+    });
   }
 
   getFinancialStateType() {

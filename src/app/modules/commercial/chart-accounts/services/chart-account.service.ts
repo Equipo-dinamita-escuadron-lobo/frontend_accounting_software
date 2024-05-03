@@ -14,16 +14,14 @@ import { NatureType } from '../models/NatureType';
 export class ChartAccountService {
 
   //private apiURL = environment.API_URL + 'chart-account'
-  private apiURL = environment.myAppUrl + 'chart-account'
+  private apiURL = environment.myAppUrl + 'accountCatalogue'
   constructor(private http:HttpClient) {
     
    }
 
   getListAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(this.apiURL);
+    return this.http.get<Account[]>('http://contables.unicauca.edu.co/api/accountCatalogue/trees');
   }
-
-
 
   /////////////
 
