@@ -30,10 +30,10 @@ export class UnitOfMeasureService {
   }
 
   // // Método para actualizar una Unidad de medida existente por ID
-  // unitOfMeasureChangeState(id:string): Observable<UnitOfMeasure> {    
-  //   const url = `${environment.API_URL}unit-measures/changeState/${id}`;
-  //   return this.http.put<UnitOfMeasure>(url);
-  // }
+  unitOfMeasureChangeState(id:string): Observable<UnitOfMeasure> {    
+    const url = `${environment.API_URL}unit-measures/changeState/${id}`;
+    return this.http.put<UnitOfMeasure>(url,{});
+  }
 
   // POST
   // Método para crear una nueva unidad de medida
