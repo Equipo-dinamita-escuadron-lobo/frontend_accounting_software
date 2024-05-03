@@ -3,24 +3,29 @@
         <div class="grid sm:grid-cols-2 sm:justify-between">
             <div class="items-center">
                 <h1 class="text-3xl text-blue-950">Catalogo de cuentas</h1>
-                <p class="font-normal text-gray-600">Informacion sobre catalogo de cuentas, se puede colocar una
-                    descripcion </p>
+                <p class="font-normal text-gray-600">Guia detallada del manejo financiero y transacciones economicas  </p>
             </div>
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
-                <label for="fileInput"
-                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
-                    <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
-                        class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
-                    Importar
-                </label>
                 <button type="button" (click)="showInputClassStatus()"
-                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                     Crear
                 </button>
-                <button (click)="openModalDetails()"
-                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                    Detalles importacion
-                </button>
+                <div class="flex">
+                    
+                    <label for="fileInput"
+                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded  -lg rounded-l-full text-sm pr-3 py-2.5 pl-10 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
+                        <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
+                            class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
+                        Importar
+                    </label>
+                    <button (click)="openModalDetails()"
+                        class="mt-0.5 -mr-2 absolute">
+                        <svg class="h-9 w-9 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="9" />  <line x1="12" y1="8" x2="12" y2="12" />  <line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                    </button>
+                </div>
+
+                
+
             </div>
         </div>
 
@@ -512,9 +517,9 @@
                                         </svg>
                                     </div>
                                     <div *ngIf="formTransactionalNewAccount.get('newSelecClassification')?.touched && formTransactionalNewAccount.get('newSelecClassification')?.hasError('noValueSelected')"
-                                    class="text-red-500 text-sm font-medium -mt-1">
-                                    Por favor, seleccione una opción para Clasificación.
-                                </div>
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione una opción para Clasificación.
+                                    </div>
                                 </div>
 
                             </form>
@@ -527,14 +532,15 @@
                             </button>
                         </div>
 
-                        <div *ngIf="showInputNewAccount && formNewTypeAccount.valid && formTransactionalNewAccount.valid" class="flex justify-center mt-4">
+                        <div *ngIf="showInputNewAccount && formNewTypeAccount.valid && formTransactionalNewAccount.valid"
+                            class="flex justify-center mt-4">
                             <button type="button"
                                 class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
                                 (click)="saveNewAccountType()">
                                 Guardar cuenta
                             </button>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>

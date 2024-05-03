@@ -87,7 +87,7 @@ export class AccountsListComponent implements OnInit {
     this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
     this.formNewTypeAccount = this.fb.group(this.vallidationsFormTansactional());
     this.formNewTypeAccount = this.fb.group({
-      newClassCode: ['', [Validators.required, Validators.maxLength(1), Validators.pattern('^[0-9]*$')]], 
+      newClassCode: ['', [Validators.required, Validators.maxLength(1), Validators.pattern('^[0-9]*$')]],
       newClassName: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]]
     });
     this.formTransactionalNewAccount = this.fb.group({
@@ -105,7 +105,7 @@ export class AccountsListComponent implements OnInit {
     return null;
   };
 
-  showInputClassStatus(){
+  showInputClassStatus() {
     this.showInputClass = true;
     this.showInputNewAccount = true;
   }
@@ -544,31 +544,58 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
-  itemSelectNature(e:any){
+  itemSelectNature(e: any) {
     this.natureSelect = e.name;
     return e;
   }
 
-  itemSelectFinanceStatus(e:any){
+  itemSelectFinanceStatus(e: any) {
     this.financeStatusSelect = e.name;
     return e;
   }
-  
-  itemSelectClassification(e:any){
+
+  itemSelectClassification(e: any) {
     this.selectClassification = e.name;
     return e;
   }
 
-  saveNewAccountType() {
-    const newAccountType: Account = {
-      code: this.formNewTypeAccount.value.newClassCode,
-      description: this.formNewTypeAccount.value.newClassName,
-      nature: this.natureSelect,
-      classification: this.financeStatusSelect,
-      financialStatus: this.selectClassification
-    };
-    console.log(newAccountType)
+  async saveNewAccountType() {
+    try {
+      const newAccountType: Account = {
+        code: this.formNewTypeAccount.value.newClassCode,
+        description: this.formNewTypeAccount.value.newClassName,
+        nature: this.natureSelect,
+        classification: this.financeStatusSelect,
+        financialStatus: this.selectClassification
+      };
+  
+      // Llamada al servicio para crear la cuenta
+      this._accountService.createAccount(newAccountType).subscribe(
+        (response) => {
+          console.log('Cuenta creada exitosamente:', response);
+          Swal.fire({
+            title: 'Creación exitosa!',
+            text: 'Se ha creado la cuenta con éxito!',
+            icon: 'success',
+          });
+          this.showInputNewAccount = false;
+          this.showInputClass = false;
+          this.getAccounts()
+        },
+        (error) => {
+          console.error('Error al crear la cuenta:', error);
+          Swal.fire({
+              title: 'Error!',
+              text: 'Ha ocurrido un error al crear la cuneta!.',
+              icon: 'error',
+            });
+        }
+      );
+    } catch (error) {
+      console.error('Error al guardar el tipo de cuenta:', error);
+    }
   }
+
 
   saveImportAccounts() {
     this.importedAccounts = false;

@@ -245,13 +245,13 @@ export class ChartAccountService {
 
 
     listNature: NatureType[] = [
-        {id: 1, name: 'Débito'},
-        {id: 2, name: 'Crédito'}
+        {id: 1, name: 'Debíto'},
+        {id: 2, name: 'Credíto'}
     ];
 
     listFinancialState: FinancialStateType[] = [
-        {id: 1, name: 'Estado de Situación Financiero'},
-        {id: 2, name: 'Estado de Resultados'}
+        {id: 1, name: 'Estado de Resultados'},
+        {id: 2, name: 'Estado de Situacion Financiero'}
     ];
 
     listClasification: ClasificationType[] = [
@@ -260,10 +260,9 @@ export class ChartAccountService {
         {id: 3, name: 'Pasivo Corriente'},
         {id: 4, name: 'Pasivo No Corriente'},
         {id: 5, name: 'Patrimonio'},
-        {id: 6, name: 'Ingresos Operacionales'},
-        {id: 7, name: 'Ingresos No Operacionales'},
-        {id: 8, name: 'Gastos Operacionales'},
-        {id: 9, name: 'Ingresos Operacionales'}   
+        {id: 6, name: 'Ingresos No Operacionales'},
+        {id: 7, name: 'Gastos Operacionales'},
+        {id: 8, name: 'Ingresos Operacionales'}
     ];
 
     getAccounts(): Account[] {
@@ -286,6 +285,10 @@ export class ChartAccountService {
         this.listAccounts = accounts;
         //TODO: ver la confirmacion desde el backend de que se guardo las cuentas importadas
         return true;
+    }
+
+    createAccount(account: Account): Observable<Account>{
+        return this.http.post<Account>('http://contables.unicauca.edu.co/api/accountCatalogue/', account);
     }
 
 }
