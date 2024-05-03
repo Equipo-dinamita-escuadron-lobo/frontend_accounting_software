@@ -95,7 +95,7 @@
                                             (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation()">
                                             <div class="code w-1/2 flex">
                                                 <svg class="h-5 w-5 mt-1 transform"
-                                                    [ngClass]="{'text-transparent': !group.children, 'rotate-180': group.showSubAccounts}"
+                                                    [ngClass]="{'text-white': !group.children || group.children.length === 0, 'rotate-180': group.showSubAccounts}"
                                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                                                     stroke="currentColor" fill="none" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" />
@@ -115,7 +115,7 @@
                                                     (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation()">
                                                     <div class="code w-1/2 flex">
                                                         <svg class="h-5 w-5 mt-1 transform"
-                                                            [ngClass]="{'text-transparent': !account.children, 'rotate-180': account.showSubAccounts}"
+                                                            [ngClass]="{'text-white': !account.children || account.children.length === 0, 'rotate-180': account.showSubAccounts}"
                                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
                                                             stroke="currentColor" fill="none" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" />
@@ -137,7 +137,7 @@
                                                             (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation()">
                                                             <div class="code w-1/2 flex">
                                                                 <svg class="h-5 w-5 mt-1 transform"
-                                                                    [ngClass]="{'text-transparent': !subAccount.children, 'rotate-180': subAccount.showSubAccounts}"
+                                                                    [ngClass]="{'text-white': !subAccount.children || subAccount.children.length === 0, 'rotate-180': subAccount.showSubAccounts}"
                                                                     width="24" height="24" viewBox="0 0 24 24"
                                                                     stroke-width="1" stroke="currentColor" fill="none"
                                                                     stroke-linejoin="round">
