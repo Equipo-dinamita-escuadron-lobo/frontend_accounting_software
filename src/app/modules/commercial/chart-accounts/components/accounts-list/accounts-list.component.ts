@@ -22,6 +22,9 @@ export class AccountsListComponent {
   importedAccounts: boolean = false;
   importedFailed: boolean = false;
 
+  accountSelect: Account | null = null;
+  accountSelectP: Account | null = null;
+
   //
   accountForm: FormGroup;
   formTransactional: FormGroup;
@@ -68,22 +71,22 @@ export class AccountsListComponent {
   constructor(
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
-    private dialog:MatDialog) {
+    private dialog: MatDialog) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
   }
 
-  openModalDetails():void{
-    this.OpenDetailsImport('Detalles de importación ',AccountImportComponent)
+  openModalDetails(): void {
+    this.OpenDetailsImport('Detalles de importación ', AccountImportComponent)
   }
 
-  OpenDetailsImport(title:any ,component: any){
+  OpenDetailsImport(title: any, component: any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',
       height: '100px',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '600ms',
-      data:{
+      data: {
         title: title
       }
     });
@@ -129,13 +132,15 @@ export class AccountsListComponent {
     this.createForm(account);
     this.showFormTransactional = true;
   }
-  createForm(selectedAccount: Account) {
-    this.accountForm = this.fb.group({});
-    this.showButton = true;
-    this.assignName(selectedAccount.code, selectedAccount.name);
-    this.updateInputAccess(selectedAccount.code.length);
 
-    const accountData: AccountData = {
+  //Ir creando los inputs de acuerdo a la cuenta seleccionada
+  createForm(selectedAccount: Account) {
+    this.accountForm = this.fb.group({}); // formulario vacio cada que selecciona una cuenta
+    this.showButton = true; // mostarar guardar 
+    this.assignName(selectedAccount.code, selectedAccount.name); //para buscar la cuenta y asigna los nombres  dependiendo cuenta y nivel
+    this.updateInputAccess(selectedAccount.code.length); //para bloquear inputs de acuerdo al nivel
+
+    const accountData: AccountData = { //Guardar info cuenta seleccionada
       code: selectedAccount.code,
       description: selectedAccount.name,
       nature: selectedAccount.nature,
@@ -143,10 +148,10 @@ export class AccountsListComponent {
       classification: selectedAccount.clasification
     };
 
-    this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class }));
-    this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class }));
-    accountData.code = selectedAccount.code.slice(0, 1);
-    accountData.description = this.className;
+    this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class })); //Crea el input del nombre 
+    this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class })); //crar input de codigo
+    accountData.code = selectedAccount.code.slice(0, 1); //Mostrar el codigo
+    accountData.description = this.className; //guardar el nombre
 
     if (selectedAccount.code.length >= 2) {
       this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group }));
@@ -198,9 +203,19 @@ export class AccountsListComponent {
         classification: selectedAccount.clasification
       };
     }
-    console.log(accountData);
+
+    const selectedAccountData = this.findAccountByCode2(selectedAccount.code, this.listAccounts);
+    if (selectedAccountData) {
+      // Haz lo que necesites con la cuenta encontrada
+      console.log(selectedAccountData);
+    } else {
+      console.log("No se encontró la cuenta correspondiente en la lista.");
+    }
+
+    //console.log(accountData);
     return accountData;
   }
+
 
   assignName(code: string, name: string) {
     this.className = '';
@@ -234,30 +249,76 @@ export class AccountsListComponent {
     }
   }
 
+  //Funcion que muestra las subcuentas
+  findAccountByCode2(code: string, accounts: Account[]): Account | undefined {
+    // Función auxiliar para buscar la cuenta por código
+    function findAccount(account: Account[]): Account | undefined {
+        for (const subAccount of account) {
+            if (subAccount.code === code) {
+                // Si se encuentra la cuenta, devuelve solo esa cuenta
+                return {
+                    code: subAccount.code,
+                    name: subAccount.name,
+                    nature: subAccount.nature,
+                    financialState: subAccount.financialState,
+                    clasification: subAccount.clasification
+                };
+            }
+            if (subAccount.subAccounts) {
+                // Realiza la búsqueda en las subcuentas
+                const foundAccount = findAccount(subAccount.subAccounts);
+                if (foundAccount) {
+                    // Si se encuentra la cuenta en las subcuentas, devuelve la cuenta principal con la ruta hasta la cuenta encontrada
+                    return {
+                        code: subAccount.code,
+                        name: subAccount.name,
+                        nature: subAccount.nature,
+                        financialState: subAccount.financialState,
+                        clasification: subAccount.clasification,
+                        subAccounts: [foundAccount]
+                    };
+                }
+            }
+        }
+        return undefined;
+    }
+
+    // Inicia la búsqueda en las cuentas principales
+    for (const account of accounts) {
+        const foundAccount = findAccount([account]); // Llama a la función auxiliar para buscar la cuenta
+        if (foundAccount) {
+            return foundAccount; // Devuelve la cuenta principal hasta la cuenta encontrada
+        }
+    }
+
+    return undefined; // Devuelve undefined si no se encuentra la cuenta
+}
+
+
   ReadExcel(event: any) {
     let file = event.target.files[0];
-  
+
     // Verificar si el archivo es de tipo xlsx
     if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
       console.error('El archivo debe ser de tipo xlsx.');
       return;
     }
-  
+
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
-  
+
     fileReader.onload = (e) => {
       var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
       let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
-  
+
       // Verificar campos obligatorios
       const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
       const missingFields = requiredFields.filter(field => {
         const obj = jsonData[0] as { [key: string]: any };
         return !Object.keys(obj).includes(field);
       });
-  
+
       if (missingFields.length > 0) {
         Swal.fire({
           icon: "error",
@@ -268,7 +329,7 @@ export class AccountsListComponent {
         console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
         return;
       }
-  
+
       this.listExcel = jsonData.map((item: any) => ({
         code: item['Código'],
         name: item['Nombre'],
@@ -276,16 +337,16 @@ export class AccountsListComponent {
         financialState: item['Estado Financiero'],
         clasification: item['Clasificación'] // Corregido el nombre del campo
       }));
-  
+
       if (this.listExcel) {
         this.importedAccounts = true;
         console.log(this.importedAccounts);
       }
-  
+
       console.log(this.createHierarchyWithParent(this.listExcel));
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
-  
+
       // Resetear el valor del input de archivo
       event.target.value = null;
     };
@@ -437,7 +498,7 @@ export class AccountsListComponent {
   }
 
   saveAccount() {
-    if(this.selectedAccount){
+    if (this.selectedAccount) {
       console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
     }
   }
