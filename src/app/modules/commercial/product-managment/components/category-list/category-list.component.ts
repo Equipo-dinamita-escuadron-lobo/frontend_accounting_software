@@ -5,6 +5,7 @@ import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
+import Swal from 'sweetalert2';
 interface Cuenta {
   id: number;
   name: string;
@@ -125,17 +126,42 @@ export class CategoryListComponent implements OnInit {
   }
 
   deleteCategory(categoryId: string): void {
-    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
-      this.categoryService.deleteCategory(categoryId).subscribe(
-        (data: Category) => {
-          console.log('Categoría eliminada con éxito: ', data);
-          this.getCategories();
-        },
-        (error) => {
-          console.error('Error al eliminar la categoría: ', error);
-        }
-      );
-    }
+    // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Estás seguro de que deseas eliminar esta categoría?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      // Si el usuario confirma la eliminación
+      if (result.isConfirmed) {
+        this.categoryService.deleteCategory(categoryId).subscribe(
+          (data: Category) => {
+            console.log('Categoría eliminada con éxito: ', data);
+            this.getCategories();
+            // Mostrar cuadro de diálogo de éxito
+            Swal.fire({
+              title: 'Eliminada con éxito',
+              text: 'La categoría se ha eliminado correctamente.',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+          },
+          (error) => {
+            console.error('Error al eliminar la categoría: ', error);
+            // Mostrar cuadro de diálogo de error
+            Swal.fire({
+              title: 'Error al eliminar',
+              text: 'Ha ocurrido un error al intentar eliminar la categoría.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        );
+      }
+    });
   }
 
   

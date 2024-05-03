@@ -11,6 +11,7 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { Category } from '../../models/Category';
 import { CategoryService } from '../../services/category.service';
 import { Observable, catchError, map, of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-list',
@@ -128,18 +129,43 @@ getCategoryName(id: number): string {
   }
 
   deleteProduct(productId: string): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      this.productService.deleteProduct(productId).subscribe(
-        (data: Product) => {
-          console.log('Producto eliminado con éxito: ', data);
-          this.getProducts();
-          //this.router.navigate(['/general/operations/products']);
-        },
-        (error) => {
-          console.error('Error al eliminar el producto: ', error);
-        }
-      );
-    }
+    // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Estás seguro de que deseas eliminar este producto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      // Si el usuario confirma la eliminación
+      if (result.isConfirmed) {
+        this.productService.deleteProduct(productId).subscribe(
+          (data: Product) => {
+            console.log('Producto eliminado con éxito: ', data);
+            this.getProducts();
+            // Mostrar cuadro de diálogo de éxito
+            Swal.fire({
+              title: 'Eliminado con éxito',
+              text: 'El producto se ha eliminado correctamente.',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+            //this.router.navigate(['/general/operations/products']);
+          },
+          (error) => {
+            console.error('Error al eliminar el producto: ', error);
+            // Mostrar cuadro de diálogo de error
+            Swal.fire({
+              title: 'Error al eliminar',
+              text: 'Ha ocurrido un error al intentar eliminar el producto.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+          }
+        );
+      }
+    });
   }
 
   openDetailsModal(id: any) {
