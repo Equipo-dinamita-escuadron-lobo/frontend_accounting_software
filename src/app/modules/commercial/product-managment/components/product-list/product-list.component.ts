@@ -38,8 +38,8 @@ export class ProductListComponent implements OnInit {
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
     { title: 'Unidad', data: 'unitOfMeasure' },
-    { title: 'Prov', data: 'supplier' },
-    { title: 'Cat', data: 'category' },
+    { title: 'Proveedor', data: 'supplier' },
+    { title: 'Categoría', data: 'category' },
     { title: 'Acciones', data: 'actions' },
   ];
 
