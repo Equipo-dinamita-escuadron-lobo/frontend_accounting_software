@@ -13,9 +13,7 @@
           <label class="block text-gray-700 text-sm font-semibold mb-2" for="thirdTypes">Tipo Terceros</label>
           <select formControlName="thirdTypes" id="thirdTypes"
             class="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-            <option value="Cliente">Cliente</option>
-            <option value="Proveedor" selected>Proveedor</option>
-            <option value="Empleado">Empleado</option>
+            <option *ngFor="let thirdType of thirdTypes" [value]="thirdType.thirdTypeName">{{ thirdType.thirdTypeName }}</option>
           </select>
           <div class="text-red-600 mt-1"
             *ngIf="createdThirdForm.get('thirdTypes')?.invalid && (createdThirdForm.get('thirdTypes')?.dirty || createdThirdForm.get('thirdTypes')?.touched)">
@@ -81,6 +79,7 @@
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino" selected>Femenino</option>
                   <option value="Otro">Otro</option>
+                 
                 </select>
               </div>
               <div *ngIf="button1Checked" class="space-y-2">
@@ -99,11 +98,7 @@
               <select formControlName="typeId"
                 class="selectsC w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 (change)="onTypeIdChange($event)">
-                <option value="CC">Cédula Ciudadana</option>
-                <option value="CE" selected>Cédula Extranjería</option>
-                <option value="NIT">NIT</option>
-                <option value="pasaporte">Pasaporte</option>
-                <option value="TI">Tarjeta De Identidad</option>
+                <option *ngFor="let typeId of typeIds" [value]="typeId.typeId">{{ typeId.typeIdname }}</option>
               </select>
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('typeId')?.invalid && (createdThirdForm.get('typeId')?.dirty || createdThirdForm.get('typeId')?.touched)">
