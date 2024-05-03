@@ -1,10 +1,10 @@
 export interface Account {
   code: string;
-  name: string;
+  description: string;
   nature: string;
-  financialState: string;
+  financialStatus: string;
   clasification: string;
-  subAccounts?: Account[];
+  children?: Account[];
   showSubAccounts?: boolean;
   parent?: Account; // Nueva propiedad para mantener una referencia al padre
 }

@@ -15,7 +15,7 @@ import { AccountData } from '../../models/AccountData';
   templateUrl: './accounts-list.component.html',
   styleUrl: './accounts-list.component.css'
 })
-export class AccountsListComponent implements OnInit{
+export class AccountsListComponent implements OnInit {
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
@@ -137,14 +137,14 @@ export class AccountsListComponent implements OnInit{
   createForm(selectedAccount: Account) {
     this.accountForm = this.fb.group({}); // formulario vacio cada que selecciona una cuenta
     this.showButton = true; // mostarar guardar 
-    this.assignName(selectedAccount.code, selectedAccount.name); //para buscar la cuenta y asigna los nombres  dependiendo cuenta y nivel
+    this.assignName(selectedAccount.code, selectedAccount.description); //para buscar la cuenta y asigna los nombres  dependiendo cuenta y nivel
     this.updateInputAccess(selectedAccount.code.length); //para bloquear inputs de acuerdo al nivel
 
     const accountData: AccountData = { //Guardar info cuenta seleccionada
       code: selectedAccount.code,
-      description: selectedAccount.name,
+      description: selectedAccount.description,
       nature: selectedAccount.nature,
-      financialStatus: selectedAccount.financialState,
+      financialStatus: selectedAccount.financialStatus,
       classification: selectedAccount.clasification
     };
 
@@ -160,7 +160,7 @@ export class AccountsListComponent implements OnInit{
         code: selectedAccount.code.slice(0, 2),
         description: this.groupName,
         nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialState,
+        financialStatus: selectedAccount.financialStatus,
         classification: selectedAccount.clasification
       };
     }
@@ -173,7 +173,7 @@ export class AccountsListComponent implements OnInit{
         code: selectedAccount.code.slice(0, 4),
         description: this.accountName,
         nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialState,
+        financialStatus: selectedAccount.financialStatus,
         classification: selectedAccount.clasification
       };
     }
@@ -186,7 +186,7 @@ export class AccountsListComponent implements OnInit{
         code: selectedAccount.code.slice(0, 6),
         description: this.subAccountName,
         nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialState,
+        financialStatus: selectedAccount.financialStatus,
         classification: selectedAccount.clasification
       };
     }
@@ -199,7 +199,7 @@ export class AccountsListComponent implements OnInit{
         code: selectedAccount.code.slice(0, 8),
         description: this.auxiliaryName,
         nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialState,
+        financialStatus: selectedAccount.financialStatus,
         classification: selectedAccount.clasification
       };
     }
@@ -258,24 +258,24 @@ export class AccountsListComponent implements OnInit{
           // Si se encuentra la cuenta, devuelve solo esa cuenta
           return {
             code: subAccount.code,
-            name: subAccount.name,
+            description: subAccount.description,
             nature: subAccount.nature,
-            financialState: subAccount.financialState,
+            financialStatus: subAccount.financialStatus,
             clasification: subAccount.clasification
           };
         }
-        if (subAccount.subAccounts) {
+        if (subAccount.children) {
           // Realiza la búsqueda en las subcuentas
-          const foundAccount = findAccount(subAccount.subAccounts);
+          const foundAccount = findAccount(subAccount.children);
           if (foundAccount) {
             // Si se encuentra la cuenta en las subcuentas, devuelve la cuenta principal con la ruta hasta la cuenta encontrada
             return {
               code: subAccount.code,
-              name: subAccount.name,
+              description: subAccount.description,
               nature: subAccount.nature,
-              financialState: subAccount.financialState,
+              financialStatus: subAccount.financialStatus,
               clasification: subAccount.clasification,
-              subAccounts: [foundAccount]
+              children: [foundAccount]
             };
           }
         }
@@ -332,9 +332,9 @@ export class AccountsListComponent implements OnInit{
 
       this.listExcel = jsonData.map((item: any) => ({
         code: item['Código'],
-        name: item['Nombre'],
+        description: item['Nombre'],
         nature: item['Naturaleza'],
-        financialState: item['Estado Financiero'],
+        financialStatus: item['Estado Financiero'],
         clasification: item['Clasificación'] // Corregido el nombre del campo
       }));
 
@@ -361,17 +361,17 @@ export class AccountsListComponent implements OnInit{
       const level = code.length / 2;
 
       if (!hierarchy[code]) {
-        hierarchy[code] = { ...account, subAccounts: [] };
+        hierarchy[code] = { ...account, children: [] };
       } else {
-        hierarchy[code].name = account.name;
+        hierarchy[code].description = account.description;
       }
 
       if (level >= 1) {
         const parentCode = code.slice(0, -2);
         if (!hierarchy[parentCode]) {
-          hierarchy[parentCode] = { code: parentCode, name: '', nature: '', financialState: '', clasification: '', subAccounts: [] };
+          hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', clasification: '', children: [] };
         }
-        hierarchy[parentCode].subAccounts?.push(hierarchy[code]);
+        hierarchy[parentCode].children?.push(hierarchy[code]);
       }
     }
 
@@ -381,7 +381,7 @@ export class AccountsListComponent implements OnInit{
         const parentCode = account.code[0];
         const parentAccount = hierarchy[parentCode];
         if (parentAccount) {
-          parentAccount.subAccounts?.push(account);
+          parentAccount.children?.push(account);
         }
       }
     }
@@ -400,10 +400,10 @@ export class AccountsListComponent implements OnInit{
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
       if (account.code === code) {
-        return account.name;
+        return account.description;
       }
-      if (account.subAccounts) {
-        const foundAccount = this.findAccountByCode(account.subAccounts, code);
+      if (account.children) {
+        const foundAccount = this.findAccountByCode(account.children, code);
         if (foundAccount !== '') {
           return foundAccount;
         }
@@ -436,7 +436,8 @@ export class AccountsListComponent implements OnInit{
   getAccounts() {
     this._accountService.getListAccounts().subscribe({
       next: (accounts) => {
-        this.listAccounts = accounts;
+        // Filtra los elementos no nulos del array de cuentas
+        this.listAccounts = accounts.filter(account => account !== null);
       },
     });
   }
@@ -485,21 +486,25 @@ export class AccountsListComponent implements OnInit{
     this.formTransactional.patchValue({ 'selectedFinancialStateType': null });
     this.formTransactional.patchValue({ 'selectedClasificationType': null });
 
-    if (selectedAccount.nature.length > 0) {
+    // Verifica que selectedAccount no sea undefined y que tenga la propiedad nature definida
+    if (selectedAccount && selectedAccount.nature && selectedAccount.nature.length > 0) {
       this.formTransactional.patchValue({ 'selectedNatureType': selectedAccount.nature });
       this.placeNatureType = '';
     }
 
-    if (selectedAccount.financialState.length > 0) {
-      this.formTransactional.patchValue({ 'selectedFinancialStateType': selectedAccount.financialState });
+    // Verifica que selectedAccount no sea undefined y que tenga la propiedad financialStatus definida
+    if (selectedAccount && selectedAccount.financialStatus && selectedAccount.financialStatus.length > 0) {
+      this.formTransactional.patchValue({ 'selectedFinancialStateType': selectedAccount.financialStatus });
       this.placeFinancialStateType = '';
     }
 
-    if (selectedAccount.clasification.length > 0) {
+    // Verifica que selectedAccount no sea undefined y que tenga la propiedad clasification definida
+    if (selectedAccount && selectedAccount.clasification && selectedAccount.clasification.length > 0) {
       this.formTransactional.patchValue({ 'selectedClasificationType': selectedAccount.clasification });
       this.placeClasificationType = '';
     }
   }
+
 
   saveAccount() {
     if (this.selectedAccount) {

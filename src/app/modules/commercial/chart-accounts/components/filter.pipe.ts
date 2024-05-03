@@ -19,14 +19,14 @@ export class FilterPipe implements PipeTransform {
     let filteredAccounts: Account[] = [];
 
     accounts.forEach(account => {
-      const filteredSubAccounts = account.subAccounts ?
-        this.filterAccountsRecursive(account.subAccounts, filterValue) :
+      const filteredSubAccounts = account.children ?
+        this.filterAccountsRecursive(account.children, filterValue) :
         [];
 
-      const accountMatchesFilter = account.code.toLowerCase().includes(filterValue) || account.name.toLowerCase().includes(filterValue);
+      const accountMatchesFilter = account.code.toLowerCase().includes(filterValue) || account.description.toLowerCase().includes(filterValue);
 
       if (accountMatchesFilter || filteredSubAccounts.length > 0) {
-        const accountCopy: Account = { ...account, subAccounts: filteredSubAccounts };
+        const accountCopy: Account = { ...account, children: filteredSubAccounts };
 
         if (filteredSubAccounts.length > 0) {
           accountCopy.showSubAccounts = true;
