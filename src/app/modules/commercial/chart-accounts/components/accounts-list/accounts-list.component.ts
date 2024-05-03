@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ChartAccountService } from '../../services/chart-account.service';
 import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { AccountData } from '../../models/AccountData';
+import { FinancialStateType } from '../../models/FinancialStateType';
 
 @Component({
   selector: 'app-accounts-list',
@@ -24,6 +25,16 @@ export class AccountsListComponent implements OnInit {
 
   accountSelect: Account | null = null;
   accountSelectP: Account | null = null;
+
+  //Variables para crear desde 0
+  messagePlaholderInput: string = 'Seleccione una opcion';
+  showInputClass: boolean = false;
+  showInputNewAccount: boolean = false;
+  formNewTypeAccount: FormGroup;
+  formTransactionalNewAccount: FormGroup;
+  natureSelect: string = '';
+  financeStatusSelect: string = '';
+  selectClassification: string = '';
 
   //
   accountForm: FormGroup;
@@ -74,6 +85,29 @@ export class AccountsListComponent implements OnInit {
     private dialog: MatDialog) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
+    this.formNewTypeAccount = this.fb.group(this.vallidationsFormTansactional());
+    this.formNewTypeAccount = this.fb.group({
+      newClassCode: ['', [Validators.required, Validators.maxLength(1), Validators.pattern('^[0-9]*$')]], 
+      newClassName: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]]
+    });
+    this.formTransactionalNewAccount = this.fb.group({
+      newSelecNature: ['', this.requireValueSelected],
+      newSelectFinancialState: ['', this.requireValueSelected],
+      newSelecClassification: ['', this.requireValueSelected]
+    });
+  }
+
+  requireValueSelected = (control: FormControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value || value === '') {
+      return { noValueSelected: true };
+    }
+    return null;
+  };
+
+  showInputClassStatus(){
+    this.showInputClass = true;
+    this.showInputNewAccount = true;
   }
 
   openModalDetails(): void {
@@ -508,6 +542,32 @@ export class AccountsListComponent implements OnInit {
     if (this.selectedAccount) {
       //console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
     }
+  }
+
+  itemSelectNature(e:any){
+    this.natureSelect = e.name;
+    return e;
+  }
+
+  itemSelectFinanceStatus(e:any){
+    this.financeStatusSelect = e.name;
+    return e;
+  }
+  
+  itemSelectClassification(e:any){
+    this.selectClassification = e.name;
+    return e;
+  }
+
+  saveNewAccountType() {
+    const newAccountType: Account = {
+      code: this.formNewTypeAccount.value.newClassCode,
+      description: this.formNewTypeAccount.value.newClassName,
+      nature: this.natureSelect,
+      classification: this.financeStatusSelect,
+      financialStatus: this.selectClassification
+    };
+    console.log(newAccountType)
   }
 
   saveImportAccounts() {

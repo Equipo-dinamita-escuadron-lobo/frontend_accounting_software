@@ -13,7 +13,7 @@
                         class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
                     Importar
                 </label>
-                <button type="button" routerLink="/enterprise-management/create"
+                <button type="button" (click)="showInputClassStatus()"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                     Crear
                 </button>
@@ -146,7 +146,8 @@
                                                                 </svg>
                                                                 {{ subAccount.code }}
                                                             </div>
-                                                            <div class="name w-1/2 -ml-8">{{ subAccount.description }}</div>
+                                                            <div class="name w-1/2 -ml-8">{{ subAccount.description }}
+                                                            </div>
                                                         </button>
                                                     </div>
                                                     <!--list of aux1 type accounts C:-->
@@ -168,7 +169,8 @@
                                                                         </svg>
                                                                         {{ aux1.code }}
                                                                     </div>
-                                                                    <div class="name w-1/2 -ml-10">{{ aux1.description }}
+                                                                    <div class="name w-1/2 -ml-10">{{ aux1.description
+                                                                        }}
                                                                     </div>
                                                                 </button>
                                                             </div>
@@ -193,7 +195,8 @@
                                                                                 </svg>
                                                                                 {{ aux2.code }}
                                                                             </div>
-                                                                            <div class="name w-1/2 -ml-12">{{ aux2.description
+                                                                            <div class="name w-1/2 -ml-12">{{
+                                                                                aux2.description
                                                                                 }}
                                                                             </div>
                                                                         </button>
@@ -214,6 +217,37 @@
             </div>
 
             <div *ngIf="!importedAccounts" class="create-account font-normal">
+                <form [formGroup]="formNewTypeAccount">
+                    <div *ngIf="showInputClass"
+                        class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+                        <div class="w-full sm:w-auto">
+                            <input type="text" id="classCode" formControlName="newClassCode" placeholder="Código"
+                                class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
+                                inputmode="numeric" pattern="[0-9]*">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <input type="text" id="className" formControlName="newClassName" placeholder="Nombre"
+                                class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+                        </div>
+                        <div>
+                            <div *ngIf="formNewTypeAccount.get('newClassCode')?.hasError('required') && (formNewTypeAccount.get('newClassCode')?.dirty || formNewTypeAccount.get('newClassCode')?.touched)"
+                                class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                            <div *ngIf="formNewTypeAccount.get('newClassCode')?.hasError('maxlength') && (formNewTypeAccount.get('newClassCode')?.dirty || formNewTypeAccount.get('newClassCode')?.touched)"
+                                class="text-red-500 text-sm mt-1 ml-3">Código solo debe tener un digito</div>
+                            <div *ngIf="formNewTypeAccount.get('newClassCode')?.hasError('pattern') && (formNewTypeAccount.get('newClassCode')?.dirty || formNewTypeAccount.get('newClassCode')?.touched)"
+                                class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+                        </div>
+                        <div>
+                            <div *ngIf="formNewTypeAccount.get('newClassName')?.hasError('required') && (formNewTypeAccount.get('newClassName')?.dirty || formNewTypeAccount.get('newClassName')?.touched)"
+                                class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                            <div *ngIf="formNewTypeAccount.get('newClassName')?.hasError('pattern') && (formNewTypeAccount.get('newClassName')?.dirty || formNewTypeAccount.get('newClassName')?.touched)"
+                                class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
+                        </div>
+                        <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase</div>
+                    </div>
+                </form>
+
+
                 <form [formGroup]="accountForm">
                     <div class="mb-4">
                         <div *ngIf="accountForm.get('className')"
@@ -397,6 +431,94 @@
                                 </div>
                             </form>
                         </div>
+
+                        <div *ngIf="showInputNewAccount">
+                            <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
+                            <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
+                            <form [formGroup]="formTransactionalNewAccount">
+                                <div class="mb-4">
+                                    <label for="nature" class="block">Naturaleza*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="nature" [items]="listNature" [searchable]="true"
+                                            formControlName="newSelecNature"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            bindLabel="name" bindValue="name" (change)="itemSelectNature($event)"
+                                            (clear)="onSelectionNatureTypeClear()" [clearable]="false">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactionalNewAccount.get('newSelecNature')?.touched && formTransactionalNewAccount.get('newSelecNature')?.hasError('noValueSelected')"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione una opción para Naturaleza.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="financialState" class="block">Estado Financiero*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="financialState" [items]="listFinancialState" bindLabel="name"
+                                            [searchable]="true" formControlName="newSelectFinancialState"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="itemSelectFinanceStatus($event)"
+                                            (clear)="onSelectionFinancialStateTypeClear()" [clearable]="false">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactionalNewAccount.get('newSelectFinancialState')?.touched && formTransactionalNewAccount.get('newSelectFinancialState')?.hasError('noValueSelected')"
+                                        class="text-red-500 text-sm font-medium -mt-1">
+                                        Por favor, seleccione una opción para Estado Financiero.
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="clasification" class="block">Clasificación*</label>
+                                    <div class="icon flex">
+                                        <ng-select name="clasification" [items]="listClasification" bindLabel="name"
+                                            [searchable]="true" formControlName="newSelecClassification"
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                                            (change)="itemSelectClassification($event)"
+                                            (clear)="onSelectionclasificationTypeClear()" [clearable]="false">
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <div
+                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="formTransactionalNewAccount.get('newSelecClassification')?.touched && formTransactionalNewAccount.get('newSelecClassification')?.hasError('noValueSelected')"
+                                    class="text-red-500 text-sm font-medium -mt-1">
+                                    Por favor, seleccione una opción para Clasificación.
+                                </div>
+                                </div>
+
+                            </form>
+                        </div>
                         <div class="flex justify-center mt-4">
                             <button type="button"
                                 class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
@@ -404,6 +526,15 @@
                                 Guardar
                             </button>
                         </div>
+
+                        <div *ngIf="showInputNewAccount && formNewTypeAccount.valid && formTransactionalNewAccount.valid" class="flex justify-center mt-4">
+                            <button type="button"
+                                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                                (click)="saveNewAccountType()">
+                                Guardar cuenta
+                            </button>
+                        </div>
+                        
                     </div>
                 </form>
             </div>
