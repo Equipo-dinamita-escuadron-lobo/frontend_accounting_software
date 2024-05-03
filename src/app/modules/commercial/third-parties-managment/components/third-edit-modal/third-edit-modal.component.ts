@@ -118,6 +118,39 @@ export class ThirdEditModalComponent {
         console.log(error)
       }
     });
+
+    this.thirdServiceConfiguration.getThirdTypes("0").subscribe({
+      next: (response: ThirdType[])=>{
+        response.forEach(elemento => this.thirdTypes.push(elemento));
+        console.log(this.thirdTypes);
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+
+  this.thirdServiceConfiguration.getTypeIds("0").subscribe({
+      next: (response: TypeId[])=>{
+        response.forEach(elemento => this.typeIds.push(elemento));
+        console.log(this.typeIds)
+
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+
+    
   }
 
   OnSubmit(){
