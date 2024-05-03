@@ -1,128 +1,110 @@
 <div class="flex flex-col justify-start items-center m-10">
-<div class="mb-6 self-start">
-  <span class="text-4xl text-blue-950 self-start">Terceros</span>
-</div>
-
-<div
-  class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
->
-  <div
-    class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex ml-3"
-  >
-    <svg
-      class="h-6 w-6 text-blue-500 mr-2"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-    <form [formGroup]="form" class="flex justify-start items-start">
-      <input
-        type="text"
-        class="mb-2 w-full outline-none bg-transparent"
-        id="stringSearch"
-        placeholder="Buscar"
-        name="stringSearch"
-        formControlName= "stringSearch"
-      />
-    </form>
+  <div class="flex justify-between items-center w-full mb-6 relative">
+    <span class="text-4xl text-blue-950">Terceros</span>
+    <div class="relative group">
+      <button class="text-4xl text-blue-950 hover:text-blue-700 focus:outline-none" (click)="openConfigTPModal()">
+        <span class="material-icons">settings</span>
+      </button>
+      <div class="absolute w-auto p-2 text-white text-sm bg-blue-900 rounded hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -translate-x-1/2 left-1/2 bottom-full mb-1">
+        Configuración
+      </div>
+    </div>
   </div>
 
-  <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-    <button
-      class= "h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-      (click)="redirectTo('/general/operations/third-parties/create')"
-    >
-      Agregar
-    </button>
+  <div class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5">
+    <div class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex ml-3">
+      <svg class="h-6 w-6 text-blue-500 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <form [formGroup]="form" class="flex justify-start items-start">
+        <input type="text" class="mb-2 w-full outline-none bg-transparent" id="stringSearch" placeholder="Buscar"
+          name="stringSearch" formControlName="stringSearch" />
+      </form>
+    </div>
+
+    <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+      <button class="h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+        (click)="redirectTo('/general/operations/third-parties/create')">
+        Agregar
+      </button>
+    </div>
   </div>
-</div>
 
-
-
-<div class="lg:text-md mx-auto w-full">
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-200 ">
-        <tr class="overflow-hidden">
-          <th
-            scope="col"
-            class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
-            *ngFor="let col of columns"
-          >
-            {{ col.title }}
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr
-          *ngFor="
-            let third of data | filterList : form.value.stringSearch"
-            class="hover:bg-gray-100"
-        >
-          <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center">
-            {{ third.typeId }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.idNumber }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            {{ third.email }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <p *ngIf="third.state" class="px-2 py-2 rounded-lg bg-green-500 text-white text-center">
-              Activo
-            </p>
-            <p *ngIf="!third.state" class="px-2 py-2 rounded-lg bg-red-500 text-white text-center">
-              Inactivo
-            </p>
-          </td>
-          <td class="py-4 whitespace-nowrap flex justify-center items-center">
-            <button class="px-2 py-2 rounded-lg bg-blue-400 hover:bg-blue-500  mr-2 relative overflow-hidden" (click)="openModalDetails(third.thId)">
-              <span class="material-icons flex justify-center items-center text-white">visibility</span>
-              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
-                Ver
-              </span>
-            </button>
-            <button
-              class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden" (click)="openModalEdit(third.thId)">
-              <span class="material-icons flex justify-center items-center text-white ">edit</span>
-              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                Editar
-              </span>
-            </button>
-            <button
-              class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600  mr-2 relative overflow-hidden flex justify-center items-center"
-              *ngIf="third.state === true"
-              (click)="changeThirdPartieState(third.thId)"
-            >
-              <span class="material-icons flex justify-center items-center text-white ">toggle_off</span>
-              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                Estado
-              </span>
-            </button>
-            <button
-              class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
-              *ngIf="third.state === false"
-              (click)="changeThirdPartieState(third.thId)"
-            >
-              <span class="material-icons text-white">toggle_on</span>
-              <span class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                Estado
-              </span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="lg:text-md mx-auto w-full">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-200 ">
+          <tr class="overflow-hidden">
+            <th scope="col" class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
+              *ngFor="let col of columns">
+              {{ col.title }}
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="
+            let third of data | filterList : form.value.stringSearch" class="hover:bg-gray-100">
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-center">
+              {{ third.typeId }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ third.idNumber }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {{ third.email }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <p *ngIf="third.state" class="px-2 py-2 rounded-lg bg-green-500 text-white text-center">
+                Activo
+              </p>
+              <p *ngIf="!third.state" class="px-2 py-2 rounded-lg bg-red-500 text-white text-center">
+                Inactivo
+              </p>
+            </td>
+            <td class="py-4 whitespace-nowrap flex justify-center items-center">
+              <button class="px-2 py-2 rounded-lg bg-blue-400 hover:bg-blue-500  mr-2 relative overflow-hidden"
+                (click)="openModalDetails(third.thId)">
+                <span class="material-icons flex justify-center items-center text-white">visibility</span>
+                <span
+                  class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
+                  Ver
+                </span>
+              </button>
+              <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
+                (click)="openModalEdit(third.thId)">
+                <span class="material-icons flex justify-center items-center text-white ">edit</span>
+                <span
+                  class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                  Editar
+                </span>
+              </button>
+              <button
+                class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600  mr-2 relative overflow-hidden flex justify-center items-center"
+                *ngIf="third.state === true" (click)="changeThirdPartieState(third.thId)">
+                <span class="material-icons flex justify-center items-center text-white ">toggle_off</span>
+                <span
+                  class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                  Estado
+                </span>
+              </button>
+              <button
+                class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
+                *ngIf="third.state === false" (click)="changeThirdPartieState(third.thId)">
+                <span class="material-icons text-white">toggle_on</span>
+                <span
+                  class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                  Estado
+                </span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 </div>
