@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
-import { eThirdGender } from '../../models/eThirdGender';
+import { Router } from '@angular/router';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { DatePipe } from '@angular/common';
 import { Country } from 'country-state-city';
@@ -28,9 +28,9 @@ export class ThirdCreationComponent implements OnInit {
   showAdditionalDiv = false;
   countries: any[] = [];
   states: any[] = [];
-  citys: any[] = [];
   thirdTypes: ThirdType[] = [];
   typeIds: TypeId[] = [];
+  cities: any[] = [];
   countryCode!: string;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
@@ -40,7 +40,8 @@ export class ThirdCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
-    private thirdServiceConfiguration: ThirdServiceConfigurationService
+    private thirdServiceConfiguration: ThirdServiceConfigurationService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +87,7 @@ export class ThirdCreationComponent implements OnInit {
         });
       }
     });
-        
+
   this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
       next: (response: TypeId[])=>{
         this.typeIds = response;
@@ -115,12 +116,12 @@ export class ThirdCreationComponent implements OnInit {
         });
       }
     });
-        
+
   this.thirdServiceConfiguration.getTypeIds("0").subscribe({
       next: (response: TypeId[])=>{
         response.forEach(elemento => this.typeIds.push(elemento));
         console.log(this.typeIds)
-        
+
       },
       error: (error) => {
         console.log(error)
@@ -132,8 +133,8 @@ export class ThirdCreationComponent implements OnInit {
       }
     });
 
-    
-    
+
+
 
   }
 
@@ -143,7 +144,7 @@ export class ThirdCreationComponent implements OnInit {
   }
 
   onStateChange(event: any) {
-    this.citys = City.getCitiesOfState(this.countryCode, event.target.value);
+    this.cities = City.getCitiesOfState(this.countryCode, event.target.value);
   }
 
   onTypeIdChange(event: any) {
@@ -193,6 +194,10 @@ export class ThirdCreationComponent implements OnInit {
         });
       },
     });
+  }
+
+  goToListThirds():void{
+    this.router.navigateByUrl('/general/operations/third-parties');
   }
 
   onCheckChange(buttonId: number): void {
