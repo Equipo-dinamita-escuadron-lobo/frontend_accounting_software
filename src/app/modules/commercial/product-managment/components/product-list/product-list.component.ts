@@ -184,4 +184,10 @@ getCategoryName(id: number): string {
     });
     _popUp.afterClosed().subscribe();
   }
+
+  //Método para formatear el precio    
+  formatPrice(price: number): string {
+    // Formatear el precio con separador de miles
+    return price.toLocaleString('es-ES');
+  }
 }

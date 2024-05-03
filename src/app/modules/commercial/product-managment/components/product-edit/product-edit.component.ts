@@ -209,10 +209,19 @@ export class ProductEditComponent implements OnInit {
     const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
     let formattedPrice = '';
     if (priceInput !== '') {
-        formattedPrice = parseInt(priceInput).toLocaleString('es-ES'); // Formatear el precio solo si no está vacío
+      // Convertir el precio a número
+      const price = parseInt(priceInput, 10);
+      // Formatear el precio con separador de miles y decimales
+      formattedPrice = this.formatNumberWithCommas(price);
     }
     this.editForm.get('price')?.setValue(formattedPrice);
   }
+  
+  // Función para formatear un número con separadores de miles
+  formatNumberWithCommas(number: number): string {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  
 
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
