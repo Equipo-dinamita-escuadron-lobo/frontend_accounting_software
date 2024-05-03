@@ -1,8 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Type } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import Swal from 'sweetalert2';
+import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
+import { ThirdType } from '../../models/ThirdType';
+import { TypeId } from '../../models/TypeId';
 
 @Component({
   selector: 'app-third-config-modal',
@@ -18,44 +21,10 @@ export class ThirdConfigModalComponent {
   showInputTypeId = false;
   newItemName = '';
 
-  typesId:any = [
-    {
-      typeId: 1,
-      typeName: 'CC'
-    },
-    {
-      typeId: 2,
-      typeName: 'CE'
-    },
-    {
-      typeId: 3,
-      typeName: 'Pasaporte'
-    },
-    {
-      typeId: 4,
-      typeName: 'NIT'
-    },
-  ]
-  thirdTypes:any = [
-    {
-      thirdTypeId: 1,
-      typeName: 'Proveedor'
-    },
-    {
-      thirdTypeId: 2,
-      typeName: 'Cliente'
-    },
-    {
-      thirdTypeId: 3,
-      typeName: 'Empleado'
-    },
-    {
-      thirdTypeId: 4,
-      typeName: 'Otro'
-    },
-  ]
+  typesId: TypeId[] = []
+  thirdTypes: ThirdType[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdConfigModalComponent>, private service:ThirdServiceService){
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdConfigModalComponent>, private service:ThirdServiceService, private thirdServiceConfiguration: ThirdServiceConfigurationService){
 
   }
 
@@ -66,22 +35,75 @@ export class ThirdConfigModalComponent {
   ngOnInit(){
     this.inputData = this.data;
     this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.thirdServiceConfiguration.getThirdTypes(this.entData.entId).subscribe({
+      next: (response: ThirdType[])=>{
+        this.thirdTypes = response;
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+        
+  this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
+      next: (response: TypeId[])=>{
+        this.typesId = response;
+        console.log(response)
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
   }
 
   addTypeId(items:any) {
-    if (this.newItemName.trim()) {
-      items.push({ name: this.newItemName });
-      this.newItemName = '';
-      this.showInputTypeId = false;
-    }
+    console.log(this.newItemName)
+    let sendTypeId: TypeId = {
+    entId: this.entData.entId,
+    typeId: this.newItemName,
+    typeIdname: this.newItemName};
+    this.thirdServiceConfiguration.createTypeId(sendTypeId).subscribe({
+      next: (response) => {
+        // Handle the successful response here
+        console.log('Success:', response);
+      },
+      error: (error) => {
+        // Handle any errors here
+        console.error('Error:', error);
+        // Mensaje de éxito con alert
+      },
+    });
+
   }
 
   addThirdType(items:any) {
-    if (this.newItemName.trim()) {
-      items.push({ name: this.newItemName });
-      this.newItemName = '';
-      this.showInputThirdType = false;
-    }
+    console.log(this.newItemName)
+    let sendTypeId: ThirdType = {
+    entId: this.entData.entId,
+    thirdTypeId: Math.floor(Math.random() * 1001),
+    thirdTypeName: this.newItemName};
+    console.log(sendTypeId)
+    this.thirdServiceConfiguration.createThirdType(sendTypeId).subscribe({
+      next: (response) => {
+        // Handle the successful response here
+        console.log('Success:', response);
+      },
+      error: (error) => {
+        // Handle any errors here
+        console.error('Error:', error);
+        // Mensaje de éxito con alert
+      },
+    });
+
   }
 
   cancelAddThirdType() {

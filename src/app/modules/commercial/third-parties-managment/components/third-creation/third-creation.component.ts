@@ -10,6 +10,9 @@ import { City } from 'country-state-city';
 import { get } from 'jquery';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
+import { ThirdType } from '../../models/ThirdType';
+import { TypeId } from '../../models/TypeId';
 
 @Component({
   selector: 'app-third-creation',
@@ -26,6 +29,8 @@ export class ThirdCreationComponent implements OnInit {
   countries: any[] = [];
   states: any[] = [];
   citys: any[] = [];
+  thirdTypes: ThirdType[] = [];
+  typeIds: TypeId[] = [];
   countryCode!: string;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
@@ -34,7 +39,8 @@ export class ThirdCreationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private thirdServiceConfiguration: ThirdServiceConfigurationService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +72,69 @@ export class ThirdCreationComponent implements OnInit {
     });
 
     this.countries = Country.getAllCountries();
+
+    this.thirdServiceConfiguration.getThirdTypes(this.entData.entId).subscribe({
+      next: (response: ThirdType[])=>{
+        this.thirdTypes = response;
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+        
+  this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
+      next: (response: TypeId[])=>{
+        this.typeIds = response;
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+
+    this.thirdServiceConfiguration.getThirdTypes("0").subscribe({
+      next: (response: ThirdType[])=>{
+        response.forEach(elemento => this.thirdTypes.push(elemento));
+        console.log(this.thirdTypes);
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+        
+  this.thirdServiceConfiguration.getTypeIds("0").subscribe({
+      next: (response: TypeId[])=>{
+        response.forEach(elemento => this.typeIds.push(elemento));
+        console.log(this.typeIds)
+        
+      },
+      error: (error) => {
+        console.log(error)
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          icon: 'error',
+        });
+      }
+    });
+
+    
+    
+
   }
 
   onCountryChange(event: any) {
@@ -91,7 +160,16 @@ export class ThirdCreationComponent implements OnInit {
     third.photoPath = '';
     third.creationDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
     third.updateDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
-    third.thirdTypes = [this.createdThirdForm.get('thirdTypes')?.value];
+    let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.createdThirdForm.get('typeId')?.value);
+    let thirdTypeId = this.thirdTypes.find(thirdType=> thirdType.thirdTypeName === this.createdThirdForm.get("thirdTypes")?.value);
+    if(typeIdValue !== null && typeIdValue !== undefined){
+      third.typeId = typeIdValue;
+    }
+    if(thirdTypeId !== null && thirdTypeId !==undefined){
+    third.thirdTypes = [thirdTypeId];
+  }
+
+  console.log(third);
 
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
@@ -106,6 +184,7 @@ export class ThirdCreationComponent implements OnInit {
       error: (error) => {
         // Handle any errors here
         console.error('Error:', error);
+        console.log(third);
         // Mensaje de éxito con alert
         Swal.fire({
           title: 'Error!',

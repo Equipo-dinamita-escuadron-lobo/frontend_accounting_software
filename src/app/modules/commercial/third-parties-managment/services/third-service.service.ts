@@ -17,7 +17,18 @@ export class ThirdServiceService {
 
   //Crear Un Tercero
   createThird(Third:Third): Observable<Third>{
+    console.log('Request Body:', Third); 
     return this.http.post<Third>(this.thirdApiUrl,Third) .pipe(
+      catchError((error) => {
+        console.error('Error occurred: ', error); // Log the error to the console
+        return throwError(() => new Error('Error occurred while adding a hero')); // Rethrow the error as a new Observable error
+      })
+    );
+  }
+
+  UpdateThird(Third:Third): Observable<Third>{
+    console.log('Request Body:', Third); 
+    return this.http.post<Third>(this.thirdApiUrl+"update",Third) .pipe(
       catchError((error) => {
         console.error('Error occurred: ', error); // Log the error to the console
         return throwError(() => new Error('Error occurred while adding a hero')); // Rethrow the error as a new Observable error
