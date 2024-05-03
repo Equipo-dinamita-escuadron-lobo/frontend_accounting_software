@@ -90,8 +90,10 @@
               {{prod.unitOfMeasureId  }}
             </td>
             
-            <td class="px-6 py-4 whitespace-nowrap">{{ prod.supplierId }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ prod.categoryId }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ getUnitOfMeasureName(prod.unitOfMeasureId) }}</td>
+
+            <td class="px-6 py-4 whitespace-nowrap">{{ getProviderName(prod.supplierId )}}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(prod.categoryId) }}</td>
             <td class="py-4 whitespace-nowrap flex justify-center items-center">
               
               <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600  mr-2 relative overflow-hidden" (click)="openDetailsModal(prod.id)">

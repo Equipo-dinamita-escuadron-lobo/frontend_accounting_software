@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service'; // Importa el servicio ProductService
-import { Product } from '../../models/Product'; // Importa el modelo Product
+import { Product, ProductList } from '../../models/Product'; // Importa el modelo Product
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { Category } from '../../models/Category';
 import { CategoryService } from '../../services/category.service';
 import { Observable, catchError, map, of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 
 @Component({
   selector: 'app-product-list',
@@ -22,6 +23,10 @@ export class ProductListComponent implements OnInit {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
   products: Product[] = []; // Inicializa la lista de productos
+  unitOfMeasures: UnitOfMeasure[]= [];
+  categories: Category[] = [];
+  providers: any[] = [];
+
   columns: any[] = [
     //{title: 'Id', data: 'id'},
     { title: 'Codigo', data: 'code' },
@@ -48,7 +53,7 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private router: Router,
+    private thirdService: ThirdServiceService,    private router: Router,
     private fb: FormBuilder,
     private dialog: MatDialog
   ) {
@@ -65,35 +70,11 @@ export class ProductListComponent implements OnInit {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if (this.entData) {
       this.getProducts(); // Llama al método getProducts() al inicializar el componente
+      this.getUnitOfMeasures();
+      this.getCategories();
+      this.getProviders();
     }
   }
-
-  // getUnitOfMeasureName(id: number): string {
-  //   this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).subscribe(
-  //     (data: UnitOfMeasure) => {
-  //       return data.name;
-  //     },
-  //     (error) => {
-  //       console.log('Error al obtener la unidad de medida:', error);
-  //     }
-  //   );
-  //   return '';
-  // }
-
-
-
-getCategoryName(id: number): string {
-    this.categoryService.getCategoryById(id.toString()).subscribe(
-      (data: Category) => {
-        return data.name;
-      },
-      (error) => {
-        console.log('Error al obtener la categoria:', error);
-      }
-    );
-    return '';
-  }
-
   getProducts(): void {
     this.productService.getProducts(this.entData.entId).subscribe(
       (data: Product[]) => {
@@ -104,6 +85,54 @@ getCategoryName(id: number): string {
       }
     );
   }
+
+  getUnitOfMeasures(): void{
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+      (data: UnitOfMeasure[]) => {
+        this.unitOfMeasures = data; // Asigna los productos obtenidos del servicio a la propiedad products
+      },
+      (error) => {
+        console.log('Error al obtener las unidades de medida:', error);
+      }
+    );
+  }
+
+  getCategories(): void{
+    this.categoryService.getCategories(this.entData.entId).subscribe(
+      (data: Category[]) => {
+        this.categories = data; // Asigna los productos obtenidos del servicio a la propiedad products
+      },
+      (error) => {
+        console.log('Error al obtener las categorías:', error);
+      }
+    );
+  }
+
+  getProviders(): void {
+  this.thirdService.getThirdParties(this.entData.entId,0).subscribe(
+    (data: any[]) => {
+      this.providers = data;
+console.log('Lista de proveedores:', this.providers);
+    },
+    error => {
+      console.error('Error al obtener la lista de proveedores:', error);
+    }
+  );
+}
+  getCategoryName(id: number): string {
+    const cat = this.categories.find(category => category.id === id);
+    return cat ? cat.name : 'No encontrado';
+  }
+  getUnitOfMeasureName(id: number): string {
+    const uom = this.unitOfMeasures.find(unitOfMeasure => unitOfMeasure.id === id);
+    return uom ? uom.name : 'No encontrado';
+  }
+
+  getProviderName(id: number): string {
+    const provider = this.providers.find(provider => provider.idNumber === id);
+    return provider ? provider.socialReason : 'No encontrado';
+  }
+
   // Método para redirigir a una ruta específica
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
@@ -169,17 +198,35 @@ getCategoryName(id: number): string {
   }
 
   openDetailsModal(id: any) {
-    this.OpenPopUp(id, 'Detalles del producto', ProductDetailsModalComponent);
+    let product = this.products.find(prod => prod.id === id) || null;
+    const productList = {
+      id: product?.id ?? '',
+      itemType: product?.itemType,
+      code: product?.code,
+      description: product?.description,
+      minQuantity: product?.minQuantity,
+      maxQuantity: product?.maxQuantity,
+      taxPercentage: product?.taxPercentage,
+      creationDate: product?.creationDate,
+      unitOfMeasureName: this.getUnitOfMeasureName(product?.unitOfMeasureId ?? 0),
+      supplierName: this.getProviderName(product?.supplierId??0),
+      categoryName: this.getCategoryName(product?.categoryId??0),
+      enterpriseId: product?.enterpriseId,
+      price: product?.price,
+      state: product?.state,
+    };
+
+    this.OpenPopUp(productList, 'Detalles del producto', ProductDetailsModalComponent);
   }
 
-  OpenPopUp(id: any, title: any, component: any) {
+  OpenPopUp(productList: any, title: any, component: any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '600ms',
       data: {
         title: title,
-        productId: id,
+        product: productList,
       },
     });
     _popUp.afterClosed().subscribe();
