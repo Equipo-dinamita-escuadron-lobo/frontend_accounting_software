@@ -79,18 +79,6 @@ export class ProductListComponent implements OnInit {
   //   return '';
   // }
 
-  getUnitOfMeasureName(id: number): Observable<string> {
-    return this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).pipe(
-      map((data: UnitOfMeasure) => {
-        return data.name;
-      }),
-      catchError(error => {
-        console.log('Error al obtener la unidad de medida:', error);
-        return of('Error al obtener la unidad de medida');
-      })
-    );
-  }
-  
 
 
 getCategoryName(id: number): string {

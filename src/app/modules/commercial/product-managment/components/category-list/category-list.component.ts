@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { CategoryDetailsComponent } from '../category-details/category-details.component';
 interface Cuenta {
   id: number;
   name: string;
@@ -38,6 +39,7 @@ export class CategoryListComponent implements OnInit {
   //variables para el doble clic
   selectedCategoryId: string | null = null;
   timer: any;
+  dialog: any;
 
   constructor(
     private categoryService: CategoryService,
@@ -134,6 +136,24 @@ export class CategoryListComponent implements OnInit {
         }
       );
     }
+  }
+
+  
+  openDetailsModal(id: any) {
+    this.OpenPopUp(id, 'Detalles de categoria', CategoryDetailsComponent);
+  }
+
+  OpenPopUp(id: any, title: any, component: any) {
+    var _popUp = this.dialog.open(component, {
+      width: '40%',
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '600ms',
+      data: {
+        title: title,
+        categoryId: id,
+      },
+    });
+    _popUp.afterClosed().subscribe();
   }
 
 }
