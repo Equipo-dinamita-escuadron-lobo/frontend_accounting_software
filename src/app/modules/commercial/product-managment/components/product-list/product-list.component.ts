@@ -67,7 +67,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getUnitOfMeasureName(id: number): string {
-    this.unitOfMeasureService.getUnitOfMeasureId(id.toString()).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasuresId(id.toString()).subscribe(
       (data: UnitOfMeasure) => {
         return data.name;
       },

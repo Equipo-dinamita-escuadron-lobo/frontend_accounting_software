@@ -42,7 +42,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
   }
   }
   unitOfMeasureDetails(): void {
-    this.unitOfMeasureService.getUnitOfMeasureId(this.unitOfMeasureId).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasuresId(this.unitOfMeasureId).subscribe(
       (unitOfMeasure: UnitOfMeasure) => {
         this.unitOfMeasure = unitOfMeasure;
         this.editForm.patchValue({
