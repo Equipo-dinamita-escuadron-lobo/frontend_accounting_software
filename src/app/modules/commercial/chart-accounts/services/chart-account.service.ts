@@ -14,105 +14,103 @@ import { NatureType } from '../models/NatureType';
 export class ChartAccountService {
 
   //private apiURL = environment.API_URL + 'chart-account'
-  private apiURL = environment.myAppUrl + 'chart-account'
+  private apiURL = environment.myAppUrl + 'accountCatalogue'
   constructor(private http:HttpClient) {
     
    }
 
   getListAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(this.apiURL);
+    return this.http.get<Account[]>('http://contables.unicauca.edu.co/api/accountCatalogue/trees');
   }
-
-
 
   /////////////
 
   listAccounts: Account[] = [
         {
         code: '1',
-        name: 'Activos',
+        description: 'Activos',
         nature: 'Débito',
-        financialState: 'Estado de Situación Financiero',
-        clasification: 'Activo Corriente',
-        subAccounts: [
+        financialStatus: 'Estado de Situación Financiero',
+        classification: 'Activo Corriente',
+        children: [
             {
             code: '11',
-            name: 'Activos corrientes',
+            description: 'Activos corrientes',
             nature: 'Crédito',
-            financialState: 'Estado de Resultados',
-            clasification: 'Patrimonio',
-            subAccounts: [
+            financialStatus: 'Estado de Resultados',
+            classification: 'Patrimonio',
+            children: [
                 {
                 code: '1105',
-                name: 'Efectivo y equivalentes de efectivo',
+                description: 'Efectivo y equivalentes de efectivo',
                 nature: '',
-                financialState: '',
-                clasification: '',
-                subAccounts: [
+                financialStatus: '',
+                classification: '',
+                children: [
                     {
                     code: '110501',
-                    name: 'Caja general',
+                    description: 'Caja general',
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [
+                    financialStatus: '',
+                    classification: '',
+                    children: [
                         {
                             code: '11050101',
-                            name: 'Caja principal',
+                            description: 'Caja principal',
                             nature: '',
-                            financialState: '',
-                            clasification: '',
+                            financialStatus: '',
+                            classification: '',
                         },
                         { 
                             code: '11050102', 
-                            name: 'Caja chica',
+                            description: 'Caja chica',
                             nature: '',
-                            financialState: '',
-                            clasification: ''
+                            financialStatus: '',
+                            classification: ''
                         }
                     ]
                     },
                     { 
                         code: '110502', 
-                        name: 'Bancos' ,
+                        description: 'Bancos' ,
                         nature: '',
-                        financialState: '',
-                        clasification: ''
+                        financialStatus: '',
+                        classification: ''
                     }
                 ]
                 },
                 { 
                     code: '1106', 
-                    name: 'Cuentas por cobrar', 
+                    description: 'Cuentas por cobrar', 
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '',
+                    children: [] 
                 }
             ]
             },
             {
             code: '12',
-            name: 'Activos no corrientes',
+            description: 'Activos no corrientes',
             nature: '',
-            financialState: '',
-            clasification: '',
-            subAccounts: [
+            financialStatus: '',
+            classification: '',
+            children: [
                 { 
                     code: '1205', 
-                    name: 'Propiedades, planta y equipo',
+                    description: 'Propiedades, planta y equipo',
                     nature: '',
-                    financialState: '',
-                    clasification: '', 
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '', 
+                    children: [] 
                 },
                 { 
                     code: '1206', 
-                    name: 'Activos intangibles', 
+                    description: 'Activos intangibles', 
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '',
+                    children: [] 
                 }
             ]
             }
@@ -120,58 +118,58 @@ export class ChartAccountService {
         },
         {
         code: '2',
-        name: 'Pasivos',
+        description: 'Pasivos',
         nature: 'Crédito',
-        financialState: 'Estado de Resultados',
-        clasification: 'Pasivo Corriente',
-        subAccounts: [
+        financialStatus: 'Estado de Resultados',
+        classification: 'Pasivo Corriente',
+        children: [
             {
             code: '21',
-            name: 'Pasivos corrientes',
+            description: 'Pasivos corrientes',
             nature: '',
-            financialState: '',
-            clasification: '',
-            subAccounts: [
+            financialStatus: '',
+            classification: '',
+            children: [
                 { 
                     code: '2105', 
-                    name: 'Cuentas por pagar', 
+                    description: 'Cuentas por pagar', 
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '',
+                    children: [] 
                 },
                 { 
                     code: '2106', 
-                    name: 'Obligaciones financieras corrientes', 
+                    description: 'Obligaciones financieras corrientes', 
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '',
+                    children: [] 
                 }
             ]
             },
             {
             code: '22',
-            name: 'Pasivos no corrientes',
+            description: 'Pasivos no corrientes',
             nature: '',
-            financialState: '',
-            clasification: '',
-            subAccounts: [
+            financialStatus: '',
+            classification: '',
+            children: [
                 { 
                     code: '2205', 
-                    name: 'Obligaciones financieras no corrientes',
+                    description: 'Obligaciones financieras no corrientes',
                     nature: '',
-                    financialState: '',
-                    clasification: '', 
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '', 
+                    children: [] 
                 },
                 { 
                     code: '2206', 
-                    name: 'Beneficios a empleados a largo plazo', 
+                    description: 'Beneficios a empleados a largo plazo', 
                     nature: '',
-                    financialState: '',
-                    clasification: '',
-                    subAccounts: [] 
+                    financialStatus: '',
+                    classification: '',
+                    children: [] 
                 }
             ]
             }
@@ -179,81 +177,81 @@ export class ChartAccountService {
         },
         {
         code: '3',
-        name: 'Patrimonio',
+        description: 'Patrimonio',
         nature: '',
-        financialState: '',
-        clasification: '',
-        subAccounts: [
+        financialStatus: '',
+        classification: '',
+        children: [
             { 
                 code: '31', 
-                name: 'Capital social', 
+                description: 'Capital social', 
                 nature: '',
-                financialState: '',
-                clasification: '',
-                subAccounts: [] 
+                financialStatus: '',
+                classification: '',
+                children: [] 
             },
             { 
                 code: '32', 
-                name: 'Utilidades acumuladas', 
+                description: 'Utilidades acumuladas', 
                 nature: '',
-                financialState: '',
-                clasification: '',
-                subAccounts: [] 
+                financialStatus: '',
+                classification: '',
+                children: [] 
             }
         ]
         },
         {
         code: '4',
-        name: 'Ingresos',
+        description: 'Ingresos',
         nature: '',
-        financialState: '',
-        clasification: '',
-        subAccounts: []
+        financialStatus: '',
+        classification: '',
+        children: []
         },
         {
         code: '5',
-        name: 'Gastos',
+        description: 'Gastos',
         nature: '',
-        financialState: '',
-        clasification: '',
-        subAccounts: [
+        financialStatus: '',
+        classification: '',
+        children: [
             { 
                 code: '51', 
-                name: 'De Administración', 
+                description: 'De Administración', 
                 nature: '',
-                financialState: '',
-                clasification: '',
-                subAccounts: [] 
+                financialStatus: '',
+                classification: '',
+                children: [] 
             },
             { 
                 code: '52', 
-                name: 'De Operación', 
+                description: 'De Operación', 
                 nature: '',
-                financialState: '',
-                clasification: '',
-                subAccounts: [] 
+                financialStatus: '',
+                classification: '',
+                children: [] 
             }
         ]
         },
         {
         code: '6',
-        name: 'Costos de venta y operación',
+        description: 'Costos de venta y operación',
         nature: 'Débito',
-        financialState: 'Estado de Situación Financiero',
-        clasification: 'Activo No Corriente',
-        subAccounts: []
+        financialStatus: 'Estado de Situación Financiero',
+        classification: 'Activo No Corriente',
+        children: []
         }
     ];
 
 
     listNature: NatureType[] = [
-        {id: 1, name: 'Débito'},
-        {id: 2, name: 'Crédito'}
+        {id: 1, name: 'Debíto'},
+        {id: 2, name: 'Credíto'}
     ];
 
     listFinancialState: FinancialStateType[] = [
-        {id: 1, name: 'Estado de Situación Financiero'},
-        {id: 2, name: 'Estado de Resultados'}
+        {id: 1, name: 'Estado de Resultados'},
+        {id: 2, name: 'Estado de Situacion Financiero'}
     ];
 
     listClasification: ClasificationType[] = [
@@ -262,10 +260,9 @@ export class ChartAccountService {
         {id: 3, name: 'Pasivo Corriente'},
         {id: 4, name: 'Pasivo No Corriente'},
         {id: 5, name: 'Patrimonio'},
-        {id: 6, name: 'Ingresos Operacionales'},
-        {id: 7, name: 'Ingresos No Operacionales'},
-        {id: 8, name: 'Gastos Operacionales'},
-        {id: 9, name: 'Ingresos Operacionales'}   
+        {id: 6, name: 'Ingresos No Operacionales'},
+        {id: 7, name: 'Gastos Operacionales'},
+        {id: 8, name: 'Ingresos Operacionales'}
     ];
 
     getAccounts(): Account[] {
@@ -288,6 +285,10 @@ export class ChartAccountService {
         this.listAccounts = accounts;
         //TODO: ver la confirmacion desde el backend de que se guardo las cuentas importadas
         return true;
+    }
+
+    createAccount(account: Account): Observable<Account>{
+        return this.http.post<Account>('http://contables.unicauca.edu.co/api/accountCatalogue/', account);
     }
 
 }
