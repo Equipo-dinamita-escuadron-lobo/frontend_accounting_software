@@ -40,7 +40,7 @@ constructor(
   this.editForm = this.formBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    inventory: [null],
+    inventory: ['', Validators.required],
     cost: ['', Validators.required],
     sale: ['', Validators.required],
     return: ['', Validators.required]
