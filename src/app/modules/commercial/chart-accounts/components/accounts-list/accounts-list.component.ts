@@ -8,8 +8,6 @@ import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
-import { AccountData } from '../../models/AccountData';
-import { FinancialStateType } from '../../models/FinancialStateType';
 
 @Component({
   selector: 'app-accounts-list',
@@ -41,15 +39,22 @@ export class AccountsListComponent implements OnInit {
   //
   accountForm: FormGroup;
   formTransactional: FormGroup;
-
   selectedAccount?: Account;
-  account?: Account;
 
   //
   showFormTransactional: boolean = false;
+  showFormNewAccount: boolean = false;
+  addChild: boolean = false;
 
   //
   showButton = false;
+
+  //
+  currentLevelAccount: 'grupo' | 'cuenta' | 'subcuenta' | 'auxiliar' | 'clase' = 'clase';
+  showAddNewClass: boolean = false;
+  showButtonDelete: boolean = false;
+  parentId: string = '';
+  level: number = 0;
 
   //
   className = '';
@@ -111,6 +116,38 @@ export class AccountsListComponent implements OnInit {
     this.showInputClass = true;
     this.showInputNewAccount = true;
     this.showPrincipalForm = false;
+  }
+
+  showFormAddNewClass() {
+    this.showAddNewClass = true;
+    this.showPrincipalForm = false;
+    this.showFormTransactional = false;
+    this.showButton = false;
+    this.currentLevelAccount = 'clase';
+  }
+
+  noShowFormAddNewClass() {
+    this.showAddNewClass = false;
+    this.showButton = true;
+  }
+
+  addNewChild(){
+    this.showFormTransactional = false;
+    this.addChild = true;
+    this.showButton = false;
+    this.showButtonDelete = false;
+  }
+
+  noShowFormAddChild(){
+    this.addChild = false;
+  }
+
+  showFormTransactionalAccount() {
+    this.showFormTransactional = true;
+  }
+
+  noShowFormTransactional() {
+    this.showFormTransactional = false;
   }
 
   noShowPrincipalFormF(){
@@ -182,87 +219,64 @@ export class AccountsListComponent implements OnInit {
     this.accountHasInformation(account);
     this.createForm(account);
     this.showFormTransactional = true;
+    this.noShowFormAddNewClass();
+    this.noShowFormAddChild();
   }
 
   //Ir creando los inputs de acuerdo a la cuenta seleccionada
   createForm(selectedAccount: Account) {
     this.accountForm = this.fb.group({}); // formulario vacio cada que selecciona una cuenta
-    this.showButton = true; // mostarar guardar 
+    this.showButton = true; // mostrar guardar 
+    this.showButtonDelete = true; // mostrar borrar;
+    this.parentId = '';
     this.assignName(selectedAccount.code, selectedAccount.description); //para buscar la cuenta y asigna los nombres  dependiendo cuenta y nivel
     this.updateInputAccess(selectedAccount.code.length); //para bloquear inputs de acuerdo al nivel
 
-    const accountData: AccountData = { //Guardar info cuenta seleccionada
-      code: selectedAccount.code,
-      description: selectedAccount.description,
-      nature: selectedAccount.nature,
-      financialStatus: selectedAccount.financialStatus,
-      classification: selectedAccount.classification
-    };
-
-    this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class })); //Crea el input del nombre 
-    this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class })); //crar input de codigo
-    accountData.code = selectedAccount.code.slice(0, 1); //Mostrar el codigo
-    accountData.description = this.className; //guardar el nombre
+    if (selectedAccount.code.length >= 1) {
+      this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class }));  
+      this.accountForm.addControl('classCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.class })); 
+      this.currentLevelAccount = 'grupo';
+      this.parentId = selectedAccount.code.slice(0,1);
+    }
 
     if (selectedAccount.code.length >= 2) {
       this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group }));
-      this.accountForm.addControl('groupCode', new FormControl({ value: selectedAccount.code.slice(0, 2), disabled: this.inputAccess.group }));
-      accountData.grupo = {
-        code: selectedAccount.code.slice(0, 2),
-        description: this.groupName,
-        nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.classification
-      };
+      this.accountForm.addControl('groupCode', new FormControl({ value: selectedAccount.code.slice(0, 1), disabled: this.inputAccess.group }));
+      this.accountForm.addControl('codeGroup', new FormControl({ value: selectedAccount.code.slice(1, 2), disabled: this.inputAccess.group }));
+      this.currentLevelAccount = 'cuenta';
+      this.parentId = selectedAccount.code.slice(0,2);
     }
 
     if (selectedAccount.code.length >= 4) {
       this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account }));
-      this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 4)));
+      this.accountForm.addControl('accountCode', new FormControl(selectedAccount.code.slice(0, 2)));
       this.accountForm.addControl('codeAccount', new FormControl({ value: selectedAccount.code.slice(2, 4), disabled: this.inputAccess.account }));
-      accountData.cuenta = {
-        code: selectedAccount.code.slice(0, 4),
-        description: this.accountName,
-        nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.classification
-      };
+      this.currentLevelAccount = 'subcuenta';
+      this.parentId = selectedAccount.code.slice(0,4);
     }
 
     if (selectedAccount.code.length >= 6) {
       this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount }));
-      this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 6)));
+      this.accountForm.addControl('subAccountCode', new FormControl(selectedAccount.code.slice(0, 4)));
       this.accountForm.addControl('codeSubAccount', new FormControl({ value: selectedAccount.code.slice(4, 6), disabled: this.inputAccess.subAccount }));
-      accountData.subcuenta = {
-        code: selectedAccount.code.slice(0, 6),
-        description: this.subAccountName,
-        nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.classification
-      };
+      this.currentLevelAccount = 'auxiliar';
+      this.parentId = selectedAccount.code.slice(0,6);
     }
 
     if (selectedAccount.code.length >= 8) {
       this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary }));
-      this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 8)));
+      this.accountForm.addControl('auxiliaryCode', new FormControl(selectedAccount.code.slice(0, 6)));
       this.accountForm.addControl('codeAuxiliary', new FormControl({ value: selectedAccount.code.slice(6, 8), disabled: this.inputAccess.auxiliary }));
-      accountData.auxiliar = {
-        code: selectedAccount.code.slice(0, 8),
-        description: this.auxiliaryName,
-        nature: selectedAccount.nature,
-        financialStatus: selectedAccount.financialStatus,
-        classification: selectedAccount.classification
-      };
+      this.parentId = selectedAccount.code;
     }
 
     const selectedAccountData = this.findAccountByCode2(selectedAccount.code, this.listAccounts);
-    if (selectedAccountData) {
-      // Haz lo que necesites con la cuenta encontrada
-      console.log(selectedAccountData);
-    } else {
-      console.log("No se encontró la cuenta correspondiente en la lista.");
-    }
-    return accountData;
+    // if (selectedAccountData) {
+    //   // Haz lo que necesites con la cuenta encontrada
+    //   console.log(selectedAccountData);
+    // } else {
+    //   console.log("No se encontró la cuenta correspondiente en la lista.");
+    // }
   }
 
 
@@ -555,9 +569,30 @@ export class AccountsListComponent implements OnInit {
   }
 
 
-  saveAccount() {
-    if (this.selectedAccount) {
-      //console.log(JSON.stringify(this.createForm(this.selectedAccount), null, 2));
+  deleteAccount(code: string) {
+    try {
+      this._accountService.deleteAccount(code).subscribe(
+        (response) => {
+          Swal.fire({
+            title: 'Eliminación exitosa!',
+            text: 'Se ha eliminado la cuenta con éxito!',
+            icon: 'success',
+          });
+          this.getAccounts()
+          this.noShowPrincipalFormF();
+          this.noShowFormTransactional();
+          this.showButton = false;
+        },
+        (error) => {
+          Swal.fire({
+              title: 'Error!',
+              text: 'Ha ocurrido un error al eliminar la cuenta!.',
+              icon: 'error',
+            });
+        }
+      );
+    } catch (error) {
+      console.error('Error al eliminar el tipo de cuenta:', error);
     }
   }
 
@@ -576,31 +611,26 @@ export class AccountsListComponent implements OnInit {
     return e;
   }
 
-  async saveNewAccountType() {
-    try {
-      const newAccountType: Account = {
-        code: this.formNewTypeAccount.value.newClassCode,
-        description: this.formNewTypeAccount.value.newClassName,
-        nature: this.natureSelect,
-        classification: this.financeStatusSelect,
-        financialStatus: this.selectClassification
-      };
-  
+  async saveNewAccountType(account: Account) {
+    try {  
       // Llamada al servicio para crear la cuenta
-      this._accountService.createAccount(newAccountType).subscribe(
+      if(account){
+        this._accountService.createAccount(account).subscribe(
         (response) => {
-          console.log('Cuenta creada exitosamente:', response);
+          //console.log('Cuenta creada exitosamente:', response);
           Swal.fire({
             title: 'Creación exitosa!',
             text: 'Se ha creado la cuenta con éxito!',
             icon: 'success',
           });
-          this.showInputNewAccount = false;
-          this.showInputClass = false;
+          this.noShowFormAddNewClass();
+          this.noShowFormAddChild();
+          this.noShowPrincipalFormF();
+          this.showButton = false;
           this.getAccounts()
         },
         (error) => {
-          console.error('Error al crear la cuenta:', error);
+          //console.error('Error al crear la cuenta:', error);
           Swal.fire({
               title: 'Error!',
               text: 'Ha ocurrido un error al crear la cuneta!.',
@@ -608,11 +638,24 @@ export class AccountsListComponent implements OnInit {
             });
         }
       );
+      }
     } catch (error) {
       console.error('Error al guardar el tipo de cuenta:', error);
     }
   }
 
+  cancel(){
+    if(this.showAddNewClass){
+      this.noShowFormAddNewClass();
+      this.showButton = false;
+    }
+    if(this.addChild){
+      this.noShowFormAddChild();
+      this.showButton = true;
+    }
+    this.showFormTransactionalAccount();
+    this.showButtonDelete = true;
+  }
 
   saveImportAccounts() {
     this.importedAccounts = false;
@@ -622,5 +665,22 @@ export class AccountsListComponent implements OnInit {
   cancelImportAccounts() {
     this.importedAccounts = false;
     this.listAccounts = this.listAccountsAux;
+  }
+
+  addNewAccount($event: Account){
+    if(this.showAddNewClass){
+      this.saveNewAccountType($event);
+    }
+    if(this.addChild){
+      const account: Account = {
+        code: this.parentId + $event.code,
+        description: $event.description,
+        nature: $event.nature,
+        financialStatus: $event.financialStatus,
+        classification: $event.classification,
+        parent: this.parentId
+      }
+      this.saveNewAccountType(account);
+    } 
   }
 }

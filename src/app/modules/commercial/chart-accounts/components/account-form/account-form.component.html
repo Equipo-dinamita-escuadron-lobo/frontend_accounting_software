@@ -1,0 +1,113 @@
+<form [formGroup]="formNewAccount">
+    <div class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+        <div class="w-full flex sm:w-auto">
+            <label *ngIf="currentLevelAccount != 'clase'" for="subcuenta"
+                class="col-span-1 mr-4 mt-1">{{parentId}}</label>
+            <input type="text" id="code" formControlName="code" placeholder="Código"
+                class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0" inputmode="numeric"
+                pattern="[0-9]*">
+        </div>
+        <div class="w-full sm:w-auto">
+            <input type="text" id="name" formControlName="name" placeholder="Nombre"
+                class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
+        </div>
+        <div>
+            <div *ngIf="formNewAccount.get('code')?.hasError('required') && (formNewAccount.get('code')?.dirty || formNewAccount.get('code')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+            <div *ngIf="formNewAccount.get('code')?.hasError('maxlength') && (formNewAccount.get('code')?.dirty || formNewAccount.get('code')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">Código solo debe tener {{messageLength}}</div>
+            <div *ngIf="formNewAccount.get('code')?.hasError('minlength') && (formNewAccount.get('code')?.dirty || formNewAccount.get('code')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">Código debe tener dos dígitos</div>
+            <div *ngIf="formNewAccount.get('code')?.hasError('pattern') && (formNewAccount.get('code')?.dirty || formNewAccount.get('code')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+        </div>
+        <div>
+            <div *ngIf="formNewAccount.get('name')?.hasError('required') && (formNewAccount.get('name')?.dirty || formNewAccount.get('name')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+            <div *ngIf="formNewAccount.get('name')?.hasError('pattern') && (formNewAccount.get('name')?.dirty || formNewAccount.get('name')?.touched)"
+                class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
+        </div>
+        <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">{{currentLevelAccount}}</div>
+    </div>
+    <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
+    <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
+
+    <div class="mb-4">
+        <label for="nature" class="block">Naturaleza</label>
+        <div class="icon flex">
+            <ng-select name="nature" [items]="listNature" bindLabel="name" [searchable]="true"
+                formControlName="selectedNatureType"
+                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                (change)="onSelectionNatureType($event)" (clear)="onSelectionNatureTypeClear()" [clearable]="false"
+                [placeholder]="placeNatureType">
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                        {{ item.name }}
+                    </div>
+                </ng-template>
+            </ng-select>
+            <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="financialState" class="block">Estado Financiero</label>
+        <div class="icon flex">
+            <ng-select name="financialState" [items]="listFinancialState" bindLabel="name" [searchable]="true"
+                formControlName="selectedFinancialStateType"
+                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                (change)="onSelectionFinancialStateType($event)" (clear)="onSelectionFinancialStateTypeClear()"
+                [clearable]="false" [placeholder]="placeFinancialStateType">
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                        {{ item.name }}
+                    </div>
+                </ng-template>
+            </ng-select>
+            <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label for="clasification" class="block">Clasificación</label>
+        <div class="icon flex">
+            <ng-select name="clasification" [items]="listClasification" bindLabel="name" [searchable]="true"
+                formControlName="selectedClassificationType"
+                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
+                (change)="onSelectionClasificationType($event)" (clear)="onSelectionclasificationTypeClear()"
+                [clearable]="false" [placeholder]="placeClassificationType">
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                        {{ item.name }}
+                    </div>
+                </ng-template>
+            </ng-select>
+            <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+            </svg>
+        </div>
+    </div>
+    <div class="flex flex-wrap justify-center mt-4">
+        <div class="mb-2 md:mb-0 md:mr-2" *ngIf="formNewAccount.valid">
+            <button type="button"
+                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
+                (click)="sendAccount()">
+                Guardar {{currentLevelAccount}}
+            </button>
+        </div>
+        <div class="mb-2 md:mb-0 md:ml-2">
+            <button type="button"
+                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
+                (click)="cancel()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</form>

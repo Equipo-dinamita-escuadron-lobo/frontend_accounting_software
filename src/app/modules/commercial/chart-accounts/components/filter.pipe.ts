@@ -31,8 +31,8 @@ export class FilterPipe implements PipeTransform {
         if (filteredSubAccounts.length > 0) {
           accountCopy.showSubAccounts = true;
           this.expandParentAccounts(account);
-        } else if (accountMatchesFilter && account.parent) {
-          this.expandParentAccounts(account.parent);
+        } else if (accountMatchesFilter && account.parentAccount) {
+          this.expandParentAccounts(account.parentAccount);
         }
 
         filteredAccounts.push(accountCopy);
@@ -43,9 +43,9 @@ export class FilterPipe implements PipeTransform {
   }
 
   expandParentAccounts(account: Account): void {
-    if (account.parent) {
-      account.parent.showSubAccounts = true;
-      this.expandParentAccounts(account.parent);
+    if (account.parentAccount) {
+      account.parentAccount.showSubAccounts = true;
+      this.expandParentAccounts(account.parentAccount);
     }
   }
 }
