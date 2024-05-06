@@ -1,0 +1,47 @@
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopup()"></div>
+<div class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center">
+  <div class="relative w-auto my-6 mx-auto max-w-4xl">
+    <!--content-->
+    <div class="bg-white rounded-lg shadow-lg">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t">
+        <h3 class="text-2xl font-semibold text-gray-900">
+          Detalles del Producto
+        </h3>
+        <button class="p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none focus:outline-none" (click)="closePopup()">
+          <span class="text-2xl">×</span>
+        </button>
+      </div>
+      <!--body-->
+      <div class="p-6 space-y-6">
+        <!-- Aquí agregas la información específica del producto -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Agrega aquí los detalles del producto, por ejemplo: -->
+          <p class="text-md font-medium text-gray-800">Nombre: {{ productData.description }}</p>
+          <p class="text-md font-medium text-gray-800">Descripción: {{ productData.description }}</p>
+          <p class="text-md font-medium text-gray-800">Precio: {{ productData.price }}</p>
+          <!-- Agrega los campos faltantes -->
+          <!-- <p class="text-md font-medium text-gray-800">ID: {{ productData.id }}</p> -->
+          <p class="text-md font-medium text-gray-800">Tipo de ítem: {{ productData.itemType }}</p>
+          <p class="text-md font-medium text-gray-800">Código: {{ productData.code }}</p>
+          <p class="text-md font-medium text-gray-800">Cantidad mínima: {{ productData.minQuantity }}</p>
+          <p class="text-md font-medium text-gray-800">Cantidad máxima: {{ productData.maxQuantity }}</p>
+          <p class="text-md font-medium text-gray-800">Porcentaje de impuestos: {{ productData.taxPercentage }}</p>
+          <p class="text-md font-medium text-gray-800">Fecha de creación: {{ productData.creationDate }}</p>
+          <p class="text-md font-medium text-gray-800">unidad de medida: {{ productData.unitOfMeasureName }}</p>
+          <p class="text-md font-medium text-gray-800">proveedor: {{ productData.supplierName }}</p>
+          <p class="text-md font-medium text-gray-800">categoría: {{ productData.categoryName }}</p>
+          <!-- <p class="text-md font-medium text-gray-800">ID de empresa: {{ productData.enterpriseId }}</p> -->
+          <!-- <p class="text-md font-medium text-gray-800">Estado: {{ productData.state }}</p> -->
+          <!-- Agrega más detalles según sea necesario -->
+        </div>
+      </div>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-gray-200">
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out" type="button" (click)="closePopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

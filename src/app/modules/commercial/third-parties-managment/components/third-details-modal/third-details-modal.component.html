@@ -16,9 +16,10 @@
       <div class="p-6 space-y-6">
         <div class="flex items-center space-x-6">
           <img src="../../../../../../assets/Iconos/third-parties/third-partie-icon-default.png" alt="Icon" class="w-32 h-32">
+          
           <div class="flex-1">
-            <p class="text-md font-medium text-gray-800">Tipo de ID: {{ thirdData.typeId }}</p>
-            <p class="text-md font-medium text-gray-800">Tipos de Tercero: {{ thirdData.thirdTypes.join(', ') }}</p>
+            <p class="text-md font-medium text-gray-800">Tipo de ID: {{ thirdData.typeId.typeId}}</p>
+            <p class="text-md font-medium text-gray-800">Tipos de Tercero: {{ thirdData.thirdTypes[0].thirdTypeName}}</p>
             <p class="text-md font-medium text-gray-800">Tipo de Persona: {{ thirdData.personType }}</p>
           </div>
         </div>

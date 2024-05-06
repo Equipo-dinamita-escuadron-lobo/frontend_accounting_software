@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/Product';
 import { environment } from '../../../../../environments/environment';
+import { LocalStorageMethods } from '../../../../shared/methods/local-storage.method';
 
 
 @Injectable({
@@ -13,10 +14,11 @@ export class ProductService {
   private http = inject(HttpClient);
   constructor() { }
   // Método para obtener todos los productos
-  getProducts(): Observable<Product[]> {
-    const url = `${environment.API_URL}products/findAll`;
+  getProducts(enterpriseId:string): Observable<Product[]> {
+    const url = `${environment.API_URL}products/findAll/${enterpriseId}`;
     return this.http.get<Product[]>(url);
   }
+  
   // Método para crear un nuevo producto
   createProduct(product: Product): Observable<Product> {
     const url = `${environment.API_URL}products/create`;
@@ -31,8 +33,15 @@ export class ProductService {
     return this.http.put<Product>(url, product); // Usamos el método PUT para actualizar el producto
 
   }
+  // Método para obtener un producto por su ID
   getProductById(id: string): Observable<Product> {
     const url = `${environment.API_URL}products/findById/${id}`;
     return this.http.get<Product>(url);
+  }
+
+  // Método para eliminar un producto
+  deleteProduct(id: string): Observable<Product> {
+    const url = `${environment.API_URL}products/delete/${id}`;
+    return this.http.delete<Product>(url);
   }
 }

@@ -5,5 +5,7 @@ export interface UnitOfMeasure {
     name: string; 
     abbreviation: string; 
     description: string; 
+    enterpriseId:string;
+    state : string;
   }
   

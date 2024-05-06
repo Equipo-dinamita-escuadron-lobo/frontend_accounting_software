@@ -68,23 +68,23 @@
      </thead>
      <tbody class="bg-white divide-y divide-gray-200">
        <tr
-         *ngFor="let cat of categories | filterCategory : form.value.stringSearchCategory
-         "
-         class="hover:bg-gray-100 " (click)=" redirectToEdit(cat.id)">
-         <td class="px-6 py-4 whitespace-nowrap">{{ cat.id }}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{ cat.name }}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{ cat.description }}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{cat.inventory}}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{cat.cost}}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{cat.sale}}</td>
-         <td class="px-6 py-4 whitespace-nowrap">{{cat.return}}</td>
+       *ngFor="let cat of categories | filterCategory : form.value.stringSearchCategory" class="hover:bg-gray-100" (click)="redirectToEdit(cat.id)">
+        <td class="px-6 py-4 whitespace-nowrap">{{ cat.id }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ cat.name }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ cat.description }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(cat.inventoryId) }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(cat.costId) }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(cat.saleId) }}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(cat.returnId) }}</td>
+      
          <td class="py-4 whitespace-nowrap flex justify-center items-center">
-          <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600  mr-2 relative overflow-hidden">
+          <!-- <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600 mr-2 relative overflow-hidden" (click)="openDetailsModal(cat.id)">
             <span class="material-icons flex justify-center items-center text-white">visibility</span>
-            <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
+            <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
               Ver
             </span>
-          </button>
+          </button> -->
+          
           <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
             (click)=" redirectToEdit(cat.id)"
             >
@@ -93,6 +93,7 @@
               Editar
             </span>
           </button>
+
           <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden"
           (click)=" deleteCategory(cat.id)">
             <span class="material-icons flex justify-center items-center text-white">delete</span>
@@ -100,6 +101,7 @@
               Eliminar
             </span>
           </button>
+          
         </td>
 
        </tr>
