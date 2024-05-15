@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 @Component({
   selector: 'app-unit-of-measure-creation',
@@ -11,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class UnitOfMeasureCreationComponent implements OnInit{
   unitOfMeasureForm: FormGroup = this.formBuilder.group({});
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -21,13 +24,18 @@ export class UnitOfMeasureCreationComponent implements OnInit{
   ngOnInit(): void {
     this.unitOfMeasureForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]]
+      description: ['', [Validators.required]],
+      abbreviation: ['', [Validators.required]],
     });
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+
   }
 
   onSubmit(): void {
     if (this.unitOfMeasureForm.valid) {
       const unitOfMeasureData = this.unitOfMeasureForm.value;
+
+      unitOfMeasureData.enterpriseId = this.entData.entId;
       this.unitOfMeasureService.createUnitOfMeasure(unitOfMeasureData).subscribe(
         () => {
           Swal.fire({
@@ -66,3 +74,4 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     this.unitOfMeasureForm.reset();
   }
 }
+  

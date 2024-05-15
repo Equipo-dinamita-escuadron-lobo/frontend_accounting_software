@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'third-parties-management',
     loadChildren: () => import('./modules/commercial/third-parties-managment/third-parties-managment.module').then(m => m.ThirdPartiesManagmentModule)
+  },
+  {
+    path: 'accounts-management',
+    loadChildren: () => import('./modules/commercial/chart-accounts/chart-accounts.module').then(m => m.ChartAccountsModule)
   }
 ];
 

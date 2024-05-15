@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        'blue-900': '0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -1px rgba(30, 64, 175, 0.06)',
+      },
       colors:{
         'sidebar':'#334155',
         'blueP1':'#0472FA',

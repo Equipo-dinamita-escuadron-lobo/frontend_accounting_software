@@ -7,6 +7,11 @@ export const navbarData: INavbarData[] = [
     label: 'Home'
   },
   {
+    routeLink: '/general/operations/accounts',
+    icon: 'article',
+    label: 'Catalogo de cuentas'
+  },
+  {
     routeLink: '/general/operations/third-parties',
     icon: 'groups',
     label: 'Terceros'
@@ -19,6 +24,14 @@ export const navbarData: INavbarData[] = [
       {
         routeLink: '/general/operations/products',
         label: 'Productos',
+      },
+      {
+        routeLink: '/general/operations/categories',
+        label: 'Categorias',
+      },
+      {
+        routeLink: '/general/operations/unities',
+        label: 'Unidades de medida',
       }
     ]
   },

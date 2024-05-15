@@ -17,7 +17,7 @@ export class EnterpriseDetailsComponent {
   constructor(private enterpriseService: EnterpriseService,
     private router: Router
   ) {
-    this.ngOnInit();
+    this.getEnterpriseSelectedInfo();
   }
 
   ngOnInit(): void {
@@ -54,7 +54,6 @@ export class EnterpriseDetailsComponent {
 
   goToEditEnterprise(){
     this.router.navigate(['general/operations/home/edit']);
-
   }
 
 

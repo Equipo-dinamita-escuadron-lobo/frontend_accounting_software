@@ -1,20 +1,20 @@
 <div class="px-14 py-5 bg-gray-100 font-projectFont">
-    <h1 class="text-2xl font-bold text-blue-950 mt-8">Editar Unidad de medida</h1>
+  <div class="mb-6 self-start">
+    <span class="text-4xl text-blue-950 self-start">Editar Unidad de medida</span>
+  </div>
   
     <p class="mt-4 font-projectFont">
       Ingrese la información requerida para Editar una Unidad de medida:
     </p>
     <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-      <button
-        class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
-        (click)="goBack()"
-      >
-        <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-950 transform rotate-180" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 0 1 1.414 1.414L5.414 10l3.293 3.293a1 1 0 0 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 0 1 0 1.414z" clip-rule="evenodd" />
-            </svg>
-        </span>
-      </button>
+    <button
+      class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
+      (click)="goBack()"
+    >
+      <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
+        <i class="fas fa-arrow-left text-blue-950"></i>
+      </span>
+    </button>
     </div>
   
   
@@ -41,10 +41,21 @@
                   </div>
                 </div>
               </div>
+              <div>
+                <label for="abbreviation" class="block text-sm font-medium text-gray-700">Abreviatura:</label>
+                <input type="text" formControlName="abbreviation" id="abbreviation" placeholder="Ej: Abreviatura de la Unidad de medida " class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                <div *ngIf="editForm.get('abbreviation')?.touched && editForm.get('abbreviation')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('abbreviation')?.errors?.['required']">
+                    El campo Abreviatura es requerido.
+                  </div>
+                </div>
+              </div>
   
               <!-- Botón de envío -->
               <div>
-                <button type="submit" class="buttonsC h-10 w-auto">Actualizar Unidad</button>
+                <button type="submit" class="buttonsC h-10 w-auto">
+                  Guardar Cambios
+                </button>
               </div>
             </div>
           </form>

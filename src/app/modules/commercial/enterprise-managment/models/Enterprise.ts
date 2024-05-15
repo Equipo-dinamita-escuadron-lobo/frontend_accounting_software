@@ -17,6 +17,7 @@ export interface Enterprise{
     personType: PersonType;
     location: Location;
     dv: String;
+    state?: string
 }
 
 export interface EnterpriseDetails{
@@ -26,7 +27,7 @@ export interface EnterpriseDetails{
     phone: String;
     branch: String;
     email: String;
-    logo: String;
+    logo: string;
     taxLiabilities: TaxLiability[];
     taxPayerType: TaxPayerType;
     enterpriseType: EnterpriseType;
