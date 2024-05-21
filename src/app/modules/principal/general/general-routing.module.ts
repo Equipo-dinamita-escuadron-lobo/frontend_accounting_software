@@ -18,6 +18,7 @@ import { CategoryEditComponent } from '../../commercial/product-managment/compon
 import { EnterpriseDetailsComponent } from '../../commercial/enterprise-managment/components/enterprise-details/enterprise-details.component';
 import { EnterpriseEditComponent } from '../../commercial/enterprise-managment/components/enterprise-edit/enterprise-edit.component';
 import { AccountsListComponent } from '../../commercial/chart-accounts/components/accounts-list/accounts-list.component';
+import { permissionsGuard } from '../../../core/guards/permissions.guard';
 
 const routes: Routes = [
   {
@@ -28,16 +29,18 @@ const routes: Routes = [
   {
     path: 'enterprises',
     component: ViewEnterprisesComponent,
+    title: 'Empresas',
     children: [
       {
         path: 'list',
-        component: EnterpriseListComponent
+        component: EnterpriseListComponent,
       },
       {
         path: 'create',
-        component: EnterpriseCreationComponent
+        component: EnterpriseCreationComponent,
       }
-    ]
+    ],
+    canActivate: [permissionsGuard],
   },
   {
     path: 'operations',
@@ -100,7 +103,8 @@ const routes: Routes = [
         path: 'home/edit',
         component: EnterpriseEditComponent
       }
-    ]
+    ],
+    canActivate: [permissionsGuard],
   }
 ];
 
