@@ -1,21 +1,20 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { environment } from '../../../environments/enviorment.development';
+import { Injectable } from '@angular/core';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environmentSecurity } from '../../../environments/enviorment.security';
 
+const keycloakUrl = environmentSecurity.keycloakUrl;
 
-const API_URL = environment.myAppUrl;
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const excludedRoutes = [
-    `${API_URL}/auth/login`,
-    `${API_URL}/auth/register`
-  ];
-
-  if (excludedRoutes.includes(req.url)) {
-    return next(req);
+    const excludedRoutes = [`${keycloakUrl}`];
+    if (excludedRoutes.includes(req.url)) {
+      return next.handle(req);
+    }
+    const token = localStorage.getItem('token');
+    const authReq = req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) });
+    return next.handle(authReq);
   }
-  const token = localStorage.getItem('token');
-  const authReq = req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${token}`)
-  });
-  return next(authReq);
-};
+}

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { environment } from '../../../../../environments/enviorment.development';
 import { environmentSecurity } from '../../../../../environments/enviorment.security';
 
-const API_URL = environment.myAppUrl;
+const API_URL = environmentSecurity.ApiUrl
 
 @Injectable({
   providedIn: 'root'
