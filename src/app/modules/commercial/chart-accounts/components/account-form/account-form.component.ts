@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Account } from '../../models/ChartAccount';
 import { NatureType } from '../../models/NatureType';
@@ -18,7 +18,8 @@ export class AccountFormComponent implements OnInit{
    * main form information
    */
   @Input() currentLevelAccount: string = '';
-  @Input() parentId: string = '';
+  @Input() parentId?: string = '';
+  @Input() level: number = 0;
   @Output() newAccount = new EventEmitter<Account>(); 
   @Output() cancelar = new EventEmitter<void>(); 
 
@@ -43,25 +44,27 @@ export class AccountFormComponent implements OnInit{
    */
   messageLength: string = '';
 
-  constructor(private _accountService: ChartAccountService, private fb: FormBuilder){
-    //Se valida maximo tamaño del codigo dependiendo al nivel y se asigna el mensaje
-    let codeMaxLength: number = 0;
-    if(this.currentLevelAccount === 'clase' || this.currentLevelAccount === 'grupo'){
-      codeMaxLength = 1;
-      this.messageLength = 'un dígito';
-    }
-    else{
-      codeMaxLength = 2;
-      this.messageLength = 'dos dígitos';
-    }
-
+  constructor(private _accountService: ChartAccountService, private fb: FormBuilder) {
     this.formNewAccount = this.fb.group({
-      code: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(codeMaxLength), Validators.minLength(codeMaxLength)]],
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      code: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      name: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]],
       selectedNatureType: [''],
       selectedFinancialStateType: [''],
       selectedClassificationType: ['']
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['level']) {
+      const validators = [
+        Validators.required,
+        Validators.pattern('^[0-9]*$'),
+        Validators.maxLength(this.level),
+        Validators.minLength(this.level)
+      ];
+      this.formNewAccount.get('code')?.setValidators(validators);
+      this.formNewAccount.get('code')?.updateValueAndValidity();
+    }
   }
 
   /**
@@ -71,6 +74,7 @@ export class AccountFormComponent implements OnInit{
     this.getNatureType();
     this.getFinancialStateType();
     this.getClasificationType();
+    this.asignMessage();
   }
 
   /**
@@ -85,6 +89,15 @@ export class AccountFormComponent implements OnInit{
     }
     return null;
   };
+
+  asignMessage(){
+    if(this.level === 1){
+      this.messageLength = 'un dígito';
+    }
+    else{
+      this.messageLength = 'dos dígitos';
+    }
+  }
 
 
   /**

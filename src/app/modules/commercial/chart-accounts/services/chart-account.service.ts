@@ -53,6 +53,10 @@ export class ChartAccountService {
         return this.http.post<Account>(this.apiURL, account);
     }
 
+    updateAccount(id?: number, account?: Account): Observable<Account> {
+        return this.http.put<Account>(`${this.apiURL}${id}`,account);
+    } 
+
     getClasificationType(): ClasificationType[] {
         return this.listClasification;
     }
