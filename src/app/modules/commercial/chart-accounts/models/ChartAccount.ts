@@ -1,4 +1,5 @@
 export interface Account {
+  id?: number;
   code: string;
   description: string;
   nature: string;
@@ -6,5 +7,6 @@ export interface Account {
   classification: string;
   children?: Account[];
   showSubAccounts?: boolean;
-  parent?: Account; // Nueva propiedad para mantener una referencia al padre
+  parent?: string;
+  parentAccount?: Account;
 }
