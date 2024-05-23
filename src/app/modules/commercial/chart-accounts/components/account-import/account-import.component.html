@@ -1,16 +1,16 @@
 <div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopUp()"></div>
 <div
-  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center w-5/6 sm:w-full">
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center w-5/6 sm:w-full font-projectFont">
   <div class="relative w-auto my-6 mx-auto max-w-4xl">
     <!--content-->
     <div class="bg-white rounded-lg shadow-lg">
       <!--header-->
       <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t">
-        <h3 class="text-2xl font-semibold text-gray-900">
+        <h3 class="text-2xl text-gray-900">
           {{ inputData.title }}
         </h3>
         <button
-          class="p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          class="p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none outline-none focus:outline-none"
           (click)="closePopUp()">
           <svg class="h-8 w-8 text-red-500 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
