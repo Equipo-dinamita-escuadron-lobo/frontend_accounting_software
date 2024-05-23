@@ -1,4 +1,4 @@
-<div class="flex w-full h-full">
+<div class="flex w-full h-full font-projectFont">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
         <div class="grid sm:grid-cols-2 sm:justify-between">
             <div class="items-center">
@@ -14,24 +14,15 @@
                 <div class="flex">
 
                     <label for="fileInput"
-                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded  -lg rounded-l-full text-sm pr-3 py-2.5 pl-10 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
+                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full  text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
                         <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
                             class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
                         Importar
                     </label>
-                    <button (click)="openModalDetails()" class="mt-0.5 -mr-2 absolute">
-                        <svg class="h-9 w-9 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" />
-                            <circle cx="12" cy="12" r="9" />
-                            <line x1="12" y1="8" x2="12" y2="12" />
-                            <line x1="12" y1="16" x2="12.01" y2="16" />
-                        </svg>
+                    <button (click)="openModalDetails()" class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                        Plantilla
                     </button>
                 </div>
-
-
-
             </div>
         </div>
 
