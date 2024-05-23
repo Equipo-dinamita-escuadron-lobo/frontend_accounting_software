@@ -556,7 +556,7 @@
                                             [searchable]="true" formControlName="selectedClasificationType"
                                             class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
                                             (change)="onSelectionClasificationType($event)"
-                                            (clear)="onSelectionclasificationTypeClear()" [clearable]="false"
+                                            (clear)="onSelectionClasificationTypeClear()" [clearable]="false"
                                             [placeholder]="placeClasificationType">
                                             <ng-template ng-option-tmp let-item="item">
                                                 <div
@@ -580,11 +580,11 @@
                         </div>
 
                         <div *ngIf="showButton" class="flex flex-wrap justify-center mt-4">
-                            <div class="mb-2 md:mb-0 md:mr-2">
+                            <div class="mb-2 md:mb-2 md:mr-2">
                                 <button type="button"
                                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
                                     [disabled]="!showUpdateButton" [class.cursor-not-allowed]="!showUpdateButton"
-                                    (click)="updateAccount()">
+                                    title="Modifique algún campo" (click)="updateAccount()">
                                     Actualizar
                                 </button>
                             </div>

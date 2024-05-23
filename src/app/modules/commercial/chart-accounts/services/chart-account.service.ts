@@ -57,6 +57,10 @@ export class ChartAccountService {
         return this.http.put<Account>(`${this.apiURL}${id}`,account);
     } 
 
+    getAccountByCode(code: string): Observable<Account>{
+        return this.http.get<Account>(this.apiURL+'accountByCode/'+code);
+    }
+
     getClasificationType(): ClasificationType[] {
         return this.listClasification;
     }

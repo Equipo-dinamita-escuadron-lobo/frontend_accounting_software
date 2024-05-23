@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { ChangeDetectorRef } from '@angular/core';
+import { FinancialStateType } from '../../models/FinancialStateType';
 
 @Component({
   selector: 'app-accounts-list',
@@ -69,7 +70,7 @@ export class AccountsListComponent implements OnInit {
   };
 
   //Arrays with information of services
-  listFinancialState: ClasificationType[] = [];
+  listFinancialState: FinancialStateType[] = [];
   listAccounts: Account[] = [];
   listAccountsAux: Account[] = [];
   listNature: NatureType[] = [];
@@ -86,7 +87,11 @@ export class AccountsListComponent implements OnInit {
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef) {
     this.accountForm = this.fb.group({})
-    this.formTransactional = this.fb.group(this.vallidationsFormTansactional());
+    this.formTransactional = this.fb.group({
+      selectedNatureType: [''],
+      selectedFinancialStateType: [''],
+      selectedClasificationType: ['']
+    });
   }
 
   showFormAddNewClass(){
@@ -154,33 +159,11 @@ export class AccountsListComponent implements OnInit {
     _popUp.afterClosed().subscribe()
   }
 
-  vallidationsFormTansactional() {
-    return {
-      selectedNatureType: [null, [this.selectedValueValidator]],
-      selectedFinancialStateType: [null, [this.selectedValueValidator]],
-      selectedClasificationType: [null, [this.selectedValueValidator]],
-    }
-  }
-
   ngOnInit(): void {
     this.getAccounts();
     this.getNatureType();
     this.getFinancialStateType();
     this.getClasificationType();
-  }
-
-  selectedValueValidator(
-    control: AbstractControl
-  ): { [key: string]: boolean } | null {
-    if (
-      control.value !== null &&
-      control.value !== undefined &&
-      control.value !== ''
-    ) {
-      return null; // El valor es válido
-    } else {
-      return { noValueSelected: true }; // El valor no es válido
-    }
   }
 
   toggleSubAccounts(account: Account) {
@@ -189,6 +172,7 @@ export class AccountsListComponent implements OnInit {
 
   selectAccount(account: Account) {
     this.noShowFormAddNewClass();
+    this.noAddNewChild();
     this.accountHasInformation(account);
     this.createForm(account.code, account.description);
     this.selectedAccount = true;
@@ -513,30 +497,30 @@ export class AccountsListComponent implements OnInit {
   }
 
   onSelectionFinancialStateType(event: any) {
-    this.formTransactional.value.selectedFinancialStateType = event;
+    this.formTransactional.get('selectedFinancialStateType')?.setValue(event.name);
     this.placeFinancialStateType = '';
   }
 
   onSelectionNatureType(event: any) {
-    this.formTransactional.value.selectedNatureType = event;
+    this.formTransactional.get('selectedNatureType')?.setValue(event.name);
     this.placeNatureType = '';
   }
-
+    
   onSelectionClasificationType(event: any) {
-    this.formTransactional.value.selectedClasificationType = event;
+    this.formTransactional.get('selectedClasificationType')?.setValue(event.name);
     this.placeClasificationType = '';
   }
 
   onSelectionFinancialStateTypeClear() {
-    this.formTransactional.value.selectedFinancialStateType = { id: -1, name: '' };
+    this.formTransactional.get('selectedFinancialStateType')?.setValue('');
   }
 
   onSelectionNatureTypeClear() {
-    this.formTransactional.value.selectedNatureType = { id: -1, name: '' };
+    this.formTransactional.get('selectedNatureType')?.setValue('');
   }
 
-  onSelectionclasificationTypeClear() {
-    this.formTransactional.value.selectedClasificationType = { id: -1, name: '' };
+  onSelectionClasificationTypeClear() {
+    this.formTransactional.get('selectedClasificationType')?.setValue('');
   }
 
   accountHasInformation(selectedAccount: Account) {
@@ -544,21 +528,21 @@ export class AccountsListComponent implements OnInit {
     this.placeFinancialStateType = 'Seleccione una opción';
     this.placeClasificationType = 'Seleccione una opción';
 
-    this.formTransactional.patchValue({ 'selectedNatureType': null });
-    this.formTransactional.patchValue({ 'selectedFinancialStateType': null });
-    this.formTransactional.patchValue({ 'selectedClasificationType': null });
+    this.formTransactional.patchValue({ 'selectedNatureType':''});
+    this.formTransactional.patchValue({ 'selectedFinancialStateType': ''});
+    this.formTransactional.patchValue({ 'selectedClasificationType': '' });
 
-    if (selectedAccount && selectedAccount.nature && selectedAccount.nature.length > 0) {
+    if (selectedAccount && selectedAccount.nature && selectedAccount.nature != 'Por defecto') {
       this.formTransactional.patchValue({ 'selectedNatureType': selectedAccount.nature });
       this.placeNatureType = '';
     }
 
-    if (selectedAccount && selectedAccount.financialStatus && selectedAccount.financialStatus.length > 0) {
+    if (selectedAccount && selectedAccount.financialStatus && selectedAccount.financialStatus != 'Por defecto') {
       this.formTransactional.patchValue({ 'selectedFinancialStateType': selectedAccount.financialStatus });
       this.placeFinancialStateType = '';
     }
 
-    if (selectedAccount && selectedAccount.classification && selectedAccount.classification.length > 0) {
+    if (selectedAccount && selectedAccount.classification && selectedAccount.classification != 'Por defecto') {
       this.formTransactional.patchValue({ 'selectedClasificationType': selectedAccount.classification });
       this.placeClasificationType = '';
     }
@@ -606,9 +590,9 @@ export class AccountsListComponent implements OnInit {
         classification: $event.classification,
         parent: this.accountSelected?.code
       }
-      console.log('Datos enviados: ',account);
       this.saveNewAccountType(account);
-    } 
+    }
+    
   }
 
   // Service CRUD methods
@@ -620,10 +604,24 @@ export class AccountsListComponent implements OnInit {
     this._accountService.getListAccounts().subscribe({
       next: (accounts) => {
         // Filtra los elementos no nulos del array de cuentas
-        console.log(accounts);
+        //console.log(accounts);
         this.listAccounts = accounts.filter(account => account !== null);
       },
     });
+  }
+
+  /**
+   * @param account account that contains the information to search
+   */
+  getAccountByCode(account: Account): Promise<boolean> {
+    return this._accountService.getAccountByCode(account.code).toPromise()
+      .then(cuenta => {
+        return !!cuenta;  
+      })
+      .catch(error => {
+        console.error('Error al obtener la cuenta:', error);
+        return false;
+      });
   }
 
   /**
@@ -632,11 +630,12 @@ export class AccountsListComponent implements OnInit {
    */
   async saveNewAccountType(account: Account) {
     try {  
-      if(account){
+      const accountExist = await this.getAccountByCode(account);
+      if(!accountExist){
         if(this.name === 'subAccountName' && this.accountSelected && this.accountSelected.children && this.accountSelected.children.length >= 2){
           Swal.fire({
               title: 'Error!',
-              text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta',
+              text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
               icon: 'error',
           });
           this.selectAccount(this.accountSelected);
@@ -650,7 +649,6 @@ export class AccountsListComponent implements OnInit {
                 text: 'Se ha creado la cuenta con éxito!',
                 icon: 'success',
               });
-              console.log('Cuenta creada: ',response);
               this.getAccounts();
               this.selectAccount(response);
               this.noShowFormAddNewClass();
@@ -665,6 +663,12 @@ export class AccountsListComponent implements OnInit {
             }
           );
         }
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ya existe una cuenta con el código ingresado!',
+          icon: 'error',
+        });
       }
     } catch (error) {
       console.error('Error al guardar el tipo de cuenta:', error);
@@ -685,9 +689,15 @@ export class AccountsListComponent implements OnInit {
             icon: 'success',
           });
           this.getAccounts();
-          //this.selectAccount(response);
-          this.noShowFormAddNewClass();
-          this.noAddNewChild();
+          if(this.accountSelected && this.accountSelected.parent){
+            this._accountService.getAccountByCode(this.accountSelected?.parent).subscribe({
+              next: (account) => {
+                this.selectAccount(account);
+              }
+            });
+          }else{
+            this.noShowPrincipalAndTransactionalForm();
+          }
         },
         (error) => {
           Swal.fire({
@@ -704,16 +714,21 @@ export class AccountsListComponent implements OnInit {
 
   updateAccount(){
     try {  
-      if(this.accountSelected){
+      if(this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId+this.accountForm.get(this.code)?.value){
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
+          icon: 'error',
+        });
+        this.selectAccount(this.accountSelected);
+      }else{
         const account: Account = {
           code: this.parentId + this.accountForm.get(this.code)?.value,
           description: this.accountForm.get(this.name)?.value,
-          nature: this.formTransactional.get('selectedNatureType')?.value.name || '',
-          financialStatus: this.formTransactional.get('selectedFinancialStateType')?.value.name || '',
-          classification: this.formTransactional.get('selectedClasificationType')?.value.name || '',
+          nature: this.formTransactional.value.selectedNatureType,
+          financialStatus: this.formTransactional.value.selectedFinancialStateType,
+          classification: this.formTransactional.value.selectedClasificationType
         }
-        console.log('Cuenta a actualizar: ',this.accountSelected);
-        console.log('Datos actualizados: ',account);
         this._accountService.updateAccount(this.accountSelected?.id, account).subscribe(
         (response) => {
           Swal.fire({
@@ -727,7 +742,6 @@ export class AccountsListComponent implements OnInit {
           this.noAddNewChild();
         },
         (error) => {
-          //console.error('Error al crear la cuenta:', error);
           Swal.fire({
               title: 'Error!',
               text: 'Ha ocurrido un error al actualizar la cuenta!.',

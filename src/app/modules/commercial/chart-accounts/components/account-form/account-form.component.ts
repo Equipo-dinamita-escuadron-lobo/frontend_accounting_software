@@ -47,7 +47,7 @@ export class AccountFormComponent implements OnInit{
   constructor(private _accountService: ChartAccountService, private fb: FormBuilder) {
     this.formNewAccount = this.fb.group({
       code: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]],
+      name: ['', [Validators.required, Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\\d,.()\\/\\-+&% ]*$')]],
       selectedNatureType: [''],
       selectedFinancialStateType: [''],
       selectedClassificationType: ['']
@@ -77,19 +77,6 @@ export class AccountFormComponent implements OnInit{
     this.asignMessage();
   }
 
-  /**
-   * 
-   * @param control 
-   * @returns 
-   */
-  requireValueSelected = (control: FormControl): ValidationErrors | null => {
-    const value = control.value;
-    if (!value || value === '') {
-      return { noValueSelected: true };
-    }
-    return null;
-  };
-
   asignMessage(){
     if(this.level === 1){
       this.messageLength = 'un dígito';
@@ -108,8 +95,8 @@ export class AccountFormComponent implements OnInit{
       code: this.formNewAccount.value.code,
       description: this.formNewAccount.value.name,
       nature: this.formNewAccount.value.selectedNatureType,
-      classification: this.formNewAccount.value.selectedFinancialStateType,
-      financialStatus: this.formNewAccount.value.selectedClassificationType
+      classification: this.formNewAccount.value.selectedClassificationType,
+      financialStatus: this.formNewAccount.value.selectedFinancialStateType
     };
     this.newAccount.emit(account);
   }
