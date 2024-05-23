@@ -1,4 +1,4 @@
-<div class="flex w-full h-full">
+<div class="flex w-full h-full font-projectFont">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
         <div class="grid sm:grid-cols-2 sm:justify-between">
             <div class="items-center">
@@ -7,31 +7,22 @@
                 </p>
             </div>
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
-                <button type="button" (click)="showFormAddNewClass(); noShowPrincipalFormF()"
+                <button type="button" (click)="showFormAddNewClass()"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                    Crear
+                    Crear clase
                 </button>
                 <div class="flex">
 
                     <label for="fileInput"
-                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded  -lg rounded-l-full text-sm pr-3 py-2.5 pl-10 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
+                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full  text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
                         <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
                             class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
                         Importar
                     </label>
-                    <button (click)="openModalDetails()" class="mt-0.5 -mr-2 absolute">
-                        <svg class="h-9 w-9 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" />
-                            <circle cx="12" cy="12" r="9" />
-                            <line x1="12" y1="8" x2="12" y2="12" />
-                            <line x1="12" y1="16" x2="12.01" y2="16" />
-                        </svg>
+                    <button (click)="openModalDetails()" class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                        Plantilla
                     </button>
                 </div>
-
-
-
             </div>
         </div>
 
@@ -83,7 +74,7 @@
                             <div class="w-full flex">
                                 <button
                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation();noShowInputClassStatus();">
+                                    (click)="toggleSubAccounts(class);selectAccount(class);$event.stopPropagation()">
                                     <div class=" code w-1/2 flex">
                                         <svg class="h-5 w-5 mt-1 transform"
                                             [ngClass]="{'text-transparent': !class.children, 'rotate-180': class.showSubAccounts}"
@@ -103,7 +94,7 @@
                                     <div class="w-full flex">
                                         <button
                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation();noShowInputClassStatus();">
+                                            (click)="toggleSubAccounts(group);selectAccount(group);$event.stopPropagation()">
                                             <div class="code w-1/2 flex">
                                                 <svg class="h-5 w-5 mt-1 transform"
                                                     [ngClass]="{'text-white': !group.children || group.children.length === 0, 'rotate-180': group.showSubAccounts}"
@@ -123,7 +114,7 @@
                                             <div class="w-full flex">
                                                 <button
                                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation();noShowInputClassStatus();">
+                                                    (click)="toggleSubAccounts(account);selectAccount(account);$event.stopPropagation()">
                                                     <div class="code w-1/2 flex">
                                                         <svg class="h-5 w-5 mt-1 transform"
                                                             [ngClass]="{'text-white': !account.children || account.children.length === 0, 'rotate-180': account.showSubAccounts}"
@@ -145,7 +136,7 @@
                                                         <button
                                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
                                                             hover:text-blue-900
-                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation();noShowInputClassStatus();">
+                                                            (click)="toggleSubAccounts(subAccount);selectAccount(subAccount);$event.stopPropagation()">
                                                             <div class="code w-1/2 flex">
                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                     [ngClass]="{'text-white': !subAccount.children || subAccount.children.length === 0, 'rotate-180': subAccount.showSubAccounts}"
@@ -168,7 +159,7 @@
                                                             <div class="w-full flex">
                                                                 <button
                                                                     class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation();noShowInputClassStatus();">
+                                                                    (click)="toggleSubAccounts(aux1);selectAccount(aux1);$event.stopPropagation()">
                                                                     <div class="code w-1/2 flex">
                                                                         <svg class="h-5 w-5 mt-1 transform"
                                                                             [ngClass]="{'text-transparent': !aux1.children, 'rotate-180': aux1.showSubAccounts}"
@@ -192,7 +183,7 @@
                                                                     <div class="w-full flex">
                                                                         <button
                                                                             class="w-full text-start flex transition duration-200 ease-in-out transform hover:bg-gray-200 hover:scale-105 hover:text-blue-900"
-                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation();noShowInputClassStatus();">
+                                                                            (click)="toggleSubAccounts(aux2);selectAccount(aux2);$event.stopPropagation()">
                                                                             <div class="code w-1/2 flex">
                                                                                 <svg class="h-5 w-5 mt-1 transform"
                                                                                     [ngClass]="{'text-transparent': !aux2.children, 'rotate-180': aux2.showSubAccounts}"
@@ -231,7 +222,7 @@
                 <form [formGroup]="accountForm">
                     <div class="mb-4">
                         <div style="position: relative;">
-                            <div *ngIf="accountForm.get('className') && showPrincipalForm "
+                            <div *ngIf="accountForm.get('className') && showPrincipalForm"
                                 class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
                                 <div class="w-full sm:w-auto">
                                     <input type="text" id="classCode" formControlName="classCode" placeholder="Código"
@@ -242,6 +233,20 @@
                                     <input type="text" id="className" formControlName="className" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
                                         [class.cursor-not-allowed]="inputAccess.class" [readOnly]="inputAccess.class">
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('classCode')?.hasError('required') || accountForm.get('classCode')?.value === '') && (accountForm.get('classCode')?.dirty || accountForm.get('classCode')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                                    <div *ngIf="(accountForm.get('classCode')?.hasError('maxlength') || accountForm.get('classCode')?.hasError('minlength')) && (accountForm.get('classCode')?.dirty || accountForm.get('classCode')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código solo debe tener un dígito</div>
+                                    <div *ngIf="accountForm.get('classCode')?.hasError('pattern') && (accountForm.get('classCode')?.dirty || accountForm.get('classCode')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('className')?.hasError('required') || accountForm.get('className')?.value === '') && (accountForm.get('className')?.dirty || accountForm.get('className')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                                    <div *ngIf="accountForm.get('className')?.hasError('pattern') && (accountForm.get('className')?.dirty || accountForm.get('className')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
                                 </div>
                                 <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Clase
                                 </div>
@@ -262,8 +267,9 @@
                         </div>
 
                         <div *ngIf="addChild && currentLevelAccount === 'grupo'">
-                            <app-account-form [currentLevelAccount]="currentLevelAccount"
-                                (newAccount)="addNewAccount($event)" [parentId]="parentId" (cancelar)="cancel()" />
+                            <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="1"
+                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
+                                (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -281,6 +287,20 @@
                                     <input type="text" formControlName="groupName" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
                                         [readOnly]="inputAccess.group" [class.cursor-not-allowed]="inputAccess.group">
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('codeGroup')?.hasError('required') || accountForm.get('codeGroup')?.value === '') && (accountForm.get('codeGroup')?.dirty || accountForm.get('codeGroup')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                                    <div *ngIf="(accountForm.get('codeGroup')?.hasError('maxlength') || accountForm.get('codeGroup')?.hasError('minlength')) && (accountForm.get('codeGroup')?.dirty || accountForm.get('codeGroup')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código solo debe tener un dígito</div>
+                                    <div *ngIf="accountForm.get('codeGroup')?.hasError('pattern') && (accountForm.get('codeGroup')?.dirty || accountForm.get('codeGroup')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('groupName')?.hasError('required') || accountForm.get('groupName')?.value === '') && (accountForm.get('groupName')?.dirty || accountForm.get('groupName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                                    <div *ngIf="accountForm.get('groupName')?.hasError('pattern') && (accountForm.get('groupName')?.dirty || accountForm.get('groupName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
                                 </div>
                                 <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Grupo
                                 </div>
@@ -301,8 +321,9 @@
                         </div>
 
                         <div *ngIf="addChild && currentLevelAccount === 'cuenta'">
-                            <app-account-form [currentLevelAccount]="currentLevelAccount"
-                                (newAccount)="addNewAccount($event)" [parentId]="parentId" (cancelar)="cancel()" />
+                            <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
+                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
+                                (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -321,6 +342,20 @@
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
                                         [readOnly]="inputAccess.account"
                                         [class.cursor-not-allowed]="inputAccess.account">
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('codeAccount')?.hasError('required') || accountForm.get('codeAccount')?.value === '') && (accountForm.get('codeAccount')?.dirty || accountForm.get('codeAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                                    <div *ngIf="(accountForm.get('codeAccount')?.hasError('maxlength') || accountForm.get('codeAccount')?.hasError('minlength')) && (accountForm.get('codeAccount')?.dirty || accountForm.get('codeAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código debe tener dos dígitos</div>
+                                    <div *ngIf="accountForm.get('codeAccount')?.hasError('pattern') && (accountForm.get('codeAccount')?.dirty || accountForm.get('codeAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('accountName')?.hasError('required') || accountForm.get('accountName')?.value === '') && (accountForm.get('accountName')?.dirty || accountForm.get('accountName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                                    <div *ngIf="accountForm.get('accountName')?.hasError('pattern') && (accountForm.get('accountName')?.dirty || accountForm.get('accountName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
                                 </div>
                                 <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Cuenta
                                 </div>
@@ -341,8 +376,9 @@
                         </div>
 
                         <div *ngIf="addChild && currentLevelAccount === 'subcuenta'">
-                            <app-account-form [currentLevelAccount]="currentLevelAccount"
-                                (newAccount)="addNewAccount($event)" [parentId]="parentId" (cancelar)="cancel()" />
+                            <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
+                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
+                                (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -361,6 +397,20 @@
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
                                         [readOnly]="inputAccess.subAccount"
                                         [class.cursor-not-allowed]="inputAccess.subAccount">
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('codeSubAccount')?.hasError('required') || accountForm.get('codeSubAccount')?.value === '') && (accountForm.get('codeSubAccount')?.dirty || accountForm.get('codeSubAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                                    <div *ngIf="(accountForm.get('codeSubAccount')?.hasError('maxlength') || accountForm.get('codeSubAccount')?.hasError('minlength')) && (accountForm.get('codeSubAccount')?.dirty || accountForm.get('codeSubAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código debe tener dos dígitos</div>
+                                    <div *ngIf="accountForm.get('codeSubAccount')?.hasError('pattern') && (accountForm.get('codeSubAccount')?.dirty || accountForm.get('codeSubAccount')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
+                                </div>
+                                <div>
+                                    <div *ngIf="(accountForm.get('subAccountName')?.hasError('required') || accountForm.get('subAccountName')?.value === '') && (accountForm.get('subAccountName')?.dirty || accountForm.get('subAccountName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                                    <div *ngIf="accountForm.get('subAccountName')?.hasError('pattern') && (accountForm.get('subAccountName')?.dirty || accountForm.get('subAccountName')?.touched)"
+                                        class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
                                 </div>
                                 <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">Subcuenta
                                 </div>
@@ -381,8 +431,9 @@
                         </div>
 
                         <div *ngIf="addChild && currentLevelAccount === 'auxiliar'">
-                            <app-account-form [currentLevelAccount]="currentLevelAccount"
-                                (newAccount)="addNewAccount($event)" [parentId]="parentId" (cancelar)="cancel()" />
+                            <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
+                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
+                                (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -403,9 +454,22 @@
                                             [readOnly]="inputAccess.auxiliary"
                                             [class.cursor-not-allowed]="inputAccess.auxiliary">
                                     </div>
-                                    <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">
-                                        Auxiliar
+                                    <div>
+                                        <div *ngIf="(accountForm.get('codeAuxiliary')?.hasError('required') || accountForm.get('codeAuxiliary')?.value === '') && (accountForm.get('codeAuxiliary')?.dirty || accountForm.get('codeAuxiliary')?.touched)"
+                                            class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
+                                        <div *ngIf="(accountForm.get('codeAuxiliary')?.hasError('maxlength') || accountForm.get('codeAuxiliary')?.hasError('minlength')) && (accountForm.get('codeAuxiliary')?.dirty || accountForm.get('codeAuxiliary')?.touched)"
+                                            class="text-red-500 text-sm mt-1 ml-3">Código debe tener dos dígitos</div>
+                                        <div *ngIf="accountForm.get('codeAuxiliary')?.hasError('pattern') && (accountForm.get('codeAuxiliary')?.dirty || accountForm.get('codeAuxiliary')?.touched)"
+                                            class="text-red-500 text-sm mt-1 ml-3">Código inválido (solo números)</div>
                                     </div>
+                                    <div>
+                                        <div *ngIf="(accountForm.get('auxiliaryName')?.hasError('required') || accountForm.get('auxiliaryName')?.value === '') && (accountForm.get('auxiliaryName')?.dirty || accountForm.get('auxiliaryName')?.touched)"
+                                            class="text-red-500 text-sm mt-1 ml-3">* Nombre es requerido</div>
+                                        <div *ngIf="accountForm.get('auxiliaryName')?.hasError('pattern') && (accountForm.get('auxiliaryName')?.dirty || accountForm.get('auxiliaryName')?.touched)"
+                                            class="text-red-500 text-sm mt-1 ml-3">Nombre inválido (solo letras)</div>
+                                    </div>
+                                    <div class="absolute left-3 -top-3.5 bg-white rounded-md px-1.5 text-gray-600">
+                                        Auxiliar</div>
                                     <div *ngIf="!inputAccess.auxiliary && showButtonDelete"
                                         style="position: absolute; right: -0.5rem; top: -0.5rem;">
                                         <button
@@ -424,7 +488,7 @@
                             </div>
                         </div>
 
-                        <div *ngIf="showFormTransactional && showPrincipalForm">
+                        <div *ngIf="showFormTransactional">
                             <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
                             <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
                             <form [formGroup]="formTransactional">
@@ -502,19 +566,20 @@
                             </form>
                         </div>
                         <div *ngIf="showAddNewClass">
-                            <app-account-form [currentLevelAccount]="currentLevelAccount"
-                                (newAccount)="addNewAccount($event)" [parentId]="parentId" (cancelar)="cancel()" />
+                            <app-account-form [currentLevelAccount]="'clase'" [level]="1"
+                                (newAccount)="addNewAccount($event)" [parentId]="''" (cancelar)="cancel()" />
                         </div>
 
                         <div *ngIf="showButton" class="flex flex-wrap justify-center mt-4">
                             <div class="mb-2 md:mb-0 md:mr-2">
                                 <button type="button"
                                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
-                                    title="Servirá para actualizar la cuenta cuando se modifique algun valor">
-                                    Guardar
+                                    [disabled]="!showUpdateButton" [class.cursor-not-allowed]="!showUpdateButton"
+                                    (click)="updateAccount()">
+                                    Actualizar
                                 </button>
                             </div>
-                            <div class="mb-2 md:mb-0 md:ml-2">
+                            <div *ngIf="!accountForm.get('auxiliaryName')" class="mb-2 md:mb-0 md:ml-2">
                                 <button type="button"
                                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
                                     (click)="addNewChild()">

@@ -1,4 +1,5 @@
 export interface Account {
+  id?: number;
   code: string;
   description: string;
   nature: string;
