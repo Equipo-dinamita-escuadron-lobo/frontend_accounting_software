@@ -8,11 +8,15 @@ export class LocalStorageMethods{
     localStorage.setItem('entData', JSON.stringify(data));
   }
 
-  public loadEnterpriseData():any{
+  public loadEnterpriseData(): string | null {
     const enterpriseData = localStorage.getItem('entData');
-    return enterpriseData ? JSON.parse(enterpriseData) : null;
+    if (enterpriseData) {
+      const parsedData = JSON.parse(enterpriseData);
+      return parsedData.entId;
+    }
+    return null;
   }
-
+  
   public clearLocalStoage():void{
     localStorage.clear();
   }

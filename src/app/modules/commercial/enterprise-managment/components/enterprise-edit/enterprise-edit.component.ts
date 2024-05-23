@@ -520,8 +520,9 @@ export class EnterpriseEditComponent {
   }
 
   getEnterpriseEdit() {
+    const id = ''+ this.enterpriseService.getSelectedEnterprise();
     this.enterpriseService
-      .getEnterpriseById(this.enterpriseService.getSelectedEnterprise())
+      .getEnterpriseById(id)
       .subscribe((data) => {
         this.enterpriseEdit = data;
         this.changePlaceholderSelect();
