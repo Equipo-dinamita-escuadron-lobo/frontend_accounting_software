@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { environmentSecurity } from '../../../../../environments/enviorment.security';
+import { environment } from '../../../../../environments/environment';
 
-const API_URL = environmentSecurity.ApiUrl
+const API_URL = environment.ApiUrl
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private keycloakUrl = environmentSecurity.keycloakUrl;
+  private keycloakUrl = environment.keycloakUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -18,11 +18,11 @@ export class AuthService {
 
   public login(user: any) {
     const body = new URLSearchParams();
-    body.set('client_id', environmentSecurity.clientId);
+    body.set('client_id', environment.clientId);
     body.set('grant_type', 'password');
     body.set('username', user.username);
     body.set('password', user.password);
-    body.set('client_secret', environmentSecurity.clientSecret);
+    body.set('client_secret', environment.clientSecret);
 
     return this.http.post(this.keycloakUrl, body.toString(), {
       headers: {

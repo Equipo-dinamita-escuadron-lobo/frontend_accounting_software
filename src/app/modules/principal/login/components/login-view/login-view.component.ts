@@ -60,7 +60,7 @@ export class LoginViewComponent {
               this.authService.loginStatus.next(true);
             }
             else {
-              this.router.navigate(['/login']);
+              this.router.navigate(['']);
             }
           },
           error: error => console.error(error)

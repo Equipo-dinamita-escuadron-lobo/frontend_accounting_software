@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environmentSecurity } from '../../../environments/enviorment.security';
+import { environment } from '../../../environments/environment';
 
-const keycloakUrl = environmentSecurity.keycloakUrl;
+const keycloakUrl = environment.keycloakUrl;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
