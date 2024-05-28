@@ -660,9 +660,7 @@ export class AccountsListComponent implements OnInit {
         }else{
           this._accountService.createAccount(account).subscribe(
             (response) => {
-              //this.getAccounts();
-              this.expandAccounts(response);
-              console.log('lista: ',this.listAccounts);
+              this.getAccounts();
               this.selectAccount(response);
               this.noShowFormAddNewClass();
               this.noAddNewChild();
