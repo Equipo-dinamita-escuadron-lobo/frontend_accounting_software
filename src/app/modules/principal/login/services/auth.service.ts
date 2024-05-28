@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
 const API_URL = environment.API_URL
+const URL = environment.URL
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
   public loginStatus = new Subject<boolean>();
 
   public login(auth: any) {
-    return this.http.post(`${API_URL}keycloak/token/`, auth);
+    return this.http.post(`${URL}keycloak/token/`, auth);
   }
 
 
