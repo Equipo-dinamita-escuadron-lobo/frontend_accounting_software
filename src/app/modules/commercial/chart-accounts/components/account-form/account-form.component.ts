@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Account } from '../../models/ChartAccount';
 import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { ChartAccountService } from '../../services/chart-account.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-account-form',
@@ -92,13 +91,23 @@ export class AccountFormComponent implements OnInit{
    */
   sendAccount() {
     const account: Account = {
+      idEnterprise: this.getIdEnterprise(),
       code: this.formNewAccount.value.code,
       description: this.formNewAccount.value.name,
       nature: this.formNewAccount.value.selectedNatureType,
       classification: this.formNewAccount.value.selectedClassificationType,
-      financialStatus: this.formNewAccount.value.selectedFinancialStateType
+      financialStatus: this.formNewAccount.value.selectedFinancialStateType,
+      parent: 0,
     };
     this.newAccount.emit(account);
+  }
+
+  getIdEnterprise(): string{
+    const entData = localStorage.getItem('entData');
+    if(entData){
+      return JSON.parse(entData).entId;
+    }
+    return '';
   }
 
   getNatureType() {

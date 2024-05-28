@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { FinancialStateType } from '../../models/FinancialStateType';
+import { Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-accounts-list',
@@ -312,6 +313,7 @@ export class AccountsListComponent implements OnInit {
         if (subAccount.code === code) {
           // Si se encuentra la cuenta, devuelve solo esa cuenta
           return {
+            id: subAccount.id,
             code: subAccount.code,
             description: subAccount.description,
             nature: subAccount.nature,
@@ -582,17 +584,31 @@ export class AccountsListComponent implements OnInit {
       this.saveNewAccountType($event);
     }
     if(this.addChild){
-      const account: Account = {
+      if(this.accountSelected){
+        const account: Account = {
+        idEnterprise: this.getIdEnterprise(),
         code: this.accountSelected?.code + $event.code,
         description: $event.description,
         nature: $event.nature,
         financialStatus: $event.financialStatus,
         classification: $event.classification,
-        parent: this.accountSelected?.code
+        parent: this.accountSelected.id
       }
       this.saveNewAccountType(account);
+      }
     }
     
+  }
+
+  /**
+   * 
+   */
+  getIdEnterprise(): string{
+    const entData = localStorage.getItem('entData');
+    if(entData){
+      return JSON.parse(entData).entId;
+    }
+    return '';
   }
 
   // Service CRUD methods
@@ -601,11 +617,11 @@ export class AccountsListComponent implements OnInit {
    * Get all accounts
    */
   getAccounts() {
-    this._accountService.getListAccounts().subscribe({
+    this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
       next: (accounts) => {
-        // Filtra los elementos no nulos del array de cuentas
-        //console.log(accounts);
         this.listAccounts = accounts.filter(account => account !== null);
+        this.collapseAllAccounts(this.listAccounts);
+        //console.log(this.listAccounts);
       },
     });
   }
@@ -614,7 +630,7 @@ export class AccountsListComponent implements OnInit {
    * @param account account that contains the information to search
    */
   getAccountByCode(account: Account): Promise<boolean> {
-    return this._accountService.getAccountByCode(account.code).toPromise()
+    return this._accountService.getAccountByCode(account.code, this.getIdEnterprise()).toPromise()
       .then(cuenta => {
         return !!cuenta;  
       })
@@ -644,22 +660,26 @@ export class AccountsListComponent implements OnInit {
         }else{
           this._accountService.createAccount(account).subscribe(
             (response) => {
+              //this.getAccounts();
+              this.expandAccounts(response);
+              console.log('lista: ',this.listAccounts);
+              this.selectAccount(response);
+              this.noShowFormAddNewClass();
+              this.noAddNewChild();
               Swal.fire({
                 title: 'Creación exitosa!',
                 text: 'Se ha creado la cuenta con éxito!',
                 icon: 'success',
               });
-              this.getAccounts();
-              this.selectAccount(response);
-              this.noShowFormAddNewClass();
-              this.noAddNewChild();
+              
             },
             (error) => {
               Swal.fire({
                   title: 'Error!',
                   text: 'Ha ocurrido un error al crear la cuenta!.',
                   icon: 'error',
-                });
+              });
+              console.log(error);
             }
           );
         }
@@ -678,81 +698,134 @@ export class AccountsListComponent implements OnInit {
   /**
    * @param code Account code to delete
    */
-  deleteAccount(code: string) {
+  deleteAccount() {
     try {
       //const cod = '14';
-      this._accountService.deleteAccount(code).subscribe(
-        (response) => {
-          Swal.fire({
-            title: 'Eliminación exitosa!',
-            text: 'Se ha eliminado la cuenta con éxito!',
-            icon: 'success',
-          });
-          this.getAccounts();
-          if(this.accountSelected && this.accountSelected.parent){
-            this._accountService.getAccountByCode(this.accountSelected?.parent).subscribe({
-              next: (account) => {
-                this.selectAccount(account);
-              }
+      if(this.accountSelected && this.accountSelected.id){
+        this._accountService.deleteAccount(this.accountSelected?.id.toString()).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Eliminación exitosa!',
+              text: 'Se ha eliminado la cuenta con éxito!',
+              icon: 'success',
             });
-          }else{
-            this.noShowPrincipalAndTransactionalForm();
+            this.getAccounts();
+            if(this.accountSelected && this.accountSelected.parent){
+              this._accountService.getAccountByCode(this.accountSelected?.parent,this.getIdEnterprise()).subscribe({
+                next: (account) => {
+                  this.selectAccount(account);
+                  this.expandAccounts(account);
+                }
+              });
+            }else{
+              this.noShowPrincipalAndTransactionalForm();
+            }
+          },
+          (error) => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ha ocurrido un error al eliminar la cuenta!.',
+                icon: 'error',
+              });
           }
-        },
-        (error) => {
-          Swal.fire({
-              title: 'Error!',
-              text: 'Ha ocurrido un error al eliminar la cuenta!.',
-              icon: 'error',
-            });
-        }
-      );
+        );
+      }
     } catch (error) {
       console.error('Error al eliminar el tipo de cuenta:', error);
     }
   }
 
-  updateAccount(){
+  async updateAccount(){
     try {  
-      if(this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId+this.accountForm.get(this.code)?.value){
-        Swal.fire({
-          title: 'Error!',
-          text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
-          icon: 'error',
-        });
-        this.selectAccount(this.accountSelected);
-      }else{
-        const account: Account = {
-          code: this.parentId + this.accountForm.get(this.code)?.value,
-          description: this.accountForm.get(this.name)?.value,
-          nature: this.formTransactional.value.selectedNatureType,
-          financialStatus: this.formTransactional.value.selectedFinancialStateType,
-          classification: this.formTransactional.value.selectedClasificationType
-        }
-        this._accountService.updateAccount(this.accountSelected?.id, account).subscribe(
-        (response) => {
+      if(this.accountSelected){
+        if(this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId+this.accountForm.get(this.code)?.value){
           Swal.fire({
-            title: 'Actualización exitosa!',
-            text: 'Se ha actualizado la cuenta con éxito!',
-            icon: 'success',
+            title: 'Error!',
+            text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
+            icon: 'error',
           });
-          this.getAccounts();
-          this.selectAccount(response);
-          this.noShowFormAddNewClass();
-          this.noAddNewChild();
-        },
-        (error) => {
-          Swal.fire({
-              title: 'Error!',
-              text: 'Ha ocurrido un error al actualizar la cuenta!.',
-              icon: 'error',
-            });
-          console.error('Error al actualizar la cuenta:', error);
+          this.selectAccount(this.accountSelected);
+        }else{
+          const account: Account = {
+            code: this.parentId + this.accountForm.get(this.code)?.value,
+            description: this.accountForm.get(this.name)?.value,
+            nature: this.formTransactional.value.selectedNatureType,
+            financialStatus: this.formTransactional.value.selectedFinancialStateType,
+            classification: this.formTransactional.value.selectedClasificationType,
+          }
+          const accountExist = await this.getAccountByCode(account);
+          if(!accountExist){
+            this.update(this.accountSelected?.id, account);
+          }else{
+            if(this.accountSelected.code === account.code && this.accountSelected.description != account.description){
+              this.update(this.accountSelected?.id, account);
+            }else{
+              if(this.accountSelected.code === account.code && this.accountSelected.description == account.description){
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'La cuenta tiene la misma información!',
+                  icon: 'error',
+                });
+              }else{
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Ya existe una cuenta con el código ingresado!',
+                  icon: 'error',
+                });
+              }
+            }
+          }
         }
-      );
-    }
+      }
     } catch (error) {
       console.error('Error al actualizar la cuenta:', error);
     }
+  }
+
+  update(id?: number, account?: Account){
+    this._accountService.updateAccount(id, account).subscribe(
+      (response) => {
+        Swal.fire({
+          title: 'Actualización exitosa!',
+          text: 'Se ha actualizado la cuenta con éxito!',
+          icon: 'success',
+        });
+        this.getAccounts();
+        this.selectAccount(response);
+        this.noShowFormAddNewClass();
+        this.noAddNewChild();
+      },
+      (error) => {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al actualizar la cuenta!.',
+            icon: 'error',
+          });
+        console.error('Error al actualizar la cuenta:', error);
+      }
+    );
+  }
+
+  expandAccounts(account: Account) { 
+    account.isExpanded = !account.isExpanded; 
+    if (account.parent && typeof account.parent === 'string' && parseInt(account.parent) >= 0) { 
+      this._accountService.getAccountByCode(account.parent, this.getIdEnterprise()).subscribe({ 
+        next: (parentAccount) => { 
+          if (parentAccount) { 
+            console.log('Cuenta a expandir: ',parentAccount); 
+            this.expandAccounts(parentAccount); 
+          } 
+        } 
+      }); 
+    } 
+  }
+
+  collapseAllAccounts(accounts: Account[]): void {
+    accounts.forEach(account => {
+      account.isExpanded = false;
+      if (account.children && account.children.length > 0) {
+        this.collapseAllAccounts(account.children);
+      }
+    });
   }
 }
