@@ -1,5 +1,6 @@
 export interface Account {
   id?: number;
+  idEnterprise?: string;
   code: string;
   description: string;
   nature: string;
@@ -7,6 +8,7 @@ export interface Account {
   classification: string;
   children?: Account[];
   showSubAccounts?: boolean;
-  parent?: string;
+  parent?: string | number;
   parentAccount?: Account;
+  isExpanded?: boolean;
 }

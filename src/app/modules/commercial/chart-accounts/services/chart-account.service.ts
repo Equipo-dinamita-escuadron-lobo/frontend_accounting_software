@@ -16,7 +16,7 @@ export class ChartAccountService {
     //Production
     private apiURL = environment.API_URL + 'accountCatalogue/'
     //Local
-    //private apiURL = environment.myAppUrl + 'accountCatalogue'
+    //private apiURL = environment.myAppUrl + 'accountCatalogue/'
 
     constructor(private http:HttpClient) {}
 
@@ -41,8 +41,8 @@ export class ChartAccountService {
         {id: 8, name: 'Ingresos Operacionales'}
     ];
 
-    getListAccounts(): Observable<Account[]> {
-        return this.http.get<Account[]>(this.apiURL + 'trees');
+    getListAccounts(entId: string): Observable<Account[]> {
+        return this.http.get<Account[]>(this.apiURL + 'trees/'+entId);
     }
 
     deleteAccount(code: string): Observable<Account>{
@@ -56,6 +56,10 @@ export class ChartAccountService {
     updateAccount(id?: number, account?: Account): Observable<Account> {
         return this.http.put<Account>(`${this.apiURL}${id}`,account);
     } 
+
+    getAccountByCode(code: string | number, entId: string): Observable<Account>{
+        return this.http.get<Account>(this.apiURL+'accountByCode/'+code+'/'+entId);
+    }
 
     getClasificationType(): ClasificationType[] {
         return this.listClasification;
