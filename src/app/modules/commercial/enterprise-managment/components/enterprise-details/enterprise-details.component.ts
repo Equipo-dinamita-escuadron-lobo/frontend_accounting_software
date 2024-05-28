@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class EnterpriseDetailsComponent {
   enterpriseSelected?: EnterpriseDetails;
   typePerson:string = '';
-  id: string = '-1';
+  id:any;
 
   constructor(private enterpriseService: EnterpriseService,
     private router: Router
@@ -24,18 +24,21 @@ export class EnterpriseDetailsComponent {
     this.getEnterpriseSelectedInfo();
   }
 
+
   getEnterpriseSelectedInfo() {
-    this.id = this.enterpriseService.getSelectedEnterprise();
-    if (this.id === '-1') {
+    const id = this.enterpriseService.getSelectedEnterprise();
+    console.log("id "+ id)
+    if (id === null) {
+      
     } else {
-      this.enterpriseService.getEnterpriseById(this.id).subscribe({
+      this.enterpriseService.getEnterpriseById(id).subscribe({
         next: (enterpriseData) => {
           this.enterpriseSelected = enterpriseData;
-          this.getTypePerson(enterpriseData.personType.type);
-          console.log(enterpriseData)
         },
       });
     }
+
+    return this.enterpriseSelected;
   }
 
   getTypePerson(value:string){

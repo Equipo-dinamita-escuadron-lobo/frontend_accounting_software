@@ -1,9 +1,9 @@
 <div class="sidenav bg-blue-950" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
-  <div class="logo-container">
+  <div class="logo-container mb-4">
     <button class="logo" (click)="toggleCollapse()">
-      <img class="logo-img" src="../../../../assets/Iconos/contapp-logo.svg" alt="logo.png">
+      <img class="rounded-full object-cover shadow-sm logo-img" [src]="logo_enterprise" alt="logo.png">
     </button>
-    <div class="logo-text" @fadeInOut *ngIf="collapsed">ContApp</div>
+    <div class="logo-text" @fadeInOut *ngIf="collapsed">{{name_enterprise}}</div>
     <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()">
       <i class="material-icons close-icon">close</i>
     </button>
@@ -36,5 +36,12 @@
         </div>
       </li>
     </ul>
+  </div>
+
+  <div class="logo-container border-t-2 ">
+    <button class="logo" (click)="toggleCollapse()">
+      <img class="logo-img logo-app" src="../../../../assets/Iconos/contapp-logo.svg" alt="logo.png">
+    </button>
+    <div class="logo-text" @fadeInOut *ngIf="collapsed">ContApp</div>
   </div>
 </div>

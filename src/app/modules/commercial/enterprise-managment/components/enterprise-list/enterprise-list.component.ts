@@ -69,7 +69,6 @@ export class EnterpriseListComponent {
   updateEnterpriseSelected(id: string) {
     this.localStorageMethods.saveEnterpriseData(id);
     this.logInEnterprise();
-    this.enterpriseService.setSelectedEnterprise(id);
   }
 
   logInEnterprise() {

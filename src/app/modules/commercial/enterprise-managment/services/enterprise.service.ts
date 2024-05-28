@@ -6,6 +6,7 @@ import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
 import { environment } from '../../../../../environments/environment';
 import { map } from 'rxjs/operators';
+import { LocalStorageMethods } from '../../../../shared/methods/local-storage.method';
 //import { environment } from '../../../../../environments/enviorment.development';
 
 @Injectable({
@@ -18,12 +19,15 @@ export class EnterpriseService {
    * Test of service
    */
 
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  enterpriseSelected?: EnterpriseDetails;
+
   enterpriseTypes: EnterpriseType[] = [
     { id: 1, name: 'Privada' },
     { id: 2, name: 'Oficial' },
     { id: 3, name: 'Mixta' },
   ];
-  private selectedEnterprise: string = '-1';
+
   //Route API
   private apiUrl = environment.API_URL + 'enterprises/';
 
@@ -44,20 +48,6 @@ export class EnterpriseService {
   getEnterprisesInactive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl + 'inactive');
   }
-
-  /*
-  getEnterprises():EnterpriseList[]{
-    return [
-      {id:1, name: "Unicauca", nit: "1234", logo: this.logoDefault},
-      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:1, name: "Exito", nit: "1234", logo: this.logoDefault},
-      {id:2, name: "Exito", nit: "1234", logo: this.logoDefault}
-    ]
-  }*/
 
   /**
    *
@@ -112,14 +102,22 @@ export class EnterpriseService {
   }
 
   getSelectedEnterprise() {
-    return this.selectedEnterprise;
+    return this.localStorageMethods.loadEnterpriseData();
   }
 
-  setSelectedEnterprise(value: string) {
-    this.selectedEnterprise = value;
-  }
+  getEnterpriseSelectedInfo() {
+    const id = this.getSelectedEnterprise();
+    console.log("id "+ id)
+    if (id === null) {
+      
+    } else {
+      this.getEnterpriseById(id).subscribe({
+        next: (enterpriseData) => {
+          this.enterpriseSelected = enterpriseData;
+        },
+      });
+    }
 
-  restartSelectedEnterprise() {
-    this.selectedEnterprise = '-1';
+    return this.enterpriseSelected;
   }
 }
