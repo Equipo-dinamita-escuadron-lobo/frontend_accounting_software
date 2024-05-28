@@ -3,5 +3,7 @@ export const environment = {
     API_URL: 'http://contables.unicauca.edu.co/api/',
     myStorageUrl: 'https://api.cloudinary.com/v1_1/dz5pw4p7y/image/upload',
     storageName: 'dz5pw4p7y',
-    storageDirectory: 'cloudinary-enterprise'
+    storageDirectory: 'cloudinary-enterprise',
+    keycloak_url: 'http://contables.unicauca.edu.co/keycloak/token/',
+    URL: 'http://contables.unicauca.edu.co/',
   };
