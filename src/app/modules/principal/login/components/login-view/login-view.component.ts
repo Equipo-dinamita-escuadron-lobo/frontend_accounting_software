@@ -30,7 +30,15 @@ export class LoginViewComponent {
   erroStatus: boolean = false
   erroMsg: any = ""
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    //si existe un token cargar enterprises/list
+    if (this.authService.getToken()) {
+      this.router.navigate(['/general/enterprises/list']);
+    }else{
+       //borrar datos de usuario y token
+        this.authService.logout();
+    }
+  }
 
   async onLoginUser() {
 
@@ -52,11 +60,11 @@ export class LoginViewComponent {
             let roles = data.roles;
             if (roles.includes('admin_client')) {
 
-              this.router.navigate(['/general/']);
+              this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
             } else if (roles.includes('user_client')) {
 
-              this.router.navigate(['/general/']);
+              this.router.navigate(['/']);
               this.authService.loginStatus.next(true);
             }
             else {

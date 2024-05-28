@@ -3,32 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
-const API_URL = environment.ApiUrl
+const API_URL = environment.API_URL
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private keycloakUrl = environment.keycloakUrl;
 
   constructor(private http: HttpClient) { }
 
   public loginStatus = new Subject<boolean>();
 
-  public login(user: any) {
-    const body = new URLSearchParams();
-    body.set('client_id', environment.clientId);
-    body.set('grant_type', 'password');
-    body.set('username', user.username);
-    body.set('password', user.password);
-    body.set('client_secret', environment.clientSecret);
-
-    return this.http.post(this.keycloakUrl, body.toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+  public login(auth: any) {
+    return this.http.post(`${API_URL}/keycloak/token/`, auth);
   }
 
 

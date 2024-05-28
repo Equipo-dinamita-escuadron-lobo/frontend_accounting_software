@@ -3,13 +3,12 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-const keycloakUrl = environment.keycloakUrl;
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const excludedRoutes = [`${keycloakUrl}`];
+    const excludedRoutes = [ `${environment.keycloak_url}` ];
     if (excludedRoutes.includes(req.url)) {
       return next.handle(req);
     }
