@@ -16,7 +16,7 @@ export class AuthService {
   public loginStatus = new Subject<boolean>();
 
   public login(auth: any) {
-    return this.http.post(`${API_URL}/keycloak/token/`, auth);
+    return this.http.post(`${API_URL}keycloak/token/`, auth);
   }
 
 
