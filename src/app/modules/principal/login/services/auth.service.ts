@@ -62,7 +62,7 @@ export class AuthService {
 
   // Obtenemos el usuario actual
   public getCurrentUser() {
-    return this.http.get(`${API_URL}/keycloak/getCurrentUser`);
+    return this.http.get(`${URL}keycloak/getCurrentUser`);
   }
 
 
