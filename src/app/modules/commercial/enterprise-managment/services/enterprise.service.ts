@@ -9,6 +9,16 @@ import { map } from 'rxjs/operators';
 import { LocalStorageMethods } from '../../../../shared/methods/local-storage.method';
 //import { environment } from '../../../../../environments/enviorment.development';
 
+let API_URL = '';
+
+//Si microservice es de enterprise se cambia la url de la api a local
+if(environment.microservice == 'enterprise'){
+    API_URL = environment.API_LOCAL_URL;
+}
+else{
+    API_URL = environment.API_URL;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,7 +39,7 @@ export class EnterpriseService {
   ];
 
   //Route API
-  private apiUrl = environment.API_URL + 'enterprises/';
+  private apiUrl = API_URL + 'enterprises/';
 
   //Route cloudinary
   private urlCloudinary = environment.myStorageUrl;
@@ -109,7 +119,7 @@ export class EnterpriseService {
     const id = this.getSelectedEnterprise();
     console.log("id "+ id)
     if (id === null) {
-      
+
     } else {
       this.getEnterpriseById(id).subscribe({
         next: (enterpriseData) => {

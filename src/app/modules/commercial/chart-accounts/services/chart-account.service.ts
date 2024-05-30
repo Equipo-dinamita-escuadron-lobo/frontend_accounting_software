@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-//import { environment } from '../../../../../environments/enviorment.development';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account } from '../models/ChartAccount';
@@ -8,15 +7,25 @@ import { ClasificationType } from '../models/ClasificationType';
 import { FinancialStateType } from '../models/FinancialStateType';
 import { NatureType } from '../models/NatureType';
 
+let API_URL = '';
+
+//Si microservice es de catalogo se cambia la url de la api a local
+if(environment.microservice == 'accountCatalogue'){
+    API_URL = environment.API_LOCAL_URL;
+}
+else{
+    API_URL = environment.API_URL;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChartAccountService {
 
     //Production
-    private apiURL = environment.API_URL + 'accountCatalogue/'
+    private apiURL = API_URL + 'accountCatalogue/'
     //Local
-    //private apiURL = environment.myAppUrl + 'accountCatalogue'
+    //private apiURL = myAppUrl + 'accountCatalogue'
 
     constructor(private http:HttpClient) {}
 
@@ -55,7 +64,7 @@ export class ChartAccountService {
 
     updateAccount(id?: number, account?: Account): Observable<Account> {
         return this.http.put<Account>(`${this.apiURL}${id}`,account);
-    } 
+    }
 
     getClasificationType(): ClasificationType[] {
         return this.listClasification;
@@ -63,7 +72,7 @@ export class ChartAccountService {
 
     getNatureType(): NatureType[] {
         return this.listNature;
-    } 
+    }
 
     getFinancialStateType(): FinancialStateType[] {
         return this.listFinancialState;
