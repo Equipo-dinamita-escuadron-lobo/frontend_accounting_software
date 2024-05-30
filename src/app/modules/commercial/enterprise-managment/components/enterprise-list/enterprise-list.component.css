@@ -19,3 +19,12 @@
     margin:1rem 0rem/* 16px */;
 }
 
+
+.empresa-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.empresa-card:hover {
+  transform: scale(1.05);
+}
+
