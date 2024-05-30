@@ -9,5 +9,5 @@ export const environment = {
 
   //Cambiar la URL y el microservicio que se va a consumir en modo local
   API_LOCAL_URL: 'http://localhost:8080/api/',
-  microservice: 'enterprise' // accountCatalogue, product, enterprise
+  microservice: '' // accountCatalogue, product, enterprise
 };
