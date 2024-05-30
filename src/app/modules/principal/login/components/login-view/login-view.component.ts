@@ -6,90 +6,96 @@ import { FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login-view',
   templateUrl: './login-view.component.html',
-  styleUrl: './login-view.component.css'
+  styleUrl: './login-view.component.css',
 })
 export class LoginViewComponent {
+  loginFail: boolean = false;
+  invalidForm: boolean = false;
 
   loginForm = this.formBuilder.group({
-    username: ['', Validators.required ],
-    password: ['', Validators.required]
-  })
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
 
-  loading: any = true
+  loading: any = true;
 
   constructor(
-    public router:Router,
+    public router: Router,
     private authService: AuthService,
-    private formBuilder: FormBuilder,
-  ) { }
+    private formBuilder: FormBuilder
+  ) {}
 
-  perfil: any[] = []
+  perfil: any[] = [];
 
-  contenedor: any
+  contenedor: any;
 
-  erroStatus: boolean = false
-  erroMsg: any = ""
+  erroStatus: boolean = false;
+  erroMsg: any = '';
 
   ngOnInit(): void {
     //si existe un token cargar enterprises/list
     if (this.authService.getToken()) {
       this.router.navigate(['/general/enterprises/list']);
-    }else{
-       //borrar datos de usuario y token
-        this.authService.logout();
+    } else {
+      //borrar datos de usuario y token
+      this.authService.logout();
     }
   }
 
   async onLoginUser() {
-
+    this.invalidForm = false;
     //validar con loginForm
+
     if (this.loginForm.invalid) {
+      if (
+        this.loginForm.get('password')?.hasError('required') ||
+        this.loginForm.get('username')?.hasError('required')
+      ) {
+        this.invalidForm = true;
+      }
       return;
     }
 
-
     this.authService.login(this.loginForm.value).subscribe({
-      next: (data:any) => {
-
+      next: (data: any) => {
         this.authService.setToken(data.access_token);
         this.authService.getCurrentUser().subscribe({
           //llega el usuario
-          next: (data:any) => {
+          next: (data: any) => {
             this.authService.setUserData(data);
             //vericicamos el rol del usuario
             let roles = data.roles;
             if (roles.includes('admin_client')) {
-
               this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
             } else if (roles.includes('user_client')) {
-
               this.router.navigate(['/']);
               this.authService.loginStatus.next(true);
-            }
-            else {
+            } else {
               this.router.navigate(['']);
             }
           },
-          error: error => console.error(error)
-        }
-        );
-    },
-      error: error => console.error(error)
-    }
-    );
+          error: (error) => {
+            console.error(error);
+            this.loginFail = true;
+          },
+        });
+      },
+      error: (error) => {
+        console.error(error);
+        this.loginFail = true;
+      },
+    });
     this.loginForm.reset();
-
-
   }
 
-  showPassword() {//ocultar password
-    const change = document.getElementById('password') as HTMLInputElement
+  showPassword() {
+    //ocultar password
+    const change = document.getElementById('password') as HTMLInputElement;
     if (change.type === 'password') {
-      change.type = 'text'
+      change.type = 'text';
     } else {
-      change.type = 'password'
+      change.type = 'password';
     }
   }
-
 }
