@@ -269,8 +269,7 @@
 
                         <div *ngIf="addChild && currentLevelAccount === 'grupo'">
                             <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="1"
-                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
-                                (cancelar)="cancel()" />
+                                (newAccount)="addNewAccount($event)" [parent]="accountSelected" (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -322,8 +321,7 @@
 
                         <div *ngIf="addChild && currentLevelAccount === 'cuenta'">
                             <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
-                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
-                                (cancelar)="cancel()" />
+                                (newAccount)="addNewAccount($event)" [parent]="accountSelected" (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -376,8 +374,7 @@
 
                         <div *ngIf="addChild && currentLevelAccount === 'subcuenta'">
                             <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
-                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
-                                (cancelar)="cancel()" />
+                                (newAccount)="addNewAccount($event)" [parent]="accountSelected" (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -430,8 +427,7 @@
 
                         <div *ngIf="addChild && currentLevelAccount === 'auxiliar'">
                             <app-account-form [currentLevelAccount]="currentLevelAccount" [level]="2"
-                                (newAccount)="addNewAccount($event)" [parentId]="accountSelected?.code"
-                                (cancelar)="cancel()" />
+                                (newAccount)="addNewAccount($event)" [parent]="accountSelected" (cancelar)="cancel()" />
                         </div>
 
                         <div style="position: relative;">
@@ -564,7 +560,7 @@
                         </div>
                         <div *ngIf="showAddNewClass">
                             <app-account-form [currentLevelAccount]="'clase'" [level]="1"
-                                (newAccount)="addNewAccount($event)" [parentId]="''" (cancelar)="cancel()" />
+                                (newAccount)="addNewAccount($event)" [parent]="" (cancelar)="cancel()" />
                         </div>
 
                         <div *ngIf="showButton" class="flex flex-wrap justify-center mt-4">
