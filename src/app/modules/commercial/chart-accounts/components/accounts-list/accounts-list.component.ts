@@ -11,6 +11,8 @@ import { AccountImportComponent } from '../account-import/account-import.compone
 import { ChangeDetectorRef } from '@angular/core';
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { Observable, Subject} from 'rxjs';
+import { AuthService } from 'C:/Users/fre90/Desktop/frontend_accounting_software/src/app/modules/principal/login/services/auth.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-accounts-list',
@@ -32,6 +34,7 @@ export class AccountsListComponent implements OnInit {
 
   //Account selected
   accountSelected?: Account;
+  toggle: boolean = false;
 
   num: number = 0;
   code: string = '';
@@ -85,8 +88,9 @@ export class AccountsListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
+    private _authService: AuthService,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef) {
+    private router: Router) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group({
       selectedNatureType: [''],
@@ -616,13 +620,17 @@ export class AccountsListComponent implements OnInit {
   /**
    * Get all accounts
    */
-  getAccounts() {
-    this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
-      next: (accounts) => {
-        this.listAccounts = accounts.filter(account => account !== null);
-        this.collapseAllAccounts(this.listAccounts);
-        //console.log(this.listAccounts);
-      },
+  getAccounts(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
+        next: (accounts) => {
+          this.listAccounts = accounts.filter(account => account !== null);
+          resolve();
+        },
+        error: (error) => {
+          reject(error);
+        }
+      });
     });
   }
 
@@ -660,16 +668,19 @@ export class AccountsListComponent implements OnInit {
         }else{
           this._accountService.createAccount(account).subscribe(
             (response) => {
-              this.getAccounts();
-              this.selectAccount(response);
-              this.noShowFormAddNewClass();
-              this.noAddNewChild();
-              Swal.fire({
-                title: 'Creación exitosa!',
-                text: 'Se ha creado la cuenta con éxito!',
-                icon: 'success',
-              });
-              
+              this.getAccounts()
+                .then(() => {
+                  this.expandAccounts(response);
+                  this.selectAccount(response);
+                  this.noShowFormAddNewClass();
+                  this.noAddNewChild();
+                  Swal.fire({
+                    title: 'Creación exitosa!',
+                    showConfirmButton: false,
+                    icon: 'success',
+                    timer: 1000
+                  });
+                });
             },
             (error) => {
               Swal.fire({
@@ -694,40 +705,56 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * @param code Account code to delete
+   * 
    */
   deleteAccount() {
     try {
-      //const cod = '14';
-      if(this.accountSelected && this.accountSelected.id){
-        this._accountService.deleteAccount(this.accountSelected?.id.toString()).subscribe(
-          (response) => {
-            Swal.fire({
-              title: 'Eliminación exitosa!',
-              text: 'Se ha eliminado la cuenta con éxito!',
-              icon: 'success',
-            });
-            this.getAccounts();
-            if(this.accountSelected && this.accountSelected.parent){
-              this._accountService.getAccountByCode(this.accountSelected?.parent,this.getIdEnterprise()).subscribe({
-                next: (account) => {
-                  this.selectAccount(account);
-                  this.expandAccounts(account);
-                }
-              });
-            }else{
-              this.noShowPrincipalAndTransactionalForm();
-            }
-          },
-          (error) => {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Ha ocurrido un error al eliminar la cuenta!.',
-                icon: 'error',
-              });
+      Swal.fire({
+        title: '¿Estás seguro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if(this.accountSelected && this.accountSelected.id){
+            this._accountService.deleteAccount(this.accountSelected?.id.toString()).subscribe(
+              (response) => {
+                Swal.fire({
+                  title: 'Eliminación exitosa!',
+                  showConfirmButton: false,
+                  icon: 'success',
+                  timer: 1000
+                });
+                this.getAccounts()
+                  .then(() => {
+                    if(this.accountSelected && this.accountSelected.parent){
+                      this._accountService.getAccountByCode(this.accountSelected?.parent,this.getIdEnterprise()).subscribe({
+                        next: (account) => {
+                          this.expandAccounts(account);
+                          this.selectAccount(account);
+                          this.noShowFormAddNewClass();
+                          this.noAddNewChild();
+                        }
+                      });
+                    }else{
+                      this.noShowPrincipalAndTransactionalForm();
+                    }
+                  });
+              },
+              (error) => {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ha ocurrido un error al eliminar la cuenta!.',
+                    icon: 'error',
+                  });
+              }
+            );
           }
-        );
       }
+      });
     } catch (error) {
       console.error('Error al eliminar el tipo de cuenta:', error);
     }
@@ -783,15 +810,19 @@ export class AccountsListComponent implements OnInit {
   update(id?: number, account?: Account){
     this._accountService.updateAccount(id, account).subscribe(
       (response) => {
-        Swal.fire({
-          title: 'Actualización exitosa!',
-          text: 'Se ha actualizado la cuenta con éxito!',
-          icon: 'success',
-        });
-        this.getAccounts();
-        this.selectAccount(response);
-        this.noShowFormAddNewClass();
-        this.noAddNewChild();
+        this.getAccounts()
+          .then(() =>{
+            this.expandAccounts(response);
+            this.selectAccount(response);
+            this.noShowFormAddNewClass();
+            this.noAddNewChild();
+            Swal.fire({
+              title: 'Actualización exitosa!',
+              showConfirmButton: false,
+              icon: 'success',
+              timer: 1000
+            });
+          });
       },
       (error) => {
         Swal.fire({
@@ -804,25 +835,75 @@ export class AccountsListComponent implements OnInit {
     );
   }
 
-  expandAccounts(account: Account) { 
-    account.isExpanded = !account.isExpanded; 
-    if (account.parent && typeof account.parent === 'string' && parseInt(account.parent) >= 0) { 
-      this._accountService.getAccountByCode(account.parent, this.getIdEnterprise()).subscribe({ 
-        next: (parentAccount) => { 
-          if (parentAccount) { 
-            console.log('Cuenta a expandir: ',parentAccount); 
-            this.expandAccounts(parentAccount); 
-          } 
-        } 
-      }); 
-    } 
+  expandAccounts(account: Account): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const code = account.code;
+
+        const stack: Account[] = [...this.listAccounts];
+
+        while (stack.length > 0) {
+          const currentAccount = stack.pop();
+
+          if (!currentAccount) continue;
+
+          if (currentAccount.code === code.slice(0, currentAccount.code.length)) {
+            currentAccount.showSubAccounts = true;
+
+            if (currentAccount.code.length < code.length) {
+              const nextCodeSegment = code.slice(0, currentAccount.code.length + 2);
+              if (currentAccount.children) {
+                for (let child of currentAccount.children) {
+                  if (child.code === nextCodeSegment) {
+                    stack.push(child);
+                    break;  
+                  }
+                }
+              }
+            }
+          }
+
+          if (currentAccount.children) {
+            stack.push(...currentAccount.children);
+          }
+        }
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
-  collapseAllAccounts(accounts: Account[]): void {
-    accounts.forEach(account => {
-      account.isExpanded = false;
-      if (account.children && account.children.length > 0) {
-        this.collapseAllAccounts(account.children);
+  collapseAllAccounts(): void {
+    const stack: Account[] = [...this.listAccounts];
+
+    while (stack.length > 0) {
+      const currentAccount = stack.pop();
+
+      if (!currentAccount) continue;
+
+      currentAccount.showSubAccounts = false;
+
+      if (currentAccount.children) {
+        stack.push(...currentAccount.children);
+      }
+    }
+  }
+
+  logOut(): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._authService.logout();
+        this.router.navigate(['']); 
       }
     });
   }

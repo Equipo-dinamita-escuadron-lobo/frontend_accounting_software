@@ -10,5 +10,4 @@ export interface Account {
   showSubAccounts?: boolean;
   parent?: string | number;
   parentAccount?: Account;
-  isExpanded?: boolean;
 }
