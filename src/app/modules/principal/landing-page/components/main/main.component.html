@@ -1,0 +1,81 @@
+<div class="container-all container-image h-full text-white font-projectFont overflow-auto">
+    <div class="text-animator  sub-container-all flex flex-col justify-center">
+        <div class="nav w-full px-4">
+            <div class="flex justify-between items-center">
+                <div class="container-logo m-6">
+                    <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="" class="h-24">
+                </div>
+
+                <div class="container-options flex text-xl">
+                    <ul class="flex">
+                      <li class="py-2 mr-10 underline-animation">
+                        Inicio
+                      </li>
+                      <li class="py-2 mr-10 underline-animation">
+                        Acerca de
+                      </li>
+                      <li class="py-2 mr-10 underline-animation">
+                        Contacto
+                      </li>
+                    </ul>
+                    <div class="py-2 bg-blue-950 p-4">
+                      <button (click)="goToLogin()" class="">Iniciar sesión</button>
+                    </div>
+                  </div>
+                  
+            </div>
+        </div>
+
+        <div class="title w-full flex flex-col justify-center items-center mt-32">
+            <div class="container-title">
+                <h1 class="typewriter text-8xl font-semibold">{{displayedTitle}}</h1>
+            </div>
+            <div class="container-subtitle mt-4 text-2xl">
+                <p class="typewriter">{{displayedSubtitle }}
+                </p>
+            </div>
+        </div>
+
+        <div class="container-services w-3/6 m-auto rounded-3xl mt-28 grid grid-cols-4 ">
+            <div class="service">
+                <div class="icon  flex justify-center items-center">
+                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/enterprise.svg" alt="">
+                </div>
+
+                <div class="name mt-2 flex items-center justify-center">
+                    <span>Gestiona tu empresa</span>
+                </div>
+            </div>
+
+            <div class="service">
+                <div class="icon  flex justify-center items-center">
+                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
+                </div>
+
+                <div class="name mt-2 flex items-center justify-center">
+                    <span>Maneja tu contabilidad</span>
+                </div>
+            </div>
+
+            <div class="service">
+                <div class="icon flex justify-center items-center">
+                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/school.svg" alt="">
+                </div>
+
+                <div class="name mt-2 flex items-center justify-center">
+                    <span>Aprende</span>
+                </div>
+            </div>
+
+            <div class="service text-white">
+                <div class="icon flex justify-center items-center">
+                    <img class="h-12 container-logo" src="../../../../../../assets/Iconos/logo-unicauca.svg" alt="">
+                </div>
+
+                <div class="name mt-2 flex items-center justify-center">
+                    <span>Desarrollado por</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
