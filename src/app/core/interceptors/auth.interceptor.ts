@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    const excludedRoutes = [ `${environment.keycloak_url}` ];
+    const excludedRoutes = [ `${environment.keycloak_url}`, `${environment.myStorageUrl}` ];
     if (excludedRoutes.includes(req.url)) {
       return next.handle(req);
     }
