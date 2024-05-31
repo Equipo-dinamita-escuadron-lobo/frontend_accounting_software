@@ -2,7 +2,7 @@
     <div class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
         <div class="w-full flex sm:w-auto">
             <label *ngIf="currentLevelAccount != 'clase'" for="subcuenta"
-                class="col-span-1 mr-4 mt-1">{{parentId}}</label>
+                class="col-span-1 mr-4 mt-1">{{parent?.code}}</label>
             <input type="text" id="code" formControlName="code" placeholder="Código"
                 class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0" inputmode="numeric"
                 pattern="[0-9]*">
@@ -33,7 +33,10 @@
     <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
 
     <div class="mb-4">
-        <label for="nature" class="block">Naturaleza</label>
+        <label for="nature" class="block">
+            Naturaleza
+            <span *ngIf="!parent" class="text-red-500">*</span>
+        </label>
         <div class="icon flex">
             <ng-select name="nature" [items]="listNature" bindLabel="name" [searchable]="true"
                 formControlName="selectedNatureType"
@@ -54,7 +57,10 @@
     </div>
 
     <div class="mb-4">
-        <label for="financialState" class="block">Estado Financiero</label>
+        <label for="nature" class="block">
+            Estado Financiero
+            <span *ngIf="!parent" class="text-red-500">*</span>
+        </label>
         <div class="icon flex">
             <ng-select name="financialState" [items]="listFinancialState" bindLabel="name" [searchable]="true"
                 formControlName="selectedFinancialStateType"
@@ -75,12 +81,15 @@
     </div>
 
     <div class="mb-4">
-        <label for="clasification" class="block">Clasificación</label>
+        <label for="nature" class="block">
+            Clasificación
+            <span *ngIf="!parent" class="text-red-500">*</span>
+        </label>
         <div class="icon flex">
             <ng-select name="clasification" [items]="listClasification" bindLabel="name" [searchable]="true"
                 formControlName="selectedClassificationType"
                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full xl:w-3/4"
-                (change)="onSelectionClasificationType($event)" (clear)="onSelectionclasificationTypeClear()"
+                (change)="onSelectionClasificationType($event)" (clear)="onSelectionClassificationTypeClear()"
                 [clearable]="false" [placeholder]="placeClassificationType">
                 <ng-template ng-option-tmp let-item="item">
                     <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
