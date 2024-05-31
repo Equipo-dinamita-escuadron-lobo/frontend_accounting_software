@@ -11,7 +11,6 @@ import { AccountImportComponent } from '../account-import/account-import.compone
 import { ChangeDetectorRef } from '@angular/core';
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { Observable, Subject} from 'rxjs';
-import { AuthService } from 'C:/Users/fre90/Desktop/frontend_accounting_software/src/app/modules/principal/login/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -88,7 +87,6 @@ export class AccountsListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
-    private _authService: AuthService,
     private dialog: MatDialog,
     private router: Router) {
     this.accountForm = this.fb.group({})
@@ -891,20 +889,4 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
-  logOut(): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, cerrar sesión',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this._authService.logout();
-        this.router.navigate(['']); 
-      }
-    });
-  }
 }
