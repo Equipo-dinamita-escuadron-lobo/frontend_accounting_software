@@ -1,4 +1,4 @@
-<section class="contenido px-10 py-10 font-projectFont">
+<section class="contenido px-10 py-10 font-projectFont mt-7">
     <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
         <div class="tile text-center mb-3 sg:text-start">
             <h1 class="text-3xl   font-bold  text-blue-950">{{title}}</h1>
@@ -22,14 +22,14 @@
 
     <aside class="options col-span-1 sg:hidden">
         <div class="list-options p-4 grid grid-cols-1 mm:grid-cols-3 justify-center items-center text-center">
-            <div class="edit "  [class.selected]="typeList === 'ACTIVE'">
+            <div class="edit " [class.selected]="typeList === 'ACTIVE'">
                 <a (click)="getEnterprisesActive()" class="text-blue-950 font-bold">Mis empresas</a>
             </div>
             <div class="edit mb-3" [class.selected]="typeList === 'INACTIVE'">
                 <a (click)="getEnterprisesInactive()" class="text-gray-500 font-semibold text-base">Archivadas</a>
             </div>
             <div class="edit mb-3">
-                <a  class="text-red-500 font-bold text-base">Suspendidas</a>
+                <a class="text-red-500 font-bold text-base">Suspendidas</a>
             </div>
 
         </div>
@@ -58,11 +58,10 @@
             </form>
             <div
                 class="mostrador grid grid-cols-1 im:grid-cols-2 sg:grid-cols-3 opm:grid-cols-4 oem:grid-cols-5 gap-10 justify-center p-7">
-
-                <div class="bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-2xl  col-span-1 max-w-60"
+                <div class="empresa-card bg-white border border-gray-200 rounded-lg dark:bg-slate-900 transition duration-300 ease-in-out hover:bg-gradient-to-r from-slate-950 to-blue-900 grid text-center justify-center shadow-2xl col-span-1 max-w-60"
                     *ngFor="let empresa of listEnterprises | filterEnterpriseList:filterEnterprise">
-                    <div class="flex icon justify-center  content-center px-4 pt-4">
-                        <a  (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer">
+                    <div class="flex icon justify-center content-center px-4 pt-4">
+                        <a (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer">
                             <img *ngIf="empresa.logo != ''; else defaultLogo"
                                 class="rounded-full w-21 h-21 object-cover shadow-sm" [src]="empresa.logo" alt="" />
                             <ng-template #defaultLogo>
@@ -73,14 +72,13 @@
                         </a>
                     </div>
                     <div class="pl-4 py-2 mr-4 mb-3">
-                        <a (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer" >
+                        <a (click)="updateEnterpriseSelected(empresa.id)" class="cursor-pointer">
                             <h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ empresa.name
                                 }}</h5>
                         </a>
-                        <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}
-                        </p>
+                        <p class="mb-2 font-normal text-sm text-gray-700 dark:text-gray-400">NIT: {{ empresa.nit }}</p>
                         <button *ngIf="typeList === 'ACTIVE'" href="#" (click)="updateEnterpriseSelected(empresa.id)"
-                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
+                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 p-1 m-1">
                             Acceder
                             <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,7 +86,7 @@
                             </svg>
                         </button>
                         <button *ngIf="typeList === 'INACTIVE'" href="#" (click)="activeEnterprise(empresa.id)"
-                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  p-1 m-1">
+                            class="inline-flex items-center px-3 text-sm font-medium text-center text-white bg-blue-950 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 p-1 m-1">
                             Activar
                             <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="white">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -102,7 +100,7 @@
 
         <aside class="options col-span-1  mr-0 border-l-2 hidden sg:block">
             <div class="list-options p-4 grid justify-center items-center text-center">
-                <div class="edit "  [class.selected]="typeList === 'ACTIVE'">
+                <div class="edit " [class.selected]="typeList === 'ACTIVE'">
                     <a (click)="getEnterprisesActive()" class="text-blue-950 font-bold cursor-pointer">Mis empresas</a>
                 </div>
                 <div class="edit mb-3" [class.selected]="typeList === 'INACTIVE'">

@@ -5,6 +5,16 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 //import { environment } from '../../../../../environments/enviorment.development'
 
+let API_URL = '';
+
+//Si microservice es de enterprise se cambia la url de la api a local
+if(environment.microservice == 'enterprise'){
+    API_URL = environment.API_LOCAL_URL;
+}
+else{
+    API_URL = environment.API_URL;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,20 +56,20 @@ export class DepartmentService {
   ];
 
   //Production
-  private apiUrl = environment.API_URL + 'address/departments'; 
+  private apiUrl = API_URL + 'address/departments';
   //Local
-  //private apiUrl = environment.myAppUrl + 'address/departments'; 
+  //private apiUrl = myAppUrl + 'address/departments';
   constructor(private http: HttpClient) {
 
    }
 
-   
+
   getListDepartmentsBackend(): Observable<Department[]> {
     return this.http.get<Department[]>(this.apiUrl);
   }
 
 
-  
+
   getListDepartments(){
     return this.colombianDepartments;
   }
