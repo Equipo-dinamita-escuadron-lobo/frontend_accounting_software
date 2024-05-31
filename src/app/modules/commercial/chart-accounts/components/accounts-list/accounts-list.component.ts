@@ -891,20 +891,4 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
-  logOut(): void {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, cerrar sesión',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this._authService.logout();
-        this.router.navigate(['']); 
-      }
-    });
-  }
 }
