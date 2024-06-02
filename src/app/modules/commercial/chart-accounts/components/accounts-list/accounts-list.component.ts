@@ -599,7 +599,6 @@ export class AccountsListComponent implements OnInit {
       this.saveNewAccountType(account);
       }
     }
-    
   }
 
   /**
@@ -777,10 +776,11 @@ export class AccountsListComponent implements OnInit {
             classification: this.formTransactional.value.selectedClasificationType,
           }
           const accountExist = await this.getAccountByCode(account);
+
           if(!accountExist){
             this.update(this.accountSelected?.id, account);
           }else{
-            if(this.accountSelected.code === account.code && this.accountSelected.description != account.description){
+            if(this.accountSelected.code === account.code && (this.accountSelected.description != account.description || account.nature != this.accountSelected.nature || account.financialStatus != this.accountSelected.financialStatus || account.classification != this.accountSelected.classification)){
               this.update(this.accountSelected?.id, account);
             }else{
               if(this.accountSelected.code === account.code && this.accountSelected.description == account.description){
