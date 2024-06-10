@@ -16,7 +16,7 @@ export class LocalStorageMethods{
     }
     return null;
   }
-  
+
   public clearLocalStoage():void{
     localStorage.clear();
   }

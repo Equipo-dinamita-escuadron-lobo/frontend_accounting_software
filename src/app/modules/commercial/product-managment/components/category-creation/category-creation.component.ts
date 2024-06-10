@@ -60,7 +60,7 @@ export class CategoryCreationComponent implements OnInit {
       categoryData.saleId = parseInt(categoryData.sale, 10);
       categoryData.returnId = parseInt(categoryData.return, 10);
 
-      categoryData.enterpriseId = this.entData.entId;
+      categoryData.enterpriseId = this.entData;
 
       this.categoryService.createCategory(categoryData).subscribe(
         () => {

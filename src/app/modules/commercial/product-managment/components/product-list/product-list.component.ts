@@ -76,7 +76,7 @@ export class ProductListComponent implements OnInit {
     }
   }
   getProducts(): void {
-    this.productService.getProducts(this.entData.entId).subscribe(
+    this.productService.getProducts(this.entData).subscribe(
       (data: Product[]) => {
         this.products = data; // Asigna los productos obtenidos del servicio a la propiedad products
       },
@@ -87,7 +87,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getUnitOfMeasures(): void{
-    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (data: UnitOfMeasure[]) => {
         this.unitOfMeasures = data; // Asigna los productos obtenidos del servicio a la propiedad products
       },
@@ -98,7 +98,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getCategories(): void{
-    this.categoryService.getCategories(this.entData.entId).subscribe(
+    this.categoryService.getCategories(this.entData).subscribe(
       (data: Category[]) => {
         this.categories = data; // Asigna los productos obtenidos del servicio a la propiedad products
       },
@@ -109,7 +109,7 @@ export class ProductListComponent implements OnInit {
   }
 
   getProviders(): void {
-  this.thirdService.getThirdParties(this.entData.entId,0).subscribe(
+  this.thirdService.getThirdParties(this.entData,0).subscribe(
     (data: any[]) => {
       this.providers = data;
 console.log('Lista de proveedores:', this.providers);
@@ -232,7 +232,7 @@ console.log('Lista de proveedores:', this.providers);
     _popUp.afterClosed().subscribe();
   }
 
-  //Método para formatear el precio    
+  //Método para formatear el precio
   formatPrice(price: number): string {
     // Formatear el precio con separador de miles
     return price.toLocaleString('es-ES');

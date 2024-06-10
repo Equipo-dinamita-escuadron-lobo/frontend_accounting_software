@@ -19,7 +19,7 @@ export class UnitOfMeasureListComponent implements OnInit {
   columns: any[] = [
     {title: 'Id', data: 'id'},
     {title: 'Nombre', data: 'name'},
-    {title: 'Descripción', data: 'description'},    
+    {title: 'Descripción', data: 'description'},
     {title: 'Abreviatura', data: 'abbreviation'},
     {title: 'Acciones', data: 'actions'}
   ];
@@ -49,7 +49,7 @@ export class UnitOfMeasureListComponent implements OnInit {
   }
 
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (data: UnitOfMeasure[]) => {
         this.unitOfMeasures = data;
       },
@@ -117,7 +117,7 @@ export class UnitOfMeasureListComponent implements OnInit {
         }
       });
     }
-    
+
 
     goBack(): void {
       this.router.navigate(['/general/operations/products']);

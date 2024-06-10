@@ -25,7 +25,7 @@ export class ProductEditComponent implements OnInit {
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-  
+
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -49,7 +49,7 @@ export class ProductEditComponent implements OnInit {
       creationDate: [null, Validators.required],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
-      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número    
+      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, Validators.required]
     }, { validators: minMaxValidator });
   }
@@ -60,7 +60,7 @@ export class ProductEditComponent implements OnInit {
       this.getProductDetails(); // Llamar a la función para obtener los detalles del producto
     });
     this.initForm();
-    
+
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if(this.entData){
     this.getThirdParties();
@@ -73,7 +73,7 @@ export class ProductEditComponent implements OnInit {
 
     // Método para obtener la lista de categorías
     getCategories(): void {
-      this.categoryService.getCategories(this.entData.entId).subscribe(
+      this.categoryService.getCategories(this.entData).subscribe(
         (categories: any[]) => {
           this.categories = categories;
         },
@@ -82,11 +82,11 @@ export class ProductEditComponent implements OnInit {
         }
       );
     }
-  
+
     // Método para obtener la lista de proveedores
   getThirdParties(): void {
-  
-    this.thirdService.getThirdParties(this.entData.entId,0).subscribe(
+
+    this.thirdService.getThirdParties(this.entData,0).subscribe(
       (thirdParties: any[]) => {
         // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
         this.thirdParties = thirdParties;
@@ -98,10 +98,10 @@ export class ProductEditComponent implements OnInit {
       }
     );
   }
-  
+
   // Método para obtener la lista de unidades de medida
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (unitOfMeasures: any[]) => {
         this.unitOfMeasures = unitOfMeasures;
       },
@@ -125,7 +125,7 @@ export class ProductEditComponent implements OnInit {
         creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
         supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
-        categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número      
+        categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         price: [null, [Validators.required, Validators.min(0)]]
       });
     }
@@ -164,14 +164,14 @@ export class ProductEditComponent implements OnInit {
       formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
       formData.supplierId = parseInt(formData.supplierId, 10);
       formData.categoryId = parseInt(formData.categoryId, 10);
-      
+
 
       console.log('Sin editar:',this.product);
       const updatedProduct: Product = this.editForm.value;
 
-      updatedProduct.id= this.productId; 
-      updatedProduct.state= this.product.state; 
-      updatedProduct.enterpriseId= this.product.enterpriseId; 
+      updatedProduct.id= this.productId;
+      updatedProduct.state= this.product.state;
+      updatedProduct.enterpriseId= this.product.enterpriseId;
       // Asignar el ID del producto a la propiedad _id del objeto
       // Agrega cualquier lógica adicional necesaria antes de enviar los datos al servidor
       this.productService.updateProduct(updatedProduct).subscribe(
@@ -216,21 +216,21 @@ export class ProductEditComponent implements OnInit {
     }
     this.editForm.get('price')?.setValue(formattedPrice);
   }
-  
+
   // Función para formatear un número con separadores de miles
   formatNumberWithCommas(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
-  
+
 
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
   }
 
-  
+
 }
 
-// Función para validar que el maximo y minimo tengan valores coherentes 
+// Función para validar que el maximo y minimo tengan valores coherentes
 function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
   const min = group.controls['minQuantity'].value;
   const max = group.controls['maxQuantity'].value;
