@@ -1,6 +1,7 @@
-<div class="container-all container-image h-full text-white font-projectFont overflow-auto">
-    <div class="text-animator  sub-container-all flex flex-col justify-center">
-        <div class="nav w-full px-4">
+<div class="container-all h-full text-white landing overflow-auto w-full">
+
+    <div class="container-image text-animator  sub-container-all flex flex-col justify-center h-full w-full">
+        <div class="nav w-full px-6">
             <div class="flex justify-between items-center">
                 <div class="container-logo m-6">
                     <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="" class="h-24">
@@ -8,72 +9,88 @@
 
                 <div class="container-options flex text-xl">
                     <ul class="flex">
-                      <li class="py-2 mr-10 underline-animation">
-                        Inicio
-                      </li>
-                      <li class="py-2 mr-10 underline-animation">
-                        Acerca de
-                      </li>
-                      <li class="py-2 mr-10 underline-animation">
-                        Contacto
-                      </li>
+                        <li class="py-2 mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Inicio'}"
+                            (click)="selectOption('Inicio')">
+                            Inicio
+                        </li>
+                        <li class="py-2 mr-10 underline-animation"
+                            [ngClass]="{'selected': selectedOption === 'Acerca de'}"
+                            (click)="selectOption('Acerca de')">
+                            Acerca de
+                        </li>
+                        <li class="py-2 mr-10 underline-animation"
+                            [ngClass]="{'selected': selectedOption === 'Contacto'}" (click)="selectOption('Contacto')">
+                            Contacto
+                        </li>
                     </ul>
-                    <div class="py-2 bg-blue-950 p-4">
-                      <button (click)="goToLogin()" class="">Iniciar sesión</button>
+                    <div class="button-login py-2 border-red-100 border-2 p-4">
+                        <button (click)="goToLogin()" class="">Iniciar sesión</button>
                     </div>
-                  </div>
-                  
+                </div>
             </div>
         </div>
 
-        <div class="title w-full flex flex-col justify-center items-center mt-32">
-            <div class="container-title">
-                <h1 class="typewriter text-8xl font-semibold">{{displayedTitle}}</h1>
-            </div>
-            <div class="container-subtitle mt-4 text-2xl">
-                <p class="typewriter">{{displayedSubtitle }}
-                </p>
-            </div>
-        </div>
 
-        <div class="container-services w-3/6 m-auto rounded-3xl mt-28 grid grid-cols-4 ">
-            <div class="service">
-                <div class="icon  flex justify-center items-center">
-                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/enterprise.svg" alt="">
+        <div class="container-main grid justify-between items-center text-center grid-cols-1 h-full w-full">
+            <div class="container-hel">
+
+            </div>
+
+            <div class="title w-full flex flex-col justify-center items-center">
+                <div class="container-title">
+                    <h1 class="typewriter text-8xl font-semibold">
+                        <span [innerHtml]="displayedTitle"> </span>
+                    </h1>
                 </div>
-
-                <div class="name mt-2 flex items-center justify-center">
-                    <span>Gestiona tu empresa</span>
+                <div class="container-subtitle mt-4 text-2xl">
+                    <p class="typewriter">
+                        <span [innerHtml]="displayedSubtitle"></span><span class="cursor">|</span>
+                    </p>
                 </div>
             </div>
 
-            <div class="service">
-                <div class="icon  flex justify-center items-center">
-                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
+
+
+
+            <div class="container-services w-11/12 opm:w-3/6 m-auto  grid grid-cols-2 opm:grid-cols-4 gap-6 relative">
+                <div class="service bg-emerald-950 p-3 py-5 grid rounded-2xl">
+                    <div class="icon  flex justify-center items-center">
+                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/enterprise.svg" alt="">
+                    </div>
+
+                    <div class="name mt-2 flex items-center justify-center">
+                        <span>Gestiona tu empresa</span>
+                    </div>
                 </div>
 
-                <div class="name mt-2 flex items-center justify-center">
-                    <span>Maneja tu contabilidad</span>
-                </div>
-            </div>
+                <div class="service bg-yellow-800 grid rounded-2xl py-5">
+                    <div class="icon  flex justify-center items-center">
+                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
+                    </div>
 
-            <div class="service">
-                <div class="icon flex justify-center items-center">
-                    <img class="h-12" src="../../../../../../assets/Iconos/icons-landing/school.svg" alt="">
-                </div>
-
-                <div class="name mt-2 flex items-center justify-center">
-                    <span>Aprende</span>
-                </div>
-            </div>
-
-            <div class="service text-white">
-                <div class="icon flex justify-center items-center">
-                    <img class="h-12 container-logo" src="../../../../../../assets/Iconos/logo-unicauca.svg" alt="">
+                    <div class="name mt-2 flex items-center justify-center">
+                        <span>Maneja tu contabilidad</span>
+                    </div>
                 </div>
 
-                <div class="name mt-2 flex items-center justify-center">
-                    <span>Desarrollado por</span>
+                <div class="service bg-red-800 grid rounded-2xl py-5">
+                    <div class="icon flex justify-center items-center">
+                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/school.svg" alt="">
+                    </div>
+
+                    <div class="name mt-2 flex items-center justify-center">
+                        <span>Aprende</span>
+                    </div>
+                </div>
+
+                <div class="service text-white bg-gray-950 grid rounded-2xl py-5">
+                    <div class="icon flex justify-center items-center">
+                        <img class="h-20 container-logo" src="../../../../../../assets/Iconos/logo-unicauca.svg" alt="">
+                    </div>
+
+                    <div class="name mt-2 flex items-center justify-center">
+                        <span>Desarrollado por</span>
+                    </div>
                 </div>
             </div>
         </div>

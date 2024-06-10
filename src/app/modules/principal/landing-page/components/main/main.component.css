@@ -1,10 +1,12 @@
+/* Contenedor principal con fondo y transición */
 .container-image {
   background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url("../../../../../../assets/wallpapers/main.avif");
+    url("../../../../../../assets/landing-page/main.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
+
 
 .container-logo {
   filter: grayscale(100%); /* Convertir la imagen a blanco y negro */
@@ -29,6 +31,20 @@
   animation-delay: 0.5s;
 }
 
+.selected {
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(177, 0, 0); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid  rgb(177, 0, 0) ;
+}
+
+.selected:hover{
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(255, 255, 255); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid  transparent ;
+}
+
+
+
 .service {
   transition: transform 0.3s ease-in-out;
 }
@@ -40,6 +56,18 @@
 .underline-animation {
   position: relative;
   cursor: pointer;
+}
+
+/* Opcional: Estilos para el efecto de escritura */
+.typewriter {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.button-login:hover{
+  border-color: rgb(0, 0, 248);
+  color: rgb(27, 27, 254);
 }
 
 .underline-animation::after {
@@ -61,7 +89,60 @@
   transform-origin: bottom left;
 }
 
+.services-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service {
+  color: #ecf0f1; /* Texto en color claro para mejor legibilidad */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.service:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Aumentar sombra al hacer hover */
+}
+
+.service .icon {
+  margin-bottom: 15px;
+}
+
+.service .name {
+  font-size: 1.25rem; /* Tamaño de fuente más grande para el nombre */
+  font-weight: 600; /* Mayor peso para el nombre */
+}
+
+.cursor {
+  display: inline-block;
+  background-color: white; /* Color del cursor */
+  width: 2px;
+  animation: blink 0.4s infinite;
+}
+
+/* Animación del cursor */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (min-width: 640px) {
+  .services-container {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-container {
+      grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* Definición de la animación */
+
 @keyframes fadeIn {
   to {
     opacity: 1;
