@@ -18,7 +18,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
   unitOfMeasureForm: FormGroup = this.formBuilder.group({});
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
-  
+
   constructor(
     private route: ActivatedRoute,
     private unitOfMeasureService: UnitOfMeasureService,
@@ -63,7 +63,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
     if (this.editForm.valid) {
       const formData = this.editForm.value;
 
-      formData.enterpriseId = this.entData.entId;
+      formData.enterpriseId = this.entData;
       formData.state = 'true';
 
       this.unitOfMeasureService.updateUnitOfMeasureId(this.unitOfMeasureId, formData).subscribe(

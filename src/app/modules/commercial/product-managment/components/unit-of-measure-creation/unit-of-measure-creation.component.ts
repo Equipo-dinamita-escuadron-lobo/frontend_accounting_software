@@ -35,7 +35,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     if (this.unitOfMeasureForm.valid) {
       const unitOfMeasureData = this.unitOfMeasureForm.value;
 
-      unitOfMeasureData.enterpriseId = this.entData.entId;
+      unitOfMeasureData.enterpriseId = this.entData;
       this.unitOfMeasureService.createUnitOfMeasure(unitOfMeasureData).subscribe(
         () => {
           Swal.fire({
@@ -74,4 +74,3 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     this.unitOfMeasureForm.reset();
   }
 }
-  

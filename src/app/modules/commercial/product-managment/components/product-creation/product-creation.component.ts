@@ -36,7 +36,7 @@ export class ProductCreationComponent implements OnInit {
   ) {}
 
 
-  
+
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
 
@@ -55,10 +55,10 @@ export class ProductCreationComponent implements OnInit {
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
-      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número      
+      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
     }
-    ,{ validators: minMaxValidator });  
+    ,{ validators: minMaxValidator });
     if (this.entData) {
 
     this.initForm();
@@ -66,14 +66,14 @@ export class ProductCreationComponent implements OnInit {
   this.getUnitOfMeasures();
   this.getCategories();
     }
-  
+
 
 }
 
 
   // Método para obtener la lista de categorías
   getCategories(): void {
-    this.categoryService.getCategories(this.entData.entId).subscribe(
+    this.categoryService.getCategories(this.entData).subscribe(
       (categories: any[]) => {
         this.categories = categories;
       },
@@ -86,7 +86,7 @@ export class ProductCreationComponent implements OnInit {
   // Método para obtener la lista de proveedores
 getThirdParties(): void {
 
-  this.thirdService.getThirdParties(this.entData.entId,0).subscribe(
+  this.thirdService.getThirdParties(this.entData,0).subscribe(
     (thirdParties: any[]) => {
       // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
       this.thirdParties = thirdParties;
@@ -101,7 +101,7 @@ getThirdParties(): void {
 
 // Método para obtener la lista de unidades de medida
 getUnitOfMeasures(): void {
-  this.unitOfMeasureService.getUnitOfMeasures(this.entData.entId).subscribe(
+  this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
     (unitOfMeasures: any[]) => {
       this.unitOfMeasures = unitOfMeasures;
     },
@@ -125,7 +125,7 @@ getUnitOfMeasures(): void {
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
-      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número      
+      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, [Validators.required, Validators.min(0)]]
     });
   }
@@ -170,9 +170,9 @@ getUnitOfMeasures(): void {
     formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.price = parseInt(formData.price, 10); 
+    formData.price = parseInt(formData.price, 10);
 
-    formData.enterpriseId = this.entData.entId;
+    formData.enterpriseId = this.entData;
 
 
     this.productService.createProduct(formData).subscribe(
@@ -183,9 +183,9 @@ getUnitOfMeasures(): void {
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
         });
-        
+
         // Restablece el formulario con la fecha actual
-        this.resetFormWithCurrentDate();        
+        this.resetFormWithCurrentDate();
         this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
         // Incrementa el contador del ID del producto
         this.nextProductId++;
@@ -210,13 +210,13 @@ getUnitOfMeasures(): void {
   resetFormWithCurrentDate(): void {
     // Obtener la fecha actual en UTC
     const currentDateUTC = new Date();
-  
+
     // Convertir la fecha UTC a la zona horaria GMT-5 (Hora Estándar del Este, EST)
     const currentDateEST = new Date(currentDateUTC.getTime() - (5 * 60 * 60 * 1000));
-  
+
     // Formatear la fecha EST como una cadena en formato ISO
     const formattedDate = currentDateEST.toISOString().split('T')[0];
-  
+
     // Restablecer el formulario con la fecha ajustada
     this.productForm.reset({
       creationDate: formattedDate
@@ -225,7 +225,7 @@ getUnitOfMeasures(): void {
     console.log('Fecha actual:', formattedDate);
   }
 
-  //Método para formatear el precio    
+  //Método para formatear el precio
   formatPrice(event: any) {
     let priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
     let formattedPrice = '';
@@ -238,21 +238,21 @@ getUnitOfMeasures(): void {
     // Establecer el valor formateado en el campo de precio del formulario
     this.productForm.get('price')?.setValue(formattedPrice);
   }
-  
+
   // Función para formatear un número con separadores de miles
   formatNumberWithCommas(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
-  
-  
+
+
 
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
   }
-  
+
 }
 
-  // Funcion para validar que el maximo y minimo tengan valores coherentes 
+  // Funcion para validar que el maximo y minimo tengan valores coherentes
   function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
     const min = group.controls['minQuantity'].value;
     const max = group.controls['maxQuantity'].value;

@@ -35,7 +35,7 @@ constructor(
   private categoryService: CategoryService,
   private formBuilder: FormBuilder,
   private router: Router
-  
+
 ) {
   this.editForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -66,7 +66,7 @@ constructor(
     this.categoryService.getCategoryById(this.categoryId).subscribe(
       (category: Category) => {
         console.log('Categoría obtenida:', category);
-  
+
         this.category = category;
         this.editForm.patchValue({
           name: category.name,
@@ -76,7 +76,7 @@ constructor(
           sale: category.saleId,
           return: category.returnId
         });
-  
+
         console.log('Formulario editado:', this.editForm.value);
       },
       error => {
@@ -84,7 +84,7 @@ constructor(
       }
     );
   }
-  
+
     //cuentas
     getCuentas(): void {
       this.categoryService.getCuentas().subscribe(
@@ -111,11 +111,11 @@ constructor(
       categoryData.costId = parseInt(categoryData.cost, 10);
       categoryData.saleId = parseInt(categoryData.sale, 10);
       categoryData.returnId = parseInt(categoryData.return, 10);
-      categoryData.enterpriseId = this.entData.entId;
+      categoryData.enterpriseId = this.entData;
       categoryData.id=this.category.id;
       categoryData.state=this.category.state;
   console.log('categoryData:', categoryData);
-        this.categoryService.updateCategory( categoryData).subscribe(  
+        this.categoryService.updateCategory( categoryData).subscribe(
         (category: Category) => {
           Swal.fire({
             title: 'Edición exitosa!',
@@ -142,7 +142,7 @@ constructor(
       });
     }
   }
-  
+
   goBack(): void {
     //this.router.navigate(['../../'], { relativeTo: this.route });
     this.router.navigate(['/general/operations/categories']);

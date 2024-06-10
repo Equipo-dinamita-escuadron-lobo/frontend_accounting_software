@@ -69,7 +69,7 @@ export class CategoryListComponent implements OnInit {
       this.categoryService.getCuentas().subscribe(
         (data: Cuenta[]) => {
           this.cuentas = data;
-          
+
         },
         error => {
           console.log('Error al obtener las cuentas:', error);
@@ -80,10 +80,10 @@ export class CategoryListComponent implements OnInit {
       const account = this.cuentas.find(cuenta => cuenta.id === id);
       return account ? account.name : 'No encontrado';
     }
-    
-    
+
+
   getCategories(): void {
-    this.categoryService.getCategories(this.entData.entId).subscribe(
+    this.categoryService.getCategories(this.entData).subscribe(
       (data: Category[]) => {
         this.categories = data;
       },
@@ -164,7 +164,7 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
-  
+
   openDetailsModal(id: any) {
     this.OpenPopUp(id, 'Detalles de categoria', CategoryDetailsComponent);
   }
