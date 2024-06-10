@@ -1,0 +1,41 @@
+.selected {
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(177, 0, 0); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid rgb(177, 0, 0);
+}
+
+.selected:hover {
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(255, 255, 255); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid transparent;
+}
+
+.container-logo {
+  filter: grayscale(100%); /* Convertir la imagen a blanco y negro */
+  filter: brightness(10000%);
+  filter: brightness(0) invert(1);
+}
+
+.underline-animation {
+  position: relative;
+  cursor: pointer;
+}
+
+.underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 4px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(27, 27, 254);
+  transform-origin: bottom right;
+  transition: transform 0.5s ease-out;
+  opacity: 0.6; /* Difuminado */
+}
+
+.underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}

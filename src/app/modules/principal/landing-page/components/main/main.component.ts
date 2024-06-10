@@ -15,7 +15,6 @@ export class MainComponent implements OnInit, OnDestroy {
   subtitleSpeed = 60; // ms por carácter
   resetInterval = 10000; // 10 segundos
   
-  selectedOption: string = 'Inicio';
   showCursor = true;
 
   private animationFrameId: number | null = null;
@@ -84,11 +83,4 @@ export class MainComponent implements OnInit, OnDestroy {
     }, this.resetInterval);
   }
 
-  selectOption(option: string) {
-    this.selectedOption = option;
-  }
-
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
 }

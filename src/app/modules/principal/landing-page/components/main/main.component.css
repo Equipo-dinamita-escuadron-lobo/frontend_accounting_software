@@ -31,19 +31,6 @@
   animation-delay: 0.5s;
 }
 
-.selected {
-  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
-  color: rgb(177, 0, 0); /* Ejemplo de estilo: color rojo */
-  border-bottom: 1px solid  rgb(177, 0, 0) ;
-}
-
-.selected:hover{
-  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
-  color: rgb(255, 255, 255); /* Ejemplo de estilo: color rojo */
-  border-bottom: 1px solid  transparent ;
-}
-
-
 
 .service {
   transition: transform 0.3s ease-in-out;
@@ -53,10 +40,6 @@
   transform: scale(1.3);
 }
 
-.underline-animation {
-  position: relative;
-  cursor: pointer;
-}
 
 /* Opcional: Estilos para el efecto de escritura */
 .typewriter {
@@ -70,24 +53,6 @@
   color: rgb(27, 27, 254);
 }
 
-.underline-animation::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 4px;
-  bottom: 0;
-  left: 0;
-  background-color: rgb(27, 27, 254);
-  transform-origin: bottom right;
-  transition: transform 0.5s ease-out;
-  opacity: 0.6; /* Difuminado */
-}
-
-.underline-animation:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
 
 .services-container {
   max-width: 1200px;
