@@ -31,7 +31,8 @@ module.exports = {
         "subtitle":"#78BEF9"
       },
       fontFamily:{
-        projectFont: ['Inria Sans']
+        projectFont: ['Inria Sans'],
+        landing: ['Montserrat']
       },
       width:{
         "21": ['6rem']/* 80px */
