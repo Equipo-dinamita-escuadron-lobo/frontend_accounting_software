@@ -156,7 +156,7 @@ export class ThirdEditModalComponent {
     const currentDate = new Date();
     var third: Third = this.thirdForm.value;
     third.thId = this.thirdData.thId;
-    third = this.entData;
+    third.entId = this.entData;
     let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.thirdForm.get('typeId')?.value);
     console.log(typeIdValue)
     let thirdTypeId = this.thirdTypes.find(thirdType=> thirdType.thirdTypeName === this.thirdForm.get("thirdTypes")?.value);
