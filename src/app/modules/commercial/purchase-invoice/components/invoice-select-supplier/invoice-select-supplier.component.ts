@@ -21,7 +21,7 @@ export class InvoiceSelectSupplierComponent {
       typeId: {
         entId: "123",
         typeId: "asffsd",
-        typeIdname: "asdasda"
+        typeIdname: "123123"
       },
       thirdTypes: [],
       personType: ePersonType.natural,
@@ -62,7 +62,7 @@ export class InvoiceSelectSupplierComponent {
   ngOnInit() {
     this.inputData = this.data;
     //Se obtiene datos de empresa seleccionada 
-    this.entData = this.localStorageMethods.loadEnterpriseData();
+    /*this.entData = this.localStorageMethods.loadEnterpriseData();
 
     //Se obtienen los teceros de la mepresa en especifico
     if(this.entData){
@@ -71,7 +71,7 @@ export class InvoiceSelectSupplierComponent {
           this.lstThirds = response;
         }
       })
-    }
+    }*/
   }
 
   closePopUp() {

@@ -25,17 +25,26 @@
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-200 ">
-              <tr class="overflow-hidden">
-                <th scope="col" class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
-                  *ngFor="let col of columns">
-                  {{ col.title }}
-                </th>
+              <tr>
+                <th scope="col" class="px-6 py-3 text-lg text-blue-950 font-bold text-left">Nombre/RazonSocial</th>
+                <th scope="col" class="px-6 py-3 text-lg text-blue-950 font-bold text-left">Tipo Id</th>
+                <th scope="col" class="px-6 py-3 text-lg text-blue-950 font-bold text-left">Correo</th>
               </tr>
             </thead>
-
-            
-
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr >
+                <td class="px-6 py-4 whitespace-nowrap">1</td>
+                <td class="px-6 py-4 whitespace-nowrap">cc</td>
+                <td class="px-6 py-4 whitespace-nowrap">naren imabchi</td>
+              </tr>
+            </tbody>
           </table>
+        </div>
+
+        <div>
+          <button>
+            Seleccionar proveedor
+          </button>
         </div>
 
       </div>
