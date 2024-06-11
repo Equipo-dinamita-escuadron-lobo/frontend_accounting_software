@@ -155,7 +155,7 @@ export class ThirdCreationComponent implements OnInit {
     this.submitted = true;
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
-    third = this.entData;
+    third.entId = this.entData;
     third.state =
       this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
     third.photoPath = '';
