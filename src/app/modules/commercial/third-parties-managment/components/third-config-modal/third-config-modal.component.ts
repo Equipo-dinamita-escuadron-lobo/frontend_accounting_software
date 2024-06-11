@@ -35,7 +35,7 @@ export class ThirdConfigModalComponent {
   ngOnInit(){
     this.inputData = this.data;
     this.entData = this.localStorageMethods.loadEnterpriseData();
-    this.thirdServiceConfiguration.getThirdTypes(this.entData.entId).subscribe({
+    this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[])=>{
         this.thirdTypes = response;
       },
@@ -48,8 +48,8 @@ export class ThirdConfigModalComponent {
         });
       }
     });
-        
-  this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
+
+  this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[])=>{
         this.typesId = response;
         console.log(response)
@@ -68,7 +68,7 @@ export class ThirdConfigModalComponent {
   addTypeId(items:any) {
     console.log(this.newItemName)
     let sendTypeId: TypeId = {
-    entId: this.entData.entId,
+    entId: this.entData,
     typeId: this.newItemName,
     typeIdname: this.newItemName};
     this.thirdServiceConfiguration.createTypeId(sendTypeId).subscribe({
@@ -88,7 +88,7 @@ export class ThirdConfigModalComponent {
   addThirdType(items:any) {
     console.log(this.newItemName)
     let sendTypeId: ThirdType = {
-    entId: this.entData.entId,
+    entId: this.entData,
     thirdTypeId: Math.floor(Math.random() * 1001),
     thirdTypeName: this.newItemName};
     console.log(sendTypeId)

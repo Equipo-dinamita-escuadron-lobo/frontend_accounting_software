@@ -74,7 +74,7 @@ export class ThirdCreationComponent implements OnInit {
 
     this.countries = Country.getAllCountries();
 
-    this.thirdServiceConfiguration.getThirdTypes(this.entData.entId).subscribe({
+    this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[])=>{
         this.thirdTypes = response;
       },
@@ -88,7 +88,7 @@ export class ThirdCreationComponent implements OnInit {
       }
     });
 
-  this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
+  this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[])=>{
         this.typeIds = response;
       },
@@ -155,7 +155,7 @@ export class ThirdCreationComponent implements OnInit {
     this.submitted = true;
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
-    third.entId = this.entData.entId;
+    third = this.entData;
     third.state =
       this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
     third.photoPath = '';

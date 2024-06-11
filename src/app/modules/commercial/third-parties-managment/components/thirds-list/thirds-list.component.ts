@@ -56,7 +56,7 @@ export class ThirdsListComponent{
 
     if(this.entData){
 
-      this.thirdService.getThirdParties(this.entData.entId,0).subscribe({
+      this.thirdService.getThirdParties(this.entData,0).subscribe({
         next: (response: Third[])=>{
           this.data = response;
         },

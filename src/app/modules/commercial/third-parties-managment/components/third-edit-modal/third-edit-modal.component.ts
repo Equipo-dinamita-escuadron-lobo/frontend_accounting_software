@@ -22,11 +22,11 @@ export class ThirdEditModalComponent {
   typeIds: TypeId[] = [];
   entData: any | null = null;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  
+
   thirdData: Third = {
     thId: 0,
     entId: '',
-    typeId:  { 
+    typeId:  {
       entId: "0",
       typeId: "CC",
       typeIdname: "CC"
@@ -99,18 +99,18 @@ export class ThirdEditModalComponent {
       })
     }
 
-    this.thirdServiceConfiguration.getThirdTypes(this.entData.entId).subscribe({
+    this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[])=>{
         this.thirdTypes = response;
         console.log(response)
       },
       error: (error) => {
         console.log(error)
-        
+
       }
     });
-        
-  this.thirdServiceConfiguration.getTypeIds(this.entData.entId).subscribe({
+
+  this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[])=>{
         this.typeIds = response;
       },
@@ -149,14 +149,14 @@ export class ThirdEditModalComponent {
       }
     });
 
-    
+
   }
 
   OnSubmit(){
     const currentDate = new Date();
     var third: Third = this.thirdForm.value;
     third.thId = this.thirdData.thId;
-    third.entId = this.entData.entId;
+    third = this.entData;
     let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.thirdForm.get('typeId')?.value);
     console.log(typeIdValue)
     let thirdTypeId = this.thirdTypes.find(thirdType=> thirdType.thirdTypeName === this.thirdForm.get("thirdTypes")?.value);
