@@ -30,13 +30,13 @@
           </div>
           <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input type="text" formControlName="email"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled [value]="UserForm.value.email">
           </div>
           <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Usuario</label>
-            <input type="text" formControlName="username"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <input type="text"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" disabled [value]="UserForm.value.username">
           </div>
           <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
@@ -44,12 +44,12 @@
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           </div>
 
-          <div class="tax-liabilities max-w-56 grid mb-3">
+          <div class="tax-liabilities max-w-56 grid mb-3" *ngIf="rol" >
             <label class="block text-gray-700 text-sm font-bold mb-2">Roles</label>
             <div class="icon flex">
               <ng-select name="tax-liabilities" [items]="options" bindLabel="name" [searchable]="true"
                 formControlName="roles" (change)="onOptionsSelected($event)"
-                class="max-w-full border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9" [maxSelectedItems]="7"
+                class="max-w-full border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9" [maxSelectedItems]="3"
                 [multiple]="true" [clearable]="false"
                 >
                 <ng-template ng-option-tmp let-item="item">
@@ -68,6 +68,11 @@
               Por favor, seleccione al menos un ítem.
             </div>
 
+          </div>
+
+          <div class="roles-list" *ngIf="!rol">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Roles</label>
+            <span class="inline-block bg-blue-200 rounded-xl p-1" *ngFor="let rol of UserForm.value.roles">{{rol.name}}</span>
           </div>
 
         </div>

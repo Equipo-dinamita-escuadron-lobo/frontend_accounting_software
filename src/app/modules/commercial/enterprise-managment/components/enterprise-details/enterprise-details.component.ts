@@ -3,6 +3,7 @@ import { EnterpriseService } from '../../services/enterprise.service';
 import { Enterprise, EnterpriseDetails } from '../../models/Enterprise';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../principal/login/services/auth.service';
 
 @Component({
   selector: 'app-enterprise-details',
@@ -13,11 +14,14 @@ export class EnterpriseDetailsComponent {
   enterpriseSelected?: EnterpriseDetails;
   typePerson:string = '';
   id:any;
+  rol: boolean = false;
 
   constructor(private enterpriseService: EnterpriseService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.getEnterpriseSelectedInfo();
+    this.rol = this.authService.verifiedRolSuperUser();
   }
 
   ngOnInit(): void {
