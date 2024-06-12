@@ -35,55 +35,118 @@
 
         <!-- Third parties information -->
         <div class="mt-10">
-            <div class="w-full text-center">
-                <h1 class="text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+            <button (click)="showSectionThridM()"
+                class="w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+                <div class="flex">
+
+                    @if(showSectionThrid){
+                    <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    }
+
+                    @if(!showSectionThrid){
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    }
+
                     Información de proveedor
-                </h1>
-            </div>
-
-            <div class="botones flex justify-center items-center mb-5">
-                <div class="inline-flex">
-                    <button (click)="selectSupplier()"
-                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
-                        Buscar provedor
-                    </button>
-                    <button (click)="createSupplier()"
-                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
-                        Crear provedor
-                    </button>
                 </div>
-            </div>
+            </button>
 
-            @if (showInfoTercero) {
+
+            @if(showSectionThrid){
+            <div>
+                <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
+                    un proveedor.
+                </p>
+                <div class="botones flex justify-center items-center mb-5">
+                    <div class="inline-flex">
+                        <button (click)="selectSupplier()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                            Elegir provedor
+                        </button>
+                        <button (click)="createSupplier()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                            Crear provedor
+                        </button>
+                    </div>
+                </div>
+
+                @if (showInfoThird) {
                 <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
                     <div class="space-y-2">
                         <div class="flex">
-                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Razón social:</p>
-                            <p class="w-3/4">Descomentar información</p>
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Tipo de Documento</p>
+                            <p class="w-3/4">{{supplierS?.typeId?.typeId}}</p>
                         </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Numero de Documento</p>
+                            <p class="w-3/4">{{supplierS?.idNumber}}</p>
+                        </div>
+                        @if(supplierS?.names){
                         <div class="flex">
                             <p class="text-gray-500 mr-2 mb-2 w-1/4">Nombre:</p>
-                            <p class="w-3/4">Descomentar información</p>
+                            <p class="w-3/4">{{supplierS?.names}}</p>
                         </div>
+                        }
                         <div class="flex">
-                            <p class="text-gray-500 mr-2 mb-2 w-1/4">NIT:</p>
-                            <p class="w-3/4">Descomentar información</p>
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Dirección:</p>
+                            <p class="w-3/4">{{supplierS?.address}}</p>
                         </div>
                     </div>
                     <div class="space-y-2">
                         <div class="flex">
-                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Dirección:</p>
-                            <p class="w-3/4">Descomentar información</p>
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Pais:</p>
+                            <p class="w-3/4">{{supplierS?.country}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Ciudad:</p>
+                            <p class="w-3/4">{{supplierS?.city}}</p>
                         </div>
                         <div class="flex">
                             <p class="text-gray-500 mr-2 mb-2 w-1/4">Correo:</p>
-                            <p class="w-3/4">Descomentar información</p>
+                            <p class="w-3/4">{{supplierS?.email}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Tipo de Persona:</p>
+                            <p class="w-3/4">{{supplierS?.personType}}</p>
                         </div>
                     </div>
                 </div>
+                }
+            </div>
             }
-            
+
         </div>
+
+        <!--Products information -->
+        @if(supplierS){
+        <div class="mt-10">
+            <button (click)="showSectionProductsM()"
+                class="w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+                <div class="flex">
+
+                    @if(showSectionProducts){
+                    <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    }
+
+                    @if(!showSectionProducts){
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    }
+
+                    Información de productos.
+                </div>
+            </button>
+        </div>
+        }
 
     </div>
 </div>

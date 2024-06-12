@@ -1,10 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Third } from '../../../third-parties-managment/models/Third';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ePersonType } from '../../../third-parties-managment/models/ePersonType';
-import { eThirdGender } from '../../../third-parties-managment/models/eThirdGender';
+import { FormBuilder, FormGroup, FormControl} from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-invoice-select-supplier',
@@ -13,38 +11,10 @@ import { eThirdGender } from '../../../third-parties-managment/models/eThirdGend
 })
 export class InvoiceSelectSupplierComponent {
   inputData: any;
-
-  lstThirds: Third[] = [
-    {
-      thId: 1,
-      entId: 'ENT001',
-      typeId: {
-        entId: "123",
-        typeId: "asffsd",
-        typeIdname: "123123"
-      },
-      thirdTypes: [],
-      personType: ePersonType.natural,
-      names: 'John',
-      lastNames: 'Doe',
-      socialReason: 'JD Enterprises',
-      gender: eThirdGender.masculino,
-      idNumber: 123456789,
-      state: true,
-      country: 'USA',
-      province: 'California',
-      city: 'Los Angeles',
-      address: '123 Main St',
-      phoneNumber: '+1234567890',
-      email: 'john.doe@example.com',
-      creationDate: new Date().toISOString(),
-      updateDate: new Date().toISOString()
-    }
-  ];
-
-
+  filterThird: string = '';
+  lstThirds: any[] = [];
+  selectedItem?: string;
   entData : any | any = null;
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
 
   columns: any[] = [
    { title: 'Nombre/RazonSocial', lstThirds: 'socialReason' },
@@ -61,20 +31,33 @@ export class InvoiceSelectSupplierComponent {
 
   ngOnInit() {
     this.inputData = this.data;
-    //Se obtiene datos de empresa seleccionada 
-    /*this.entData = this.localStorageMethods.loadEnterpriseData();
 
-    //Se obtienen los teceros de la mepresa en especifico
-    if(this.entData){
-      this.thirdService.getThirdParties(this.entData.entId, 0).subscribe({
-        next: (response: Third[])=>{
+    if(this.inputData.entId){
+      this.thirdService.getThirdParties(this.inputData.entId,0).subscribe({
+        next: (response: any[])=>{
           this.lstThirds = response;
+          console.log('Lista de proveedores', this.lstThirds)
+        },
+        error: (error) => {
+          console.log(error)
+          Swal.fire({
+            title: 'Error!',
+            text: 'No se han encontrado terceros para esta empresa!',
+            icon: 'error',
+          });
         }
-      })
-    }*/
+      });
+    }
+    console.log(this.lstThirds)
+  }
+
+  selectItem(selectedValue: string): void {
+    this.selectedItem = selectedValue;
+    console.log('Item seleccionado:', this.selectedItem);
+    this.ref.close(this.selectedItem);
   }
 
   closePopUp() {
-    this.ref.close('closing from modal details');
+    this.ref.close();
   }
 }
