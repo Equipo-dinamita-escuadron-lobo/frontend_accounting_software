@@ -23,6 +23,7 @@ import { EnterpriseType } from '../../models/EnterpriseType';
 import { environment } from '../../../../../../environments/enviorment.development';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../principal/login/services/auth.service';
 
 @Component({
   selector: 'app-enterprise-edit',
@@ -77,6 +78,8 @@ export class EnterpriseEditComponent {
   placeDepartment: string = 'Seleccione una opción';
   placeCity: string = 'Seleccione una opción';
 
+  rol:boolean = false;
+
   /**
    *
    * @param fb To form reactive
@@ -96,12 +99,13 @@ export class EnterpriseEditComponent {
     private cityService: CityService,
     private departmentService: DepartmentService,
     private uploadService: EnterpriseService,
-    private router: Router
+    private router: Router,
   ) {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
     this.getEnterpriseEdit();
+
   }
 
   ngOnInit(): void {

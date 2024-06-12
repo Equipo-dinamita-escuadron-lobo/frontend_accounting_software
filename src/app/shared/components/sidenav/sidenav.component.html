@@ -1,7 +1,8 @@
-<div class="sidenav bg-gray-800" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+<div class="sidenav bg-blue-950" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
   <div class="logo-container mb-4">
     <button class="logo" (click)="toggleCollapse()">
-      <img *ngIf="logo_enterprise!== ''" class="rounded-full object-cover shadow-sm logo-img" [src]="logo_enterprise" alt="logo.png">
+      <img *ngIf="logo_enterprise!== ''" class="rounded-full object-cover shadow-sm logo-img" [src]="logo_enterprise"
+        alt="logo.png">
       <img *ngIf="logo_enterprise=== ''" class="rounded-full object-cover shadow-sm logo-img"
         src="../../../../../../assets/Iconos/enterprise/icon-default.png" alt="Logo por defecto" />
     </button>
@@ -34,10 +35,31 @@
     </ul>
   </div>
 
-  <div class="logo-container border-t-2 ">
-    <button class="logo" (click)="toggleCollapse()">
-      <img class="logo-img logo-app" src="../../../../assets/Iconos/contapp-logo.svg" alt="logo.png">
-    </button>
-    <div class="logo-text" @fadeInOut *ngIf="collapsed">ContApp</div>
+  <div class="logo-container border-t-2">
+
+
+    <!-- Botones flotantes -->
+    <div class="floating-buttons mb-4 text-lg w-full text-white hover:text-black font-projectFont" @fadeInOut *ngIf="collapsed">
+      <div class="sidenav-nav-item w-full grid">
+        <button class="sidenav-nav-link flex justify-center items-center" (click)="goBack()">
+          <span class="material-icons mr-3">
+            keyboard_return
+          </span>
+          <span class="">Regresar</span>
+        </button>
+      </div>
+
+      <div class="sidenav-nav-item w-full grid">
+        <button class="sidenav-nav-link flex justify-center items-center" (click)="logout()">
+          <span class="material-icons mr-3">
+            logout
+          </span>
+          <span class="">Salir</span>
+        </button>
+      </div>
+
+
+    </div>
   </div>
+
 </div>

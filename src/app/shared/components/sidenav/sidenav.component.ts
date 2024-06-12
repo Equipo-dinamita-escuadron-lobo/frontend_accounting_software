@@ -17,6 +17,7 @@ import { SideNavToggle } from './SideNavToggle.interface';
 import { INavbarData, fadeInOut } from './helper';
 import { Router } from '@angular/router';
 import { EnterpriseService } from '../../../modules/commercial/enterprise-managment/services/enterprise.service';
+import { AuthService } from '../../../modules/principal/login/services/auth.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -43,6 +44,7 @@ export class SidenavComponent implements OnInit {
   collapsed = true;
   navData = navbarData;
   multiple: boolean = false;
+  showOptions: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
@@ -61,7 +63,8 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private enterpriseService: EnterpriseService
+    private enterpriseService: EnterpriseService,
+    private authService: AuthService
   ) {
     this.getInfoEnterprise();
   }
@@ -84,12 +87,26 @@ export class SidenavComponent implements OnInit {
     }
   }
 
+  toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
+  goBack() {
+    this.router.navigate(['general/enterprises/list']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['']);
+  }
+
   toggleCollapse(): void {
     this.collapsed = !this.collapsed;
     this.onToggleSideNav.emit({
       collapsed: this.collapsed,
       screenWidth: this.screenWidth,
     });
+    this.showOptions = false;
   }
 
   closeSidenav(): void {

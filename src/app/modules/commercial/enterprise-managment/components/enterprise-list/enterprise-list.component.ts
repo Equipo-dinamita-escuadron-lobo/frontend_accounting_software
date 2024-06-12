@@ -47,6 +47,7 @@ export class EnterpriseListComponent {
       next: (enterpriseData) => {
         this.typeList = 'ACTIVE';
         this.listEnterprises = enterpriseData;
+        this.sortArrayByName();
       },
     });
   }
@@ -100,6 +101,18 @@ export class EnterpriseListComponent {
           },
         });
       }
+    });
+  }
+
+  sortArrayByName(): void {
+    this.listEnterprises.sort((a:EnterpriseList, b:EnterpriseList) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+      }
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1;
+      }
+      return 0;
     });
   }
 }
