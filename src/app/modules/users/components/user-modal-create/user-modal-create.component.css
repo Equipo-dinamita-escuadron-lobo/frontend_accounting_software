@@ -1,0 +1,8 @@
+
+
+
+/*Color establecido para un boton seleccionado*/
+.selected {
+    background-color: #002d72; 
+    color: white;
+}

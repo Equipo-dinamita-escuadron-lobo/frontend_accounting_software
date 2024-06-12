@@ -65,5 +65,35 @@ export class AuthService {
     return this.http.get(`${URL}keycloak/getCurrentUser`);
   }
 
+  verifiedStatusLogin():boolean{
+    if(this.getToken()===null){
+      return false
+    }
+
+    return true
+  }
+
+  public getRolUser(){
+    const user = this.getUserData();
+    return user.roles;
+  }
+
+  verifiedRolSuperUser() {
+    const rol_auth = this.getRolUser();
+
+    console.log(rol_auth)
+
+    const rol_find = rol_auth.find(
+      (rol:string) => rol === 'super_realm'
+    );
+
+    if (rol_find) {
+      return true;
+    }
+
+    return false; 
+  }
+
+
 
 }

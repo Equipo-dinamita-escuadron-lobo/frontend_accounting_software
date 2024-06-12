@@ -1,0 +1,90 @@
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopUp()"></div>
+<div
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center">
+  <div class="relative my-6 mx-auto max-w-6xl">
+    <!--content-->
+    <div class="bg-white rounded-lg shadow-lg">
+      <!--header-->
+      <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t">
+        <h3 class="text-2xl font-semibold text-gray-900">
+          {{ inputData.title }}
+        </h3>
+        <button
+          class="p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="closePopUp()">
+          <span class="text-2xl">×</span>
+        </button>
+      </div>
+      <!--body-->
+      <form [formGroup]="UserForm" class="p-8">
+        <div class="grid grid-cols-2 gap-8">
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
+            <input type="text" formControlName="firstName"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Apellido</label>
+            <input type="text" formControlName="lastName"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input type="text" formControlName="email"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Usuario</label>
+            <input type="text" formControlName="username"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+          <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Contraseña</label>
+            <input type="text" formControlName="password"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          </div>
+   
+          <div class="tax-liabilities max-w-56 grid mb-3">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Roles</label>
+            <div class="icon flex">
+              <ng-select name="tax-liabilities" [items]="options" bindLabel="name" [searchable]="true"
+                formControlName="roles" (change)="onOptionsSelected($event)"
+                class="max-w-full border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9" [maxSelectedItems]="7"
+                [multiple]="true" [clearable]="false"
+                >
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                    {{ item.name }}</div>
+                </ng-template>
+              </ng-select>
+              <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </div>
+            <div
+              *ngIf="UserForm.get('roles')?.touched && UserForm.get('roles')?.errors?.['noValueSelected']"
+              class="text-red-500 text-sm font-medium -mt-1">
+              Por favor, seleccione al menos un ítem.
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+      <!--footer-->
+      <div class="flex items-center justify-end p-6 border-t border-gray-200">
+        <button
+          class="m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
+          type="button" (click)="closePopUp()">
+          CANCELAR
+        </button>
+        <button 
+          class="m-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
+          type="submit" (click)="OnSubmit()">
+          GUARDAR
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

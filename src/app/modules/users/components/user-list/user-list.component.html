@@ -1,0 +1,99 @@
+<section class="contenido px-10 py-10 font-projectFont mt-7">
+    <div class="grid grid-cols-1  justify-between mx-4 sm:grid-cols-2 ">
+        <div class="tile text-center mb-3 sg:text-start">
+            <h1 class="text-3xl   font-bold  text-blue-950">{{title}}</h1>
+            <p class="text-base mb-3  sg:mb-7 ">{{subtitle}}</p>
+        </div>
+
+
+        <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+
+            <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
+                <button type="button" (click)="openModalCreate()"
+                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                    Agregar
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-all grid  bg-white rounded-lg grid-cols-1 shadow-lg p-4 pr-0 mx-3">
+        <div class="search mb-6">
+            <form class="flex justify-center sm:justify-start sm:ml-8 mx-4 my-5">
+                <div class="flex justify-start border-b-2 border-blue-800 w-full sm:w-3/5 rounded-md max-h-10">
+                    <div class="icon mr-1">
+                        <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+
+                        </svg>
+                    </div>
+
+                    <div class="input w-full">
+                        <input type="text" class="mb-2   w-10/12 outline-none" id="search"
+                            placeholder="Buscar" name="filterEnterpriseList"
+                            [(ngModel)]="filterUser">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="lg:text-md mx-auto w-full px-12">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-200 ">
+                  <tr class="overflow-hidden">
+                    <th scope="col" class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
+                      *ngFor="let col of columns">
+                      {{ col.title }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="
+                    let user of data | filterUserList:filterUser" class="hover:bg-gray-100">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      {{ user.firstName}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                      {{ user.lastName}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      {{user.email }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      {{user.username }}
+                    </td>
+
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      {{user.password }}
+                    </td>
+
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="block" *ngFor="let rol of user.roles">
+                        <span *ngIf="validRol(rol)">{{filterRoles(rol)}}</span>
+                      </div>
+                    </td>
+                    
+                    <td class="py-4 whitespace-nowrap flex justify-center items-center">
+                      <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden" (click)="openModalEdit(user.id)"
+                       >
+                        <span class="material-icons flex justify-center items-center text-white ">edit</span>
+                        <span
+                          class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
+                          Editar
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+    </div>
+
+</section>
