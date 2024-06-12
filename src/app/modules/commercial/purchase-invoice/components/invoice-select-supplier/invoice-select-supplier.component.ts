@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import Swal from 'sweetalert2';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-invoice-select-supplier',

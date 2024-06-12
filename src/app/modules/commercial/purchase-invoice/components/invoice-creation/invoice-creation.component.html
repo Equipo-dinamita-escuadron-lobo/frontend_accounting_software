@@ -145,6 +145,23 @@
                     Información de productos.
                 </div>
             </button>
+
+            @if(showSectionProducts){
+                <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear productos.
+                </p>
+                <div class="botones flex justify-center items-center mb-5">
+                    <div class="inline-flex">
+                        <button (click)="selectProducts()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                            Seleccionar Productos
+                        </button>
+                        <button (click)="createProduct()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                            Crear Productor
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
         }
 

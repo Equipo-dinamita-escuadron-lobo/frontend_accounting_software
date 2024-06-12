@@ -7,6 +7,7 @@ import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoi
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Third } from '../../../third-parties-managment/models/Third';
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
+import { Product } from '../../../product-managment/models/Product';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -27,7 +28,7 @@ export class InvoiceCreationComponent implements OnInit {
   showSectionProducts: boolean = true;
   showInfoProducts: boolean = false;
   //TODO variables para almacenar los los productos seleccionados
-  //lstProducts: Product[] = [];
+  lstProducts: Product[] = [];
 
 
   constructor(private enterpriseService: EnterpriseService,
@@ -78,7 +79,10 @@ export class InvoiceCreationComponent implements OnInit {
 
   //Method for show window products
   selectProducts(){
-    this.OpenListThirds('Seleccion de Productos', this.enterpriseSelected?.id, InvoiceSelectProductsComponent);
+    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.socialReason || this.supplierS?.names, InvoiceSelectProductsComponent);
+  }
+  createProduct(){
+    this.showSectionProducts = !this.showSectionProducts;
   }
   showSectionProductsM(){
     this.showSectionProducts = !this.showSectionProducts;
@@ -86,7 +90,7 @@ export class InvoiceCreationComponent implements OnInit {
 
   OpenListThirds(title: any, entId: any, component: any) {
     const _popUp = this.dialog.open(component, {
-      width: '40%',
+      width: '50%',
       height: 'auto',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '100ms',
@@ -104,6 +108,29 @@ export class InvoiceCreationComponent implements OnInit {
         this.getSupplier(result);
       } else {
         this.showInfoThird = false;
+      }
+    });
+  }
+
+  OpenListProducts(title: any, entId: any, provName: any, component: any) {
+    const _popUp = this.dialog.open(component, {
+      width: '0%',
+      height: 'auto',
+      enterAnimationDuration: '0ms',
+      exitAnimationDuration: '100ms',
+      data: {
+        title: title,
+        entId: entId,
+        provName: provName
+      }
+    });
+
+    _popUp.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Información recibida del modal:', result);
+        this.lstProducts = result; // Almacena los productos seleccionados
+      }else{
+        console.log('No selecciono ningun producto')
       }
     });
   }
