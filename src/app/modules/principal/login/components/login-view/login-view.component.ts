@@ -19,11 +19,20 @@ export class LoginViewComponent {
 
   loading: any = true;
 
-  constructor(
-    public router: Router,
+  constructor(public router: Router,
     private authService: AuthService,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.verifiedStatusUser()
+  }
+
+  verifiedStatusUser(){
+    if(this.authService.verifiedStatusLogin()){
+      this.router.navigate(['/general/enterprises/list']);
+    }
+  }
+
+
 
   perfil: any[] = [];
 
@@ -64,8 +73,10 @@ export class LoginViewComponent {
           next: (data: any) => {
             this.authService.setUserData(data);
             //vericicamos el rol del usuario
+            console.log('roles')
             let roles = data.roles;
-            if (roles.includes('admin_client')) {
+            if (roles.includes('admin_realm') || roles.includes('user_realm') || roles.includes('super_realm')) {
+              console.log(roles)
               this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
             } else if (roles.includes('user_client')) {

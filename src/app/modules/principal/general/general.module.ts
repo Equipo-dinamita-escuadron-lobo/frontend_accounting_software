@@ -8,19 +8,23 @@ import { SharedModule } from '../../../shared/shared.module';
 import { EnterpriseManagmentModule } from '../../commercial/enterprise-managment/enterprise-managment.module';
 import { ViewEnterprisesComponent } from './components/view-enterprises/view-enterprises.component';
 import { GeneralViewComponent } from './components/general-view/general-view.component';
+import { UserViewComponent } from './components/user-view/user-view.component';
+import { UsersModule } from '../../users/users.module';
 
 
 @NgModule({
   declarations: [
     ViewEnterprisesComponent,
-    GeneralViewComponent
+    GeneralViewComponent,
+    UserViewComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     GeneralRoutingModule,
     SharedModule,
-    EnterpriseManagmentModule
+    EnterpriseManagmentModule,
+    UsersModule
   ]
 })
 export class GeneralModule { }

@@ -19,6 +19,9 @@ import { EnterpriseDetailsComponent } from '../../commercial/enterprise-managmen
 import { EnterpriseEditComponent } from '../../commercial/enterprise-managment/components/enterprise-edit/enterprise-edit.component';
 import { AccountsListComponent } from '../../commercial/chart-accounts/components/accounts-list/accounts-list.component';
 import { permissionsGuard } from '../../../core/guards/permissions.guard';
+import { UserListComponent } from '../../users/components/user-list/user-list.component';
+import { UserViewComponent } from './components/user-view/user-view.component';
+import { permissionsSuperGuardTsGuard } from '../../../core/guards/permissions.super.guard.ts.guard';
 
 const routes: Routes = [
   {
@@ -42,6 +45,20 @@ const routes: Routes = [
     ],
     canActivate: [permissionsGuard],
   },
+
+  {
+    path: 'users',
+    component: UserViewComponent,
+    title: 'Usuarios',
+    children: [
+      {
+        path: 'list',
+        component: UserListComponent,
+      }
+    ],
+    canActivate: [permissionsSuperGuardTsGuard],
+  },
+
   {
     path: 'operations',
     component: GeneralViewComponent,

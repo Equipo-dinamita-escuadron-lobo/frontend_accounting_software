@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../../../users/services/user.service';
+import { AuthService } from '../../../login/services/auth.service';
 
 @Component({
   selector: 'app-main',
@@ -24,7 +26,18 @@ export class MainComponent implements OnInit, OnDestroy {
   private subtitleIndex: number = 0;
   private resetTimeoutId: any;
 
-  constructor(public router: Router) {}
+  constructor(public router: Router,
+    private authService: AuthService
+  ) {
+    this.verifiedStatusUser()
+  }
+
+  verifiedStatusUser(){
+    if(this.authService.verifiedStatusLogin()){
+      this.router.navigate(['/general/enterprises/list']);
+    }
+  }
+
 
   ngOnInit() {
     this.startAnimation();

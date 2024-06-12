@@ -1,3 +1,4 @@
+import { User } from "../../modules/users/models/User";
 
 
 export class LocalStorageMethods{
