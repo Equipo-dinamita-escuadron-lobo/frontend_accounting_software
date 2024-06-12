@@ -30,7 +30,7 @@
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               <input type="text" class="mb-1 font-normal bg-transparent w-10/12 outline-none" id="search"
-                placeholder="Buscar cuenta(codigo/nombre)" name="filterEnterpriseList" name="filterAccount"
+                placeholder="Buscar tercero" name="filterEnterpriseList" name="filterAccount"
                 [(ngModel)]="filterThird">
             </div>
           </form>
@@ -46,7 +46,7 @@
             </thead>
 
             <tbody class="bg-white divide-y divide-gray-200">
-              @for(third of lstThirds; track third){
+              <!--@for(third of lstThirds; track third){
               <tr class="hover:bg-gray-100">
                 <td class="px-6 py-4 whitespace-nowrap">
                   {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
@@ -61,7 +61,22 @@
                   <button (click)="selectItem(third.thId); $event.stopPropagation()">Seleccionar</button>
                 </td>
               </tr>
-              }
+              }-->
+
+              <tr *ngFor="let third of lstThirds | filterThird: filterThird" class="hover:bg-gray-100">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                  {{ third.typeId.typeId }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  {{ third.idNumber }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button (click)="selectItem(third.thId); $event.stopPropagation()">Seleccionar</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
