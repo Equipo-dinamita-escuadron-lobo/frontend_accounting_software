@@ -80,7 +80,7 @@ export class LoginViewComponent {
               this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
             } else if (roles.includes('user_client')) {
-              this.router.navigate(['/']);
+              this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
             } else {
               this.router.navigate(['']);
