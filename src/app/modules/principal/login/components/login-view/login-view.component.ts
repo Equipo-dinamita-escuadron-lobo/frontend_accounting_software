@@ -75,7 +75,7 @@ export class LoginViewComponent {
             //vericicamos el rol del usuario
             console.log('roles')
             let roles = data.roles;
-            if (roles.includes('admin_realm') || roles.includes('user_realm') || roles.includes('super_realm')) {
+            if (roles.includes('admin_realm') || roles.includes('super_realm')) {
               console.log(roles)
               this.router.navigate(['/general/enterprises/list']);
               this.authService.loginStatus.next(true);
