@@ -31,6 +31,10 @@ const routes: Routes = [
   {
     path: 'accounts-management',
     loadChildren: () => import('./modules/commercial/chart-accounts/chart-accounts.module').then(m => m.ChartAccountsModule),
+  },
+  {
+    path: 'taxes',
+    loadChildren: () => import('./modules/commercial/taxes/taxes.module').then(m => m.TaxesModule),
   }
 ];
 

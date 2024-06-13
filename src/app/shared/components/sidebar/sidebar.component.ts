@@ -45,7 +45,7 @@ export class SidebarComponent {
       subHref: [
         {linkText: 'Productos', href: '/general/operations/products'}
       ]
-    },
+    }
 
     // Añade tantos enlaces como necesites
   ];
