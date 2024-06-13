@@ -23,6 +23,8 @@ import { UserListComponent } from '../../users/components/user-list/user-list.co
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { permissionsSuperGuardTsGuard } from '../../../core/guards/permissions.super.guard.ts.guard';
 import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/list-tax.component';
+import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edit-tax.component';
+import { CreateTaxComponent } from '../../commercial/taxes/components/create-tax/create-tax.component';
 const routes: Routes = [
   {
     path: '',
@@ -81,11 +83,11 @@ const routes: Routes = [
       },
       {
         path: 'taxes/create',
-        component: ListTaxComponent
+        component:CreateTaxComponent
       },
       {
         path: 'taxes/edit/:id',
-        component: ListTaxComponent
+        component: EditTaxComponent
       },
       {
         path: 'products',
