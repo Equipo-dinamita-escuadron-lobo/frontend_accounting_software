@@ -22,6 +22,7 @@ import { permissionsGuard } from '../../../core/guards/permissions.guard';
 import { UserListComponent } from '../../users/components/user-list/user-list.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { permissionsSuperGuardTsGuard } from '../../../core/guards/permissions.super.guard.ts.guard';
+import { InvoiceCreationComponent } from '../../commercial/purchase-invoice/components/invoice-creation/invoice-creation.component';
 
 const routes: Routes = [
   {
@@ -119,6 +120,9 @@ const routes: Routes = [
       {
         path: 'home/edit',
         component: EnterpriseEditComponent
+      },{
+        path: 'invoice',
+        component: InvoiceCreationComponent
       }
     ],
     canActivate: [permissionsGuard],

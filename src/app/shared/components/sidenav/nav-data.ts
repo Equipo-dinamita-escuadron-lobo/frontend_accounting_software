@@ -35,4 +35,9 @@ export const navbarData: INavbarData[] = [
       }
     ]
   },
+  {
+    routeLink: '/general/operations/invoice',
+    icon: 'receipt_long',
+    label: 'Factura de compra'
+  }
 ]
