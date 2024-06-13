@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import Swal from 'sweetalert2';
+import { ThirdType } from '../../../third-parties-managment/models/ThirdType';
 
 @Component({
   selector: 'app-invoice-select-supplier',
@@ -31,14 +32,17 @@ export class InvoiceSelectSupplierComponent {
   ngOnInit() {
     this.inputData = this.data;
 
-    if(this.inputData.entId){
-      this.thirdService.getThirdParties(this.inputData.entId,0).subscribe({
-        next: (response: any[])=>{
-          this.lstThirds = response;
-          console.log('Lista de proveedores', this.lstThirds)
+    if (this.inputData.entId) {
+      this.thirdService.getThirdParties(this.inputData.entId, 0).subscribe({
+        next: (response: any[]) => {
+          // Filtrar los terceros que tienen thirdTypes con thirdTypeName igual a "Proveedor"
+          this.lstThirds = response.filter(third => 
+            third.thirdTypes.some((type: ThirdType) => type.thirdTypeName === 'Proveedor')
+          );
+          console.log('Lista de proveedores', this.lstThirds);
         },
         error: (error) => {
-          console.log(error)
+          console.log(error);
           Swal.fire({
             title: 'Error!',
             text: 'No se han encontrado terceros para esta empresa!',
@@ -47,6 +51,8 @@ export class InvoiceSelectSupplierComponent {
         }
       });
     }
+    
+    
     console.log(this.lstThirds)
   }
 
