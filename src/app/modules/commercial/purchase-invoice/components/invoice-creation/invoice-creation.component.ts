@@ -7,7 +7,6 @@ import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoi
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Third } from '../../../third-parties-managment/models/Third';
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
-import { Product } from '../../../product-managment/models/Product';
 import { ProductI } from '../../models/productInvoice';
 
 @Component({
@@ -18,7 +17,7 @@ import { ProductI } from '../../models/productInvoice';
 export class InvoiceCreationComponent implements OnInit {
   enterpriseSelected?: EnterpriseDetails;
 
-  //Variables for third parties
+  // Variables for third parties
   showSectionThrid: boolean = true;
   showInfoThird: boolean = false;
   selectedSupplier: any;
@@ -26,7 +25,7 @@ export class InvoiceCreationComponent implements OnInit {
   lstThirds: Third[] = [];
   lstThirdsSecurity: Third[] = [];
 
-  //Variables for products
+  // Variables for products
   showSectionProducts: boolean = true;
   showInfoProducts: boolean = false;
   lstProducts: ProductI[] = [];
@@ -36,18 +35,24 @@ export class InvoiceCreationComponent implements OnInit {
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Precio Unitario', data: 'price' },
-    { title: 'Cantidad'},
-    { title: 'IVA'},
-    { title: 'Valor Total'},
+    { title: 'Cantidad' },
+    { title: 'IVA' },
+    { title: 'Valor Total' },
   ];
 
-  //Variables for purchase invoice
-  subtotal: number = 0;
-  ivaAmount: number = 0;
+  // Variables for purchase invoice
+  subTotal: number = 0;
+  taxTotal: number = 0;
+  total: number = 0;
+
+    // Variables for date and payment method
+  currentDate: Date = new Date();
+  dueDate?: string;
+  paymentMethod: string = 'debito';
 
   constructor(private enterpriseService: EnterpriseService,
-    private dialog: MatDialog,
-    private thirdService: ThirdServiceService) { }
+              private dialog: MatDialog,
+              private thirdService: ThirdServiceService) { }
 
   ngOnInit() {
     this.getEnterpriseSelectedInfo();
@@ -73,50 +78,62 @@ export class InvoiceCreationComponent implements OnInit {
       this.thirdService.getThirdPartie(thirdId).subscribe({
         next: (response: Third) => {
           this.supplierS = response;
-          console.log(this.supplierS.email)
+          console.log(this.supplierS.email);
         }
-      })
+      });
     }
   }
 
-  //Metodo para ventana emergetne de terceros
+  // Método para ventana emergente de terceros
   selectSupplier() {
     this.OpenListThirds('Seleccion de proveedor', this.enterpriseSelected?.id, InvoiceSelectSupplierComponent);
   }
-  //Metodo para llevar al formulario de crear tercero
+
+  // Método para llevar al formulario de crear tercero
   createSupplier() {
     this.showInfoThird = !this.showInfoThird;
   }
+
   showSectionThridM() {
     this.showSectionThrid = !this.showSectionThrid;
   }
 
-  //Method for show window products
+  // Método para mostrar ventana emergente de productos
   selectProducts() {
     this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, InvoiceSelectProductsComponent);
   }
+
   createProduct() {
     this.showSectionProducts = !this.showSectionProducts;
   }
+
   showSectionProductsM() {
     this.showSectionProducts = !this.showSectionProducts;
   }
 
   formatPrice(price: number): string {
     return price.toLocaleString('es-ES');
+    //return price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
   }
 
-  // Calculate total value based on amount and price
+  // Paara calcular total de cada producto
   calculateTotal(prod: ProductI): void {
-    prod.totalValue = this.calculateTotalValue(prod);
+    prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+    this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
-  // Calculate total value including IVA
+  // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
-    this.subtotal = prod.amount * prod.price;
-    this.ivaAmount = (this.subtotal * prod.IVA) / 100;
+    const subtotalProduct = prod.amount * prod.price;
+    const ivaAmountProduct = (subtotalProduct * prod.IVA) / 100;
+    return subtotalProduct + ivaAmountProduct;
+  }
 
-    return this.subtotal + this.ivaAmount;
+  //para calcular los datos como impuesto, subtotal y total de la factura
+  calculateInvoiceTotals(): void {
+    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + (prod.price * prod.amount), 0);
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    this.total = this.subTotal + this.taxTotal;
   }
 
   OpenListThirds(title: any, entId: any, component: any) {
@@ -166,8 +183,9 @@ export class InvoiceCreationComponent implements OnInit {
           prod.totalValue = 0;
         });
         this.showInfoProducts = true;
+        this.calculateInvoiceTotals(); // Calcular los totales iniciales
       } else {
-        console.log('No selecciono ningun producto')
+        console.log('No selecciono ningun producto');
         this.showInfoProducts = false;
       }
     });
