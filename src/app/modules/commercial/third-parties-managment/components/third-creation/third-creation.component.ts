@@ -49,6 +49,8 @@ export class ThirdCreationComponent implements OnInit {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
 
+    console.log(this.entData);
+
     this.createdThirdForm = this.formBuilder.group({
       entId: [''],
       typeId: ['', Validators.required],
@@ -89,7 +91,7 @@ export class ThirdCreationComponent implements OnInit {
       }
     });
 
-  this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
+    this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[])=>{
         this.typeIds = response;
       },
@@ -118,11 +120,9 @@ export class ThirdCreationComponent implements OnInit {
       }
     });
 
-  this.thirdServiceConfiguration.getTypeIds("0").subscribe({
+    this.thirdServiceConfiguration.getTypeIds("0").subscribe({
       next: (response: TypeId[])=>{
         response.forEach(elemento => this.typeIds.push(elemento));
-        console.log(this.typeIds)
-
       },
       error: (error) => {
         console.log(error)
@@ -152,7 +152,7 @@ export class ThirdCreationComponent implements OnInit {
     this.submitted = true;
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
-    third.entId = this.entData.entId;
+    third.entId = this.entData;
     third.thirdTypes = this.selectedThirdTypes;
 
     third.state =
