@@ -8,6 +8,8 @@ import { ThirdServiceService } from '../../../third-parties-managment/services/t
 import { Third } from '../../../third-parties-managment/models/Third';
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
 import { ProductI } from '../../models/productInvoice';
+import { Facture } from '../../models/facture';
+import { ProductS } from '../../models/productSend';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -31,28 +33,29 @@ export class InvoiceCreationComponent implements OnInit {
   lstProducts: ProductI[] = [];
   lstProductsSecurity: ProductI[] = [];
 
+  // Variables for purchase invoice
+  subTotal: number = 0;
+  taxTotal: number = 0;
+  retention: number = 0;
+  total: number = 0;
+
+  currentDate: Date = new Date();
+  dueDate?: string;
+  paymentMethod: string = 'debito';
+  lstProductsSend: ProductS[] = [];
+
   columnsProducts: any[] = [
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Precio Unitario', data: 'price' },
     { title: 'Cantidad' },
     { title: 'IVA' },
-    { title: 'Valor Total' },
+    { title: 'Subtotal' },
   ];
 
-  // Variables for purchase invoice
-  subTotal: number = 0;
-  taxTotal: number = 0;
-  total: number = 0;
-
-    // Variables for date and payment method
-  currentDate: Date = new Date();
-  dueDate?: string;
-  paymentMethod: string = 'debito';
-
   constructor(private enterpriseService: EnterpriseService,
-              private dialog: MatDialog,
-              private thirdService: ThirdServiceService) { }
+    private dialog: MatDialog,
+    private thirdService: ThirdServiceService) { }
 
   ngOnInit() {
     this.getEnterpriseSelectedInfo();
@@ -125,15 +128,41 @@ export class InvoiceCreationComponent implements OnInit {
   // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
     const subtotalProduct = prod.amount * prod.price;
-    const ivaAmountProduct = (subtotalProduct * prod.IVA) / 100;
-    return subtotalProduct + ivaAmountProduct;
+    //const ivaAmountProduct = (subtotalProduct * prod.IVA) / 100;
+    return subtotalProduct;
   }
 
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(): void {
-    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + (prod.price * prod.amount), 0);
+    console.log(this.lstProducts)
+    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price*prod.amount)), 0);
+    //this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price*prod.amount)+(prod.price*prod.amount*prod.IVA)/100), 0);
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
-    this.total = this.subTotal + this.taxTotal;
+    this.retention = this.subTotal * 0.025;
+    this.total = this.subTotal + this.taxTotal - this.retention;
+  }
+
+  saveFacture() {
+    this.lstProductsSend = this.lstProducts.map(prod => ({
+      productId: parseInt(prod.id),
+      amount: prod.amount,
+      description: prod.description,
+      vat: prod.IVA.toString(),
+      unitPrice: prod.price.toString(),
+      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100)).toFixed(2)
+    }));
+
+    const factureS: Facture = {
+      factId: 0,
+      entId: this.enterpriseSelected?.id,
+      thId: this.supplierS?.thId,
+      factCode: "123",
+      factureType: "Compra",
+      factProducts: this.lstProductsSend,
+      factSubTotals: this.subTotal,
+      facSalesTax: this.taxTotal,
+      facWithholdingSource: this.retention
+    };
   }
 
   OpenListThirds(title: any, entId: any, component: any) {

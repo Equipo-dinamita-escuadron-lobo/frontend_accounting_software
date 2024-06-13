@@ -24,6 +24,7 @@
                             <p class="text-gray-500 mr-2 mb-2">NIT:</p>
                             <p class="">{{enterpriseSelected?.nit}}</p>
                         </div>
+                        <!--
                         <div class="flex">
                             <p class="text-gray-500 mr-2 mb-2">Forma de pago:</p>
                             <select [(ngModel)]="paymentMethod" class="border-none  px-2 py-1">
@@ -32,6 +33,7 @@
                                 <option value="efectivo">Efectivo</option>
                             </select>
                         </div>
+                        -->
                     </div>
                 </div>
             </div>
@@ -195,6 +197,7 @@
                                 <td class="px-4 py-1 whitespace-nowrap">
                                     <select [(ngModel)]="prod.IVA" (change)="calculateTotal(prod)">
                                         <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
+                                        <option value="0">0%</option>
                                         <option value="5">5%</option>
                                         <option value="19">19%</option>
                                     </select>
@@ -218,6 +221,10 @@
                         <p class="w-3/4">{{ formatPrice(taxTotal) }}</p>
                     </div>
                     <div class="flex">
+                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
+                        <p class="w-3/4">{{ formatPrice(retention) }}</p>
+                    </div>
+                    <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
                         <p class="w-3/4">{{ formatPrice(total) }}</p>
                     </div>
@@ -225,7 +232,7 @@
                 <hr>
                 <div>
                     <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-center">
-                        <button type="button"
+                        <button type="button" (click)="saveFacture()"
                           class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                           Guardar
                         </button>
