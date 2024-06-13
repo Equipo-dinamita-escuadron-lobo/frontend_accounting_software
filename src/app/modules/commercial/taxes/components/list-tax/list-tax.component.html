@@ -23,7 +23,22 @@
               <td class="px-6 py-4 whitespace-nowrap">{{ tax.depositAccountId }}</td>
               <td class="px-6 py-4 whitespace-nowrap">{{ tax.refundAccountId }}</td>
               <td class="py-4 whitespace-nowrap flex justify-center items-center">
-                <!-- Aquí irían los botones de acciones (ver detalles, editar, eliminar) -->
+                <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 relative overflow-hidden"
+                      (click)="redirectToDelete(tax.id)">
+                <span class="material-icons flex justify-center items-center text-white">delete</span>
+                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+                  Eliminar
+                </span>
+              </button>
+
+              <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 mr-2 relative overflow-hidden"
+                (click)="redirectToEdit(tax.id)">
+                <span class="material-icons flex justify-center items-center text-white">edit</span>
+                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+                  Editar
+                </span>
+              </button>
+          
               </td>
             </tr>
           </tbody>

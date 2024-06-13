@@ -90,6 +90,10 @@ export class EditTaxComponent {
     }
   }
 
+  redirectToDetails(): void {
+    // Implementar lógica para redirigir a la vista de detalles del impuesto
+    this.router.navigate(['/tax/details', this.taxId]);
+  }
   goBack(): void {
     this.router.navigate(['/general/operation/taxes']); // Ajusta la ruta según corresponda
   }
