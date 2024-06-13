@@ -95,6 +95,6 @@ export class EditTaxComponent {
     this.router.navigate(['/tax/details', this.taxId]);
   }
   goBack(): void {
-    this.router.navigate(['/general/operation/taxes']); // Ajusta la ruta según corresponda
+    this.router.navigate(['/general/operations/taxes']); // Ajusta la ruta según corresponda
   }
 }
