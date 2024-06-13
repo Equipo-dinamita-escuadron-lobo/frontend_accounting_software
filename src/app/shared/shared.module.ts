@@ -13,6 +13,7 @@ import { DatatableComponent } from './components/datatable/datatable.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule} from '@angular/forms';
 import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.component';
+import { HeaderMainComponent } from './components/header-main/header-main.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.compon
     SidenavComponent,
     SublevelMenuComponent,
     CheckButtonComponent,
-    DatatableComponent
+    DatatableComponent,
+    HeaderMainComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,8 @@ import { SublevelMenuComponent } from './components/sidenav/sublevel-menu.compon
     SidebarComponent,
     SidenavComponent,
     CheckButtonComponent,
-    DatatableComponent
+    DatatableComponent,
+    HeaderMainComponent
   ]
 })
 export class SharedModule { }

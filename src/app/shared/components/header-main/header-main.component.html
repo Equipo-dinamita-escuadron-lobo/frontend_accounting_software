@@ -1,0 +1,28 @@
+<div class="nav w-full px-6 text-white">
+    <div class="flex justify-between items-center">
+        <div class="container-logo m-6">
+            <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="" class="h-24">
+        </div>
+
+        <div class="container-options flex text-xl">
+            <ul class="flex">
+                <li class="py-2 mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Inicio'}"
+                    (click)="goLanding('Inicio')">
+                    Inicio
+                </li>
+                <li class="py-2 mr-10 underline-animation"
+                    [ngClass]="{'selected': selectedOption === 'Acerca'}"
+                    (click)="goToAbout('Acerca')">
+                    Acerca de
+                </li>
+                <li class="py-2 mr-10 underline-animation"
+                    [ngClass]="{'selected': selectedOption === 'Contacto'}" (click)="selectOption('Contacto')">
+                    Contacto
+                </li>
+            </ul>
+            <div class="button-login py-2 border-red-100 border-2 p-4">
+                <button (click)="goToLogin()" class="">Iniciar sesión</button>
+            </div>
+        </div>
+    </div>
+</div>

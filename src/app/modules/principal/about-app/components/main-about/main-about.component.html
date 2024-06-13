@@ -1,0 +1,128 @@
+
+<div class="container-all h-full text-white landing overflow-auto w-full">
+
+    <div
+        class="container-image text-animator  sub-container-all flex flex-col justify-center h-full w-full overflow-auto">
+        <app-header-main></app-header-main>
+        <div class="container-main grid justify-between items-center text-center grid-cols-1 h-full w-full">
+
+            <div class="title w-full flex flex-col justify-center items-center">
+                <div class="container-logo flex justify-center items-center">
+                    <img class="max-h-72" src="../../../../../../assets/Iconos/contapp-logo.svg" alt="">
+                </div>
+                <div class="container-title -mt-9">
+                    <h1 class="typewriter text-8xl font-semibold">
+                        <span [innerHtml]="displayedTitle"> </span>
+                    </h1>
+                </div>
+                <div class="container-subtitle mt-4 text-2xl">
+                    <p class="typewriter">
+                        <span [innerHtml]="displayedSubtitle"></span><span class="cursor">|</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="container-imagefull  w-full flex justify-center items-center flex-col">
+        <h3 class="text-center text-3xl mt-10 mb-5 text-white font-bold ">&lt; Visionarios /&gt;</h3>
+        <div class="proffesors grid grid-cols-1 px-5 sm:px-32 pcg:px-52 text-center justify-center items-center
+      py-20 rounded-2xl">
+            <div class="cards grid grid-cols-1 im:grid-cols-2 opm:grid-cols-4 gap-9 ">
+                <div class="card bg-card1 rounded-2xl p-8 card-hover">
+                    <div class="image rounded-full overflow-hidden">
+                        <img class="h-24 w-24 rounded-full" src="../../../../../../assets/login/Unicauca-economía.jpg"
+                            alt="">
+                    </div>
+
+                    <div class="info grid items-center justify-center">
+                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
+                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
+                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                            itaque sed, veritatis autem iure cupiditate.</span>
+                    </div>
+                </div>
+
+                <div class="card bg-card2 rounded-2xl p-8 card-hover">
+                    <div
+                        class="image rounded-full  bg-cover bg-no-repeat bg-center overflow-hidden">
+                        <img class="h-24 w-24 rounded-full" src="../../../../../../assets/login/Unicauca-economía.jpg"
+                            alt="">
+                    </div>
+
+                    <div class="info grid items-center justify-center">
+                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
+                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
+                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                            itaque sed, veritatis autem iure cupiditate.</span>
+                    </div>
+                </div>
+
+                <div class="card bg-card3 rounded-2xl p-8 card-hover">
+                    <div
+                        class="image rounded-full flex justify-center items-center bg-cover bg-no-repeat bg-center overflow-hidden">
+                        <img class="h-24 w-24 rounded-full" src="../../../../../../assets/login/Unicauca-economía.jpg"
+                            alt="">
+                    </div>
+                    <div class="info grid items-center justify-center">
+                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
+                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
+                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                            itaque sed, veritatis autem iure cupiditate.</span>
+                    </div>
+                </div>
+
+                <div class="card bg-card4 rounded-2xl p-8 card-hover">
+                    <div
+                        class="image rounded-full flex justify-center items-center bg-cover bg-no-repeat bg-center overflow-hidden">
+                        <img class="h-24 w-24 rounded-full" src="../../../../../../assets/login/Unicauca-economía.jpg"
+                            alt="">
+                    </div>
+
+                    <div class="info grid items-center justify-center">
+                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
+                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
+                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                            itaque sed, veritatis autem iure cupiditate.</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="title">
+            <h3 class="text-center text-3xl mt-10 mb-20 text-white font-bold ">&lt; Desarrolladores /&gt;</h3>
+        </div>
+        <div class="img-grupo grid grid-cols-1  opm:grid-cols-2 justify-center items-center w-11/12 rounded-2xl relative mb-40">
+            <div class="image-group">
+                <img *ngFor="let image of images; let i = index" [src]="image.src" alt="Imagen" class="carousel-image"
+                    [class.active]="i === currentIndex" [class.prev]="i === prevIndex">
+            </div>
+            <div class="information flex items-center justify-center flex-col">
+                <svg xmlns="http://www.w3.org/2000/svg" class="container-comp max-h-20 mb-10"
+                    viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                        d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
+                </svg>
+                <h2 class="text-5xl mb-8">{{ images[currentIndex].title }}</h2>
+                <p class="text-xl w-9/12">{{ images[currentIndex].description }}</p>
+                <div class="indicators flex space-x-2 mt-4">
+                    <span *ngFor="let image of images; let i = index" [class.active-indicator]="i === currentIndex"
+                        class="indicator"></span>
+                </div>
+            </div>
+            <div class="controls">
+                <button (click)="prevImage()" class="control"> &lt; </button>
+                <button (click)="nextImage()" class="control"> &gt;
+                </button>
+            </div>
+        </div>
+
+
+        <div class="groups"></div>
+    </section>
+</div>
