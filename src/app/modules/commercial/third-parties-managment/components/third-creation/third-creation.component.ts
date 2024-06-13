@@ -21,6 +21,7 @@ import { TypeId } from '../../models/TypeId';
   providers: [DatePipe],
 })
 export class ThirdCreationComponent implements OnInit {
+  selectedThirdTypes: ThirdType[] = [];
   createdThirdForm!: FormGroup;
   submitted = false;
   button1Checked = false;
@@ -132,10 +133,6 @@ export class ThirdCreationComponent implements OnInit {
         });
       }
     });
-
-
-
-
   }
 
   onCountryChange(event: any) {
@@ -155,7 +152,9 @@ export class ThirdCreationComponent implements OnInit {
     this.submitted = true;
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
-    third.entId = this.entData;
+    third.entId = this.entData.entId;
+    third.thirdTypes = this.selectedThirdTypes;
+
     third.state =
       this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
     third.photoPath = '';
@@ -167,20 +166,17 @@ export class ThirdCreationComponent implements OnInit {
       third.typeId = typeIdValue;
     }
     if(thirdTypeId !== null && thirdTypeId !==undefined){
-    third.thirdTypes = [thirdTypeId];
-  }
-
-  console.log(third);
+      third.thirdTypes = [thirdTypeId];
+    }
 
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
-        // Handle the successful response here
-        console.log('Success:', response);
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
         });
+        this.OnReset()
       },
       error: (error) => {
         // Handle any errors here
@@ -210,6 +206,20 @@ export class ThirdCreationComponent implements OnInit {
 
   OnReset() {
     this.submitted = false;
+    this.button2Checked = false;
+    this.button1Checked = false;
     this.createdThirdForm.reset();
+  }
+
+  toggleSelection(item: any) {
+    if (this.isSelected(item)) {
+      this.selectedThirdTypes = this.selectedThirdTypes.filter(selected => selected.thirdTypeId !== item.thirdTypeId);
+    } else {
+      this.selectedThirdTypes.push(item);
+    }
+  }
+
+  isSelected(item: any): boolean {
+    return this.selectedThirdTypes.some(selected => selected.thirdTypeId === item.thirdTypeId);
   }
 }

@@ -21,6 +21,7 @@ export class ThirdsListComponent{
   data: Third[] = [];
   columns: any[] = [
      // { title: 'Id', data: 'entId' },
+    { title: 'Tipo(s)', data: 'thirdTypes'},
     { title: 'Nombre/RazonSocial', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
