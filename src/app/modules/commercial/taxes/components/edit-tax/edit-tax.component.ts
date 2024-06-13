@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Tax } from '../../models/tax';
+import { Tax } from '../../models/Tax';
 import { TaxService } from '../../services/tax.service';
 
 
