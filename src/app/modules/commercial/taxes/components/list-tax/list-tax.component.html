@@ -1,1 +1,39 @@
-<p>list-tax works!</p>
+<div class="flex flex-col justify-start items-center m-10">
+    <div class="mb-6 self-start">
+      <span class="text-4xl text-blue-950 self-start">Impuestos</span>
+    </div>
+  
+    <!-- Aquí irían los filtros de búsqueda si se requieren -->
+  
+    <div class="lg:text-md mx-auto w-full">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-200">
+            <tr>
+              <th *ngFor="let col of columns" class="px-6 py-3 text-lg text-blue-950 font-bold text-left">
+                {{ col.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let tax of taxes" class="hover:bg-gray-100">
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.code }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.interest }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.depositAccountId }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.refundAccountId }}</td>
+              <td class="py-4 whitespace-nowrap flex justify-center items-center">
+                <!-- Aquí irían los botones de acciones (ver detalles, editar, eliminar) -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <!-- Manejar caso de lista vacía -->
+    <ng-template #noTaxes>
+      <p class="text-gray-700">No hay impuestos disponibles.</p>
+    </ng-template>
+  </div>
+  
