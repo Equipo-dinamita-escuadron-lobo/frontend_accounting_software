@@ -10,6 +10,8 @@ import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoi
 import { ProductI } from '../../models/productInvoice';
 import { Facture } from '../../models/facture';
 import { ProductS } from '../../models/productSend';
+import { InvoiceServiceService } from '../../services/invoice-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -55,7 +57,8 @@ export class InvoiceCreationComponent implements OnInit {
 
   constructor(private enterpriseService: EnterpriseService,
     private dialog: MatDialog,
-    private thirdService: ThirdServiceService) { }
+    private thirdService: ThirdServiceService,
+    private invoiceService: InvoiceServiceService) { }
 
   ngOnInit() {
     this.getEnterpriseSelectedInfo();
@@ -135,7 +138,7 @@ export class InvoiceCreationComponent implements OnInit {
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
-    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price*prod.amount)), 0);
+    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
     //this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price*prod.amount)+(prod.price*prod.amount*prod.IVA)/100), 0);
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
@@ -147,22 +150,61 @@ export class InvoiceCreationComponent implements OnInit {
       productId: parseInt(prod.id),
       amount: prod.amount,
       description: prod.description,
-      vat: prod.IVA.toString(),
-      unitPrice: prod.price.toString(),
-      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100)).toFixed(2)
+      vat: prod.IVA / 100,
+      unitPrice: prod.price,
+      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
     }));
 
     const factureS: Facture = {
-      factId: 0,
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: "123",
       factureType: "Compra",
       factProducts: this.lstProductsSend,
-      factSubTotals: this.subTotal,
+      factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
       facWithholdingSource: this.retention
     };
+
+    this.saveInvoice(factureS);
+  }
+
+  async saveInvoice(facture: any) {
+    this.invoiceService.saveInvoice(facture).subscribe(
+      (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+
+        // Extraer el nombre del archivo del encabezado 'Content-Disposition'
+        const contentDisposition = blob.type; 
+        const fileName = this.extractFileName(contentDisposition);
+
+        link.setAttribute('download', fileName || 'facture.pdf');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+
+        Swal.fire({
+          title: 'Creación exitosa!',
+          text: 'Se ha creado la factura con éxito!',
+          icon: 'success',
+        });
+      },
+      (error) => {
+        // Caso de error
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error al crear la factura.',
+          icon: 'error',
+        });
+      }
+    );
+  }
+
+  private extractFileName(contentDisposition: string): string | null {
+    const matches = /filename="(.+)"/.exec(contentDisposition);
+    return matches && matches[1] ? matches[1] : null;
   }
 
   OpenListThirds(title: any, entId: any, component: any) {
