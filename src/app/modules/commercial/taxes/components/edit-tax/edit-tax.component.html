@@ -47,7 +47,7 @@
                 <select formControlName="depositAccountId" id="depositAccountId"
                         class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="" disabled selected>Selecciona una cuenta</option>
-                    <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.name }}</option>
+                    <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
                 </select>
                 <div *ngIf="editForm.get('depositAccountId')?.touched && editForm.get('depositAccountId')?.invalid"
                      class="text-red-500">

@@ -45,6 +45,7 @@ export class EditTaxComponent {
       this.taxId = +params['id']; // Obtener el ID del impuesto de los parámetros de la ruta
       this.getTaxDetails();
     });
+    this.loadDepositAccounts();
   }
 
   getTaxDetails(): void {
