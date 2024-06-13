@@ -8,6 +8,7 @@ import { ThirdServiceService } from '../../../third-parties-managment/services/t
 import { Third } from '../../../third-parties-managment/models/Third';
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
 import { Product } from '../../../product-managment/models/Product';
+import { ProductI } from '../../models/productInvoice';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -23,13 +24,26 @@ export class InvoiceCreationComponent implements OnInit {
   selectedSupplier: any;
   supplierS?: Third;
   lstThirds: Third[] = [];
+  lstThirdsSecurity: Third[] = [];
 
   //Variables for products
   showSectionProducts: boolean = true;
   showInfoProducts: boolean = false;
-  //TODO variables para almacenar los los productos seleccionados
-  lstProducts: Product[] = [];
+  lstProducts: ProductI[] = [];
+  lstProductsSecurity: ProductI[] = [];
 
+  columnsProducts: any[] = [
+    { title: 'Nombres', data: 'itemType' },
+    { title: 'Descripción', data: 'description' },
+    { title: 'Precio Unitario', data: 'price' },
+    { title: 'Cantidad'},
+    { title: 'IVA'},
+    { title: 'Valor Total'},
+  ];
+
+  //Variables for purchase invoice
+  subtotal: number = 0;
+  ivaAmount: number = 0;
 
   constructor(private enterpriseService: EnterpriseService,
     private dialog: MatDialog,
@@ -78,14 +92,31 @@ export class InvoiceCreationComponent implements OnInit {
   }
 
   //Method for show window products
-  selectProducts(){
-    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.socialReason || this.supplierS?.names, InvoiceSelectProductsComponent);
+  selectProducts() {
+    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, InvoiceSelectProductsComponent);
   }
-  createProduct(){
+  createProduct() {
     this.showSectionProducts = !this.showSectionProducts;
   }
-  showSectionProductsM(){
+  showSectionProductsM() {
     this.showSectionProducts = !this.showSectionProducts;
+  }
+
+  formatPrice(price: number): string {
+    return price.toLocaleString('es-ES');
+  }
+
+  // Calculate total value based on amount and price
+  calculateTotal(prod: ProductI): void {
+    prod.totalValue = this.calculateTotalValue(prod);
+  }
+
+  // Calculate total value including IVA
+  calculateTotalValue(prod: ProductI): number {
+    this.subtotal = prod.amount * prod.price;
+    this.ivaAmount = (this.subtotal * prod.IVA) / 100;
+
+    return this.subtotal + this.ivaAmount;
   }
 
   OpenListThirds(title: any, entId: any, component: any) {
@@ -112,7 +143,7 @@ export class InvoiceCreationComponent implements OnInit {
     });
   }
 
-  OpenListProducts(title: any, entId: any, provName: any, component: any) {
+  OpenListProducts(title: any, entId: any, thId: any, component: any) {
     const _popUp = this.dialog.open(component, {
       width: '0%',
       height: 'auto',
@@ -121,16 +152,23 @@ export class InvoiceCreationComponent implements OnInit {
       data: {
         title: title,
         entId: entId,
-        provName: provName
+        thId: thId
       }
     });
 
     _popUp.afterClosed().subscribe(result => {
-      if (result) {
+      if (result && result.length > 0) {
         console.log('Información recibida del modal:', result);
-        this.lstProducts = result; // Almacena los productos seleccionados
-      }else{
+        this.lstProducts = result;
+        this.lstProducts.forEach(prod => {
+          prod.IVA = prod.taxPercentage; // Set default IVA to taxPercentage
+          prod.amount = 1;
+          prod.totalValue = 0;
+        });
+        this.showInfoProducts = true;
+      } else {
         console.log('No selecciono ningun producto')
+        this.showInfoProducts = false;
       }
     });
   }

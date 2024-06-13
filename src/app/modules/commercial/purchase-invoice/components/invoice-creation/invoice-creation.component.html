@@ -147,20 +147,59 @@
             </button>
 
             @if(showSectionProducts){
-                <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear productos.
-                </p>
-                <div class="botones flex justify-center items-center mb-5">
-                    <div class="inline-flex">
-                        <button (click)="selectProducts()"
-                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
-                            Seleccionar Productos
-                        </button>
-                        <button (click)="createProduct()"
-                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
-                            Crear Productor
-                        </button>
-                    </div>
+            <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
+                productos.
+            </p>
+            <div class="botones flex justify-center items-center mb-5">
+                <div class="inline-flex">
+                    <button (click)="selectProducts()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                        Seleccionar Productos
+                    </button>
+                    <button (click)="createProduct()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                        Crear Productor
+                    </button>
                 </div>
+            </div>
+
+            <div *ngIf="showInfoProducts" class="lg:text-md mx-auto w-full">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-200 ">
+                            <tr class="overflow-hidden">
+                                <th scope="col"
+                                    class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
+                                    *ngFor="let col of columnsProducts">
+                                    {{ col.title }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let prod of lstProducts" class="hover:bg-gray-100">
+                                <td class="px-4 py-1 whitespace-nowrap">{{ prod.itemType }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ prod.description }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(prod.price) }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <div class="flex justify-between">
+                                        <input class="text-center" type="number" min="0" max="{{ prod.maxQuantity }}" [(ngModel)]="prod.amount" (input)="calculateTotal(prod)">
+
+                                        <svg class="h-4 w-4 mt-1"  width="24"  height="24"  viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <select [(ngModel)]="prod.IVA" (change)="calculateTotal(prod)">
+                                        <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
+                                        <option value="5">5%</option>
+                                        <option value="19">19%</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(calculateTotalValue(prod)) }}</td>
+                            </tr>
+                        </tbody>                        
+                    </table>
+                </div>
+            </div>
             }
         </div>
         }
