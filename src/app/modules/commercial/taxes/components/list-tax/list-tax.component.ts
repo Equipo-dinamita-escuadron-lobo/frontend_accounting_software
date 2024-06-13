@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TaxService } from '../../services/tax.service';
-import { Tax } from '../../models/tax';
+import { Tax } from '../../models/Tax';
 
 @Component({
   selector: 'app-list-tax',

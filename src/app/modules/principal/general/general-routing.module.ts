@@ -76,11 +76,17 @@ const routes: Routes = [
         component: AccountsListComponent
       },
       {
-        path:'taxes',
+        path: 'taxes',
         component: ListTaxComponent
       },
-
-
+      {
+        path: 'taxes/create',
+        component: ListTaxComponent
+      },
+      {
+        path: 'taxes/edit/:id',
+        component: ListTaxComponent
+      },
       {
         path: 'products',
         component: ProductListComponent,
