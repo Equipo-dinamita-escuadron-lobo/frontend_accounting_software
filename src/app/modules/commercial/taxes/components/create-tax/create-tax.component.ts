@@ -15,7 +15,9 @@ export class CreateTaxComponent {
   taxId: number = 0;
   tax: Tax = {} as Tax
   addForm: FormGroup;
-  depositAccounts: any[] | undefined;
+  depositAccounts: any[] = [];
+  mappedAccounts: any[] = [];
+  selectedAccount: any;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
   constructor(
@@ -74,11 +76,28 @@ export class CreateTaxComponent {
   loadDepositAccounts(): void {
     this.accountService.getListAccounts(this.entData).subscribe(
       (accounts: any[]) => {
+        console.log(accounts)
         this.depositAccounts = accounts;
+        this.mappedAccounts = this.flattenAccounts(accounts);
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
       }
     );
+  }
+  flattenAccounts(accounts: any[]): any[] {
+    let result: any[] = [];
+    accounts.forEach(account => {
+      result.push({ id: account.id, name: account.name });
+      if (account.children && account.children.length > 0) {
+        result = result.concat(this.flattenAccounts(account.children));
+      }
+    });
+    return result;
+  }
+
+  customSearchFn(term: string, item: any): boolean {
+    term = term.toLowerCase();
+    return item.name.toLowerCase().indexOf(term) > -1;
   }
 }

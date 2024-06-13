@@ -5,7 +5,8 @@
   <h1 class="text-2xl font-bold text-blue-950 mt-8">Agregar Impuesto</h1>
 
   <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-    <button class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative" (click)="goBack()">
+    <button class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
+      (click)="goBack()">
       <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
         <i class="fas fa-arrow-left text-blue-950"></i>
       </span>
@@ -27,9 +28,11 @@
             </div>
             <div>
               <label for="description" class="block text-sm font-medium text-gray-700">Descripción:</label>
-              <input type="text" formControlName="description" id="description" placeholder="Ej: Impuesto al Valor Agregado"
+              <input type="text" formControlName="description" id="description"
+                placeholder="Ej: Impuesto al Valor Agregado"
                 class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-              <div *ngIf="addForm.get('description')?.touched && addForm.get('description')?.invalid" class="text-red-500">
+              <div *ngIf="addForm.get('description')?.touched && addForm.get('description')?.invalid"
+                class="text-red-500">
                 <div *ngIf="addForm.get('description')?.errors?.['required']">El campo Descripción es requerido.</div>
               </div>
             </div>
@@ -42,25 +45,39 @@
                 <div *ngIf="addForm.get('interest')?.errors?.['min']">El Interés no puede ser negativo.</div>
               </div>
             </div>
-            <div>
+            <!-- <div>
               <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
               <select formControlName="depositAccountId" id="depositAccountId"
-                      class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  <option value="" disabled selected>Selecciona una cuenta</option>
-                  <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
+                class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="" disabled selected>Selecciona una cuenta</option>
+                <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
               </select>
               <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"
-                   class="text-red-500">
-                  <div *ngIf="addForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es requerido.</div>
+                class="text-red-500">
+                <div *ngIf="addForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es
+                  requerido.</div>
               </div>
-          </div>
+            </div> -->
+            <div>
+              <!-- <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label> -->
+              <ng-select [items]="mappedAccounts" bindLabel="name" bindValue="id" [(ngModel)]="selectedAccount"
+                         formControlName="depositAccountId" placeholder="Cuenta de depósito" [searchFn]="customSearchFn"
+                         class="lg:mt-3 block w-full text-sm font-medium text-gray-700">
+              </ng-select>
+              <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"
+                class="text-red-500">
+                <div *ngIf="addForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es
+                  requerido.</div>
+              </div>
+            </div>
             <div>
               <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
               <input type="number" formControlName="refundAccountId" id="refundAccountId" placeholder="Ej: 54321"
                 class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
               <div *ngIf="addForm.get('refundAccountId')?.touched && addForm.get('refundAccountId')?.invalid"
                 class="text-red-500">
-                <div *ngIf="addForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es requerido.</div>
+                <div *ngIf="addForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es
+                  requerido.</div>
               </div>
             </div>
           </div>
