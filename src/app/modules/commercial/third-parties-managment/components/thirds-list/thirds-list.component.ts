@@ -18,22 +18,35 @@ export class ThirdsListComponent{
   @ViewChild('thirdEditModal') thirdEditModal !: ThirdEditModalComponent;
 
   form: FormGroup;
+
   data: Third[] = [];
-  columns: any[] = [
-     // { title: 'Id', data: 'entId' },
+  columnsBrief: any[] = [
+    { title: 'Tipo(s)', data: 'thirdTypes'},
     { title: 'Nombre/RazonSocial', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
-    //{ title: 'DV', data: 'verificationNumber' },
     { title: 'Correo', data: 'email' },
     { title: 'Estado', data: 'state' },
-    //{ title: 'Pais', data: 'country' },
-    //{ title: 'Departamento', data: 'province' },
-    //{ title: 'Ciudad', data: 'city' },
-    //{ title: 'Direccion', data: 'address' },
-    //{ title: 'Celular', data: 'phoneNumber' },
     { title: 'Acciones'}
   ];
+
+  columnsComplete: any[] = [
+    { title: 'Tipo(s)', data: 'thirdTypes'},
+    { title: 'Nombre/RazonSocial', data: 'socialReason' },
+    { title: 'Tipo Id', data: 'typeId' },
+    { title: 'Número de Documento'},
+    { title: 'Número de verificación', data: 'verificationNumber' },
+    { title: 'Correo', data: 'email' },
+    { title: 'Pais', data: 'country' },
+    { title: 'Departamento', data: 'province' },
+    { title: 'Ciudad', data: 'city' },
+    { title: 'Direccion', data: 'address' },
+    { title: 'Celular', data: 'phoneNumber' },
+    { title: 'Estado', data: 'state' },
+    { title: 'Acciones'}
+  ];
+
+  showDetailTable = false;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
@@ -70,6 +83,10 @@ export class ThirdsListComponent{
         }
       });
     }
+  }
+
+  showDetailTableFunction():void{
+    this.showDetailTable = !this.showDetailTable;
   }
 
   openModalDetails(thId:number):void{
