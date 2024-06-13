@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Tax } from '../../models/tax';
 import { TaxService } from '../../services/tax.service';
+import { Tax } from '../../models/tax';
 
 @Component({
   selector: 'app-list-tax',

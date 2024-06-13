@@ -15,6 +15,11 @@ import { EditTaxComponent } from './components/edit-tax/edit-tax.component';
   imports: [
     CommonModule,
     TaxesRoutingModule
+  ],
+  exports: [
+    CreateTaxComponent,
+    ListTaxComponent,
+    EditTaxComponent
   ]
 })
 export class TaxesModule { }

@@ -10,6 +10,7 @@ import { ViewEnterprisesComponent } from './components/view-enterprises/view-ent
 import { GeneralViewComponent } from './components/general-view/general-view.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { UsersModule } from '../../users/users.module';
+import { TaxesModule } from '../../commercial/taxes/taxes.module';
 
 
 @NgModule({
@@ -24,7 +25,9 @@ import { UsersModule } from '../../users/users.module';
     GeneralRoutingModule,
     SharedModule,
     EnterpriseManagmentModule,
-    UsersModule
+    UsersModule,
+    TaxesModule
+
   ]
 })
 export class GeneralModule { }

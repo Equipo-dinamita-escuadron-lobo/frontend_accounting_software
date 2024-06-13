@@ -22,7 +22,7 @@ import { permissionsGuard } from '../../../core/guards/permissions.guard';
 import { UserListComponent } from '../../users/components/user-list/user-list.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { permissionsSuperGuardTsGuard } from '../../../core/guards/permissions.super.guard.ts.guard';
-
+import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/list-tax.component';
 const routes: Routes = [
   {
     path: '',
@@ -75,6 +75,12 @@ const routes: Routes = [
         path: 'accounts',
         component: AccountsListComponent
       },
+      {
+        path:'taxes',
+        component: ListTaxComponent
+      },
+
+
       {
         path: 'products',
         component: ProductListComponent,
