@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { TaxService } from '../../services/tax.service';
 import { Tax } from '../../models/Tax';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
 @Component({
   selector: 'app-list-tax',
@@ -13,6 +14,9 @@ import { Tax } from '../../models/Tax';
 export class ListTaxComponent implements OnInit {
 
   taxes: Tax[] = [];
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
+  
   columns: any[] = [
     { title: 'Código', data: 'code' },
     { title: 'Descripción', data: 'description' },
@@ -32,11 +36,13 @@ export class ListTaxComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getTaxes();
+
   }
 
   getTaxes(): void {
-    this.taxService.getTaxes('enterpriseId').subscribe(
+    this.taxService.getTaxes(this.entData).subscribe(
       (data: Tax[]) => {
         this.taxes = data;
       },

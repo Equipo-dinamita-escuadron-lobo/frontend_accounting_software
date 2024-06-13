@@ -20,6 +20,7 @@ export class EditTaxComponent {
   tax: Tax = {} as Tax
   editForm: FormGroup;
   depositAccounts: any[] | undefined;
+  refundAccounts: any[] | undefined;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -70,6 +71,7 @@ export class EditTaxComponent {
     this.accountService.getListAccounts(this.entData).subscribe(
       (accounts: any[]) => {
         this.depositAccounts = accounts;
+        this.refundAccounts = accounts;
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
