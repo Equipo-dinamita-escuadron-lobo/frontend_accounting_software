@@ -11,6 +11,8 @@
         </span>
       </button>
     </div>
+
+    
   
     <div class="container mx-auto mt-8">
       <div class="grid grid-cols-1 m-6 gap-6">
@@ -54,21 +56,27 @@
                     <div *ngIf="editForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es requerido.</div>
                 </div>
             </div>
-              <div>
-                <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
-                <input type="number" formControlName="refundAccountId" id="refundAccountId" placeholder="Ej: 54321"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-                <div *ngIf="editForm.get('refundAccountId')?.touched && editForm.get('refundAccountId')?.invalid"
-                  class="text-red-500">
+
+            <div>
+              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
+              <select formControlName="refundAccountId" id="refundAccountId"
+                      class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      aria-required="true">
+                  <option value="" disabled selected>Selecciona una cuenta</option>
+                  <option *ngFor="let account of refundAccounts" [value]="account.id">{{ account.description }}</option>
+              </select>
+              <div *ngIf="editForm.get('refundAccountId')?.touched && editForm.get('refundAccountId')?.invalid"
+                   class="text-red-500">
                   <div *ngIf="editForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es requerido.</div>
-                </div>
               </div>
-            </div>
+          </div>
+          
   
             <div>
               <button type="submit" class="buttonsC h-10 w-auto">
                 Guardar Cambios
               </button>
+            </div>
             </div>
           </form>
         </div>

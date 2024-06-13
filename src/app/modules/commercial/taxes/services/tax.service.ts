@@ -58,12 +58,12 @@ taxes: Tax[] = [
     }
   ];
 
-  getTaxes(enterpriseId: string): Observable<Tax[]> {
-    return new Observable((observer) => {
-      observer.next(this.taxes);
-      observer.complete();
-    });
-  }
+  // getTaxes(enterpriseId: string): Observable<Tax[]> {
+  //   return new Observable((observer) => {
+  //     observer.next(this.taxes);
+  //     observer.complete();
+  //   });
+  // }
   getTaxById(id: number): Observable<Tax> {
     return new Observable((observer) => {
       const tax = this.taxes.find((tax) => tax.id === id);
@@ -72,10 +72,11 @@ taxes: Tax[] = [
     });
   }
 
-  // getTaxes(enterpriseId: string): Observable<Tax[]> {
-  //   const url = `${environment.API_URL}tax/taxes/`;
-  //   return this.http.get<Tax[]>(url);
-  // }
+   getTaxes(enterpriseId: string): Observable<Tax[]> {
+     const url = `${environment.API_URL}tax/taxes/${enterpriseId}`;
+     console.log(enterpriseId);
+     return this.http.get<Tax[]>(url);
+   }
 
   createTax(tax: Tax): Observable<Tax> {
     const url = `${environment.API_URL}taxes/create`;
@@ -94,7 +95,7 @@ taxes: Tax[] = [
   // }
 
   deleteTax(id: number): Observable<Tax> {
-    const url = `${environment.API_URL}taxes/delete/${id}`;
+    const url = `${environment.API_URL}tax/${id}`;
     return this.http.delete<Tax>(url);
   }
   
