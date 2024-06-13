@@ -1,5 +1,89 @@
 <div class="flex w-full h-full font-projectFont">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
-        
+        <!-- Invoice information -->
+        <div class="flex flex-col lg:flex-row">
+            <div class="rounded-full w-24 h-24 sm:w-28 sm:w-28-24 lg:w-36 lg:h-3w-36">
+                <img class="rounded-full object-cover shadow-sm" [src]="enterpriseSelected?.logo" alt="" />
+            </div>
+
+            <div class="w-full lg:ml-5 mt-5 lg:mt-0">
+                <h1 class="text-3xl font-extrabold text-blue-950 mb-3">Factura de compra</h1>
+                <div class="grid sm:grid-cols-2 grid-cols-1">
+                    <div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Número de la factura:</p>
+                            <p class="">113</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Fecha de emisión:</p>
+                            <p class="">30/05/2024</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Fecha de vencimiento:</p>
+                            <p class="">31/05/2024</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Forma de pago:</p>
+                            <p class="">Contado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Third parties information -->
+        <div class="mt-10">
+            <div class="w-full text-center">
+                <h1 class="text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+                    Información de proveedor
+                </h1>
+            </div>
+
+            <div class="botones flex justify-center items-center mb-5">
+                <div class="inline-flex">
+                    <button (click)="selectSupplier()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                        Buscar provedor
+                    </button>
+                    <button (click)="createSupplier()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                        Crear provedor
+                    </button>
+                </div>
+            </div>
+
+            @if (showInfoTercero) {
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
+                    <div class="space-y-2">
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Razón social:</p>
+                            <p class="w-3/4">Descomentar información</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Nombre:</p>
+                            <p class="w-3/4">Descomentar información</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">NIT:</p>
+                            <p class="w-3/4">Descomentar información</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Dirección:</p>
+                            <p class="w-3/4">Descomentar información</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-1/4">Correo:</p>
+                            <p class="w-3/4">Descomentar información</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+
     </div>
 </div>
