@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
-import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import { ChartAccountService } from '../../services/chart-account.service';
 import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
@@ -8,16 +8,18 @@ import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
-import { ChangeDetectorRef } from '@angular/core';
 import { FinancialStateType } from '../../models/FinancialStateType';
-import { Observable, Subject} from 'rxjs';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
+/**
+ * Component for managing and displaying chart of accounts.
+ */
 @Component({
   selector: 'app-accounts-list',
   templateUrl: './accounts-list.component.html',
   styleUrl: './accounts-list.component.css'
 })
+
 export class AccountsListComponent implements OnInit {
   //form showing inputs
   accountForm: FormGroup;
@@ -35,16 +37,18 @@ export class AccountsListComponent implements OnInit {
   accountSelected?: Account;
   toggle: boolean = false;
 
+  //variables that will store information about an account
   num: number = 0;
   code: string = '';
   name: string = '';
   parentId: string = '';
 
   //Variables for show forms
-  showPrincipalForm: boolean = false;         //Form with inputs
-  showFormTransactional: boolean = false;     //Form with selects
-  showFormNewAccount: boolean = false;        //Form child
-  selectedAccount: boolean = false;           //When selected an account
+  showPrincipalForm: boolean = false;         
+  showFormTransactional: boolean = false;     
+
+  //selected account
+  selectedAccount: boolean = false;           
 
   //Variables for show buttons
   showButton = false;
@@ -87,8 +91,7 @@ export class AccountsListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
-    private dialog: MatDialog,
-    private router: Router) {
+    private dialog: MatDialog) {
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group({
       selectedNatureType: [''],
@@ -97,12 +100,18 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
+  /**
+   * Shows the form for adding a new account class.
+   */
   showFormAddNewClass(){
     this.showAddNewClass = true;
     this.noAddNewChild();
     this.noShowPrincipalAndTransactionalForm();
   }
 
+  /**
+   * Hides the form for adding a new account class.
+   */
   noShowFormAddNewClass() {
     this.showAddNewClass = false;
     if(this.selectedAccount){
@@ -112,6 +121,9 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  /**
+   * allows show the form for add a new child account
+   */
   addNewChild(){
     this.addChild = true;
     this.showButton = false;
@@ -123,6 +135,9 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  /**
+   * Disallows show the form for add a new child account.
+   */
   noAddNewChild(){
     this.addChild = false;
     this.showButton = true;
@@ -131,6 +146,9 @@ export class AccountsListComponent implements OnInit {
     this.updateInputAccess(this.num);
   }
 
+  /**
+   * allows show the main form 
+   */
   showPrincipalAndTransactionalForm(){
     this.showPrincipalForm = true;
     this.showFormTransactional = true;
@@ -138,6 +156,9 @@ export class AccountsListComponent implements OnInit {
     this.showButtonDelete = true;
   }
 
+  /**
+   * disallows show the main form 
+   */
   noShowPrincipalAndTransactionalForm(){
     this.showPrincipalForm = false;
     this.showFormTransactional = false;
@@ -145,10 +166,18 @@ export class AccountsListComponent implements OnInit {
     this.showButtonDelete = false;
   }
 
+  /**
+   * Opens a modal dialog for import details.
+   */
   openModalDetails(): void {
     this.OpenDetailsImport('Detalles de importación ', AccountImportComponent)
   }
 
+  /**
+   * Opens a modal dialog with a given title and component.
+   * @param title The title of the modal dialog.
+   * @param component The component to be displayed in the modal dialog.
+   */
   OpenDetailsImport(title: any, component: any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',
@@ -162,6 +191,9 @@ export class AccountsListComponent implements OnInit {
     _popUp.afterClosed().subscribe()
   }
 
+  /**
+   * Initializes the component by fetching data from services.
+   */
   ngOnInit(): void {
     this.getAccounts();
     this.getNatureType();
@@ -169,10 +201,18 @@ export class AccountsListComponent implements OnInit {
     this.getClasificationType();
   }
 
+  /**
+   * Toggles the visibility of sub-accounts for a given account.
+   * @param account The account for which to toggle sub-account visibility.
+   */
   toggleSubAccounts(account: Account) {
     account.showSubAccounts = !account.showSubAccounts;
   }
 
+  /**
+   * Selects an account and updates the form with its data.
+   * @param account The account to be selected.
+   */
   selectAccount(account: Account) {
     this.noShowFormAddNewClass();
     this.noAddNewChild();
@@ -183,12 +223,16 @@ export class AccountsListComponent implements OnInit {
     this.accountSelected = account;
   }
 
-  //Ir creando los inputs de acuerdo a la cuenta seleccionada
+  /**
+   * Creates the account form based on the selected account's code and description.
+   * @param code The code of the selected account.
+   * @param description The description of the selected account.
+   */
   createForm(code: string, description: string) {
-    this.accountForm = this.fb.group({}); // formulario vacio cada que selecciona una cuenta
+    this.accountForm = this.fb.group({}); 
     this.showPrincipalAndTransactionalForm();
-    this.assignName(code, description); //para buscar la cuenta y asigna los nombres  dependiendo cuenta y nivel
-    this.updateInputAccess(code.length); //para bloquear inputs de acuerdo al nivel
+    this.assignName(code, description); 
+    this.updateInputAccess(code.length); 
     this.code = '';
     this.name = '';
     this.parentId = '';
@@ -255,26 +299,39 @@ export class AccountsListComponent implements OnInit {
 
   }
 
+  /**
+   * Determines whether the "Update" button should be shown based on form changes.
+   * @returns Whether the "Update" button should be shown.
+   */
   shouldShowUpdateButton(): boolean {
     const accountFormHasChanges = this.hasFormValueChanged(this.accountForm);
     const transactionalFormHasChanges = this.hasFormValueChanged(this.formTransactional);
     return accountFormHasChanges || transactionalFormHasChanges;
   }
 
+  /**
+   * Checks if any control in the given form has been modified.
+   * @param form The form group to check.
+   * @returns Whether any control in the form has been modified.
+   */
   hasFormValueChanged(form: FormGroup): boolean {
     const formValues = form.value;
     for (const key in formValues){
       if (formValues.hasOwnProperty(key)) {
         const control = form.get(key);
         if (control && control.dirty) {
-          return true; //Si algun control ha cambiado
+          return true; 
         }
       }
     }
-    return false; //Si ningun control ha cambiado
+    return false; 
   }
 
-
+  /**
+   * Assigns account names based on the code and description.
+   * @param code The code of the account.
+   * @param name The description of the account.
+   */
   assignName(code: string, name: string) {
     this.className = '';
     this.groupName = '';
@@ -307,57 +364,14 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
-  //Funcion que muestra las subcuentas
-  findAccountByCode2(code: string, accounts: Account[]): Account | undefined {
-    // Función auxiliar para buscar la cuenta por código
-    function findAccount(account: Account[]): Account | undefined {
-      for (const subAccount of account) {
-        if (subAccount.code === code) {
-          // Si se encuentra la cuenta, devuelve solo esa cuenta
-          return {
-            id: subAccount.id,
-            code: subAccount.code,
-            description: subAccount.description,
-            nature: subAccount.nature,
-            financialStatus: subAccount.financialStatus,
-            classification: subAccount.classification
-          };
-        }
-        if (subAccount.children) {
-          // Realiza la búsqueda en las subcuentas
-          const foundAccount = findAccount(subAccount.children);
-          if (foundAccount) {
-            // Si se encuentra la cuenta en las subcuentas, devuelve la cuenta principal con la ruta hasta la cuenta encontrada
-            return {
-              code: subAccount.code,
-              description: subAccount.description,
-              nature: subAccount.nature,
-              financialStatus: subAccount.financialStatus,
-              classification: subAccount.classification,
-              children: [foundAccount]
-            };
-          }
-        }
-      }
-      return undefined;
-    }
-
-    // Inicia la búsqueda en las cuentas principales
-    for (const account of accounts) {
-      const foundAccount = findAccount([account]); // Llama a la función auxiliar para buscar la cuenta
-      if (foundAccount) {
-        return foundAccount; // Devuelve la cuenta principal hasta la cuenta encontrada
-      }
-    }
-
-    return undefined; // Devuelve undefined si no se encuentra la cuenta
-  }
-
-
+  /**
+   * Reads an Excel file and processes its data.
+   * @param event The file input event.
+   */
   ReadExcel(event: any) {
     let file = event.target.files[0];
 
-    // Verificar si el archivo es de tipo xlsx
+    // Check if the file is of type xlsx
     if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
       console.error('El archivo debe ser de tipo xlsx.');
       return;
@@ -371,7 +385,7 @@ export class AccountsListComponent implements OnInit {
       var sheetNames = workBook.SheetNames;
       let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
 
-      // Verificar campos obligatorios
+      // Check required fields
       const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
       const missingFields = requiredFields.filter(field => {
         const obj = jsonData[0] as { [key: string]: any };
@@ -394,27 +408,30 @@ export class AccountsListComponent implements OnInit {
         description: item['Nombre'],
         nature: item['Naturaleza'],
         financialStatus: item['Estado Financiero'],
-        classification: item['Clasificación'] // Corregido el nombre del campo
+        classification: item['Clasificación'] 
       }));
 
       if (this.listExcel) {
         this.importedAccounts = true;
-        //console.log(this.importedAccounts);
       }
 
-      //console.log(this.createHierarchyWithParent(this.listExcel));
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
 
-      // Resetear el valor del input de archivo
+      // Reset file input value
       event.target.value = null;
     };
   }
 
+  /**
+   * Creates a hierarchy of accounts with parent-child relationships.
+   * @param accounts The array of accounts to create the hierarchy from.
+   * @returns The array of top-level accounts with their children.
+   */
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
 
-    // Agrupar cuentas por código
+    // Group accounts by code
     for (const account of accounts) {
       const code = account.code;
       const level = code.length / 2;
@@ -434,7 +451,7 @@ export class AccountsListComponent implements OnInit {
       }
     }
 
-    // Asociar cada cuenta principal al padre con un solo dígito en el código
+    // Associate each primary account to the parent with a single digit in the code
     for (const account of Object.values(hierarchy)) {
       if (account.code.length === 2) {
         const parentCode = account.code[0];
@@ -445,7 +462,7 @@ export class AccountsListComponent implements OnInit {
       }
     }
 
-    // Obtener cuentas de nivel superior (clases)
+    // Get higher level accounts (classes)
     const topLevelAccounts: Account[] = [];
     for (const account of Object.values(hierarchy)) {
       if (account.code.length === 1) {
@@ -456,6 +473,12 @@ export class AccountsListComponent implements OnInit {
     return topLevelAccounts;
   }
 
+  /**
+   * Finds an account by its code and returns its description.
+   * @param accounts The array of accounts to search in.
+   * @param code The code of the account to find.
+   * @returns The description of the found account, or an empty string if not found.
+   */
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
       if (account.code === code) {
@@ -471,6 +494,10 @@ export class AccountsListComponent implements OnInit {
     return '';
   }
 
+  /**
+   * Updates the input access based on the account level.
+   * @param code The account level code (optional).
+   */
   updateInputAccess(code?: number) {
     this.inputAccess = {
       class: true,
@@ -488,45 +515,79 @@ export class AccountsListComponent implements OnInit {
     };
   }
 
+  /**
+   * Gets the list of nature types from the account service.
+   */
   getNatureType() {
     this.listNature = this._accountService.getNatureType();
   }
 
+  /**
+   * Gets the list of financial state types from the account service.
+   */
   getFinancialStateType() {
     this.listFinancialState = this._accountService.getFinancialStateType();
   }
 
+  /**
+   * Gets the list of classification types from the account service.
+   */
   getClasificationType() {
     this.listClasification = this._accountService.getClasificationType();
   }
 
+  /**
+   * Handles the selection of a financial state type and sets the corresponding form value.
+   * @param event The selection event.
+   */
   onSelectionFinancialStateType(event: any) {
     this.formTransactional.get('selectedFinancialStateType')?.setValue(event.name);
     this.placeFinancialStateType = '';
   }
 
+  /**
+   * Handles the selection of a nature type and sets the corresponding form value.
+   * @param event The selection event.
+   */
   onSelectionNatureType(event: any) {
     this.formTransactional.get('selectedNatureType')?.setValue(event.name);
     this.placeNatureType = '';
   }
     
+  /**
+   * Handles the selection of a classification type and sets the corresponding form value.
+   * @param event The selection event.
+   */
   onSelectionClasificationType(event: any) {
     this.formTransactional.get('selectedClasificationType')?.setValue(event.name);
     this.placeClasificationType = '';
   }
 
+  /**
+   * Handles deletion of financial statement type selection.
+   */
   onSelectionFinancialStateTypeClear() {
     this.formTransactional.get('selectedFinancialStateType')?.setValue('');
   }
 
+  /**
+   * Handles deletion of nature statement type selection.
+   */
   onSelectionNatureTypeClear() {
     this.formTransactional.get('selectedNatureType')?.setValue('');
   }
 
+  /**
+   * Handles deletion of classification statement type selection.
+   */
   onSelectionClasificationTypeClear() {
     this.formTransactional.get('selectedClasificationType')?.setValue('');
   }
 
+  /**
+   * Set the account information in the selector
+   * @param selectedAccount account selected from list
+   */
   accountHasInformation(selectedAccount: Account) {
     this.placeNatureType = 'Seleccione una opción';
     this.placeFinancialStateType = 'Seleccione una opción';
@@ -552,18 +613,23 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  /**
+   * save the accounts that have been imported by calling the service
+   */
   saveImportAccounts() {
     this.importedAccounts = false;
     this._accountService.saveAccountsImport(this.listAccounts)
   }
 
+  /**
+   * cancel the import of the file
+   */
   cancelImportAccounts() {
     this.importedAccounts = false;
     this.listAccounts = this.listAccountsAux;
   }
 
   //save and cancel functions come from the child form (component account-form) and are implemented here
-
   /**
    * hides the form and shows the state it was in again
    */
@@ -577,9 +643,8 @@ export class AccountsListComponent implements OnInit {
   }
   
   /**
-   * 
+   * If a child account is added, then the parent's code is added, if it is a class, it is added normally
    * @param $event Account with the information that was filled out in the child form
-   * @description If a child account is added, then the parent's code is added, if it is a class, it is added normally
    */
   addNewAccount($event: Account){
     if(this.showAddNewClass){
@@ -602,7 +667,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * 
+   * Gets the company ID from localStorage.
+   * @returns The company ID
    */
   getIdEnterprise(): string{
     const entData = localStorage.getItem('entData');
@@ -613,9 +679,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   // Service CRUD methods
-
   /**
    * Get all accounts
+   * @returns A Promise that resolves when the accounts are fetched successfully, or rejects with an error.
    */
   getAccounts(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
@@ -632,7 +698,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * @param account account that contains the information to search
+   * Get an account by its code.
+   * @param account The account object containing the code to search for.
+   * @returns A Promise that resolves with a boolean indicating whether the account exists or not, or rejects with an error.
    */
   getAccountByCode(account: Account): Promise<boolean> {
     return this._accountService.getAccountByCode(account.code, this.getIdEnterprise()).toPromise()
@@ -646,7 +714,7 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * 
+   * Save an account by calling the service
    * @param account account that contains the information to save
    */
   async saveNewAccountType(account: Account) {
@@ -702,7 +770,7 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * 
+   * Delete an account by calling the service
    */
   deleteAccount() {
     try {
@@ -757,6 +825,9 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  /**
+   * Update an account 
+   */
   async updateAccount(){
     try {  
       if(this.accountSelected){
@@ -805,6 +876,11 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  /**
+   * Update an account by calling the service
+   * @param id ID of the account to update
+   * @param account account that contains the information to update
+   */
   update(id?: number, account?: Account){
     this._accountService.updateAccount(id, account).subscribe(
       (response) => {
@@ -833,6 +909,11 @@ export class AccountsListComponent implements OnInit {
     );
   }
 
+  /**
+   * Expands the parent accounts of the selected account
+   * @param account Account to expand
+   * @returns A Promise that resolves to void
+   */
   expandAccounts(account: Account): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       try {
@@ -872,21 +953,4 @@ export class AccountsListComponent implements OnInit {
       }
     });
   }
-
-  collapseAllAccounts(): void {
-    const stack: Account[] = [...this.listAccounts];
-
-    while (stack.length > 0) {
-      const currentAccount = stack.pop();
-
-      if (!currentAccount) continue;
-
-      currentAccount.showSubAccounts = false;
-
-      if (currentAccount.children) {
-        stack.push(...currentAccount.children);
-      }
-    }
-  }
-
 }
