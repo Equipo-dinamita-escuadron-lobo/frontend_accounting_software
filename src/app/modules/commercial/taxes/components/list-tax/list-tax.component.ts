@@ -105,6 +105,7 @@ export class ListTaxComponent implements OnInit {
     });
   }
 
+
   goBack(): void {
     this.router.navigate(['/general/operation/taxes']);
   }

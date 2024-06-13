@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Tax } from '../../models/Tax';
 import { TaxService } from '../../services/tax.service';
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+
 
 
 @Component({
@@ -16,12 +19,16 @@ export class EditTaxComponent {
   taxId: number = 0; 
   tax: Tax = {} as Tax
   editForm: FormGroup;
+  depositAccounts: any[] | undefined;
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private taxService: TaxService
+    private taxService: TaxService,
+    private accountService: ChartAccountService //
   ) {
     this.editForm = this.formBuilder.group({
       code: ['', Validators.required],
@@ -33,6 +40,7 @@ export class EditTaxComponent {
   }
 
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
     this.route.params.subscribe(params => {
       this.taxId = +params['id']; // Obtener el ID del impuesto de los parámetros de la ruta
       this.getTaxDetails();
@@ -53,6 +61,17 @@ export class EditTaxComponent {
       },
       error => {
         console.error('Error obteniendo detalles del impuesto:', error);
+      }
+    );
+  }
+
+  loadDepositAccounts(): void {
+    this.accountService.getListAccounts(this.entData).subscribe(
+      (accounts: any[]) => {
+        this.depositAccounts = accounts;
+      },
+      error => {
+        console.error('Error obteniendo cuentas de depósito:', error);
       }
     );
   }

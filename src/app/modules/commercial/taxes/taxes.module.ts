@@ -5,6 +5,7 @@ import { CreateTaxComponent } from './components/create-tax/create-tax.component
 import { ListTaxComponent } from './components/list-tax/list-tax.component';
 import { EditTaxComponent } from './components/edit-tax/edit-tax.component';
 import { ReactiveFormsModule } from '@angular/forms'; 
+import { ChartAccountsModule } from '../chart-accounts/chart-accounts.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     TaxesRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, 
+    ChartAccountsModule
   ]
 })
 export class TaxesModule { }
