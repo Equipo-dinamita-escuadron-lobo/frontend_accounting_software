@@ -6,6 +6,9 @@ import { ClasificationType } from '../../models/ClasificationType';
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { ChartAccountService } from '../../services/chart-account.service';
 
+/**
+ * Angular component to create and edit accounting accounts.
+ */
 @Component({
   selector: 'app-account-form',
   templateUrl: './account-form.component.html',
@@ -13,22 +16,41 @@ import { ChartAccountService } from '../../services/chart-account.service';
 })
 export class AccountFormComponent implements OnInit {
 
+  /**
+   * Data received from parent component, account category, parent, level
+   */
   @Input() currentLevelAccount: string = '';
   @Input() parent?: Account;
   @Input() level: number = 0;
+
+  /**
+   * values ​​emitted from child component, new account (created, edited), cancel event
+   */
   @Output() newAccount = new EventEmitter<Account>(); 
   @Output() cancelar = new EventEmitter<void>(); 
 
+  /**
+   * lists containing additional data
+   */
   listNature: NatureType[] = [];
   listFinancialState: FinancialStateType[] = [];
   listClasification: ClasificationType[] = [];
 
+  /**
+   * Form
+   */
   formNewAccount: FormGroup;
 
+  /**
+   * Placeholder
+   */
   placeNatureType: string = 'Seleccione una opción';
   placeFinancialStateType: string = 'Seleccione una opción';
   placeClassificationType: string = 'Seleccione una opción';
 
+  /**
+   * message depending on the level
+   */
   messageLength: string = '';
 
   constructor(private _accountService: ChartAccountService, private fb: FormBuilder) {
@@ -41,6 +63,10 @@ export class AccountFormComponent implements OnInit {
     });
   }
 
+  /**
+   * Handle changes to inputs (@Input).
+   * @param changes Object that contains the changes made.
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['level']) {
       const validators = [
@@ -70,6 +96,9 @@ export class AccountFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Initializes the component.
+   */
   ngOnInit(): void {
     this.getNatureType();
     this.getFinancialStateType();
@@ -77,10 +106,16 @@ export class AccountFormComponent implements OnInit {
     this.asignMessage();
   }
 
+  /**
+   * Assigns the code length message based on account level.
+   */
   asignMessage() {
     this.messageLength = this.level === 1 ? 'un dígito' : 'dos dígitos';
   }
 
+  /**
+   * Raises the newAccount event with the new accounting account created.
+   */
   sendAccount() {
     const account: Account = {
       idEnterprise: this.getIdEnterprise(),
@@ -94,50 +129,88 @@ export class AccountFormComponent implements OnInit {
     this.newAccount.emit(account);
   }
 
+
+  /**
+   * Gets the company ID from localStorage.
+   * @returns The company ID
+   */
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
     return entData ? JSON.parse(entData).entId : '';
   }
 
+  /**
+   * Gets the nature types from the service.
+   */
   getNatureType() {
     this.listNature = this._accountService.getNatureType();
   }
 
+  /**
+   * Gets the financial statement types from the service.
+   */
   getFinancialStateType() {
     this.listFinancialState = this._accountService.getFinancialStateType();
   }
 
+  /**
+   * Gets the classification types from the service.
+   */
   getClasificationType() {
     this.listClasification = this._accountService.getClasificationType();
   }
 
+  /**
+   * Handles the selection of financial statement type.
+   * @param event Selection event.
+   */
   onSelectionFinancialStateType(event: any) {
     this.formNewAccount.get('selectedFinancialStateType')?.setValue(event.name);
     this.placeFinancialStateType = '';
   }
 
+  /**
+   * Handles nature type selection.
+   * @param event Selection event.
+   */
   onSelectionNatureType(event: any) {
     this.formNewAccount.get('selectedNatureType')?.setValue(event.name);
     this.placeNatureType = '';
   }
     
+  /**
+   * Handles classification type selection.
+   * @param event Selection event.
+   */  
   onSelectionClasificationType(event: any) {
     this.formNewAccount.get('selectedClassificationType')?.setValue(event.name);
     this.placeClassificationType = '';
   }
 
+  /**
+   * Handles deletion of financial statement type selection.
+   */
   onSelectionFinancialStateTypeClear() {
     this.formNewAccount.get('selectedFinancialStateType')?.setValue('');
   }
 
+  /**
+   * Handles deletion of nature type selection.
+   */
   onSelectionNatureTypeClear() {
     this.formNewAccount.get('selectedNatureType')?.setValue('');
   }
 
+  /**
+   * Handles clearing the sorting type selection.
+   */
   onSelectionClassificationTypeClear() {
     this.formNewAccount.get('selectedClassificationType')?.setValue('');
   }
 
+  /**
+   * Issues the cancel event.
+   */
   cancel() {
     this.cancelar.emit();
   }
