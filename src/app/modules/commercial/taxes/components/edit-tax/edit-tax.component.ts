@@ -17,6 +17,7 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 export class EditTaxComponent {
 
   taxId: number = 0; 
+  taxCode: string = "";
   tax: Tax = {} as Tax
   editForm: FormGroup;
   depositAccounts: any[] | undefined;
@@ -43,16 +44,17 @@ export class EditTaxComponent {
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.route.params.subscribe(params => {
-      this.taxId = +params['id']; // Obtener el ID del impuesto de los parámetros de la ruta
+      this.taxCode = +params['id']+""; // Obtener el ID del impuesto de los parámetros de la ruta
       this.getTaxDetails();
     });
     this.loadDepositAccounts();
   }
 
   getTaxDetails(): void {
-    this.taxService.getTaxById(this.taxId).subscribe(
+    this.taxService.getTaxById(this.taxCode,this.entData).subscribe(
       (tax: Tax) => {
         this.tax = tax;
+        console.log('Detalles del impuesto:', tax);
         this.editForm.patchValue({
           code: tax.code,
           description: tax.description,

@@ -56,23 +56,10 @@ export class ListTaxComponent implements OnInit {
     this.router.navigateByUrl(route);
   }
 
-  redirectToEdit(taxId: number): void {
-    if (this.selectedTaxId === taxId) {
-      // Doble clic, navegar a la página de edición del impuesto
-      this.router.navigate(['/general/operations/taxes/edit/', taxId]);
-      // Reiniciar el temporizador y el ID del impuesto seleccionado
-      clearTimeout(this.timer);
-      this.selectedTaxId = null;
-    } else {
-      // Primer clic, iniciar el temporizador
-      this.selectedTaxId = taxId;
-      this.timer = setTimeout(() => {
-        // Limpiar el temporizador si pasa un tiempo después del primer clic
-        clearTimeout(this.timer);
-        this.selectedTaxId = null;
-      }, 300); // Tiempo en milisegundos para considerar un doble clic
+  redirectToEdit(taxId: string): void {
+      this.router.navigate(['/general/operations/taxes/edit/',taxId]);
     }
-  }
+  
 
   redirectToDelete(taxId: number): void {
     // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación

@@ -64,13 +64,13 @@ taxes: Tax[] = [
   //     observer.complete();
   //   });
   // }
-  getTaxById(id: number): Observable<Tax> {
-    return new Observable((observer) => {
-      const tax = this.taxes.find((tax) => tax.id === id);
-      observer.next(tax);
-      observer.complete();
-    });
-  }
+  // getTaxById(id: number): Observable<Tax> {
+  //   return new Observable((observer) => {
+  //     const tax = this.taxes.find((tax) => tax.id === id);
+  //     observer.next(tax);
+  //     observer.complete();
+  //   });
+  // }
 
    getTaxes(enterpriseId: string): Observable<Tax[]> {
      const url = `${environment.API_URL}tax/taxes/${enterpriseId}`;
@@ -89,10 +89,12 @@ taxes: Tax[] = [
     return this.http.put<Tax>(url, tax);
   }
 
-  // getTaxById(id: number): Observable<Tax> {
-  //   const url = `${environment.API_URL}taxes/findById/${id}`;
-  //   return this.http.get<Tax>(url);
-  // }
+  getTaxById(code: string, enterpriseId: string): Observable<Tax> {
+    console.log('code:', code);
+    console.log('enterpriseId:', enterpriseId);
+    const url = `${environment.API_URL}tax/${code}/${enterpriseId}`;
+    return this.http.get<Tax>(url);
+  }
 
   deleteTax(id: number): Observable<Tax> {
     const url = `${environment.API_URL}tax/${id}`;
