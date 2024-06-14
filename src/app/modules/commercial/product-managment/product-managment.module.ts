@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { ProductManagmentRoutingModule } from './product-managment-routing.module';
 import { ProductCreationComponent } from './components/product-creation/product-creation.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -17,6 +17,8 @@ import { UnitOfMeasureCreationComponent } from './components/unit-of-measure-cre
 import { UnitOfMeasureEditComponent } from './components/unit-of-measure-edit/unit-of-measure-edit.component';
 import { ProductDetailsModalComponent } from './components/product-details/product-details.component';
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
+import { FilterAccountPipe } from './pipes/filter-account.pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,8 @@ import { CategoryDetailsComponent } from './components/category-details/category
         UnitOfMeasureCreationComponent,
         UnitOfMeasureEditComponent,
         ProductDetailsModalComponent,
-        CategoryDetailsComponent
+        CategoryDetailsComponent,
+        FilterAccountPipe
     ],
     exports: [
         ProductCreationComponent,
@@ -45,13 +48,16 @@ import { CategoryDetailsComponent } from './components/category-details/category
         CategoryCreationComponent,
         CategoryEditComponent,
         UnitOfMeasureCreationComponent,
-        UnitOfMeasureEditComponent
+        UnitOfMeasureEditComponent,
+        FilterAccountPipe
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         ProductManagmentRoutingModule,
-        SharedModule
+        SharedModule,
+        FormsModule,
+        NgSelectModule  
     ]
 })
 export class ProductManagmentModule { }

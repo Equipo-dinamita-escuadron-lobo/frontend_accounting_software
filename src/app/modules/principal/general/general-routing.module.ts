@@ -22,8 +22,14 @@ import { permissionsGuard } from '../../../core/guards/permissions.guard';
 import { UserListComponent } from '../../users/components/user-list/user-list.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { permissionsSuperGuardTsGuard } from '../../../core/guards/permissions.super.guard.ts.guard';
+<<<<<<< HEAD
 import { InvoiceCreationComponent } from '../../commercial/purchase-invoice/components/invoice-creation/invoice-creation.component';
 
+=======
+import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/list-tax.component';
+import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edit-tax.component';
+import { CreateTaxComponent } from '../../commercial/taxes/components/create-tax/create-tax.component';
+>>>>>>> develop
 const routes: Routes = [
   {
     path: '',
@@ -75,6 +81,18 @@ const routes: Routes = [
       {
         path: 'accounts',
         component: AccountsListComponent
+      },
+      {
+        path: 'taxes',
+        component: ListTaxComponent
+      },
+      {
+        path: 'taxes/create',
+        component:CreateTaxComponent
+      },
+      {
+        path: 'taxes/edit/:id',
+        component: EditTaxComponent
       },
       {
         path: 'products',

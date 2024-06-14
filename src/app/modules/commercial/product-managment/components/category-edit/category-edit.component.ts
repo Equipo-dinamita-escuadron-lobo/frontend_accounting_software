@@ -5,25 +5,25 @@ import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/Category';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import Swal from 'sweetalert2';
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { Account } from '../../../chart-accounts/models/ChartAccount';
 
-//interface temporal para simular la respuesta de la API
-interface Cuenta {
-  id: number;
-  name: string;
-  description: string;
-}
+
 @Component({
   selector: 'app-category-edit',
   templateUrl: './category-edit.component.html',
   styleUrl: './category-edit.component.css'
 })
 export class CategoryEditComponent implements OnInit{
+
 categoryId: string = '';
 category: Category = {} as Category;
 editForm: FormGroup;
 localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
 entData: any | null = null;
-//cuentas
+  //cuentas
+  accounts: any[] | undefined;
+  filterAccount: string = '';
 inventory: any[] = [];
 cost: any[] = [];
 sale: any[] = [];
@@ -34,9 +34,11 @@ constructor(
   private route: ActivatedRoute,
   private categoryService: CategoryService,
   private formBuilder: FormBuilder,
-  private router: Router
+  private router: Router,
+  private chartAccountService: ChartAccountService,
 
-) {
+
+) {    this.accounts = [];
   this.editForm = this.formBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -86,20 +88,62 @@ constructor(
   }
 
     //cuentas
-    getCuentas(): void {
-      this.categoryService.getCuentas().subscribe(
-        (data: Cuenta[]) => {
-          this.inventory = data;
-          this.cost = data;
-          this.sale = data;
-          this.return = data;
-        },
-        error => {
-          console.log('Error al obtener las cuentas:', error);
-        }
-      );
+ //cuentas
+ getCuentas(): void {
+  this.chartAccountService.getListAccounts(this.entData).subscribe(
+    (data: any[]) => {
+      this.accounts = this.mapAccountToList(data);
+      this.cost = this.accounts;
+      this.inventory = this.accounts;
+      this.sale = this.accounts;
+      this.return = this.accounts;
+      console.log('accounts:', this.accounts);
+    },
+    error => {
+      console.log('Error al obtener las cuentas:', error);
     }
+  );
+}
 
+mapAccountToList(data: Account[]): Account[] {
+  let result: Account[] = [];
+  console.log('data:', data);
+
+  function traverse(account: Account) {
+      // Clonamos el objeto cuenta sin los hijos
+      let { children, ...accountWithoutChildren } = account;
+      result.push(accountWithoutChildren as Account);
+
+      // Llamamos recursivamente para cada hijo
+      if (children && children.length > 0) {
+          children.forEach(child => traverse(child));
+      }
+  }
+
+  data.forEach(account => traverse(account));
+  console.log('result:', result);
+  return result;
+}
+get filteredAccounts() {
+if (this.accounts) {
+  return this.accounts.filter(account =>
+    `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+  );
+}
+return [];
+}
+
+customSearchFn(term: string, item: any) {
+term = term.toLowerCase();
+return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+}
+
+
+    validationsAll() {
+      return {
+        stringSearchCategory: [''],
+      };
+    }
 
   onSubmit(): void {
     console.log('Formulario editado sub:', this.editForm.value);

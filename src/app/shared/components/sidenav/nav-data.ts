@@ -12,6 +12,11 @@ export const navbarData: INavbarData[] = [
     label: 'Catálogo de cuentas'
   },
   {
+    routeLink: '/general/operations/taxes',
+    icon: 'monetization_on',
+    label: 'Impuestos'
+  },
+  {
     routeLink: '/general/operations/third-parties',
     icon: 'groups',
     label: 'Terceros'

@@ -25,7 +25,7 @@ import { AccountFormComponent } from './components/account-form/account-form.com
     NgSelectModule
   ],
   exports:[
-    AccountsListComponent
+    AccountsListComponent,
   ]
 })
 export class ChartAccountsModule { }

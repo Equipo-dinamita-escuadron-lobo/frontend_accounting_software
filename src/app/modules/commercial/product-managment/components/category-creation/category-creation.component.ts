@@ -4,13 +4,8 @@ import { CategoryService } from '../../services/category.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-
-//interface temporal para simular la respuesta de la API
-interface Cuenta {
-  id: number;
-  name: string;
-  description: string;
-}
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { Account } from '../../../chart-accounts/models/ChartAccount';
 
 @Component({
   selector: 'app-category-creation',
@@ -23,6 +18,9 @@ export class CategoryCreationComponent implements OnInit {
   entData: any | null = null;
 
   //cuentas
+  accounts: any[] | undefined;
+  filterAccount: string = '';
+
   inventory: any[] = [];
   cost: any[] = [];
   sale: any[] = [];
@@ -31,10 +29,15 @@ export class CategoryCreationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private chartAccountService: ChartAccountService,
+  ) {
+    this.accounts = [];
+  }
+  
 
   ngOnInit(): void {
+
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -50,7 +53,11 @@ export class CategoryCreationComponent implements OnInit {
       this.getCuentas();
     }
   }
-
+  validationsAll() {
+    return {
+      stringSearchCategory: [''],
+    };
+  }
   onSubmit(): void {
     if (this.categoryForm.valid) {
       const categoryData = this.categoryForm.value;
@@ -103,16 +110,52 @@ export class CategoryCreationComponent implements OnInit {
 
   //cuentas
   getCuentas(): void {
-    this.categoryService.getCuentas().subscribe(
-      (data: Cuenta[]) => {
-        this.inventory = data;
-        this.cost = data;
-        this.sale = data;
-        this.return = data;
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
+      (data: any[]) => {
+        this.accounts = this.mapAccountToList(data);
+        this.cost = this.accounts;
+        this.inventory = this.accounts;
+        this.sale = this.accounts;
+        this.return = this.accounts;
+        console.log('accounts:', this.accounts);
       },
-      (error) => {
+      error => {
         console.log('Error al obtener las cuentas:', error);
       }
     );
   }
+
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+    console.log('data:', data);
+
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
+    }
+
+    data.forEach(account => traverse(account));
+    console.log('result:', result);
+    return result;
+}
+get filteredAccounts() {
+  if (this.accounts) {
+    return this.accounts.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+    );
+  }
+  return [];
+}
+
+customSearchFn(term: string, item: any) {
+  term = term.toLowerCase();
+  return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+}
+
 }

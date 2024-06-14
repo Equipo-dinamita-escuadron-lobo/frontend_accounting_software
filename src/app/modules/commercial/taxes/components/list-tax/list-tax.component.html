@@ -1,0 +1,65 @@
+<div class="flex flex-col justify-start items-center m-10">
+    <div class="mb-6 self-start">
+      <span class="text-4xl text-blue-950 self-start">Impuestos</span>
+    </div>
+  
+    <!-- Aquí irían los filtros de búsqueda si se requieren -->
+  
+    <div class="lg:text-md mx-auto w-full">
+
+      <div class="flex justify-end mt-4">
+        <button class="h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white" (click)="redirectTo('/general/operations/taxes/create')">
+          Agregar
+        </button>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-200">
+            <tr>
+              <th *ngFor="let col of columns" class="px-6 py-3 text-lg text-blue-950 font-bold text-left">
+                {{ col.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let tax of taxes" class="hover:bg-gray-100">
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.code }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.interest }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.depositAccount }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ tax.refundAccount }}</td>
+              <td class="py-4 whitespace-nowrap flex justify-center items-center">            
+                
+              <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 mr-2 relative overflow-hidden"
+              (click)="redirectToEdit(tax.code)">
+              <span class="material-icons flex justify-center items-center text-white">edit</span>
+              <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+                Editar
+              </span>
+            </button>
+        
+                
+                <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 relative overflow-hidden"
+                      (click)="redirectToDelete(tax.id)">
+                <span class="material-icons flex justify-center items-center text-white">delete</span>
+                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
+                  Eliminar
+                </span>
+              </button>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+   
+  
+    <!-- Manejar caso de lista vacía -->
+    <ng-template #noTaxes>
+      <p class="text-gray-700">No hay impuestos disponibles.</p>
+    </ng-template>
+  </div>
+  
