@@ -45,12 +45,26 @@
                 </div>
               </div>
               <div>
-                <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
-                <select formControlName="depositAccountId" id="depositAccountId"
+                <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
+                <!-- <select formControlName="depositAccountId" id="depositAccountId"
                         class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="" disabled selected>Selecciona una cuenta</option>
                     <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
-                </select>
+                </select> -->
+                <ng-select 
+                formControlName="depositAccount" id="depositAccount"
+                  [items]="depositAccounts || []"
+                  bindLabel="description"
+                  bindValue="id"
+                  [searchable]="true"
+                  [searchFn]="customSearchFn"
+                  placeholder=""
+                  class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                  <option value="">Selecciona una opción</option>
+                  <ng-template ng-option-tmp let-item="item">
+                    <div class="p-2 hover:bg-gray-100">{{item.code}}-{{ item.description }}</div>
+                  </ng-template>
+                </ng-select>
                 <div *ngIf="editForm.get('depositAccountId')?.touched && editForm.get('depositAccountId')?.invalid"
                      class="text-red-500">
                     <div *ngIf="editForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es requerido.</div>
@@ -58,13 +72,21 @@
             </div>
 
             <div>
-              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
-              <select formControlName="refundAccountId" id="refundAccountId"
-                      class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                      aria-required="true">
-                  <option value="" disabled selected>Selecciona una cuenta</option>
-                  <option *ngFor="let account of refundAccounts" [value]="account.id">{{ account.description }}</option>
-              </select>
+              <label for="refundAccount" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
+              <ng-select 
+              formControlName="refundAccount" id="refundAccount"
+                [items]="refundAccounts || []"
+                bindLabel="description"
+                bindValue="id"
+                [searchable]="true"
+                [searchFn]="customSearchFn"
+                placeholder=""
+                class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="">Selecciona una opción</option>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="p-2 hover:bg-gray-100">{{ item.code }} - {{ item.description }}</div>
+                </ng-template>
+              </ng-select>
               <div *ngIf="editForm.get('refundAccountId')?.touched && editForm.get('refundAccountId')?.invalid"
                    class="text-red-500">
                   <div *ngIf="editForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es requerido.</div>

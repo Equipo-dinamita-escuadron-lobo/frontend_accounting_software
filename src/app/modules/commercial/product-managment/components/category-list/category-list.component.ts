@@ -6,11 +6,9 @@ import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import Swal from 'sweetalert2';
-interface Cuenta {
-  id: number;
-  name: string;
-  description: string;
-}
+import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+
 
 @Component({
   selector: 'app-category-list',
@@ -19,7 +17,7 @@ interface Cuenta {
 })
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
-  cuentas: Cuenta[] = [];
+  accounts: any[] = [];
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
@@ -45,9 +43,11 @@ export class CategoryListComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private fb: FormBuilder
-  ) {
+    private chartAccountService: ChartAccountService,
+
+    private fb: FormBuilder  ) {
     this.form = this.fb.group(this.validationsAll());
+    this.accounts = [];
   }
 
   validationsAll() {
@@ -66,19 +66,40 @@ export class CategoryListComponent implements OnInit {
   }
     //cuentas
     getCuentas(): void {
-      this.categoryService.getCuentas().subscribe(
-        (data: Cuenta[]) => {
-          this.cuentas = data;
-
+      this.chartAccountService.getListAccounts(this.entData).subscribe(
+        (data: any[]) => {
+          this.accounts = this.mapAccountToList(data);
+          console.log('accounts:', this.accounts);
         },
         error => {
           console.log('Error al obtener las cuentas:', error);
         }
       );
     }
+
+    mapAccountToList(data: Account[]): Account[] {
+      let result: Account[] = [];
+      console.log('data:', data);
+  
+      function traverse(account: Account) {
+          // Clonamos el objeto cuenta sin los hijos
+          let { children, ...accountWithoutChildren } = account;
+          result.push(accountWithoutChildren as Account);
+  
+          // Llamamos recursivamente para cada hijo
+          if (children && children.length > 0) {
+              children.forEach(child => traverse(child));
+          }
+      }
+  
+      data.forEach(account => traverse(account));
+      console.log('result:', result);
+      return result;
+  }
+
     getCategoryName(id: number): string {
-      const account = this.cuentas.find(cuenta => cuenta.id === id);
-      return account ? account.name : 'No encontrado';
+      const account = this.accounts.find(cuenta => cuenta.id === id);
+      return account ? account.description : 'No encontrado';
     }
 
 

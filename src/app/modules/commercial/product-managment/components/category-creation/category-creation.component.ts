@@ -19,7 +19,7 @@ export class CategoryCreationComponent implements OnInit {
 
   //cuentas
   accounts: any[] | undefined;
-  filterText: string = '';
+  filterAccount: string = '';
 
   inventory: any[] = [];
   cost: any[] = [];
@@ -34,6 +34,7 @@ export class CategoryCreationComponent implements OnInit {
   ) {
     this.accounts = [];
   }
+  
 
   ngOnInit(): void {
 
@@ -52,7 +53,11 @@ export class CategoryCreationComponent implements OnInit {
       this.getCuentas();
     }
   }
-
+  validationsAll() {
+    return {
+      stringSearchCategory: [''],
+    };
+  }
   onSubmit(): void {
     if (this.categoryForm.valid) {
       const categoryData = this.categoryForm.value;
@@ -108,6 +113,11 @@ export class CategoryCreationComponent implements OnInit {
     this.chartAccountService.getListAccounts(this.entData).subscribe(
       (data: any[]) => {
         this.accounts = this.mapAccountToList(data);
+        this.cost = this.accounts;
+        this.inventory = this.accounts;
+        this.sale = this.accounts;
+        this.return = this.accounts;
+        console.log('accounts:', this.accounts);
       },
       error => {
         console.log('Error al obtener las cuentas:', error);
@@ -137,11 +147,15 @@ export class CategoryCreationComponent implements OnInit {
 get filteredAccounts() {
   if (this.accounts) {
     return this.accounts.filter(account =>
-      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterText.toLowerCase())
+      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
     );
   }
   return [];
 }
 
+customSearchFn(term: string, item: any) {
+  term = term.toLowerCase();
+  return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+}
 
 }

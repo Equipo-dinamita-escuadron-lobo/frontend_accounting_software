@@ -6,6 +6,7 @@ import { Tax } from '../../models/Tax';
 import { TaxService } from '../../services/tax.service';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { Account } from '../../../chart-accounts/models/ChartAccount';
 
 
 
@@ -25,13 +26,17 @@ export class EditTaxComponent {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
+  accounts: any[] = [];
+  filterAccount: string = '';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
     private taxService: TaxService,
-    private accountService: ChartAccountService //
+    private chartAccountService: ChartAccountService,
+
   ) {
+    this.accounts = [];
     this.editForm = this.formBuilder.group({
       code: ['', Validators.required],
       description: ['', Validators.required],
@@ -43,43 +48,96 @@ export class EditTaxComponent {
 
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.getCuentas();
     this.route.params.subscribe(params => {
       this.taxCode = +params['id']+""; // Obtener el ID del impuesto de los parámetros de la ruta
       this.getTaxDetails();
     });
-    this.loadDepositAccounts();
+    // this.getTaxDetails();
+    //this.getCuentas();
   }
 
   getTaxDetails(): void {
     this.taxService.getTaxById(this.taxCode,this.entData).subscribe(
-      (tax: Tax) => {
+      (tax:any) => {
         this.tax = tax;
         console.log('Detalles del impuesto:', tax);
         this.editForm.patchValue({
           code: tax.code,
           description: tax.description,
           interest: tax.interest,
-          depositAccountId: tax.depositAccountId,
-          refundAccountId: tax.refundAccountId
+          depositAccountId: this.getCuentabycode(tax.depositAccount),
+          refundAccountId: 11//this.getCuentabycode(tax.refundAccount )
         });
+        console.log('Formulario con detalles del tax:', this.tax);
+        console.log('Formulario con detalles del impuesto:', this.editForm.value);
       },
       error => {
         console.error('Error obteniendo detalles del impuesto:', error);
       }
     );
   }
+  getCuentabycode(code: number): number {
+    console.log('code:', code);
+    console.log('accounts333333:', this.accounts);
+    const account = this.accounts.find(account => account.code === code);
+    return account ? account.id : 'No encontrado';
+  }
+  
+  
 
-  loadDepositAccounts(): void {
-    this.accountService.getListAccounts(this.entData).subscribe(
-      (accounts: any[]) => {
-        this.depositAccounts = accounts;
-        this.refundAccounts = accounts;
+  getCuentas(): void {
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
+      (data: any[]) => {
+        this.accounts =  this.mapAccountToList(data);
+        this.depositAccounts =  this.accounts;
+        this.refundAccounts =  this.accounts;
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
       }
     );
   }
+
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+    console.log('data:', data);
+  
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+  
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
+    }
+  
+    data.forEach(account => traverse(account));
+    console.log('result:', result);
+    return result;
+  }
+  get filteredAccounts() {
+  if (this.accounts) {
+    return this.accounts.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+    );
+  }
+  return [];
+  }
+  
+  customSearchFn(term: string, item: any) {
+  term = term.toLowerCase();
+  return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+  }
+  
+  
+      validationsAll() {
+        return {
+          stringSearchCategory: [''],
+        };
+      }
 
   onSubmit(): void {
     if (this.editForm.valid) {

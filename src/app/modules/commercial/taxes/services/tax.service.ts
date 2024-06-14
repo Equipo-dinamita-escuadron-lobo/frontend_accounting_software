@@ -24,7 +24,7 @@ export class TaxService {
 
   updateTax(tax: Tax): Observable<Tax> {
     const id = tax.id;
-    const url = `${environment.API_URL}taxes/update/${id}`;
+    const url = `${environment.API_URL}tax/${id}`;
     return this.http.put<Tax>(url, tax);
   }
 
