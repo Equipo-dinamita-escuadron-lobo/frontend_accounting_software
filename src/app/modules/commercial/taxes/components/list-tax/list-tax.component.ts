@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import { TaxService } from '../../services/tax.service';
 import { Tax } from '../../models/Tax';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { Account } from '../../../chart-accounts/models/ChartAccount';
 
 @Component({
   selector: 'app-list-tax',
@@ -13,16 +15,17 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 })
 export class ListTaxComponent implements OnInit {
 
-  taxes: Tax[] = [];
+  taxes: any[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
-  
+  accounts: any[] = [];
+
   columns: any[] = [
     { title: 'Código', data: 'code' },
     { title: 'Descripción', data: 'description' },
     { title: 'Interés', data: 'interest' },
-    { title: 'Cuenta de Depósito', data: 'depositAccountName' },
-    { title: 'Cuenta de Reembolso', data: 'refundAccountName' },
+    { title: 'Cuenta de Depósito', data: 'depositAccount' },
+    { title: 'Cuenta de Reembolso', data: 'refundAccount' },
     { title: 'Acciones', data: 'actions' }
   ];
 
@@ -32,14 +35,52 @@ export class ListTaxComponent implements OnInit {
   constructor(
     private taxService: TaxService,
     private router: Router,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private chartAccountService: ChartAccountService,
+
+  ) {
+    this.accounts = [];
+
+   }
 
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getTaxes();
+    this.getCuentas();
 
+
+  }  
+    //cuentas
+  getCuentas(): void {
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
+      (data: any[]) => {
+        this.accounts = this.mapAccountToList(data);
+        console.log('accounts:', this.accounts);
+      },
+      error => {
+        console.log('Error al obtener las cuentas:', error);
+      }
+    );
   }
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+    console.log('data:', data);
+
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
+    }
+
+    data.forEach(account => traverse(account));
+    console.log('result:', result);
+    return result;
+}
 
   getTaxes(): void {
     this.taxService.getTaxes(this.entData).subscribe(

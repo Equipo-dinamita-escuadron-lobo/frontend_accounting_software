@@ -53,7 +53,7 @@ export class EditTaxComponent {
       this.taxCode = +params['id']+""; // Obtener el ID del impuesto de los parámetros de la ruta
       this.getTaxDetails();
     });
-    // this.getTaxDetails();
+     this.getTaxDetails();
     //this.getCuentas();
   }
 
@@ -61,13 +61,14 @@ export class EditTaxComponent {
     this.taxService.getTaxById(this.taxCode,this.entData).subscribe(
       (tax:any) => {
         this.tax = tax;
+        this.taxId = tax.id;
         console.log('Detalles del impuesto:', tax);
         this.editForm.patchValue({
           code: tax.code,
           description: tax.description,
           interest: tax.interest,
           depositAccountId: this.getCuentabycode(tax.depositAccount),
-          refundAccountId: 11//this.getCuentabycode(tax.refundAccount )
+          refundAccountId: this.getCuentabycode(tax.refundAccount )
         });
         console.log('Formulario con detalles del tax:', this.tax);
         console.log('Formulario con detalles del impuesto:', this.editForm.value);
@@ -143,7 +144,7 @@ export class EditTaxComponent {
     if (this.editForm.valid) {
       const updatedTax: Tax = this.editForm.value;
       updatedTax.id = this.taxId; // Asignar el ID del impuesto
-
+console.log('updatedTax:', updatedTax);
       this.taxService.updateTax(updatedTax).subscribe(
         (response: Tax) => {
           Swal.fire({

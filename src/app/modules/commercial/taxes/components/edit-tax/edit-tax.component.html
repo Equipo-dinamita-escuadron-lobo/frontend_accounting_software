@@ -45,14 +45,14 @@
                 </div>
               </div>
               <div>
-                <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
+                <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
                 <!-- <select formControlName="depositAccountId" id="depositAccountId"
                         class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="" disabled selected>Selecciona una cuenta</option>
                     <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
                 </select> -->
                 <ng-select 
-                formControlName="depositAccount" id="depositAccount"
+                formControlName="depositAccountId" id="depositAccountId"
                   [items]="depositAccounts || []"
                   bindLabel="description"
                   bindValue="id"
@@ -72,9 +72,9 @@
             </div>
 
             <div>
-              <label for="refundAccount" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
+              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
               <ng-select 
-              formControlName="refundAccount" id="refundAccount"
+              formControlName="refundAccountId" id="refundAccountId"
                 [items]="refundAccounts || []"
                 bindLabel="description"
                 bindValue="id"
