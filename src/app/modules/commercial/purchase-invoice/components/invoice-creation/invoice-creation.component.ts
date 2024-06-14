@@ -12,6 +12,7 @@ import { Facture } from '../../models/facture';
 import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -25,9 +26,10 @@ export class InvoiceCreationComponent implements OnInit {
   showSectionThrid: boolean = true;
   showInfoThird: boolean = false;
   selectedSupplier: any;
+  selectedSupplierS?: number;
   supplierS?: Third;
-  lstThirds: Third[] = [];
-  lstThirdsSecurity: Third[] = [];
+  supplierSCopy?: Third;
+  changeSupplierS: boolean = false;
 
   // Variables for products
   showSectionProducts: boolean = true;
@@ -58,7 +60,8 @@ export class InvoiceCreationComponent implements OnInit {
   constructor(private enterpriseService: EnterpriseService,
     private dialog: MatDialog,
     private thirdService: ThirdServiceService,
-    private invoiceService: InvoiceServiceService) { }
+    private invoiceService: InvoiceServiceService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getEnterpriseSelectedInfo();
@@ -84,7 +87,6 @@ export class InvoiceCreationComponent implements OnInit {
       this.thirdService.getThirdPartie(thirdId).subscribe({
         next: (response: Third) => {
           this.supplierS = response;
-          console.log(this.supplierS.email);
         }
       });
     }
@@ -97,7 +99,7 @@ export class InvoiceCreationComponent implements OnInit {
 
   // Método para llevar al formulario de crear tercero
   createSupplier() {
-    this.showInfoThird = !this.showInfoThird;
+    this.router.navigate(['/general/operations/third-parties/create']);
   }
 
   showSectionThridM() {
@@ -110,7 +112,7 @@ export class InvoiceCreationComponent implements OnInit {
   }
 
   createProduct() {
-    this.showSectionProducts = !this.showSectionProducts;
+    this.router.navigate(['/general/operations/products/create']);
   }
 
   showSectionProductsM() {
@@ -119,7 +121,6 @@ export class InvoiceCreationComponent implements OnInit {
 
   formatPrice(price: number): string {
     return price.toLocaleString('es-ES');
-    //return price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' });
   }
 
   // Paara calcular total de cada producto
@@ -131,7 +132,6 @@ export class InvoiceCreationComponent implements OnInit {
   // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
     const subtotalProduct = prod.amount * prod.price;
-    //const ivaAmountProduct = (subtotalProduct * prod.IVA) / 100;
     return subtotalProduct;
   }
 
@@ -139,7 +139,6 @@ export class InvoiceCreationComponent implements OnInit {
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    //this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price*prod.amount)+(prod.price*prod.amount*prod.IVA)/100), 0);
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
     this.total = this.subTotal + this.taxTotal - this.retention;
@@ -192,7 +191,6 @@ export class InvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
-        // Caso de error
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear la factura.',
@@ -200,6 +198,10 @@ export class InvoiceCreationComponent implements OnInit {
         });
       }
     );
+  }
+
+  changeSupplier(){
+
   }
 
   private extractFileName(contentDisposition: string): string | null {
@@ -224,9 +226,31 @@ export class InvoiceCreationComponent implements OnInit {
         console.log('Información recibida del modal:', result);
         this.selectedSupplier = result;
         this.showInfoThird = true;
+        this.showSectionProducts = true;
         this.getSupplier(result);
+        
+        if((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)){
+          Swal.fire({
+            title: "Cambio de proveedor",
+            text: "Si cambia de proveerdor se perderan los datos que hayan registrado en productos!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirmar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.supplierSCopy = this.supplierS;
+              this.lstProducts = [];
+              this.showInfoProducts = false;
+            }
+          });
+        }
       } else {
+        this.supplierS = undefined;
         this.showInfoThird = false;
+        this.showInfoProducts = false;
+        this.showSectionProducts = false;
       }
     });
   }
@@ -249,12 +273,12 @@ export class InvoiceCreationComponent implements OnInit {
         console.log('Información recibida del modal:', result);
         this.lstProducts = result;
         this.lstProducts.forEach(prod => {
-          prod.IVA = prod.taxPercentage; // Set default IVA to taxPercentage
+          prod.IVA = prod.taxPercentage; 
           prod.amount = 1;
           prod.totalValue = 0;
         });
         this.showInfoProducts = true;
-        this.calculateInvoiceTotals(); // Calcular los totales iniciales
+        this.calculateInvoiceTotals(); 
       } else {
         console.log('No selecciono ningun producto');
         this.showInfoProducts = false;
