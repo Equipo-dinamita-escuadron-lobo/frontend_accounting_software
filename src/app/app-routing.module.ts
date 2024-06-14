@@ -12,6 +12,12 @@ const routes: Routes = [
     loadChildren: () => import('./modules/principal/login/login.module').then(m => m.LoginModule),
   },
 
+  
+  {
+    path: 'about',
+    loadChildren: () => import('./modules/principal/about-app/about-app.module').then(m => m.AboutAppModule),
+  },
+
   {
     path: 'general',
     loadChildren: () => import('./modules/principal/general/general.module').then(m => m.GeneralModule),

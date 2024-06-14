@@ -1,6 +1,6 @@
 <div class="flex flex-col md:flex-row min-h-screen">
-  <app-sidenav (onToggleSideNav)="onToggleSideNav($event)" class="w-64"></app-sidenav>
-  <div class="flex-grow ">
+  <app-sidenav (onToggleSideNav)="onToggleSideNav2($event)"></app-sidenav>
+  <div [ngClass]="{'ml-64': isSideNavMinimized, 'ml-16' : !isSideNavMinimized}" class="flex-grow transition-all duration-300">
     <router-outlet></router-outlet>
   </div>
 </div>

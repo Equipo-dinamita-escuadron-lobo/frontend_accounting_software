@@ -70,10 +70,6 @@
                     </td>
 
                     <td class="px-6 py-4 whitespace-nowrap">
-                      {{user.password }}
-                    </td>
-
-                    <td class="px-6 py-4 whitespace-nowrap">
                       <div class="block" *ngFor="let rol of user.roles">
                         <span *ngIf="validRol(rol)">{{filterRoles(rol)}}</span>
                       </div>

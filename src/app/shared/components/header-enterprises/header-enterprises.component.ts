@@ -46,16 +46,19 @@ export class HeaderEnterprisesComponent {
   }
 
   openModalEdit(): void {
-    this.openPopUp('Mi perfil', UserModalEditComponent);
+    let id = this.authService.getUserData().id;
+    this.openPopUp('Mi perfil', UserModalEditComponent, id, false);
   }
 
-  openPopUp(title: any, component: any) {
+  openPopUp(title: any, component: any, id:any, band:any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '600ms',
       data: {
         title: title,
+        id: id,
+        band: band
       },
     });
     _popUp.afterClosed().subscribe();

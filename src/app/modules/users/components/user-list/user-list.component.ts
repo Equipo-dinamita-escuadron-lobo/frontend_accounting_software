@@ -45,7 +45,6 @@ export class UserListComponent {
     { title: 'Apellido' },
     { title: 'Correo' },
     { title: 'Usuario' },
-    { title: 'Contraseña'},
     { title: 'Roles'},
     { title: 'Acciones'}
   ];
@@ -91,32 +90,45 @@ export class UserListComponent {
 
 
   openModalEdit(username:string):void{
-    this.openPopUp(username, 'Editar información del usuario', UserModalEditComponent)
+    this.openPopUp(username, 'Editar información del usuario', UserModalEditComponent, true)
   }
 
   openModalCreate():void{
-    this.openPopUp(null, 'Crear Usuario', UserModalCreateComponent)
+    this.openPopUp(null, 'Crear Usuario', UserModalCreateComponent, true)
   }
 
-  openPopUp(id:any, title: any, component: any){
+  openPopUp(id:any, title: any, component: any, band: any){
     var _popUp = this.dialog.open(component, {
       width: '40%',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '600ms',
       data:{
         title: title,
-        id: id
+        id: id,
+        band: band
       }
     });
     _popUp.afterClosed().subscribe()
   }
 
-
   getLstUsers(){
     this.userService.getAllUsers().subscribe({
       next: (lstUsuarios) => {
         this.data = lstUsuarios;
+        this.sortArrayByName();
       },
+    });
+  }
+
+  sortArrayByName(): void {
+    this.data.sort((a:User, b:User) => {
+      if (a.firstName.toLowerCase() < b.firstName.toLowerCase()) {
+        return -1;
+      }
+      if (a.firstName.toLowerCase() > b.firstName.toLowerCase()) {
+        return 1;
+      }
+      return 0;
     });
   }
 }

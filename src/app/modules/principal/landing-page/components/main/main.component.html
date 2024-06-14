@@ -1,36 +1,7 @@
 <div class="container-all h-full text-white landing overflow-auto w-full">
 
     <div class="container-image text-animator  sub-container-all flex flex-col justify-center h-full w-full">
-        <div class="nav w-full px-6">
-            <div class="flex justify-between items-center">
-                <div class="container-logo m-6">
-                    <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="" class="h-24">
-                </div>
-
-                <div class="container-options flex text-xl">
-                    <ul class="flex">
-                        <li class="py-2 mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Inicio'}"
-                            (click)="selectOption('Inicio')">
-                            Inicio
-                        </li>
-                        <li class="py-2 mr-10 underline-animation"
-                            [ngClass]="{'selected': selectedOption === 'Acerca de'}"
-                            (click)="selectOption('Acerca de')">
-                            Acerca de
-                        </li>
-                        <li class="py-2 mr-10 underline-animation"
-                            [ngClass]="{'selected': selectedOption === 'Contacto'}" (click)="selectOption('Contacto')">
-                            Contacto
-                        </li>
-                    </ul>
-                    <div class="button-login py-2 border-red-100 border-2 p-4">
-                        <button (click)="goToLogin()" class="">Iniciar sesión</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+        <app-header-main></app-header-main>
         <div class="container-main grid justify-between items-center text-center grid-cols-1 h-full w-full">
             <div class="container-hel">
 
@@ -49,9 +20,6 @@
                 </div>
             </div>
 
-
-
-
             <div class="container-services w-11/12 opm:w-3/6 m-auto  grid grid-cols-2 opm:grid-cols-4 gap-6 relative">
                 <div class="service bg-emerald-950 p-3 py-5 grid rounded-2xl">
                     <div class="icon  flex justify-center items-center">
@@ -64,8 +32,8 @@
                 </div>
 
                 <div class="service bg-yellow-800 grid rounded-2xl py-5">
-                    <div class="icon  flex justify-center items-center">
-                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
+                    <div class="icon w-21 h-21">
+                        <img class="rounded-full w-21 h-21 object-cover bg-cover shadow-sm" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
                     </div>
 
                     <div class="name mt-2 flex items-center justify-center">

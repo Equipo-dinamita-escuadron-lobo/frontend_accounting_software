@@ -1,5 +1,264 @@
 <div class="flex w-full h-full font-projectFont">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
-        
+        <!-- Invoice information -->
+        <div class="flex flex-col lg:flex-row">
+            <div class="rounded-full w-24 h-24 sm:w-28 sm:w-28-24 lg:w-36 lg:h-3w-36">
+                <img class="rounded-full object-cover shadow-sm" [src]="enterpriseSelected?.logo" alt="" />
+            </div>
+
+            <div class="w-full lg:ml-5 mt-5 lg:mt-0">
+                <h1 class="text-3xl font-extrabold text-blue-950 mb-3">Factura de compra</h1>
+                <div class="grid sm:grid-cols-2 grid-cols-1">
+                    <div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Cliente:</p>
+                            <p class="">{{enterpriseSelected?.name}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Fecha de emisión:</p>
+                            <p class="">{{ currentDate | date: 'dd/MM/yyyy' }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">NIT:</p>
+                            <p class="">{{enterpriseSelected?.nit}}</p>
+                        </div>
+                        <!--
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2">Forma de pago:</p>
+                            <select [(ngModel)]="paymentMethod" class="border-none  px-2 py-1">
+                                <option value="debito">Débito</option>
+                                <option value="credito">Crédito</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Third parties information -->
+        <div class="mt-10">
+            <button (click)="showSectionThridM()"
+                class="w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+                <div class="flex">
+
+                    @if(showSectionThrid){
+                    <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    }
+
+                    @if(!showSectionThrid){
+                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    }
+
+                    Información de proveedor
+                </div>
+            </button>
+
+
+            @if(showSectionThrid){
+            <div>
+                <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
+                    un proveedor.
+                </p>
+                <div class="botones flex justify-center items-center mb-5">
+                    <div class="inline-flex">
+                        <button (click)="selectSupplier()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                            Elegir proveedor
+                        </button>
+                        <button (click)="createSupplier()"
+                            class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                            Crear proveedor
+                        </button>
+                    </div>
+                </div>
+
+                @if (showInfoThird) {
+                <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
+                    <div class="space-y-2">
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Tipo de Documento</p>
+                            <p class="w-2/4">{{supplierS?.typeId?.typeId}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Numero de Documento</p>
+                            <p class="w-2/4">{{supplierS?.idNumber}}</p>
+                        </div>
+                        @if(supplierS?.names){
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Nombre:</p>
+                            <p class="w-2/4">{{supplierS?.names}}</p>
+                        </div>
+                        }
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Dirección:</p>
+                            <p class="w-2/4">{{supplierS?.address}}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Pais:</p>
+                            <p class="w-2/4">{{supplierS?.country}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Ciudad:</p>
+                            <p class="w-2/4">{{supplierS?.city}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Correo:</p>
+                            <p class="w-2/4">{{supplierS?.email}}</p>
+                        </div>
+                        <div class="flex">
+                            <p class="text-gray-500 mr-2 mb-2 w-2/4">Tipo de Persona:</p>
+                            <p class="w-2/4">{{supplierS?.personType}}</p>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+
+        </div>
+
+        <!--Products information -->
+        @if(supplierS){
+        <div class="mt-10">
+            <div class="text-red-600 flex font-bold" *ngIf="!showSectionProducts">
+                <svg class="h-8 w-8 -mt-1 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                Usuario, primero debe elegir un provedor para poder elegir productos
+            </div>
+
+            @if(showSectionProducts){
+            <div
+                class="flex w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+
+                @if(showSectionProducts){
+                <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                }
+
+                @if(!showSectionProducts){
+                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                }
+
+                Información de productos.
+            </div>
+
+
+            <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
+                productos.
+            </p>
+            <div class="botones flex justify-center items-center mb-5">
+                <div class="inline-flex">
+                    <button (click)="selectProducts()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
+                        Seleccionar Productos
+                    </button>
+                    <button (click)="createProduct()"
+                        class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
+                        Crear Producto
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="showInfoProducts" class="lg:text-md mx-auto w-full">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-200 ">
+                            <tr class="overflow-hidden">
+                                <th scope="col"
+                                    class="px-6 py-3 text-lg text-blue-950  font-bold overflow-hidden text-left"
+                                    *ngFor="let col of columnsProducts">
+                                    {{ col.title }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let prod of lstProducts" class="hover:bg-gray-100">
+                                <td class="px-4 py-1 whitespace-nowrap">{{ prod.itemType }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ prod.description }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(prod.price) }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <div class="flex">
+                                        <input class="text-center max-w-10" type="number" min="0"
+                                            max="{{ prod.maxQuantity }}" [(ngModel)]="prod.amount"
+                                            (input)="calculateTotal(prod)">
+
+                                        <svg class="h-4 w-4 mt-1" width="24" height="24" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <select [(ngModel)]="prod.IVA" (change)="calculateTotal(prod)">
+                                        <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
+                                        <option value="0">0%</option>
+                                        <option value="5">5%</option>
+                                        <option value="19">19%</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(calculateTotalValue(prod)) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Information subTotal -->
+            <div *ngIf="showInfoProducts" class="InfoSubTotal mt-7">
+                <hr>
+                <div class="">
+                    <div class="flex">
+                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Subtotales:</p>
+                        <p class="w-3/4">{{ formatPrice(subTotal) }}</p>
+                    </div>
+                    <div class="flex">
+                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
+                        <p class="w-3/4">{{ formatPrice(taxTotal) }}</p>
+                    </div>
+                    <div class="flex">
+                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
+                        <p class="w-3/4">{{ formatPrice(retention) }}</p>
+                    </div>
+                    <div class="flex">
+                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
+                        <p class="w-3/4">{{ formatPrice(total) }}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="mt-3">
+                    <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-center">
+                        <button type="button" (click)="saveFacture()"
+                            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
     </div>
 </div>
