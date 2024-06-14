@@ -60,8 +60,8 @@
             </div> -->
             <div>
               <!-- <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label> -->
-              <ng-select [items]="mappedAccounts" bindLabel="name" bindValue="id" [(ngModel)]="selectedAccount"
-                         formControlName="depositAccountId" placeholder="Cuenta de depósito" [searchFn]="customSearchFn"
+              <ng-select [items]="mappedAccounts" bindLabel="name" bindValue="id"
+                         formControlName="depositAccountId" id="depositAccountId" placeholder="Cuenta de depósito" [searchFn]="customSearchFn"
                          class="lg:mt-3 block w-full text-sm font-medium text-gray-700">
               </ng-select>
               <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"

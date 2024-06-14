@@ -42,7 +42,7 @@ export class CreateTaxComponent {
   onSubmit(): void {
     if (this.addForm.valid) {
       const createdTax: Tax = this.addForm.value;
-      createdTax.id = this.taxId;
+      console.log(createdTax)
       this.taxService.createTax(createdTax).subscribe(
         (response: Tax) => {
           Swal.fire({
@@ -53,7 +53,7 @@ export class CreateTaxComponent {
           this.router.navigate(['/general/operations/taxes']);
         },
         error => {
-          console.error('Error al editar el impuesto:', error);
+          console.error('Error al crear el impuesto:', error);
           Swal.fire({
             title: 'Error!',
             text: 'Ha ocurrido un error al agregar el impuesto.',
@@ -88,7 +88,7 @@ export class CreateTaxComponent {
   flattenAccounts(accounts: any[]): any[] {
     let result: any[] = [];
     accounts.forEach(account => {
-      result.push({ id: account.id, name: account.name });
+      result.push({ id: account.code, name: `${account.code} | ${account.description}` });
       if (account.children && account.children.length > 0) {
         result = result.concat(this.flattenAccounts(account.children));
       }
