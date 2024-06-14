@@ -1,5 +1,6 @@
 <form [formGroup]="formNewAccount">
     <div class="class relative border border-gray-400 rounded-md p-3 grid grid-cols-1 sm:grid-cols-2 items-center mt-6">
+        <!-- section to show the text and information drawers -->
         <div class="w-full flex sm:w-auto">
             <label *ngIf="currentLevelAccount != 'clase'" for="subcuenta"
                 class="col-span-1 mr-4 mt-1">{{parent?.code}}</label>
@@ -11,6 +12,7 @@
             <input type="text" id="name" formControlName="name" placeholder="Nombre"
                 class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1">
         </div>
+        <!-- Section to display messages when information is required or an error occurs -->
         <div>
             <div *ngIf="formNewAccount.get('code')?.hasError('required') && (formNewAccount.get('code')?.dirty || formNewAccount.get('code')?.touched)"
                 class="text-red-500 text-sm mt-1 ml-3">* Código es requerido</div>
@@ -32,6 +34,7 @@
     <hr class="w-auto h-0.5 mx-auto my-4 bg-gray-100 border-0 rounded md:my-5 dark:bg-gray-700">
     <h1 class="font-bold text-md mb-4">Datos Adicionales</h1>
 
+    <!-- component that defines the selector of the information of the nature of the account -->
     <div class="mb-4">
         <label for="nature" class="block">
             Naturaleza
@@ -56,6 +59,7 @@
         </div>
     </div>
 
+    <!-- component that defines the selector of the information of the financial state of the account -->
     <div class="mb-4">
         <label for="nature" class="block">
             Estado Financiero
@@ -80,6 +84,7 @@
         </div>
     </div>
 
+    <!-- component that defines the selector of the information of the classification of the account -->
     <div class="mb-4">
         <label for="nature" class="block">
             Clasificación
@@ -103,6 +108,7 @@
             </svg>
         </div>
     </div>
+    <!-- section to show the save and cancel buttons -->
     <div class="flex flex-wrap justify-center mt-4">
         <div class="mb-2 md:mb-2 md:mr-2 sm:mr-2 mm:mr-2" *ngIf="formNewAccount.valid">
             <button type="button"
