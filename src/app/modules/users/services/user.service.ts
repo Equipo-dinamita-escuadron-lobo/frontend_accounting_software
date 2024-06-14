@@ -20,7 +20,7 @@ else{
 })
 export class UserService {
 
-  
+
   //Route API
   private apiUrl = API_URL + 'keycloak/';
 
@@ -35,9 +35,9 @@ export class UserService {
     return this.http.post<User>(this.apiUrl+'create', user);
   }
 
-  updateUser(id?: string, user?: User) {
+  updateUser(id?: string, user?: User): Observable<User> {
     const url = `${this.apiUrl}update/${id}`;
-    return this.http.put(url, user);
+    return this.http.put<User>(url, user);
   }
 
   getUserById(id: string): Observable<User> {
