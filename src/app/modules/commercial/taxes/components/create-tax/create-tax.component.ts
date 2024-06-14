@@ -98,10 +98,16 @@ export class CreateTaxComponent {
           stringSearchCategory: [''],
         };
       }
-
+      getAccountCode(id: number): string {
+        const account = this.accounts.find(cuenta => cuenta.id === id);
+        return account ? account.code : 'No encontrado';
+      }
   onSubmit(): void {
     if (this.addForm.valid) {
-      const createdTax: Tax = this.addForm.value;
+      const createdTax: any = this.addForm.value;
+      createdTax.enterpriseId = this.entData;
+      createdTax.depositAccountId = this.getAccountCode(createdTax.depositAccountId);
+      createdTax.refundAccountId = this.getAccountCode(createdTax.refundAccountId);
       console.log(createdTax)
       this.taxService.createTax(createdTax).subscribe(
         (response: Tax) => {

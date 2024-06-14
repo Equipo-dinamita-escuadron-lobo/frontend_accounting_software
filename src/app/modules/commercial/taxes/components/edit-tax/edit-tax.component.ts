@@ -138,11 +138,17 @@ export class EditTaxComponent {
           stringSearchCategory: [''],
         };
       }
-
+      getAccountCode(id: number): string {
+        const account = this.accounts.find(cuenta => cuenta.id === id);
+        return account ? account.code : 'No encontrado';
+      }
   onSubmit(): void {
     if (this.editForm.valid) {
-      const updatedTax: Tax = this.editForm.value;
+      const updatedTax: any = this.editForm.value;
       updatedTax.id = this.taxId; // Asignar el ID del impuesto
+      updatedTax.depositAccountId = this.getAccountCode(updatedTax.depositAccountId);
+      updatedTax.refundAccountId = this.getAccountCode(updatedTax.refundAccountId);
+     
 console.log('updatedTax:', updatedTax);
       this.taxService.updateTax(updatedTax).subscribe(
         (response: Tax) => {

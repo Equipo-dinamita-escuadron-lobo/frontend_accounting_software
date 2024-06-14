@@ -5,6 +5,7 @@ export interface Tax {
     interest: number;
     depositAccountId: number; 
     refundAccountId: number; 
+    enterpriseId: string;
 }
 
 export interface TaxList {
@@ -14,4 +15,5 @@ export interface TaxList {
     interest: number;
     depositAccountName: string;
     refundAccountName: string;
+    enterpriseId: string;
 }
