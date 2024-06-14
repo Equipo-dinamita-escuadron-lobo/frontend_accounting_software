@@ -10,11 +10,8 @@ import { ViewEnterprisesComponent } from './components/view-enterprises/view-ent
 import { GeneralViewComponent } from './components/general-view/general-view.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
 import { UsersModule } from '../../users/users.module';
-<<<<<<< HEAD
 import { PurchaseInvoiceModule } from '../../commercial/purchase-invoice/purchase-invoice.module';
-=======
 import { TaxesModule } from '../../commercial/taxes/taxes.module';
->>>>>>> develop
 
 
 @NgModule({
@@ -30,12 +27,9 @@ import { TaxesModule } from '../../commercial/taxes/taxes.module';
     SharedModule,
     EnterpriseManagmentModule,
     UsersModule,
-<<<<<<< HEAD
-    PurchaseInvoiceModule
-=======
+    PurchaseInvoiceModule,
     TaxesModule
 
->>>>>>> develop
   ]
 })
 export class GeneralModule { }
