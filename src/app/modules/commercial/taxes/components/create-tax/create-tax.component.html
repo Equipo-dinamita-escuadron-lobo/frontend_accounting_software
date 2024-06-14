@@ -60,9 +60,21 @@
             </div> -->
             <div>
               <!-- <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label> -->
-              <ng-select [items]="mappedAccounts" bindLabel="name" bindValue="id"
-                         formControlName="depositAccountId" id="depositAccountId" placeholder="Cuenta de depósito" [searchFn]="customSearchFn"
-                         class="lg:mt-3 block w-full text-sm font-medium text-gray-700">
+              
+              <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
+              <ng-select 
+              formControlName="depositAccountId" id="depositAccountId"
+                [items]="depositAccounts || []"
+                bindLabel="description"
+                bindValue="id"
+                [searchable]="true"
+                [searchFn]="customSearchFn"
+                placeholder=""
+                class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="">Selecciona una opción</option>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="p-2 hover:bg-gray-100">{{item.code}}-{{ item.description }}</div>
+                </ng-template>
               </ng-select>
               <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"
                 class="text-red-500">
@@ -72,9 +84,21 @@
             </div>
             <div>
               <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
-              <input type="number" formControlName="refundAccountId" id="refundAccountId" placeholder="Ej: 54321"
-                class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-              <div *ngIf="addForm.get('refundAccountId')?.touched && addForm.get('refundAccountId')?.invalid"
+              
+              <ng-select 
+              formControlName="refundAccountId" id="refundAccountId"
+                [items]="refundAccounts || []"
+                bindLabel="description"
+                bindValue="id"
+                [searchable]="true"
+                [searchFn]="customSearchFn"
+                placeholder=""
+                class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                <option value="">Selecciona una opción</option>
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="p-2 hover:bg-gray-100">{{ item.code }} - {{ item.description }}</div>
+                </ng-template>
+              </ng-select><div *ngIf="addForm.get('refundAccountId')?.touched && addForm.get('refundAccountId')?.invalid"
                 class="text-red-500">
                 <div *ngIf="addForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es
                   requerido.</div>

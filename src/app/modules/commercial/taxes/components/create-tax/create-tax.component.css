@@ -1,5 +1,20 @@
-.ng-placeholder{
-  font-size: 0.875rem/* 14px */;
-  line-height: 1.25rem/* 20px */;
-  font-weight: 500;
+
+/* your-component.component.css */
+::ng-deep .ng-select {
+  background-color: white; /* Fondo blanco para el componente ng-select */
 }
+
+::ng-deep .ng-select .ng-select-container {
+  background-color: white; /* Fondo blanco para el contenedor del ng-select */
+  color: black; /* Texto en negro para contraste */
+}
+
+::ng-deep .ng-select .ng-select-container .ng-input {
+  color: black; /* Texto en negro para contraste */
+}
+
+::ng-deep .ng-select .ng-dropdown-panel {
+  background-color: white; /* Fondo blanco para el panel desplegable */
+  color: black; /* Texto en negro para contraste */
+}
+

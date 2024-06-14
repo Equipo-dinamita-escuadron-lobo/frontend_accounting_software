@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Tax } from '../../models/Tax';
 import { TaxService } from '../../services/tax.service';
-import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { Account } from '../../../chart-accounts/models/ChartAccount';
 @Component({
   selector: 'app-create-tax',
   templateUrl: './create-tax.component.html',
@@ -16,17 +17,23 @@ export class CreateTaxComponent {
   tax: Tax = {} as Tax
   addForm: FormGroup;
   depositAccounts: any[] = [];
-  mappedAccounts: any[] = [];
+  refundAccounts: any[] = [];
   selectedAccount: any;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+
+  accounts: any[] = [];
+  filterAccount: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
     private taxService: TaxService,
-    private accountService: ChartAccountService //
+    private chartAccountService: ChartAccountService,
   ) {
+    this.accounts = [];
+
     this.addForm = this.formBuilder.group({
       code: ['', Validators.required],
       description: ['', Validators.required],
@@ -37,8 +44,61 @@ export class CreateTaxComponent {
   }
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
-    this.loadDepositAccounts();
+    this.getCuentas();
   }
+  getCuentas(): void {
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
+      (data: any[]) => {
+        this.accounts =  this.mapAccountToList(data);
+        this.depositAccounts =  this.accounts;
+        this.refundAccounts =  this.accounts;
+      },
+      error => {
+        console.error('Error obteniendo cuentas de depósito:', error);
+      }
+    );
+  }
+
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+    console.log('data:', data);
+  
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+  
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
+    }
+  
+    data.forEach(account => traverse(account));
+    console.log('result:', result);
+    return result;
+  }
+  get filteredAccounts() {
+  if (this.accounts) {
+    return this.accounts.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+    );
+  }
+  return [];
+  }
+  
+  customSearchFn(term: string, item: any) {
+  term = term.toLowerCase();
+  return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+  }
+  
+  
+      validationsAll() {
+        return {
+          stringSearchCategory: [''],
+        };
+      }
+
   onSubmit(): void {
     if (this.addForm.valid) {
       const createdTax: Tax = this.addForm.value;
@@ -73,31 +133,5 @@ export class CreateTaxComponent {
   goBack(): void {
     this.router.navigate(['/general/operations/taxes']);
   }
-  loadDepositAccounts(): void {
-    this.accountService.getListAccounts(this.entData).subscribe(
-      (accounts: any[]) => {
-        console.log(accounts)
-        this.depositAccounts = accounts;
-        this.mappedAccounts = this.flattenAccounts(accounts);
-      },
-      error => {
-        console.error('Error obteniendo cuentas de depósito:', error);
-      }
-    );
-  }
-  flattenAccounts(accounts: any[]): any[] {
-    let result: any[] = [];
-    accounts.forEach(account => {
-      result.push({ id: account.code, name: `${account.code} | ${account.description}` });
-      if (account.children && account.children.length > 0) {
-        result = result.concat(this.flattenAccounts(account.children));
-      }
-    });
-    return result;
-  }
 
-  customSearchFn(term: string, item: any): boolean {
-    term = term.toLowerCase();
-    return item.name.toLowerCase().indexOf(term) > -1;
-  }
 }

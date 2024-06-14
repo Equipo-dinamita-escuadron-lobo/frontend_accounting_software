@@ -85,7 +85,6 @@ export class EditTaxComponent {
     return account ? account.id : 'No encontrado';
   }
   
-  
 
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).subscribe(

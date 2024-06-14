@@ -18,7 +18,8 @@ export class TaxService {
    }
 
   createTax(tax: Tax): Observable<Tax> {
-    const url = `${environment.API_URL}taxes/create`;
+    const url = `${environment.API_URL}tax`;
+    console.log('tax:', tax);
     return this.http.post<Tax>(url, tax);
   }
 
