@@ -178,6 +178,21 @@ export class InvoiceCreationComponent implements OnInit {
         // Extraer el nombre del archivo del encabezado 'Content-Disposition'
         const contentDisposition = blob.type; 
         const fileName = this.extractFileName(contentDisposition);
+        
+        //Para borrar datos de factura
+        this.supplierS = undefined;
+        this.supplierSCopy = undefined;
+        this.lstProducts = [];
+        this.lstProductsSend = [];
+        this.showInfoThird = false;
+        this.showInfoProducts = false;
+        this.changeSupplierS = false;
+        this.subTotal = 0;
+        this.taxTotal = 0;
+        this.retention = 0;
+        this.total = 0;
+      
+
 
         link.setAttribute('download', fileName || 'facture.pdf');
         document.body.appendChild(link);
