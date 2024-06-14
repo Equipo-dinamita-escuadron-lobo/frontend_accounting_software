@@ -1,79 +1,79 @@
 <div class="container-all container-image">
   <app-header-main></app-header-main>
   <div
-  class="w-full h-full grid grid-cols-1 sg:grid-cols-4 oem:grid-cols-4 font-projectFont bg-cover bg-no-repeat overflow-auto">
-  <div
-    class=" col-span-1 sg:col-span-2 oem:col-span-2  sg:flex sg:flex-col align-center justify-center im:px-2 sg:p-12 opm:px-36 hidden">
+    class="w-full h-full grid grid-cols-1 sg:grid-cols-4 oem:grid-cols-4 font-projectFont bg-cover bg-no-repeat overflow-auto">
+    <div
+      class=" col-span-1 sg:col-span-2 oem:col-span-2  sg:flex sg:flex-col align-center justify-center im:px-2 sg:p-12 opm:px-36 hidden">
 
-    <div class=" text-white  grid justify-start ">
+      <div class=" text-white  grid justify-start ">
 
-      <p class=" text-6xl mb-3 text-animator text-typing font-bold">¡Bienvenido!</p>
-      <p class="mt-2 text-2xl text-animator">Inicia sesión y accede a toda tu información contable</p>
+        <p class=" text-6xl mb-3 text-animator text-typing font-bold">¡Bienvenido!</p>
+        <p class="mt-2 text-2xl text-animator">Inicia sesión y accede a toda tu información contable</p>
+      </div>
+
     </div>
 
-  </div>
-
-  <div
-    class="container-login rounded-md mm:col-span-2 sg:col-span-2 oem:col-span-2  grid grid-cols-1 justify-center items-center m-8 oem:m-14 bg-red-400 text-animator px-4 oem:px-20">
-    <div class="container__form p-10 oem:p-50">
-      <form [formGroup]="loginForm" (ngSubmit)="onLoginUser()" class="w-full grid grid-cols-1">
-        <div class="container-logo flex flex-col items-center justify-center">
-          <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="CONT APP Logo" class="w-32 h-32" />
-        </div>
-        <div class="conatiner-form">
-          <h1 class="text-white text-3xl font-bold mb-10  text-center">Iniciar Sesión</h1>
-          <div class="mb-6">
-            <div class="flex items-center relative">
-              <span class="material-icons text-2xl absolute top-0 left-0 mt-3 ml-3 text-white">account_circle</span>
-              <input
-                class="bg-transparent shadow appearance-none border rounded-sm  w-full py-3 px-12 text-white leading-tight focus:outline-none focus-neon text-xl"
-                type="text" placeholder="Usuario" formControlName="username" />
-            </div>
+    <div
+      class="container-login rounded-md mm:col-span-2 sg:col-span-2 oem:col-span-2  grid grid-cols-1 justify-center items-center m-8 oem:m-14 bg-red-400 text-animator px-4 oem:px-20">
+      <div class="container__form p-10 oem:p-50">
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginUser()" class="w-full grid grid-cols-1">
+          <div class="container-logo flex flex-col items-center justify-center">
+            <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="CONT APP Logo" class="w-32 h-32" />
           </div>
-
-          <div class="mb-4">
-            <div class="flex items-center relative">
-              <span class="material-icons text-2xl absolute top-0 left-0 mt-3 ml-3 text-white">lock</span>
-              <!-- Posicionamiento absoluto para el icono -->
-              <input
-                class="bg-transparent shadow appearance-none border rounded-sm  w-full py-3 px-12 text-white leading-tight focus:outline-none focus:shadow-2xl focus-neon  text-xl"
-                type="password" placeholder="Contraseña" formControlName="password" />
+          <div class="conatiner-form">
+            <h1 class="text-white text-3xl font-bold mb-10  text-center">Iniciar Sesión</h1>
+            <div class="mb-6">
+              <div class="flex items-center relative">
+                <span class="material-icons text-2xl absolute top-0 left-0 mt-3 ml-3 text-white">account_circle</span>
+                <input
+                  class="bg-transparent shadow appearance-none border rounded-sm  w-full py-3 px-12 text-white leading-tight focus:outline-none focus-neon text-xl"
+                  type="text" placeholder="Usuario" formControlName="username" />
+              </div>
             </div>
 
-          </div>
+            <div class="mb-4">
+              <div class="flex items-center relative">
+                <span class="material-icons text-2xl absolute top-0 left-0 mt-3 ml-3 text-white">lock</span>
+                <!-- Posicionamiento absoluto para el icono -->
+                <input
+                  class="bg-transparent shadow appearance-none border rounded-sm  w-full py-3 px-12 text-white leading-tight focus:outline-none focus:shadow-2xl focus-neon  text-xl"
+                  type="password" placeholder="Contraseña" formControlName="password" />
+              </div>
 
-          <div class="text-white conatiner-forgot grid grid-cols-1 im:grid-cols-2 my-7">
-            <div class="password-forget flex justify-center im:justify-start  text-xl col-span-1">
-              <input type="checkbox" class="mr-3 w-5">
-              <span class="text-white ">Recordar</span>
             </div>
 
-            <div class=" text-white password-forget flex justify-center im:justify-end col-span-1">
-              <a class="underline ">Recuperar Contraseña</a>
+            <div class="text-white conatiner-forgot grid grid-cols-1 im:grid-cols-2 my-7">
+              <div class="password-forget flex justify-center im:justify-start  text-xl col-span-1">
+                <input type="checkbox" class="mr-3 w-5">
+                <span class="text-white ">Recordar</span>
+              </div>
+
+              <div class=" text-white password-forget flex justify-center im:justify-end col-span-1">
+                <a class="underline ">Recuperar Contraseña</a>
+              </div>
+
+            </div>
+
+            <div class="button grid grid-cols-1">
+              <button
+                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-sm px-8 py-3 text-center me-2 mb-2  text-white text-lg w-full"
+                type="submit">
+                Ingresar
+              </button>
+            </div>
+
+            <div class="button grid grid-cols-1" *ngIf="loginFail">
+              <span class="text-red-400">Usuario y/o contraseña incorrectos</span>
+            </div>
+
+            <div class="button grid grid-cols-1" *ngIf="invalidForm">
+              <span class="text-red-400">Debe Ingresar los campos requeridos</span>
             </div>
 
           </div>
+        </form>
+      </div>
 
-          <div class="button grid grid-cols-1">
-            <button
-              class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-sm px-8 py-3 text-center me-2 mb-2  text-white text-lg w-full"
-              type="submit">
-              Ingresar
-            </button>
-          </div>
-
-          <div class="button grid grid-cols-1" *ngIf="loginFail">
-            <span class="text-red-400">Usuario y/o contraseña incorrectos</span>
-          </div>
-
-          <div class="button grid grid-cols-1" *ngIf="invalidForm">
-            <span class="text-red-400">Debe Ingresar los campos requeridos</span>
-          </div>
-
-        </div>
-      </form>
     </div>
-
   </div>
-</div>
 </div>
