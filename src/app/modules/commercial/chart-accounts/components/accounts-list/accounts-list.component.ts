@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { FinancialStateType } from '../../models/FinancialStateType';
-import { Router } from '@angular/router';
+import { Observable, forkJoin, of, switchMap } from 'rxjs';
 
 /**
  * Component for managing and displaying chart of accounts.
@@ -381,9 +381,9 @@ export class AccountsListComponent implements OnInit {
     fileReader.readAsBinaryString(file);
 
     fileReader.onload = (e) => {
-      var workBook = XLSX.read(fileReader.result, { type: 'binary' });
+      var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
       var sheetNames = workBook.SheetNames;
-      let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
+      let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], { raw: false });
 
       // Check required fields
       const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
@@ -403,12 +403,15 @@ export class AccountsListComponent implements OnInit {
         return;
       }
 
+      const idEnterprise = this.getIdEnterprise();
+
       this.listExcel = jsonData.map((item: any) => ({
-        code: item['Código'],
+        idEnterprise: idEnterprise,
+        code: String(item['Código']), // Ensure the code is a string
         description: item['Nombre'],
         nature: item['Naturaleza'],
         financialStatus: item['Estado Financiero'],
-        classification: item['Clasificación'] 
+        classification: item['Clasificación']
       }));
 
       if (this.listExcel) {
@@ -423,6 +426,37 @@ export class AccountsListComponent implements OnInit {
     };
   }
 
+
+  saveAccountHierarchy(accounts: Account[]): void {
+    accounts.forEach(account => {
+      this.saveAccountRecursively(account).subscribe();
+    });
+  }
+
+  saveAccountRecursively(account: Account, parentId: number = 0): Observable<Account> {
+    // Set the parent ID
+    account.parent = parentId;
+
+    return this._accountService.createAccount(account).pipe(
+      switchMap(savedAccount => {
+        const accountId = savedAccount.id; // Assume the saved account has an `id` property
+
+        if (account.children && account.children.length > 0) {
+          const childObservables = account.children.map(child => 
+            this.saveAccountRecursively(child, accountId)
+          );
+
+          // Use forkJoin to wait for all child observables to complete
+          return forkJoin(childObservables).pipe(
+            switchMap(() => of(savedAccount))
+          );
+        } else {
+          return of(savedAccount);
+        }
+      })
+    );
+  }
+
   /**
    * Creates a hierarchy of accounts with parent-child relationships.
    * @param accounts The array of accounts to create the hierarchy from.
@@ -431,7 +465,7 @@ export class AccountsListComponent implements OnInit {
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
 
-    // Group accounts by code
+    // Agrupar cuentas por código
     for (const account of accounts) {
       const code = account.code;
       const level = code.length / 2;
@@ -451,7 +485,7 @@ export class AccountsListComponent implements OnInit {
       }
     }
 
-    // Associate each primary account to the parent with a single digit in the code
+    // Asociar cada cuenta principal al padre con un solo dígito en el código
     for (const account of Object.values(hierarchy)) {
       if (account.code.length === 2) {
         const parentCode = account.code[0];
@@ -462,7 +496,7 @@ export class AccountsListComponent implements OnInit {
       }
     }
 
-    // Get higher level accounts (classes)
+    // Obtener cuentas de nivel superior (clases)
     const topLevelAccounts: Account[] = [];
     for (const account of Object.values(hierarchy)) {
       if (account.code.length === 1) {
@@ -618,7 +652,7 @@ export class AccountsListComponent implements OnInit {
    */
   saveImportAccounts() {
     this.importedAccounts = false;
-    this._accountService.saveAccountsImport(this.listAccounts)
+    this.saveAccountHierarchy(this.listAccounts);
   }
 
   /**

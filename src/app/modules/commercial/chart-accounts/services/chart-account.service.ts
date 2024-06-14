@@ -125,16 +125,4 @@ export class ChartAccountService {
     getFinancialStateType(): FinancialStateType[] {
         return this.listFinancialState;
     }
-
-    /**
-     * Save imported accounts.
-     * @param accounts The accounts to save.
-     * @returns An observable of the saved account.
-     */
-    saveAccountsImport(accounts:Account[]): boolean{
-        //this.listAccounts = accounts;
-        //TODO: ver la confirmacion desde el backend de que se guardo las cuentas importadas
-        return true;
-    }
-
 }
