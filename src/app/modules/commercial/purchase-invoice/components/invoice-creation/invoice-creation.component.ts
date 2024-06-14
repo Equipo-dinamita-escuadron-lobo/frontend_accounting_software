@@ -26,9 +26,10 @@ export class InvoiceCreationComponent implements OnInit {
   showSectionThrid: boolean = true;
   showInfoThird: boolean = false;
   selectedSupplier: any;
+  selectedSupplierS?: number;
   supplierS?: Third;
-  lstThirds: Third[] = [];
-  lstThirdsSecurity: Third[] = [];
+  supplierSCopy?: Third;
+  changeSupplierS: boolean = false;
 
   // Variables for products
   showSectionProducts: boolean = true;
@@ -86,7 +87,6 @@ export class InvoiceCreationComponent implements OnInit {
       this.thirdService.getThirdPartie(thirdId).subscribe({
         next: (response: Third) => {
           this.supplierS = response;
-          console.log(this.supplierS.email);
         }
       });
     }
@@ -200,6 +200,10 @@ export class InvoiceCreationComponent implements OnInit {
     );
   }
 
+  changeSupplier(){
+
+  }
+
   private extractFileName(contentDisposition: string): string | null {
     const matches = /filename="(.+)"/.exec(contentDisposition);
     return matches && matches[1] ? matches[1] : null;
@@ -222,9 +226,31 @@ export class InvoiceCreationComponent implements OnInit {
         console.log('Información recibida del modal:', result);
         this.selectedSupplier = result;
         this.showInfoThird = true;
+        this.showSectionProducts = true;
         this.getSupplier(result);
+        
+        if((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)){
+          Swal.fire({
+            title: "Cambio de proveedor",
+            text: "Si cambia de proveerdor se perderan los datos que hayan registrado en productos!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirmar!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.supplierSCopy = this.supplierS;
+              this.lstProducts = [];
+              this.showInfoProducts = false;
+            }
+          });
+        }
       } else {
+        this.supplierS = undefined;
         this.showInfoThird = false;
+        this.showInfoProducts = false;
+        this.showSectionProducts = false;
       }
     });
   }
