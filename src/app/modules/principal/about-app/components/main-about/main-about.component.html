@@ -36,11 +36,13 @@
                     </div>
 
                     <div class="info grid items-center justify-center">
-                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
-                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
-                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
-                            itaque sed, veritatis autem iure cupiditate.</span>
+                        <span class="block text-center mt-5 mb-2 font-bold">Viviana Patricia Narváez Castillo</span>
+                        <span class="block text-center text-orange-400 mb-4">Docente en el área contable</span>
+                        <span class="block text-center">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                          ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                          itaque sed, veritatis autem iure cupiditate.
+                        </span>
                     </div>
                 </div>
 
@@ -52,11 +54,13 @@
                     </div>
 
                     <div class="info grid items-center justify-center">
-                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
-                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
-                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
-                            itaque sed, veritatis autem iure cupiditate.</span>
+                        <span class="block text-center mt-5 mb-2 font-bold">Juan Ignacio Oviedo Pino</span>
+                        <span class="block text-center text-orange-400 mb-4">Docente en el área contable</span>
+                        <span class="block text-center">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                          ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                          itaque sed, veritatis autem iure cupiditate.
+                        </span>
                     </div>
                 </div>
 
@@ -67,11 +71,13 @@
                             alt="">
                     </div>
                     <div class="info grid items-center justify-center">
-                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
-                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
-                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
-                            itaque sed, veritatis autem iure cupiditate.</span>
+                        <span class="block text-center mt-5 mb-2 font-bold">Mauro Andrés Sanchez Muñóz</span>
+                        <span class="block text-center text-orange-400 mb-4">Docente en el área contable</span>
+                        <span class="block text-center">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                          ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                          itaque sed, veritatis autem iure cupiditate.
+                        </span>
                     </div>
                 </div>
 
@@ -83,16 +89,16 @@
                     </div>
 
                     <div class="info grid items-center justify-center">
-                        <span class="block text-center mt-5 mb-2 font-bold">Nombres y apellidos completos</span>
-                        <span class="block text-center text-orange-400 mb-4">Cargo</span>
-                        <span class="block text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-                            ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
-                            itaque sed, veritatis autem iure cupiditate.</span>
+                        <span class="block text-center mt-5 mb-2 font-bold">Wilson Libardo Pantoja Yepes</span>
+                        <span class="block text-center text-orange-400 mb-4">Docente en el área de ingenería de sistemas</span>
+                        <span class="block text-center">
+                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+                          ex quia dolorum quibusdam facilis totam non culpa minus voluptatum est aut, id, quas commodi
+                          itaque sed, veritatis autem iure cupiditate.
+                        </span>
                     </div>
                 </div>
             </div>
-
-
         </div>
         <div class="title">
             <h3 class="text-center text-3xl mt-10 mb-20 text-white font-bold ">&lt; Desarrolladores /&gt;</h3>
@@ -114,15 +120,19 @@
                     <span *ngFor="let image of images; let i = index" [class.active-indicator]="i === currentIndex"
                         class="indicator"></span>
                 </div>
+                <div class="flex space-x-2 mt-4">
+                  <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-lg font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    Contáctanos
+                    </span>
+                  </button>
+                </div>
             </div>
             <div class="controls">
                 <button (click)="prevImage()" class="control"> &lt; </button>
-                <button (click)="nextImage()" class="control"> &gt;
-                </button>
+                <button (click)="nextImage()" class="control"> &gt; </button>
             </div>
         </div>
-
-
         <div class="groups"></div>
     </section>
 </div>

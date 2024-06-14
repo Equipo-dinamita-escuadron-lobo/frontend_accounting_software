@@ -22,7 +22,7 @@ export class ThirdsListComponent{
   data: Third[] = [];
   columnsBrief: any[] = [
     { title: 'Tipo(s)', data: 'thirdTypes'},
-    { title: 'Nombre/RazonSocial', data: 'socialReason' },
+    { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
     { title: 'Correo', data: 'email' },
@@ -32,12 +32,12 @@ export class ThirdsListComponent{
 
   columnsComplete: any[] = [
     { title: 'Tipo(s)', data: 'thirdTypes'},
-    { title: 'Nombre/RazonSocial', data: 'socialReason' },
+    { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
     { title: 'Número de verificación', data: 'verificationNumber' },
     { title: 'Correo', data: 'email' },
-    { title: 'Pais', data: 'country' },
+    { title: 'País', data: 'country' },
     { title: 'Departamento', data: 'province' },
     { title: 'Ciudad', data: 'city' },
     { title: 'Direccion', data: 'address' },
