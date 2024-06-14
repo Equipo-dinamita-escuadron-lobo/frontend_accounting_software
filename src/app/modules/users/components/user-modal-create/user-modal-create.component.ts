@@ -58,7 +58,7 @@ export class UserModalCreateComponent {
 
   ngOnInit(){
     this.inputData = this.data;
-    
+
   }
 
   onOptionsSelected(event: any) {
@@ -91,6 +91,7 @@ export class UserModalCreateComponent {
           text: 'Se ha creado el usuario con éxito!',
           icon: 'success',
         });
+        this.closePopUp();
       },
       error: (error) => {
         // Handle any errors here

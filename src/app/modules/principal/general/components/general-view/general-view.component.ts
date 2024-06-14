@@ -16,6 +16,12 @@ export class GeneralViewComponent {
   isSideNavCollapsed = false;
   screenWidth = 0;
 
+  isSideNavMinimized = true;
+
+  onToggleSideNav2(event: SideNavToggle): void {
+    this.isSideNavMinimized = event.collapsed;
+  }
+
 
   onToggleSideNav(data: SideNavToggle):void{
     this.screenWidth = data.screenWidth;

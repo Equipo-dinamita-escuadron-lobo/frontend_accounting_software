@@ -9,7 +9,7 @@ export const navbarData: INavbarData[] = [
   {
     routeLink: '/general/operations/accounts',
     icon: 'article',
-    label: 'Catalogo de cuentas'
+    label: 'Catálogo de cuentas'
   },
   {
     routeLink: '/general/operations/third-parties',
@@ -27,7 +27,7 @@ export const navbarData: INavbarData[] = [
       },
       {
         routeLink: '/general/operations/categories',
-        label: 'Categorias',
+        label: 'Categorías',
       },
       {
         routeLink: '/general/operations/unities',
@@ -38,6 +38,12 @@ export const navbarData: INavbarData[] = [
   {
     routeLink: '/general/operations/invoice',
     icon: 'receipt_long',
-    label: 'Factura de compra'
+    label: 'Facturas',
+    items: [
+      {
+        routeLink: '/general/operations/invoice',
+        label: 'Factura de compra'
+      }
+    ]
   }
 ]

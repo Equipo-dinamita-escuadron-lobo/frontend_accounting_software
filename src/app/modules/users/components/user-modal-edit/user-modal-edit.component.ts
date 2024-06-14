@@ -136,6 +136,11 @@ export class UserModalEditComponent {
     user.username = this.UserForm.value.username;
     user.roles = this.UserForm.value.roles;
 
+    //si contraseña vacia nse envia null
+    if (user.password === '') {
+      user.password = null;
+    }
+
     console.log(user)
 
     this.userService.updateUser(user.id, user).subscribe({
@@ -147,6 +152,7 @@ export class UserModalEditComponent {
           text: 'Se ha editado el usuario con éxito!',
           icon: 'success',
         });
+        this.closePopUp();
       },
       error: (error) => {
         // Handle any errors here

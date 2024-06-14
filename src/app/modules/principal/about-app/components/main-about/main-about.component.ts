@@ -10,7 +10,7 @@ import { AuthService } from '../../../login/services/auth.service';
 export class MainAboutComponent {
   fullTitle = 'CONTAPP';
   fullSubtitle =
-    'Desarrolada por estudiantes del programa de Ingeniería de sistemas de la Universidad del cauca';
+    'Desarrollada por estudiantes del programa de Ingeniería de sistemas de la Universidad del Cauca';
   displayedTitle = '';
   displayedSubtitle = '';
 
@@ -23,27 +23,27 @@ export class MainAboutComponent {
 
   images = [
     {
-      src: '../../../../../../assets/landing-page/carousel/5.jpg',
-      title: 'Título 1',
+      src: '../../../../../../assets/landing-page/carousel/5.webp',
+      title: 'Estudiantes y Docentes',
       description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, velit optio. Quisquam dicta amet impedit ipsum quam ad distinctio nesciunt.',
        icon: ''
     },
     {
       src: '../../../../../../assets/landing-page/carousel/2.jpg',
-      title: 'Título 2',
+      title: 'Equipo #1',
       description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, velit optio. Quisquam dicta amet impedit ipsum quam ad distinctio nesciunt.',
        icon: '<path d="..."/>'
     },
     {
       src: '../../../../../../assets/landing-page/carousel/3.jpg',
-      title: 'Título 3',
-      description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, velit optio. Quisquam dicta amet impedit ipsum quam ad distinctio nesciunt',
+      title: 'Equipo #2',
+      description: 'Nuestro equipo de desarollo se encargó de realizar las soluciones del backend y frontend para el modulo de Terceros, además de colaborar en el microservicio de las facturas, el cual genera de manera automatizada los PDF de las facturas de compra',
        icon: '<path d="..."/>'
     },
     {
       src: '../../../../../../assets/landing-page/carousel/4.jpg',
-      title: 'Título 4',
-      description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, velit optio. Quisquam dicta amet impedit ipsum quam ad distinctio nesciunt',
+      title: 'Equipo #3',
+      description: 'Somos DevMasters, un equipo de desarrollo de software especializado en soluciones integrales de backend y frontend. Nuestro enfoque principal es el desarrollo y mantenimiento del sistema CRUD de productos y la generación automatizada de facturas de compra en formato PDF.',
        icon: '<path d="..."/>'
     },
   ];
@@ -137,7 +137,7 @@ export class MainAboutComponent {
     });
     setTimeout(() => {
       this.isTransitioning = false;
-    }, 1000); // Match the CSS transition duration
+    }, 3000); // Match the CSS transition duration
   }
 
   animateIn(direction: string): void {
@@ -192,5 +192,9 @@ export class MainAboutComponent {
       this.startAnimation();
       this.scheduleReset();
     }, this.resetInterval);
+  }
+
+  redirectTo(route: string): void {
+    this.router.navigateByUrl(route);
   }
 }
