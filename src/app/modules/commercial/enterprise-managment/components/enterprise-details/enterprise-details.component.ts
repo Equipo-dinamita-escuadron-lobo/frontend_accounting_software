@@ -20,7 +20,6 @@ export class EnterpriseDetailsComponent {
     private router: Router,
     private authService: AuthService
   ) {
-    this.getEnterpriseSelectedInfo();
     this.rol = this.authService.verifiedRolSuperUser();
   }
 
