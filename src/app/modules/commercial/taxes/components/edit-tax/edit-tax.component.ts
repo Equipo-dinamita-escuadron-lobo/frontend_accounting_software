@@ -17,7 +17,7 @@ import { Account } from '../../../chart-accounts/models/ChartAccount';
 })
 export class EditTaxComponent {
 
-  taxId: number = 0; 
+  taxId: number = 0;
   taxCode: string = "";
   tax: Tax = {} as Tax
   editForm: FormGroup;
@@ -79,12 +79,10 @@ export class EditTaxComponent {
     );
   }
   getCuentabycode(code: number): number {
-    console.log('code:', code);
-    console.log('accounts333333:', this.accounts);
     const account = this.accounts.find(account => account.code === code);
     return account ? account.id : 'No encontrado';
   }
-  
+
 
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).subscribe(
@@ -101,21 +99,19 @@ export class EditTaxComponent {
 
   mapAccountToList(data: Account[]): Account[] {
     let result: Account[] = [];
-    console.log('data:', data);
-  
+
     function traverse(account: Account) {
         // Clonamos el objeto cuenta sin los hijos
         let { children, ...accountWithoutChildren } = account;
         result.push(accountWithoutChildren as Account);
-  
+
         // Llamamos recursivamente para cada hijo
         if (children && children.length > 0) {
             children.forEach(child => traverse(child));
         }
     }
-  
+
     data.forEach(account => traverse(account));
-    console.log('result:', result);
     return result;
   }
   get filteredAccounts() {
@@ -126,13 +122,13 @@ export class EditTaxComponent {
   }
   return [];
   }
-  
+
   customSearchFn(term: string, item: any) {
   term = term.toLowerCase();
   return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
   }
-  
-  
+
+
       validationsAll() {
         return {
           stringSearchCategory: [''],
@@ -148,7 +144,7 @@ export class EditTaxComponent {
       updatedTax.id = this.taxId; // Asignar el ID del impuesto
       updatedTax.depositAccountId = this.getAccountCode(updatedTax.depositAccountId);
       updatedTax.refundAccountId = this.getAccountCode(updatedTax.refundAccountId);
-     
+
 console.log('updatedTax:', updatedTax);
       this.taxService.updateTax(updatedTax).subscribe(
         (response: Tax) => {

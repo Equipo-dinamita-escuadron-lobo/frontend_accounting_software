@@ -165,7 +165,6 @@ export class ThirdEditModalComponent {
     }
     if(thirdTypeId !== null && thirdTypeId !==undefined){
     third.thirdTypes = [thirdTypeId];
-    console.log("Entro")
   }
 
   console.log(third);

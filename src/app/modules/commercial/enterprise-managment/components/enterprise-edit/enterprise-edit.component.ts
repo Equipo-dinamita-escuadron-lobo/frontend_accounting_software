@@ -430,8 +430,6 @@ export class EnterpriseEditComponent {
           enterpriseType: this.form.value.selectedItemEnterpriseType.id,
         };
 
-        console.log(enterprise);
-
         this.enterpriseService
           .updateEnterprise(this.enterpriseEdit?.id, enterprise)
           .subscribe(
@@ -548,7 +546,6 @@ export class EnterpriseEditComponent {
   }
 
   fillFieldsWithValues() {
-    console.log('Se ejecuta');
     this.form.setValue({
       name: this.enterpriseEdit?.name,
       nit: this.enterpriseEdit?.nit,

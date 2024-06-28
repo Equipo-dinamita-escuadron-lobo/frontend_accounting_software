@@ -165,10 +165,9 @@ export class ThirdCreationComponent implements OnInit {
     var third: Third = this.createdThirdForm.value;
     third.city = this.createdThirdForm.get('city')?.value;
     third.country = this.selectedCountry.name;
-    third.city = this.selectedState.name;
+    third.province = this.selectedState.name;
     third.entId = this.entData;
     third.thirdTypes = this.selectedThirdTypes;
-
     third.state =
       this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
     third.photoPath = '';
