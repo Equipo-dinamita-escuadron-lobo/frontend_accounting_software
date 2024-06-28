@@ -4,15 +4,14 @@ import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { DatePipe } from '@angular/common';
-import { Country } from 'country-state-city';
-import { State } from 'country-state-city';
-import { City } from 'country-state-city';
 import { get } from 'jquery';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
 import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
+import { CityService } from '../../services/city.service';
+import { DepartmentService } from '../../services/department.service';
 
 @Component({
   selector: 'app-third-creation',
@@ -33,6 +32,8 @@ export class ThirdCreationComponent implements OnInit {
   typeIds: TypeId[] = [];
   cities: any[] = [];
   countryCode!: string;
+  selectedCountry: any;
+  selectedState: any;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
@@ -42,15 +43,14 @@ export class ThirdCreationComponent implements OnInit {
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
     private thirdServiceConfiguration: ThirdServiceConfigurationService,
+    private cityService: CityService,
+    private departmentService: DepartmentService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
-
-    console.log(this.entData);
-
     this.createdThirdForm = this.formBuilder.group({
       entId: [''],
       typeId: ['', Validators.required],
@@ -75,7 +75,7 @@ export class ThirdCreationComponent implements OnInit {
       updateDate: [''],
     });
 
-    this.countries = Country.getAllCountries();
+    this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
 
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[])=>{
@@ -108,7 +108,6 @@ export class ThirdCreationComponent implements OnInit {
     this.thirdServiceConfiguration.getThirdTypes("0").subscribe({
       next: (response: ThirdType[])=>{
         response.forEach(elemento => this.thirdTypes.push(elemento));
-        console.log(this.thirdTypes);
       },
       error: (error) => {
         console.log(error)
@@ -136,12 +135,24 @@ export class ThirdCreationComponent implements OnInit {
   }
 
   onCountryChange(event: any) {
-    this.countryCode = event.target.value;
-    this.states = State.getStatesOfCountry(event.target.value);
+    this.selectedCountry = JSON.parse(event.target.value);
+    this.countryCode = this.selectedCountry.id;
+    this.getDepartments();
   }
 
   onStateChange(event: any) {
-    this.cities = City.getCitiesOfState(this.countryCode, event.target.value);
+    this.selectedState = JSON.parse(event.target.value)
+    this.getCities(this.selectedState.id);
+  }
+
+  getCities(id: number) {
+    this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
+      this.cities = data.cities;
+    });
+  }
+
+  getDepartments() {
+    this.states = this.departmentService.getListDepartments();
   }
 
   onTypeIdChange(event: any) {
@@ -152,6 +163,9 @@ export class ThirdCreationComponent implements OnInit {
     this.submitted = true;
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
+    third.city = this.createdThirdForm.get('city')?.value;
+    third.country = this.selectedCountry.name;
+    third.city = this.selectedState.name;
     third.entId = this.entData;
     third.thirdTypes = this.selectedThirdTypes;
 
