@@ -69,7 +69,6 @@ export class CategoryListComponent implements OnInit {
       this.chartAccountService.getListAccounts(this.entData).subscribe(
         (data: any[]) => {
           this.accounts = this.mapAccountToList(data);
-          console.log('accounts:', this.accounts);
         },
         error => {
           console.log('Error al obtener las cuentas:', error);
@@ -79,21 +78,19 @@ export class CategoryListComponent implements OnInit {
 
     mapAccountToList(data: Account[]): Account[] {
       let result: Account[] = [];
-      console.log('data:', data);
-  
+
       function traverse(account: Account) {
           // Clonamos el objeto cuenta sin los hijos
           let { children, ...accountWithoutChildren } = account;
           result.push(accountWithoutChildren as Account);
-  
+
           // Llamamos recursivamente para cada hijo
           if (children && children.length > 0) {
               children.forEach(child => traverse(child));
           }
       }
-  
+
       data.forEach(account => traverse(account));
-      console.log('result:', result);
       return result;
   }
 

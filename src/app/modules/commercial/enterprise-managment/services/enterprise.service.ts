@@ -67,7 +67,6 @@ export class EnterpriseService {
    */
   getEnterpriseById(id: string): Observable<EnterpriseDetails> {
     const url = `${this.apiUrl}enterprise/${id}`;
-    console.log(url);
     return this.http.get<EnterpriseDetails>(url);
   }
 
@@ -76,7 +75,6 @@ export class EnterpriseService {
    * @returns respond from the backend of creation enterprise
    */
   createEnterprise(enterprise: Enterprise): Observable<Enterprise> {
-    console.log(enterprise);
     return this.http.post<Enterprise>(this.apiUrl, enterprise);
   }
 
@@ -117,7 +115,6 @@ export class EnterpriseService {
 
   getEnterpriseSelectedInfo() {
     const id = this.getSelectedEnterprise();
-    console.log("id "+ id)
     if (id === null) {
 
     } else {

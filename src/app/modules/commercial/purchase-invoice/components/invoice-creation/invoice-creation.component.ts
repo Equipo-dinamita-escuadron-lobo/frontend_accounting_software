@@ -69,7 +69,6 @@ export class InvoiceCreationComponent implements OnInit {
 
   getEnterpriseSelectedInfo() {
     const id = this.enterpriseService.getSelectedEnterprise();
-    console.log("id " + id);
     if (id === null) {
       // Manejar caso donde no hay empresa seleccionada
     } else {
@@ -176,9 +175,9 @@ export class InvoiceCreationComponent implements OnInit {
         link.href = url;
 
         // Extraer el nombre del archivo del encabezado 'Content-Disposition'
-        const contentDisposition = blob.type; 
+        const contentDisposition = blob.type;
         const fileName = this.extractFileName(contentDisposition);
-        
+
         //Para borrar datos de factura
         this.supplierS = undefined;
         this.supplierSCopy = undefined;
@@ -191,7 +190,7 @@ export class InvoiceCreationComponent implements OnInit {
         this.taxTotal = 0;
         this.retention = 0;
         this.total = 0;
-      
+
 
 
         link.setAttribute('download', fileName || 'facture.pdf');
@@ -243,7 +242,7 @@ export class InvoiceCreationComponent implements OnInit {
         this.showInfoThird = true;
         this.showSectionProducts = true;
         this.getSupplier(result);
-        
+
         if((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)){
           Swal.fire({
             title: "Cambio de proveedor",
@@ -288,12 +287,12 @@ export class InvoiceCreationComponent implements OnInit {
         console.log('Información recibida del modal:', result);
         this.lstProducts = result;
         this.lstProducts.forEach(prod => {
-          prod.IVA = prod.taxPercentage; 
+          prod.IVA = prod.taxPercentage;
           prod.amount = 1;
           prod.totalValue = 0;
         });
         this.showInfoProducts = true;
-        this.calculateInvoiceTotals(); 
+        this.calculateInvoiceTotals();
       } else {
         console.log('No selecciono ningun producto');
         this.showInfoProducts = false;

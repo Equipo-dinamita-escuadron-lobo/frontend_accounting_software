@@ -13,7 +13,6 @@ export class TaxService {
 
    getTaxes(enterpriseId: string): Observable<Tax[]> {
      const url = `${environment.API_URL}tax/taxes/${enterpriseId}`;
-     console.log(enterpriseId);
      return this.http.get<Tax[]>(url);
    }
 
@@ -40,6 +39,6 @@ export class TaxService {
     const url = `${environment.API_URL}tax/${id}`;
     return this.http.delete<Tax>(url);
   }
-  
-  
+
+
 }

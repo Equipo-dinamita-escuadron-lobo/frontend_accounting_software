@@ -112,7 +112,6 @@ export class ProductListComponent implements OnInit {
   this.thirdService.getThirdParties(this.entData,0).subscribe(
     (data: any[]) => {
       this.providers = data;
-console.log('Lista de proveedores:', this.providers);
     },
     error => {
       console.error('Error al obtener la lista de proveedores:', error);

@@ -31,9 +31,8 @@ export class EnterpriseDetailsComponent {
 
   getEnterpriseSelectedInfo() {
     const id = this.enterpriseService.getSelectedEnterprise();
-    console.log("id "+ id)
     if (id === null) {
-      
+
     } else {
       this.enterpriseService.getEnterpriseById(id).subscribe({
         next: (enterpriseData) => {

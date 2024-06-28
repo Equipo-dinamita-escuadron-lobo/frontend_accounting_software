@@ -81,8 +81,6 @@ export class AuthService {
   verifiedRolSuperUser() {
     const rol_auth = this.getRolUser();
 
-    console.log(rol_auth)
-
     const rol_find = rol_auth.find(
       (rol:string) => rol === 'super_realm'
     );
@@ -91,7 +89,7 @@ export class AuthService {
       return true;
     }
 
-    return false; 
+    return false;
   }
 
 

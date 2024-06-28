@@ -97,7 +97,6 @@ constructor(
       this.inventory = this.accounts;
       this.sale = this.accounts;
       this.return = this.accounts;
-      console.log('accounts:', this.accounts);
     },
     error => {
       console.log('Error al obtener las cuentas:', error);
@@ -107,7 +106,6 @@ constructor(
 
 mapAccountToList(data: Account[]): Account[] {
   let result: Account[] = [];
-  console.log('data:', data);
 
   function traverse(account: Account) {
       // Clonamos el objeto cuenta sin los hijos
@@ -121,7 +119,6 @@ mapAccountToList(data: Account[]): Account[] {
   }
 
   data.forEach(account => traverse(account));
-  console.log('result:', result);
   return result;
 }
 get filteredAccounts() {

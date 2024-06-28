@@ -36,10 +36,9 @@ export class InvoiceSelectSupplierComponent {
       this.thirdService.getThirdParties(this.inputData.entId, 0).subscribe({
         next: (response: any[]) => {
           // Filtrar los terceros que tienen thirdTypes con thirdTypeName igual a "Proveedor"
-          this.lstThirds = response.filter(third => 
+          this.lstThirds = response.filter(third =>
             third.thirdTypes.some((type: ThirdType) => type.thirdTypeName === 'Proveedor')
           );
-          console.log('Lista de proveedores', this.lstThirds);
         },
         error: (error) => {
           console.log(error);
@@ -51,9 +50,7 @@ export class InvoiceSelectSupplierComponent {
         }
       });
     }
-    
-    
-    console.log(this.lstThirds)
+
   }
 
   selectItem(selectedValue: string): void {

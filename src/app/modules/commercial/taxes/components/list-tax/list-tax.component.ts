@@ -49,13 +49,12 @@ export class ListTaxComponent implements OnInit {
     this.getCuentas();
 
 
-  }  
+  }
     //cuentas
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).subscribe(
       (data: any[]) => {
         this.accounts = this.mapAccountToList(data);
-        console.log('accounts:', this.accounts);
       },
       error => {
         console.log('Error al obtener las cuentas:', error);
@@ -64,7 +63,6 @@ export class ListTaxComponent implements OnInit {
   }
   mapAccountToList(data: Account[]): Account[] {
     let result: Account[] = [];
-    console.log('data:', data);
 
     function traverse(account: Account) {
         // Clonamos el objeto cuenta sin los hijos
@@ -78,7 +76,6 @@ export class ListTaxComponent implements OnInit {
     }
 
     data.forEach(account => traverse(account));
-    console.log('result:', result);
     return result;
 }
 
@@ -100,7 +97,7 @@ export class ListTaxComponent implements OnInit {
   redirectToEdit(taxId: string): void {
       this.router.navigate(['/general/operations/taxes/edit/',taxId]);
     }
-  
+
 
   redirectToDelete(taxId: number): void {
     // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación

@@ -75,7 +75,6 @@ export class SidenavComponent implements OnInit {
 
   getInfoEnterprise() {
     const id = this.enterpriseService.getSelectedEnterprise();
-    console.log('id ' + id);
     if (id === null) {
     } else {
       this.enterpriseService.getEnterpriseById(id).subscribe({

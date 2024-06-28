@@ -61,21 +61,19 @@ export class CreateTaxComponent {
 
   mapAccountToList(data: Account[]): Account[] {
     let result: Account[] = [];
-    console.log('data:', data);
-  
+
     function traverse(account: Account) {
         // Clonamos el objeto cuenta sin los hijos
         let { children, ...accountWithoutChildren } = account;
         result.push(accountWithoutChildren as Account);
-  
+
         // Llamamos recursivamente para cada hijo
         if (children && children.length > 0) {
             children.forEach(child => traverse(child));
         }
     }
-  
+
     data.forEach(account => traverse(account));
-    console.log('result:', result);
     return result;
   }
   get filteredAccounts() {
@@ -86,13 +84,13 @@ export class CreateTaxComponent {
   }
   return [];
   }
-  
+
   customSearchFn(term: string, item: any) {
   term = term.toLowerCase();
   return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
   }
-  
-  
+
+
       validationsAll() {
         return {
           stringSearchCategory: [''],

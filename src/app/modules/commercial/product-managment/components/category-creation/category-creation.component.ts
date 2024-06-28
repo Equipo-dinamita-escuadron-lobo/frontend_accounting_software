@@ -34,7 +34,7 @@ export class CategoryCreationComponent implements OnInit {
   ) {
     this.accounts = [];
   }
-  
+
 
   ngOnInit(): void {
 
@@ -117,7 +117,6 @@ export class CategoryCreationComponent implements OnInit {
         this.inventory = this.accounts;
         this.sale = this.accounts;
         this.return = this.accounts;
-        console.log('accounts:', this.accounts);
       },
       error => {
         console.log('Error al obtener las cuentas:', error);
@@ -127,7 +126,6 @@ export class CategoryCreationComponent implements OnInit {
 
   mapAccountToList(data: Account[]): Account[] {
     let result: Account[] = [];
-    console.log('data:', data);
 
     function traverse(account: Account) {
         // Clonamos el objeto cuenta sin los hijos
@@ -141,7 +139,6 @@ export class CategoryCreationComponent implements OnInit {
     }
 
     data.forEach(account => traverse(account));
-    console.log('result:', result);
     return result;
 }
 get filteredAccounts() {
