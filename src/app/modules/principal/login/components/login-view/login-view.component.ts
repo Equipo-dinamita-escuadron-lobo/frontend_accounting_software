@@ -13,8 +13,9 @@ export class LoginViewComponent {
   invalidForm: boolean = false;
 
   loginForm = this.formBuilder.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
+    //! Valores por defecto servidor en desarrollo cambiar a '' en produccion
+    username: ['contables_admin', Validators.required],
+    password: ['12345', Validators.required],
   });
 
   loading: any = true;
