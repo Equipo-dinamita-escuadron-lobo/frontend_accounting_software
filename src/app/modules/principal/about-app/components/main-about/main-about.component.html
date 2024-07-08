@@ -4,20 +4,17 @@
     <div
         class="container-image text-animator  sub-container-all flex flex-col justify-center h-full w-full overflow-auto">
         <app-header-main></app-header-main>
-        <div class="container-main grid justify-between items-center text-center grid-cols-1 h-full w-full">
-
-            <div class="title w-full flex flex-col justify-center items-center">
-                <div class="container-logo flex justify-center items-center">
-                    <img class="max-h-72" src="../../../../../../assets/Iconos/contapp-logo.svg" alt="">
-                </div>
-                <div class="container-title -mt-9">
-                    <h1 class="typewriter text-8xl font-semibold">
-                        <span [innerHtml]="displayedTitle"> </span>
+        <div class="animation container-main grid items-center text-center grid-cols-1 h-full w-full  ">
+            <div class="h-5/6 title w-full mx-auto flex  flex-col justify-center items-center">
+                <img class="p-5" src="../../../../../../assets/Iconos/puñoLogo.png" alt="">
+                <div class="container-title w-full flex ">
+                    <h1 class="typewriter text-6xl sm:text-8xl font-semibold w-full   grid grid-cols-2">
+                        <span class="inline" [innerHtml]="displayedTitle"> </span>
                     </h1>
                 </div>
-                <div class="container-subtitle mt-4 text-2xl">
-                    <p class="typewriter">
-                        <span [innerHtml]="displayedSubtitle"></span><span class="cursor">|</span>
+                <div class="container-subtitle mt-4 text-lg sm:text-2xl w-full overflow-auto">
+                    <p class="typewriter w-10/12 overflow-auto">
+                        <span class="w-full inline-block" [innerHtml]="displayedSubtitle"></span>
                     </p>
                 </div>
             </div>
@@ -25,11 +22,14 @@
     </div>
 
     <section class="container-imagefull  w-full flex justify-center items-center flex-col">
-        <h3 class="text-center text-3xl mt-10 mb-5 text-white font-bold ">&lt; Visionarios /&gt;</h3>
-        <div class="proffesors grid grid-cols-1 px-5 sm:px-32 pcg:px-52 text-center justify-center items-center
-      py-20 rounded-2xl">
-            <div class="cards grid grid-cols-1 im:grid-cols-2 opm:grid-cols-4 gap-9 ">
-                <div class="card bg-card1 rounded-2xl p-8 card-hover">
+        <h3 class="animation text-center text-3xl mt-10 mb-5 text-white font-bold flex flex-col items-center justify-center ">
+            <img class="inline-block max-w-44" src="../../../../../../assets/Iconos/icons-landing/wired-gradient-69-eye.gif" alt="">
+            <span class="inline-block">&lt; Visionarios /&gt;</span>
+        </h3>
+        <div class="animation proffesors grid grid-cols-1 px-5 sm:px-32 pcg:px-52 text-center justify-center items-center
+      py-20 rounded-2xl w-full">
+            <div class="cards grid grid-cols-1 im:grid-cols-2 opm:grid-cols-4 gap-9 w-full">
+                <div class="card bg-card1 p-8 card-hover">
                     <div class="image rounded-full overflow-hidden">
                         <img class="h-24 w-24 rounded-full" src="../../../../../../assets/landing-page/imagesTeachers/Viviana.jpg"
                             alt="">
@@ -37,14 +37,11 @@
 
                     <div class="info grid items-center justify-center">
                         <span class="block text-center mt-5 mb-2 font-bold">Viviana Patricia Narváez Castillo</span>
-                        <span class="block text-center font-semibold text-blue-400 italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
-                        <span class="block text-center">
-                            En nuestro rol en el desarrollo del software contable, hemos sido responsables de definir y entregar los requisitos esenciales del proyecto. Además, hemos proporcionado explicaciones detalladas sobre su funcionamiento, asegurando que el diseño y las funcionalidades del software cumplan con las necesidades específicas del sistema contable
-                        </span>
+                        <span class="block text-center font-semibold  italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
                     </div>
                 </div>
 
-                <div class="card bg-card2 rounded-2xl p-8 card-hover">
+                <div class="card bg-card2  p-8 card-hover">
                     <div
                         class="image rounded-full  bg-cover bg-no-repeat bg-center overflow-hidden">
                         <img class="h-24 w-24 rounded-full" src="../../../../../../assets/landing-page/imagesTeachers/Juan.jpg"
@@ -53,14 +50,11 @@
 
                     <div class="info grid items-center justify-center">
                         <span class="block text-center mt-5 mb-2 font-bold">Juan Ignacio Oviedo Pino</span>
-                        <span class="block text-center font-semibold text-blue-400 italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
-                        <span class="block text-center">
-                            En nuestro rol en el desarrollo del software contable, hemos sido responsables de definir y entregar los requisitos esenciales del proyecto. Además, hemos proporcionado explicaciones detalladas sobre su funcionamiento, asegurando que el diseño y las funcionalidades del software cumplan con las necesidades específicas del sistema contable
-                        </span>
+                        <span class="block text-center font-semibold -400 italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
                     </div>
                 </div>
 
-                <div class="card bg-card3 rounded-2xl p-8 card-hover">
+                <div class="card bg-card3  p-8 card-hover">
                     <div
                         class="image rounded-full flex justify-center items-center bg-cover bg-no-repeat bg-center overflow-hidden">
                         <img class="h-24 w-24 rounded-full" src="../../../../../../assets/landing-page/imagesTeachers/MauroSanchez.jpg"
@@ -68,14 +62,11 @@
                     </div>
                     <div class="info grid items-center justify-center">
                         <span class="block text-center mt-5 mb-2 font-bold">Mauro Andrés Sanchez Muñóz</span>
-                        <span class="block text-center font-semibold text-blue-400 italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
-                        <span class="block text-center">
-                            En nuestro rol en el desarrollo del software contable, hemos sido responsables de definir y entregar los requisitos esenciales del proyecto. Además, hemos proporcionado explicaciones detalladas sobre su funcionamiento, asegurando que el diseño y las funcionalidades del software cumplan con las necesidades específicas del sistema contable
-                        </span>
+                        <span class="block text-center font-semibold  italic mb-3">Docente OTC Facultad Ciencias Contables, Económicas y Administrativas</span>
                     </div>
                 </div>
 
-                <div class="card bg-card4 rounded-2xl p-8 card-hover">
+                <div class="card bg-card4  p-8 card-hover">
                     <div
                         class="image rounded-full flex justify-center items-center bg-cover bg-no-repeat bg-center overflow-hidden">
                         <img class="h-24 w-24 rounded-full" src="../../../../../../assets/landing-page/imagesTeachers/LibardoMejorOpcion.jpg"
@@ -84,52 +75,33 @@
 
                     <div class="info grid items-center justify-center">
                         <span class="block text-center mt-5 mb-2 font-bold">Wilson Libardo Pantoja Yepes</span>
-                        <span class="block text-center font-semibold text-blue-400 italic mb-3">Asesor  del proyecto en el diseño y arquitectura del software.</span>
-                        <span class="block text-center">
-                            Libardo Pantoja Yepez. PhD. Docente del Departamento de Sistemas, FIET, Universidad del Cauca. 
-                        </span>
+                        <span class="block text-center font-semibold  italic mb-3">Asesor  del proyecto en el diseño y arquitectura del software.</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="title">
-            <h3 class="text-center text-3xl mt-10 mb-20 text-white font-bold ">&lt; Desarrolladores /&gt;</h3>
+        <div class="title animation">
+            <h3 class="text-center text-3xl mt-10 mb-5 text-white font-bold flex flex-col items-center justify-center ">
+                <img class="inline-block max-w-44" src="../../../../../../assets/Iconos/icons-landing/wired-gradient-1326-command-window-line.gif" alt="">
+                <span class="inline-block mt-5">&lt; Desarrolladores /&gt;</span>
+            </h3>
         </div>
 
-        <div class="img-grupo grid grid-cols-1  opm:grid-cols-2 justify-center items-center w-11/12 rounded-2xl relative mb-40">
-            <div class="image-group">
+        <div class="img-grupo flex flex-col opm:grid sg:grid-cols-2 justify-center items-center w-11/12 rounded-2xl relative mb-40 animation">
+            <div class="image-group w-full h-96 sg:h-full col-span-1">
                 <img *ngFor="let image of images; let i = index" [src]="image.src" alt="Imagen" class="carousel-image"
                     [class.active]="i === currentIndex" [class.prev]="i === prevIndex">
             </div>
-            <div class="information flex items-center justify-center flex-col w-full">
-                <!--<svg xmlns="http://www.w3.org/2000/svg" class="container-comp max-h-20 mb-10"
-                    viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.
-                    <path
-                        d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z" />
-                </svg>-->
-                <img src="../../../../../../assets/Iconos/puñoLogo.png" alt="">
+            <div class="information flex items-center justify-center flex-col w-full col-span-1">
+                <img class="hidden sg:block" src="../../../../../../assets/Iconos/puñoLogo.png" alt="">
                 <h2 class="text-3xl mb-8">{{ images[currentIndex].title }}</h2>
                 <p class="text-lg w-9/12">{{ images[currentIndex].description }}</p>
                 <div class="indicators flex space-x-2 mt-4">
                     <span *ngFor="let image of images; let i = index" [class.active-indicator]="i === currentIndex"
                         class="indicator"></span>
                 </div>
-                <!--<div class="flex space-x-2 mt-4">
-                  <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-lg font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                    Contáctanos
-                    </span>
-                  </button>
-                </div>-->
             </div>
-            <!--
-            <div class="controls">
-                <button (click)="prevImage()" class="control"> &lt; </button>
-                <button (click)="nextImage()" class="control"> &gt; </button>
-            </div>
-            -->
         </div>
-        <div class="groups"></div>
     </section>
 </div>

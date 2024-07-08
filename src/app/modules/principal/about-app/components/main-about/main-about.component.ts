@@ -11,11 +11,11 @@ export class MainAboutComponent {
   fullTitle = 'CONTAPP';
   fullSubtitle =
     'Desarrollada por estudiantes del programa de Ingeniería de sistemas de la Universidad del Cauca';
-  displayedTitle = '';
+  displayedTitle = 'C';
   displayedSubtitle = '';
 
-  titleSpeed = 150; // ms por carácter
-  subtitleSpeed = 50; // ms por carácter
+  titleSpeed = 100; // ms por carácter
+  subtitleSpeed = 20; // ms por carácter
   resetInterval = 10000; // 10 segundos
 
   selectedOption: string = 'Inicio';

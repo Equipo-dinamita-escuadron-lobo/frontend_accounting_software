@@ -1,28 +1,31 @@
-<div class="nav w-full px-6 text-white">
-    <div class="flex justify-between items-center">
-        <div class="container-logo m-6">
+<div class="nav w-full text-white px-10 pt-3 pb-10 relative">
+    <div class="flex w-full justify-between items-center">
+        <div class="container-logo overflow-hidden h-24">
             <img src="../../../../../../assets/Iconos/contapp-logo.svg" alt="" class="h-24">
         </div>
 
-        <div class="container-options flex text-xl">
-            <ul class="flex">
-                <li class="py-2 mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Inicio'}"
+        <div [class.show] = "hiddenMenu" [class.hide] = "!hiddenMenu" id="container-options" class="container-options text-xl sg:flex w-full sg:justify-end ">
+            <ul class="flex justify-center items-center">
+                <li class="pb-1 sg:mr-10 underline-animation " [ngClass]="{'selected': selectedOption === 'Inicio'}"
                     (click)="goLanding('Inicio')">
                     Inicio
                 </li>
-                <li class="py-2 mr-10 underline-animation"
-                    [ngClass]="{'selected': selectedOption === 'Acerca'}"
+                <li class="pb-1 sg:mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Acerca'}"
                     (click)="goToAbout('Acerca')">
                     Acerca de
                 </li>
-                <li class="py-2 mr-10 underline-animation"
-                    [ngClass]="{'selected': selectedOption === 'Contacto'}" (click)="selectOption('Contacto')">
+                <li class="pb-1 sg:mr-10 underline-animation" [ngClass]="{'selected': selectedOption === 'Contacto'}"
+                    (click)="selectOption('Contacto')">
                     Contacto
                 </li>
+                <li class="button-login p-2 border-2 border-white"><button (click)="goToLogin()" class="">
+                        Iniciar sesión
+                    </button>
+                </li>
             </ul>
-            <div class="button-login py-2 border-red-100 border-2 p-4">
-                <button (click)="goToLogin()" class="">Iniciar sesión</button>
-            </div>
         </div>
+        <button (click)="showMenu()" class=" icon-menu sg:hidden ">
+            <img class="container-logo h-12" src="../../../../assets/Iconos/bx-menu.svg" alt="">
+        </button>
     </div>
 </div>

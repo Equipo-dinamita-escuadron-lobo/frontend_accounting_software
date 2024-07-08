@@ -1,64 +1,59 @@
-<div class="container-all h-full text-white landing overflow-auto w-full">
+<div class="container-image h-full text-white landing overflow-auto w-full">
+    <app-header-main class="w-full"></app-header-main>
+    <div class="container-main flex flex-col justify-between items-center text-center  h-3/4 w-full ">
+        <div class="mb-20 sg:mb-0 w-11/12 mx-auto flex  flex-col justify-center items-center ">
+            <div class="container-title w-full flex ">
+                <h1 class="typewriter text-6xl sm:text-8xl font-semibold w-full ">
+                    <span class=" inline-block" [innerHtml]="displayedTitle"> </span>
+                    <img class="h-21 inline-block" src="../../../../../../assets/Iconos/icons-landing/wired-outline-945-dividends.gif" alt="">
+                </h1>
+            </div>
+            <div class="container-subtitle mt-4 text-lg sm:text-2xl w-full overflow-auto">
+                <p class="typewriter">
+                    <span [innerHtml]="displayedSubtitle"></span><span class="cursor">|</span>
+                </p>
+            </div>
+        </div>
 
-    <div class="container-image text-animator  sub-container-all flex flex-col justify-center h-full w-full">
-        <app-header-main></app-header-main>
-        <div class="container-main grid justify-between items-center text-center grid-cols-1 h-full w-full">
-            <div class="container-hel">
+        <div
+            class="container-services w-9/12 im:w-11/12 opm:w-3/6 m-auto  grid grid-cols-1 im:grid-cols-2 sg:grid-cols-4 gap-6 relative mb-14 ">
+            <div class="service bg-emerald-950 grid rounded-2xl grid-rows-2">
+                <div class="icon  flex justify-center items-center">
+                    <img class="h-14 container-logo" src="../../../../../../assets/Iconos/icons-landing/system-solid-178-work.gif" alt="">
+                </div>
 
+                <div class="name  flex items-center justify-center">
+                    <span>Gestiona tu empresa</span>
+                </div>
             </div>
 
-            <div class="title w-full flex flex-col justify-center items-center">
-                <div class="container-title">
-                    <h1 class="typewriter text-8xl font-semibold">
-                        <span [innerHtml]="displayedTitle"> </span>
-                    </h1>
+            <div class="service bg-yellow-800 grid rounded-2xl grid-rows-2">
+                <div class="icon flex justify-center items-center">
+                    <img class="h-14 container-logo" src="../../../../../../assets/Iconos/icons-landing/system-solid-197-calculate.gif" alt="">
                 </div>
-                <div class="container-subtitle mt-4 text-2xl">
-                    <p class="typewriter">
-                        <span [innerHtml]="displayedSubtitle"></span><span class="cursor">|</span>
-                    </p>
+
+                <div class="name flex items-center justify-center">
+                    <span>Maneja tu contabilidad</span>
                 </div>
             </div>
 
-            <div class="container-services w-11/12 opm:w-3/6 m-auto  grid grid-cols-2 opm:grid-cols-4 gap-6 relative">
-                <div class="service bg-emerald-950 p-3 py-5 grid rounded-2xl">
-                    <div class="icon  flex justify-center items-center">
-                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/enterprise.svg" alt="">
-                    </div>
-
-                    <div class="name mt-2 flex items-center justify-center">
-                        <span>Gestiona tu empresa</span>
-                    </div>
+            <div class="service bg-red-950 grid rounded-2xl grid-rows-2">
+                <div class="icon flex justify-center items-center">
+                    <img class="h-14 container-logo" src="../../../../../../assets/Iconos/icons-landing/system-solid-19-book.gif" alt="">
                 </div>
 
-                <div class="service bg-yellow-800 grid rounded-2xl py-5">
-                    <div class="icon w-21 h-21">
-                        <img class="rounded-full w-21 h-21 object-cover bg-cover shadow-sm" src="../../../../../../assets/Iconos/icons-landing/count2.svg" alt="">
-                    </div>
+                <div class="name  flex items-center justify-center">
+                    <span>Aprende</span>
+                </div>
+            </div>
 
-                    <div class="name mt-2 flex items-center justify-center">
-                        <span>Maneja tu contabilidad</span>
-                    </div>
+            <div class="service text-white bg-gray-950 grid rounded-2xl grid-rows-2">
+                <div class="icon flex justify-center items-center">
+                    <img class="h-20 container-logo" src="../../../../../../assets/Iconos/logo-unicauca.svg" alt="">
                 </div>
 
-                <div class="service bg-red-800 grid rounded-2xl py-5">
-                    <div class="icon flex justify-center items-center">
-                        <img class="h-14" src="../../../../../../assets/Iconos/icons-landing/school.svg" alt="">
-                    </div>
-
-                    <div class="name mt-2 flex items-center justify-center">
-                        <span>Aprende</span>
-                    </div>
-                </div>
-
-                <div class="service text-white bg-gray-950 grid rounded-2xl py-5">
-                    <div class="icon flex justify-center items-center">
-                        <img class="h-20 container-logo" src="../../../../../../assets/Iconos/logo-unicauca.svg" alt="">
-                    </div>
-
-                    <div class="name mt-2 flex items-center justify-center">
-                        <span>Desarrollado por</span>
-                    </div>
+                <div class="name flex items-center justify-center">
+                    <span>Desarrollado por</span>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 /* Contenedor principal con fondo y transición */
 .container-image {
   background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    url("../../../../../../assets/landing-page/main.jpg");
+    url("../../../../../../assets/wallpapers/abstract.webp");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -24,12 +24,12 @@
   animation: typing 2.5s steps(40, end), blink-caret 0.1s step-end infinite;
 }
 
-.text-animator {
+/* .text-animator {
   opacity: 0;
   transform: translateY(-20px);
   animation: fadeIn 1s ease-in-out forwards;
   animation-delay: 0.5s;
-}
+} */
 
 .selected {
   font-weight: bold; /* Ejemplo de estilo: texto en negrita */
@@ -96,10 +96,14 @@
 
 .service {
   color: #ecf0f1; /* Texto en color claro para mejor legibilidad */
-  padding: 20px;
+  padding: 15px;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.title{
+  height: 50vh;
 }
 
 .service:hover {
@@ -107,13 +111,10 @@
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Aumentar sombra al hacer hover */
 }
 
-.service .icon {
-  margin-bottom: 15px;
-}
 
 .service .name {
   font-size: 1.25rem; /* Tamaño de fuente más grande para el nombre */
-  font-weight: 600; /* Mayor peso para el nombre */
+  font-weight: 300; /* Mayor peso para el nombre */
 }
 
 .cursor {

@@ -13,8 +13,8 @@ export class MainComponent implements OnInit, OnDestroy {
   fullSubtitle = 'Aplicación para gestionar tu información contable';
   displayedTitle = '';
   displayedSubtitle = '';
-  titleSpeed = 150; // ms por carácter
-  subtitleSpeed = 60; // ms por carácter
+  titleSpeed = 100; // ms por carácter
+  subtitleSpeed = 50; // ms por carácter
   resetInterval = 10000; // 10 segundos
   
   selectedOption: string = 'Inicio';

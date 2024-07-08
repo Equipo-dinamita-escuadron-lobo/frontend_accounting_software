@@ -1,8 +1,11 @@
-
 .container-logo {
   filter: grayscale(100%); /* Convertir la imagen a blanco y negro */
   filter: brightness(10000%);
   filter: brightness(0) invert(1);
+}
+
+.nav {
+  z-index: 10000;
 }
 
 .typewriter h1,
@@ -25,16 +28,14 @@
 .selected {
   font-weight: bold; /* Ejemplo de estilo: texto en negrita */
   color: rgb(177, 0, 0); /* Ejemplo de estilo: color rojo */
-  border-bottom: 1px solid  rgb(177, 0, 0) ;
+  border-bottom: 1px solid rgb(177, 0, 0);
 }
 
-.selected:hover{
+.selected:hover {
   font-weight: bold; /* Ejemplo de estilo: texto en negrita */
   color: rgb(255, 255, 255); /* Ejemplo de estilo: color rojo */
-  border-bottom: 1px solid  transparent ;
+  border-bottom: 1px solid transparent;
 }
-
-
 
 .service {
   transition: transform 0.3s ease-in-out;
@@ -56,7 +57,7 @@
   overflow: hidden;
 }
 
-.button-login:hover{
+.button-login:hover {
   border-color: rgb(0, 0, 248);
   color: rgb(27, 27, 254);
 }
@@ -80,33 +81,6 @@
   transform-origin: bottom left;
 }
 
-.services-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.service {
-  color: #ecf0f1; /* Texto en color claro para mejor legibilidad */
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.service:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Aumentar sombra al hacer hover */
-}
-
-.service .icon {
-  margin-bottom: 15px;
-}
-
-.service .name {
-  font-size: 1.25rem; /* Tamaño de fuente más grande para el nombre */
-  font-weight: 600; /* Mayor peso para el nombre */
-}
-
 .cursor {
   display: inline-block;
   background-color: white; /* Color del cursor */
@@ -116,19 +90,62 @@
 
 /* Animación del cursor */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 @media (min-width: 640px) {
   .services-container {
-      grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
   .services-container {
-      grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .container-options {
+    top: 0;
+    background-color: rgb(5, 1, 14);
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .show{
+    display: initial;
+  }
+
+  .hide{
+    display: none;
+  }
+
+  .container-options ul {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 50%;
+  }
+
+  .container-options ul li {
+    padding: 12px 0px;
+    text-align: center;
+  }
+
+  .button-login{
+    border: none;
   }
 }
 
