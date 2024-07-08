@@ -1,26 +1,135 @@
+/* Contenedor principal con fondo y transición */
 .container-image {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)),
-    linear-gradient(to bottom,  rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 1)),
-      url("../../../../../../assets/wallpapers/main.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1)), linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+    url("../../../../../../assets/wallpapers/sebastian-svenson-d2w-_1LJioQ-unsplash.webp");
 
-  .container-logo {
-    filter: grayscale(100%); /* Convertir la imagen a blanco y negro */
-    filter: brightness(10000%);
-    filter: brightness(0) invert(1);
-  }
-  .container-comp{
-    filter: brightness(0.5) invert(2);
-  }
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+
+.container-logo {
+  filter: grayscale(100%); /* Convertir la imagen a blanco y negro */
+  filter: brightness(10000%);
+  filter: brightness(0) invert(1);
+}
+
+.typewriter h1,
+.typewriter p {
+  overflow: hidden;
+  border-right: 0.15em solid orange; /* The typewriter cursor */
+  white-space: nowrap;
+  margin: 0 auto; /* Keeps the text centered */
+  letter-spacing: 0.15em; /* Adjust as needed */
+  animation: typing 2.5s steps(40, end), blink-caret 0.1s step-end infinite;
+}
+
+/* .text-animator {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeIn 1s ease-in-out forwards;
+  animation-delay: 0.5s;
+} */
+
+.selected {
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(177, 0, 0); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid  rgb(177, 0, 0) ;
+}
+
+.selected:hover{
+  font-weight: bold; /* Ejemplo de estilo: texto en negrita */
+  color: rgb(255, 255, 255); /* Ejemplo de estilo: color rojo */
+  border-bottom: 1px solid  transparent ;
+}
+
+
+
+.service {
+  transition: transform 0.3s ease-in-out;
+}
+
+.service:hover {
+  transform: scale(1.3);
+}
+
+.underline-animation {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Opcional: Estilos para el efecto de escritura */
+.typewriter {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.button-login:hover{
+  border-color: rgb(0, 0, 248);
+  color: rgb(27, 27, 254);
+}
+
+.underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 4px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(27, 27, 254);
+  transform-origin: bottom right;
+  transition: transform 0.5s ease-out;
+  opacity: 0.6; /* Difuminado */
+}
+
+.underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.services-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service {
+  color: #ecf0f1; /* Texto en color claro para mejor legibilidad */
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil para profundidad */
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.title{
+  height: 50vh;
+}
+
+.service:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Aumentar sombra al hacer hover */
+}
+
+
+.service .name {
+  font-size: 1.25rem; /* Tamaño de fuente más grande para el nombre */
+  font-weight: 300; /* Mayor peso para el nombre */
+}
+
+.cursor {
+  display: inline-block;
+  background-color: white; /* Color del cursor */
+  width: 2px;
+  animation: blink 0.4s infinite;
+}
 
 
   .container-imagefull {
     background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
-    linear-gradient(to bottom,  rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
-      url("../../../../../../assets/wallpapers/main3.webp");
+    linear-gradient(to bottom,  rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      url("../../../../../../assets/wallpapers/sebastian-svenson-d2w-_1LJioQ-unsplash.webp");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -41,23 +150,6 @@
     border-radius: 50%;
 }
 
-  .bg-card1{
-    background: linear-gradient(to left, rgb(19, 2, 59), rgb(4, 44, 117));
-  }
-  .bg-card2{
-    background: linear-gradient(to left, rgb(19, 2, 59), rgb(4, 44, 117));
-
-  }
-
-  .bg-card3{
-    background: linear-gradient(to left, rgb(11, 2, 59), rgb(4, 44, 117));
-
-  }
-  .bg-card4{
-    background: linear-gradient(to left, rgb(19, 2, 59), rgb(4, 44, 117));
-
-  }
-
   body {
     display: flex;
     justify-content: center;
@@ -69,14 +161,19 @@
 .card {
     display: flex;
     flex-direction: column;
-    background-color: #fff; /* Cambia el color de fondo de la tarjeta */
-    border-radius: 1rem;
+    color: white;
+    /* Cambia el color de fondo de la tarjeta */
+    border-radius: 50px;
     justify-content: center;
     align-items: center;
     padding: 2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+}
+
+.card .info span{
+  color: white;
 }
 
 .image {
@@ -112,11 +209,11 @@ span {
 }
 
 .card-hover {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
 
 .card-hover:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .image-group {
@@ -125,7 +222,6 @@ span {
   justify-content: center;
   background-color: transparent;
   width: 100%;
-  height: 100%;
   overflow: hidden;
   position: relative;
 }
@@ -206,6 +302,29 @@ span {
 
 .fade-in.visible {
   opacity: 1;
+}
+
+.animation{
+  view-timeline-name: --image;
+  view-timeline-axis: block;
+
+  animation-timeline: --image;
+  animation-name: show;
+
+  animation-range: entry 25% cover 30%;
+  animation-fill-mode: both;
+}
+
+@keyframes show {
+  from{
+    opacity: 0;
+    scale: 50%;
+  }
+
+  to{
+    opacity: 1;
+    scale: 100%;
+  }
 }
 
 
