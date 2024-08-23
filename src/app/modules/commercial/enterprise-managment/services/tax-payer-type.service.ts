@@ -2,6 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TaxPayerType } from '../models/TaxPayerType';
+import { environment } from '../../../../../environments/environment';
+
+let API_URL = '';
+
+//Si microservice es de enterprise se cambia la url de la api a local
+if(environment.microservice == 'enterprise'){
+    API_URL = environment.API_LOCAL_URL;
+}
+else{
+    API_URL = environment.API_URL;
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +26,7 @@ export class TaxPayerTypeService {
     { id: 4, name: 'Entidad Sin Ánimo de Lucro' },
   ];
 
-  private apiUrl = '';
+  private apiUrl = API_URL + 'enterprise/'
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +40,7 @@ export class TaxPayerTypeService {
     return this.http.get<TaxPayerType[]>(this.apiUrl);
   }*/
 
-  
+
   getTaxPayerTypes(){
     return this.taxpayerTypes;
   }
