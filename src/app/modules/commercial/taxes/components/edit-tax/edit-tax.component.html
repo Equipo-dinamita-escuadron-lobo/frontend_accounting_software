@@ -36,7 +36,7 @@
                 </div>
               </div>
               <div>
-                <label for="interest" class="block text-sm font-medium text-gray-700">Interés:</label>
+                <label for="interest" class="block text-sm font-medium text-gray-700">Tarifa:</label>
                 <input type="number" formControlName="interest" id="interest" min="0" placeholder="Ej: 10"
                   class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                 <div *ngIf="editForm.get('interest')?.touched && editForm.get('interest')?.invalid" class="text-red-500">
@@ -45,7 +45,7 @@
                 </div>
               </div>
               <div>
-                <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
+                <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta</label>
                 <!-- <select formControlName="depositAccountId" id="depositAccountId"
                         class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="" disabled selected>Selecciona una cuenta</option>
@@ -67,12 +67,12 @@
                 </ng-select>
                 <div *ngIf="editForm.get('depositAccountId')?.touched && editForm.get('depositAccountId')?.invalid"
                      class="text-red-500">
-                    <div *ngIf="editForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta de Depósito es requerido.</div>
+                    <div *ngIf="editForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta es requerido.</div>
                 </div>
             </div>
 
             <div>
-              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Reembolso:</label>
+              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta Devolución:</label>
               <ng-select 
               formControlName="refundAccountId" id="refundAccountId"
                 [items]="refundAccounts || []"
@@ -89,7 +89,7 @@
               </ng-select>
               <div *ngIf="editForm.get('refundAccountId')?.touched && editForm.get('refundAccountId')?.invalid"
                    class="text-red-500">
-                  <div *ngIf="editForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta de Reembolso es requerido.</div>
+                  <div *ngIf="editForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta Devolución es requerido.</div>
               </div>
           </div>
           
