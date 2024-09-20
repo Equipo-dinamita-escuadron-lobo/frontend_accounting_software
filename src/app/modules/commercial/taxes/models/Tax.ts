@@ -1,5 +1,5 @@
 export interface Tax {
-    id: number;
+    id:number 
     code: string;
     description: string;
     interest: number;

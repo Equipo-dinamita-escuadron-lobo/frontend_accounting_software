@@ -110,18 +110,20 @@
     </div>
     <!-- section to show the save and cancel buttons -->
     <div class="flex flex-wrap justify-center mt-4">
-        <div class="mb-2 md:mb-2 md:mr-2 sm:mr-2 mm:mr-2" *ngIf="formNewAccount.valid">
+       
+        <div class="mb-2 md:mb-2 md:mr-2 sm:mr-2 mm:mr-2">
+            <button type="button"
+                class="cancel-create text-white bg-gradient-to-r from-red-800 via-red-700 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                (click)="cancel()">
+                Cancelar
+            </button>
+        </div>
+
+        <div class="mb-2 md:mb-0 md:ml-2" *ngIf="formNewAccount.valid">
             <button type="button"
                 class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
                 (click)="sendAccount()">
                 Guardar {{currentLevelAccount}}
-            </button>
-        </div>
-        <div class="mb-2 md:mb-0 md:ml-2">
-            <button type="button"
-                class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
-                (click)="cancel()">
-                Cancelar
             </button>
         </div>
     </div>
