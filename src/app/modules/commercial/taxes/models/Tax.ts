@@ -3,9 +3,9 @@ export interface Tax {
     code: string;
     description: string;
     interest: number;
-    depositAccountId: number; 
-    refundAccountId: number; 
-    enterpriseId: string;
+    refundAccount: string; //Id cuenta devolucion
+    depositAccount: string; //Id cuenta deposito
+    idEnterprise: string;
 }
 
 export interface TaxList {
@@ -15,5 +15,5 @@ export interface TaxList {
     interest: number;
     depositAccountName: string;
     refundAccountName: string;
-    enterpriseId: string;
+    idEnterprise: string;
 }

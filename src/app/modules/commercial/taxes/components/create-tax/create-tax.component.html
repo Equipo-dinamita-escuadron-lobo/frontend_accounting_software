@@ -46,24 +46,24 @@
               </div>
             </div>
             <!-- <div>
-              <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
-              <select formControlName="depositAccountId" id="depositAccountId"
+              <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label>
+              <select formControlName="depositAccount" id="depositAccount"
                 class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="" disabled selected>Selecciona una cuenta</option>
                 <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
               </select>
-              <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"
+              <div *ngIf="addForm.get('depositAccount')?.touched && addForm.get('depositAccount')?.invalid"
                 class="text-red-500">
-                <div *ngIf="addForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta es
+                <div *ngIf="addForm.get('depositAccount')?.errors?.['required']">El campo Cuenta es
                   requerido.</div>
               </div>
             </div> -->
             <div>
-              <!-- <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label> -->
+              <!-- <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta de Depósito:</label> -->
               
-              <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta:</label>
+              <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta:</label>
               <ng-select 
-              formControlName="depositAccountId" id="depositAccountId"
+              formControlName="depositAccount" id="depositAccount"
                 [items]="depositAccounts || []"
                 bindLabel="description"
                 bindValue="id"
@@ -76,17 +76,17 @@
                   <div class="p-2 hover:bg-gray-100">{{item.code}}-{{ item.description }}</div>
                 </ng-template>
               </ng-select>
-              <div *ngIf="addForm.get('depositAccountId')?.touched && addForm.get('depositAccountId')?.invalid"
+              <div *ngIf="addForm.get('depositAccount')?.touched && addForm.get('depositAccount')?.invalid"
                 class="text-red-500">
-                <div *ngIf="addForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta es
+                <div *ngIf="addForm.get('depositAccount')?.errors?.['required']">El campo Cuenta es
                   requerido.</div>
               </div>
             </div>
             <div>
-              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta Devolución:</label>
+              <label for="refundAccount" class="block text-sm font-medium text-gray-700">Cuenta Devolución:</label>
               
               <ng-select 
-              formControlName="refundAccountId" id="refundAccountId"
+              formControlName="refundAccount" id="refundAccount"
                 [items]="refundAccounts || []"
                 bindLabel="description"
                 bindValue="id"
@@ -98,9 +98,9 @@
                 <ng-template ng-option-tmp let-item="item">
                   <div class="p-2 hover:bg-gray-100">{{ item.code }} - {{ item.description }}</div>
                 </ng-template>
-              </ng-select><div *ngIf="addForm.get('refundAccountId')?.touched && addForm.get('refundAccountId')?.invalid"
+              </ng-select><div *ngIf="addForm.get('refundAccount')?.touched && addForm.get('refundAccount')?.invalid"
                 class="text-red-500">
-                <div *ngIf="addForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta Devolución es
+                <div *ngIf="addForm.get('refundAccount')?.errors?.['required']">El campo Cuenta Devolución es
                   requerido.</div>
               </div>
             </div>

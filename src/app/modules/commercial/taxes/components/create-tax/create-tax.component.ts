@@ -38,8 +38,8 @@ export class CreateTaxComponent {
       code: ['', Validators.required],
       description: ['', Validators.required],
       interest: [null, [Validators.required, Validators.min(0)]],
-      depositAccountId: [null, Validators.required],
-      refundAccountId: [null, Validators.required]
+      depositAccount: [null, Validators.required],
+      refundAccount: [null, Validators.required]
     });
   }
   ngOnInit(): void {
@@ -49,9 +49,9 @@ export class CreateTaxComponent {
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).subscribe(
       (data: any[]) => {
-        this.accounts =  this.mapAccountToList(data);
-        this.depositAccounts =  this.accounts;
-        this.refundAccounts =  this.accounts;
+        this.accounts = this.mapAccountToList(data);
+        this.depositAccounts = this.accounts;
+        this.refundAccounts = this.accounts;
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
@@ -63,63 +63,78 @@ export class CreateTaxComponent {
     let result: Account[] = [];
 
     function traverse(account: Account) {
-        // Clonamos el objeto cuenta sin los hijos
-        let { children, ...accountWithoutChildren } = account;
-        result.push(accountWithoutChildren as Account);
+      // Clonamos el objeto cuenta sin los hijos
+      let { children, ...accountWithoutChildren } = account;
+      result.push(accountWithoutChildren as Account);
 
-        // Llamamos recursivamente para cada hijo
-        if (children && children.length > 0) {
-            children.forEach(child => traverse(child));
-        }
+      // Llamamos recursivamente para cada hijo
+      if (children && children.length > 0) {
+        children.forEach(child => traverse(child));
+      }
     }
 
     data.forEach(account => traverse(account));
     return result;
   }
   get filteredAccounts() {
-  if (this.accounts) {
-    return this.accounts.filter(account =>
-      `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
-    );
-  }
-  return [];
+    if (this.accounts) {
+      return this.accounts.filter(account =>
+        `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+      );
+    }
+    return [];
   }
 
   customSearchFn(term: string, item: any) {
-  term = term.toLowerCase();
-  return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+    term = term.toLowerCase();
+    return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
   }
 
 
-      validationsAll() {
-        return {
-          stringSearchCategory: [''],
-        };
-      }
-      getAccountCode(id: number): string {
-        const account = this.accounts.find(cuenta => cuenta.id === id);
-        return account ? account.code : 'No encontrado';
-      }
+  validationsAll() {
+    return {
+      stringSearchCategory: [''],
+    };
+  }
+  getAccountCode(id: number): string {
+    const account = this.accounts.find(cuenta => cuenta.id === id);
+    return account ? account.code : 'No encontrado';
+  }
   onSubmit(): void {
     if (this.addForm.valid) {
-      const createdTax: any = this.addForm.value;
-      createdTax.enterpriseId = this.entData;
-      createdTax.depositAccountId = this.getAccountCode(createdTax.depositAccountId);
-      createdTax.refundAccountId = this.getAccountCode(createdTax.refundAccountId);
-      console.log(createdTax)
+      const createdTax: Tax = {
+        ...this.addForm.value,
+        idEnterprise: this.entData,
+        code: this.addForm.value.code,
+        description: this.addForm.value.description,
+        interest: this.addForm.value.interest,
+        depositAccount: this.getAccountCode(this.addForm.value.depositAccount),  
+        refundAccount: this.getAccountCode(this.addForm.value.refundAccount)      
+      };
+
+      console.log('Created Tax:', createdTax);
+
       this.taxService.createTax(createdTax).subscribe(
         (response: Tax) => {
           Swal.fire({
-            title: 'Impuesto agregado!',
+            title: '¡Impuesto agregado!',
             text: 'Se agregó el impuesto exitosamente!',
             icon: 'success',
           });
           this.router.navigate(['/general/operations/taxes']);
         },
-        error => {
-          console.error('Error al crear el impuesto:', error);
+        (error) => {
+          if (error.error === "El impuesto con ese código ya fue creado.") {
+            Swal.fire({
+              title: 'Error',
+              text: 'Ya existe un impuesto con ese código.',
+              icon: 'error',
+            });
+            return;
+          }
+          //console.error('Error al crear el impuesto:', error);
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al agregar el impuesto.',
             icon: 'error',
           });
@@ -134,6 +149,7 @@ export class CreateTaxComponent {
       });
     }
   }
+
   goBack(): void {
     this.router.navigate(['/general/operations/taxes']);
   }
