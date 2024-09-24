@@ -1,28 +1,26 @@
 import { Component } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
-  Validators,
-  FormsModule,
-  AbstractControl,
+  Validators
 } from '@angular/forms';
-import { EnterpriseService } from '../../services/enterprise.service';
-import { TaxLiabilityService } from '../../services/tax-liability.service';
-import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { environment } from '../../../../../../environments/enviorment.development';
+import { Department } from '../../models/Department';
 import { Enterprise } from '../../models/Enterprise';
-import { PersonType } from '../../models/PersonType';
-import { Location } from '../../models/Location';
 import { EnterpriseList } from '../../models/EnterpriseList';
+import { EnterpriseType } from '../../models/EnterpriseType';
+import { Location } from '../../models/Location';
+import { PersonType } from '../../models/PersonType';
 import { TaxLiability } from '../../models/TaxLiability';
 import { TaxPayerType } from '../../models/TaxPayerType';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
-import { Department } from '../../models/Department';
-import { City } from '../../models/City';
-import { EnterpriseType } from '../../models/EnterpriseType';
-import { environment } from '../../../../../../environments/enviorment.development';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { EnterpriseService } from '../../services/enterprise.service';
+import { TaxLiabilityService } from '../../services/tax-liability.service';
+import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
 
 @Component({
   selector: 'app-enterprise-creation',
