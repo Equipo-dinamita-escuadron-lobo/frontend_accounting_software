@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
+import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { CategoryService } from '../../services/category.service';
-import { Router } from '@angular/router';
-import { Product } from '../../models/Product';
-import Swal from 'sweetalert2';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 
- @Component({
+@Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
@@ -54,7 +53,7 @@ export class ProductCreationComponent implements OnInit {
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
     }
@@ -124,7 +123,7 @@ getUnitOfMeasures(): void {
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, [Validators.required, Validators.min(0)]]
     });

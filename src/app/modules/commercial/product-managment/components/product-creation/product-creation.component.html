@@ -1,26 +1,27 @@
-  <div class="px-14 py-5 bg-gray-100 font-projectFont">
+<!DOCTYPE html>
+<div class="px-14 py-5 bg-gray-100 font-projectFont">
 
     
-    <h1 class="text-2xl font-bold text-blue-950  mt-8">Creación de Producto</h1>
+  <h1 class="text-2xl font-bold text-blue-950  mt-8">Creación de Producto</h1>
 
-    <p class=" mt-4 font-projectFont">
-      Ingrese la información requerida para crear un nuevo producto:
-    </p>
-    <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-      <button
-      class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
-      (click)="goBack()"
-    >
-      <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
-        <i class="fas fa-arrow-left text-blue-950"></i>
-      </span>
-    </button>
-    </div>
+  <p class=" mt-4 font-projectFont">
+    Ingrese la información requerida para crear un nuevo producto:
+  </p>
+  <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+    <button
+    class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
+    (click)="goBack()"
+  >
+    <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
+      <i class="fas fa-arrow-left text-blue-950"></i>
+    </span>
+  </button>
+  </div>
 
     <div class="container mx-auto mt-8">
       <div class="grid grid-cols-1 m-6 gap-6">
         <div class="p-4 bg-white rounded shadow">
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="productForm" (ngSubmit)='onSubmit()' > 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
               <div>
@@ -95,8 +96,8 @@
                   placeholder="Ej: 1"
                   class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                <div *ngIf="productForm.get('minQuantity')?.touched && productForm.get('minQuantity')?.errors" class="text-red-500">
-                  <div *ngIf="productForm.get('minQuantity')?.errors?.['required']">
+                <div [ *ngIf ="productForm.get('minQuantity')?.touched && productForm.get('minQuantity')?.errors" class="text-red-500" ]></div>
+                  <div [ *ngIf="productForm.get('minQuantity')?.errors?.['required']"] >
                     El campo Cantidad Mínima es requerido.
                   </div>
                   <div *ngIf="productForm.get('minQuantity')?.errors?.['min']">
@@ -175,19 +176,6 @@
           
              
           
-
-            <div>
-              <label for="supplierId" class="block text-sm font-medium text-gray-700">Proveedor:</label>
-              <select formControlName="supplierId" id="supplierId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option value="">Selecciona un proveedor</option>
-                <option *ngFor="let provider of thirdParties" [value]="provider.idNumber">{{ provider.names ? provider.names + ' ' + provider.lastNames : provider.socialReason }}</option>
-              </select>
-              <div *ngIf="productForm.get('supplierId')?.touched && productForm.get('supplierId')?.invalid" class="text-red-500">
-                <div *ngIf="productForm.get('supplierId')?.errors?.['required']">
-                  El campo Proveedor es requerido.
-                </div>
-              </div>
-            </div>
             
           
             <div>
@@ -236,10 +224,8 @@
                 </button>
               </div>               
          
-                            
-            </div>
-          </form>
-        </div>
-       
-      </div>
+        </form>                 
+      </div>  
     </div>
+  </div>
+</div>

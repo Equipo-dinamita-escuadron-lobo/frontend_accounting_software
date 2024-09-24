@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service'; // Importa el servicio ProductService
-import { Product, ProductList } from '../../models/Product'; // Importa el modelo Product
-import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductDetailsModalComponent } from '../product-details/product-details.component';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { UnitOfMeasure } from '../../models/UnitOfMeasure';
-import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { Category } from '../../models/Category';
-import { CategoryService } from '../../services/category.service';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
+import { Category } from '../../models/Category';
+import { Product } from '../../models/Product'; // Importa el modelo Product
+import { UnitOfMeasure } from '../../models/UnitOfMeasure';
+import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service'; // Importa el servicio ProductService
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { ProductDetailsModalComponent } from '../product-details/product-details.component';
 
 @Component({
   selector: 'app-product-list',
@@ -38,7 +37,7 @@ export class ProductListComponent implements OnInit {
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
     { title: 'Unidad', data: 'unitOfMeasure' },
-    { title: 'Proveedor', data: 'supplier' },
+   // { title: 'Proveedor', data: 'supplier' },
     { title: 'Categoría', data: 'category' },
     { title: 'Acciones', data: 'actions' },
   ];
@@ -72,7 +71,7 @@ export class ProductListComponent implements OnInit {
       this.getProducts(); // Llama al método getProducts() al inicializar el componente
       this.getUnitOfMeasures();
       this.getCategories();
-      this.getProviders();
+      //this.getProviders();
     }
   }
   getProducts(): void {
@@ -108,7 +107,7 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  getProviders(): void {
+ /* getProviders(): void {
   this.thirdService.getThirdParties(this.entData,0).subscribe(
     (data: any[]) => {
       this.providers = data;
@@ -117,7 +116,7 @@ export class ProductListComponent implements OnInit {
       console.error('Error al obtener la lista de proveedores:', error);
     }
   );
-}
+}*/
   getCategoryName(id: number): string {
     const cat = this.categories.find(category => category.id === id);
     return cat ? cat.name : 'No encontrado';
@@ -127,10 +126,10 @@ export class ProductListComponent implements OnInit {
     return uom ? uom.name : 'No encontrado';
   }
 
-  getProviderName(id: number): string {
+  /*getProviderName(id: number): string {
     const provider = this.providers.find(provider => provider.idNumber === id);
     return provider ? provider.socialReason : 'No encontrado';
-  }
+  }*/
 
   // Método para redirigir a una ruta específica
   redirectTo(route: string): void {
@@ -208,7 +207,7 @@ export class ProductListComponent implements OnInit {
       taxPercentage: product?.taxPercentage,
       creationDate: product?.creationDate,
       unitOfMeasureName: this.getUnitOfMeasureName(product?.unitOfMeasureId ?? 0),
-      supplierName: this.getProviderName(product?.supplierId??0),
+     // supplierName: this.getProviderName(product?.supplierId??0),
       categoryName: this.getCategoryName(product?.categoryId??0),
       enterpriseId: product?.enterpriseId,
       price: product?.price,

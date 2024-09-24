@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/Product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
-import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { CategoryService } from '../../services/category.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
+import { Product } from '../../models/Product';
+import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 
 
 @Component({
@@ -48,7 +48,7 @@ export class ProductEditComponent implements OnInit {
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [null, Validators.required],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       price: [null, Validators.required]
     }, { validators: minMaxValidator });
@@ -124,7 +124,7 @@ export class ProductEditComponent implements OnInit {
         taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
         creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-        supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+       // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         price: [null, [Validators.required, Validators.min(0)]]
       });
@@ -147,7 +147,7 @@ export class ProductEditComponent implements OnInit {
           taxPercentage: product.taxPercentage,
           creationDate: product.creationDate,
           unitOfMeasureId: product.unitOfMeasureId,
-          supplierId: product.supplierId,
+          //supplierId: product.supplierId,
           categoryId: product.categoryId,
           price: product.price
         });
@@ -162,7 +162,7 @@ export class ProductEditComponent implements OnInit {
     if (this.editForm.valid) {
       const formData = this.productForm.value;
       formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-      formData.supplierId = parseInt(formData.supplierId, 10);
+     // formData.supplierId = parseInt(formData.supplierId, 10);
       formData.categoryId = parseInt(formData.categoryId, 10);
 
 
