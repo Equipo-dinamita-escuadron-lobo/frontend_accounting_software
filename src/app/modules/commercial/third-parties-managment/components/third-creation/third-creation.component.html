@@ -48,23 +48,26 @@
             <div class="grid grid-cols-2 gap-6">
               <div *ngIf="button2Checked">
                 <div class="space-y-4">
-
                   <p class="font-semibold">Nombre*</p>
                   <input formControlName="names" type="text"
-                    class="mb-1 w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-
+                    class="mb-1 w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Ingre su Nombre">
+                    
                 </div>
                 <div class="space-y-4">
-                  <p class="font-semibold">Apellidos*</p>
+                  <p class="font-semibold">Apellidos *</p>
                   <input formControlName="lastNames" type="text"
-                    class="w-full mb-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full mb-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Ingrese sus apellidos" />
                 </div>
+              
               </div>
               <div *ngIf="button1Checked" class="space-y-4">
                 <div class="space-y-4 m-1">
                   <p class="font-semibold">Razón Social</p>
                   <input formControlName="socialReason" type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Ingrese Razon Social">
                 </div>
               </div>
 
@@ -108,6 +111,7 @@
                   <select formControlName="typeId"
                     class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     (change)="onTypeIdChange($event)">
+                    <option value="" disabled selected>Seleccione un tipo de identificación</option>
                     <option *ngFor="let typeId of typeIds" [value]="typeId.typeId">{{ typeId.typeIdname }}</option>
                   </select>
                   <div class="text-red-600"
@@ -116,17 +120,20 @@
                   </div>
                 </div>
               </div>
+              
               <div class="space-y-4">
                 <form [formGroup]="createdThirdForm">
                   <div>
                     <p class="font-semibold">Número Identificación *</p>
                     <input formControlName="idNumber" type="number"
-                      class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Ingrese el número de identificación">
                     <div class="text-red-600"
                       *ngIf="createdThirdForm.get('idNumber')?.invalid && (createdThirdForm.get('idNumber')?.dirty || createdThirdForm.get('idNumber')?.touched)">
                       El número de identificación es requerido
                     </div>
-                  </div>
+                </div>
+                
                 
                   <div *ngIf="button1Checked" class="space-y-2">
                     <p class="font-semibold">Dígito Verificación</p>
@@ -146,31 +153,36 @@
             <div class="space-y-2">
               <p class="font-semibold">País *</p>
               <select (change)="onCountryChange($event)" formControlName="country"
-                class=" w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Seleccione un país</option>
                 <option *ngFor="let country of countries" [value]="country | json">{{country.name}}</option>
               </select>
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('country')?.invalid && (createdThirdForm.get('country')?.dirty || createdThirdForm.get('country')?.touched)">
-                El país es Requerido
+                El país es requerido
               </div>
             </div>
+          
 
             <div class="space-y-2">
               <p class="font-semibold">Departamento *</p>
               <select (change)="onStateChange($event)" formControlName="province"
-                class=" w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Seleccione un departamento</option>
                 <option *ngFor="let state of states" [value]="state | json">{{ state.name }}</option>
               </select>
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('province')?.invalid && (createdThirdForm.get('province')?.dirty || createdThirdForm.get('province')?.touched)">
-                El Departamento es Requerido
+                El Departamento es requerido
               </div>
             </div>
+          
 
             <div class="space-y-2">
               <p class="font-semibold">Ciudad *</p>
               <select formControlName="city"
-                class=" w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Seleccione una ciudad</option>
                 <option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</option>
               </select>
               <div class="text-red-600"
@@ -178,6 +190,7 @@
                 La Ciudad es requerida
               </div>
             </div>
+          
           </div>
 
           <div class="space-y-4">
@@ -185,48 +198,51 @@
             <div class="space-y-2">
               <p class="font-semibold">Dirección *</p>
               <input formControlName="address" type="text"
-                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ingrese la dirección">
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('address')?.invalid && (createdThirdForm.get('address')?.dirty || createdThirdForm.get('address')?.touched)">
-                La Dirección es Requerida
+                La Dirección es requerida
               </div>
             </div>
+          
 
             <div class="space-y-2">
               <p class="font-semibold">Correo *</p>
               <input formControlName="email" type="email"
-                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-              
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="ejemplo@dominio.com">
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('email')?.invalid && (createdThirdForm.get('email')?.dirty || createdThirdForm.get('email')?.touched)">
                 <ng-container *ngIf="createdThirdForm.get('email')?.errors?.['required']">
                   El Correo es Requerido
                 </ng-container>
                 <ng-container *ngIf="createdThirdForm.get('email')?.errors?.['email']">
-                  Formato de Correo Incorrecto(ejemplo&#64;dominio.com)
+                  Formato de Correo Incorrecto ( ejemplo&#64;dominio.com)
                 </ng-container>
               </div>
             </div>
-            
-
+          
             <div class="space-y-2">
               <p class="font-semibold">Celular *</p>
               <input formControlName="phoneNumber" type="tel" 
                 pattern="^[0-9]*$" 
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ej: 3123456789" 
                 required>
               
               <div class="text-red-600"
                 *ngIf="createdThirdForm.get('phoneNumber')?.invalid && 
                         (createdThirdForm.get('phoneNumber')?.dirty || createdThirdForm.get('phoneNumber')?.touched)">
                 <ng-container *ngIf="createdThirdForm.get('phoneNumber')?.errors?.['required']">
-                  El Teléfono Celular Es Requerido
+                  El Teléfono Celular es Requerido
                 </ng-container>
                 <ng-container *ngIf="createdThirdForm.get('phoneNumber')?.errors?.['pattern']">
-                  Solo se permiten ingresar numeros en Celular
+                  Solo se permiten ingresar números en el Celular
                 </ng-container>
               </div>
-            </div>
+          </div>
+          
             
             
           </div>

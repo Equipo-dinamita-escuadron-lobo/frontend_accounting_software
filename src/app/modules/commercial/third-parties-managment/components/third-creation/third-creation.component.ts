@@ -85,8 +85,10 @@ export class ThirdCreationComponent implements OnInit {
         this.verificationNumber = null;
       }
     });
-    this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
+    //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
+    this.countries = [ {name: 'Colombia', id: 1}];
 
+    
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[])=>{
         this.thirdTypes = response;
@@ -128,7 +130,7 @@ export class ThirdCreationComponent implements OnInit {
         });
       }
     });
-    
+
   }
 
   //Funcion para generar unj nuevo digito de verificacion
@@ -217,7 +219,7 @@ export class ThirdCreationComponent implements OnInit {
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
         });
-        this.OnReset()
+        this.ngOnInit();
       },
       error: (error) => {
         // Handle any errors here
@@ -242,37 +244,41 @@ export class ThirdCreationComponent implements OnInit {
       this.button2Checked = false;
     } else if (buttonId === 2 && this.button2Checked) {
       this.button1Checked = false;
-    } 
+    }
     this.updateTypeIds();
   }
 
-  //
   updateTypeIds(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
         let filteredTypeIds;
-        // Comprobar si personType es 'Juridica'
+        // Comprobar si button1Checked (Juridica) está activo
         if (this.button1Checked) {
           filteredTypeIds = response.filter(elemento => 
             elemento.typeIdname && elemento.typeIdname.includes('NIT')
           );
         } else {
-          filteredTypeIds = response;
+          filteredTypeIds = response; // Lógica adicional para 'Natural' si es necesario
         }
+  
         // Actualizar el array typeIds
         this.typeIds = filteredTypeIds;
+  
+        // Limpiar el valor del campo typeId
+        this.createdThirdForm.get('typeId')?.setValue(''); // Establecer explícitamente como vacío
       },
       error: (error) => {
         console.log(error);
         Swal.fire({
           title: 'Error!',
-          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          text: 'No se han encontrado Tipos De Identificación Para esta Empresa',
           icon: 'error',
         });
       }
     });
   }
-
+  
+  
   OnReset() {
     this.submitted = false;
     this.button2Checked = false;
