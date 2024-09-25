@@ -57,6 +57,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let third of data | filterList : form.value.stringSearch" class="hover:bg-gray-100">
+              <!--Muestra el tipo de persona "Natural" o "Juridica"-->
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ third.personType }}
+              </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span *ngFor="let type of third.thirdTypes">
                   <span>○ </span>{{type.thirdTypeName}}<br>
@@ -154,10 +158,13 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr *ngFor="let third of data | filterList : form.value.stringSearch" class="hover:bg-gray-100">
+              <!--Muestra el tipo de persona "Natural" o "Juridica"-->
               <td class="px-6 py-4 whitespace-nowrap">
-                <span *ngFor="let type of third.thirdTypes">
-                  <span>○ </span>{{type.thirdTypeName}}<br>
-                </span>
+                {{ third.personType }}
+              </td>
+              <!--Muestra el primer tipo de tercero o solo el unico que tiene-->
+              <td class="px-6 py-4 whitespace-nowrap">
+                {{ third.thirdTypes[0].thirdTypeName}}
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 {{ third.names ? third.names + ' ' + third.lastNames :
@@ -168,6 +175,18 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 {{ third.idNumber }}
+              </td>
+              <!--Muestra el numero de verificacion, si tiene NIT o un no aplica si tiene
+              otro tipo de identificacion-->
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div [ngSwitch]="third.verificationNumber">
+                  <span *ngSwitchCase="null">
+                    NO APLICA
+                  </span>
+                  <span *ngSwitchDefault>
+                    {{ third.verificationNumber }}
+                  </span>
+                </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 {{ third.email }}
