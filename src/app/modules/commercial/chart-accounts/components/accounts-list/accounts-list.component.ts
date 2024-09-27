@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { AccountExportComponent } from '../account-export/account-export.component';
 
 /**
  * Component for managing and displaying chart of accounts.
@@ -17,6 +18,7 @@ import { Observable, forkJoin, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-accounts-list',
   templateUrl: './accounts-list.component.html',
+  providers: [AccountExportComponent] , // Inyectar el componente aquí
   styleUrl: './accounts-list.component.css'
 })
 
@@ -89,6 +91,7 @@ export class AccountsListComponent implements OnInit {
   placeClasificationType: string = '';
 
   constructor(
+    private accountExportComponent: AccountExportComponent,
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
     private dialog: MatDialog) {
@@ -100,6 +103,9 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
+  exportAccountsToExcel(): void {
+    this.accountExportComponent.getAccounts();
+  }
   /**
    * Shows the form for adding a new account class.
    */

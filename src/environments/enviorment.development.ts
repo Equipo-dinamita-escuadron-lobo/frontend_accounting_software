@@ -8,6 +8,6 @@ export const environment = {
   URL: 'http://contables.unicauca.edu.co/',
 
   //Cambiar la URL y el microservicio que se va a consumir en modo local
-  API_LOCAL_URL: 'http://localhost:8080/api/',
-  microservice: 'enterprise' // accountCatalogue, enterprise
+  API_LOCAL_URL: '',
+  microservice: '' // accountCatalogue, enterprise
 };

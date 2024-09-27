@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AccountImportComponent } from './components/account-import/account-import.component';
 import { AccountFormComponent } from './components/account-form/account-form.component';
+import { AccountExportComponent } from './components/account-export/account-export.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { AccountFormComponent } from './components/account-form/account-form.com
     AccountImportComponent,
     FilterPipe,
     AccountFormComponent,
+    AccountExportComponent,
   ],
   imports: [
     CommonModule,

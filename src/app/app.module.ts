@@ -12,7 +12,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
-
 @NgModule({
   declarations: [
     AppComponent,

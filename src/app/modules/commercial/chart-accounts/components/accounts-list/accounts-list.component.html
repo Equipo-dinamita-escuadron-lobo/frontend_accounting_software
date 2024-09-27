@@ -1,18 +1,26 @@
 <div class="flex w-full h-full font-projectFont">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
+        <app-account-export></app-account-export>
+
+
         <div class="grid sm:grid-cols-2 sm:justify-between">
             <div class="items-center">
                 <h1 class="text-3xl text-blue-950">Catálogo de cuentas</h1>
                 <p class="font-normal text-gray-600">Guía detallada del manejo financiero y transacciones económicas
                 </p>
             </div>
+
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
+
                 <button type="button" (click)="showFormAddNewClass()"
                     class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
                     Crear
                 </button>
                 <div class="flex">
-
+                    <button type="button" (click)="exportAccountsToExcel()"
+                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+                        Exportar
+                    </button>
                     <label for="fileInput"
                         class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full  text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
                         <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
