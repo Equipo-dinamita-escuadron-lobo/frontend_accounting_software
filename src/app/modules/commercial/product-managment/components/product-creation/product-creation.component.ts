@@ -46,7 +46,6 @@ export class ProductCreationComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       id: [''], // 'id' es un string
       itemType: ['', [Validators.required]], // 'itemType' es un string
-      code: ['', [Validators.required]], // 'code' es un string
       description: ['', [Validators.required]], // 'description' es un string
       minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
       maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
@@ -116,7 +115,6 @@ getUnitOfMeasures(): void {
     this.productForm = this.formBuilder.group({
       id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
       itemType: ['', [Validators.required]],
-      code: ['', [Validators.required]],
       description: ['', [Validators.required]],
       minQuantity: [null, [Validators.required, Validators.min(0)]],
       maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -134,8 +132,7 @@ getUnitOfMeasures(): void {
     const formValue = this.productForm.value;
 
     // Verifica que los campos de tipo 'string' no estén vacíos
-    const areTextFieldsValid =formValue.itemType.trim() !== '' &&
-                              formValue.code.trim() !== '' &&
+    const areTextFieldsValid =formValue.itemType.trim() !== '' && 
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida

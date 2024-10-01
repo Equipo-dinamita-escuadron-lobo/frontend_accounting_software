@@ -38,21 +38,6 @@
                 </div>
               </div>
               <div>
-                <label for="codigo" class="block text-sm font-medium text-gray-700">Código:</label>
-                <input
-                  type="text"
-                  formControlName="code"
-                  id="codigo"
-                  placeholder="Ej: BNN"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="editForm.get('code')?.touched && editForm.get('code')?.invalid" class="text-red-500">
-                  <div *ngIf="editForm.get('code')?.errors?.['required']">
-                    El campo Código es requerido.
-                  </div>
-                </div>
-              </div>
-              <div>
                 <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción:</label>
                 <input
                   type="text"

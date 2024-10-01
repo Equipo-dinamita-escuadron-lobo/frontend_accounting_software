@@ -41,7 +41,6 @@ export class ProductEditComponent implements OnInit {
   ) {
     this.editForm = this.formBuilder.group({
       itemType: ['', Validators.required],
-      code: ['', Validators.required],
       description: ['', Validators.required],
       minQuantity: [null, [Validators.required, Validators.min(0)]],
       maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -117,7 +116,6 @@ export class ProductEditComponent implements OnInit {
       this.productForm = this.formBuilder.group({
         id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
         itemType: ['', [Validators.required]],
-        code: ['', [Validators.required]],
         description: ['', [Validators.required]],
         minQuantity: [null, [Validators.required, Validators.min(0)]],
         maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -140,7 +138,6 @@ export class ProductEditComponent implements OnInit {
         // Puedes asignar los valores del producto al formulario de edición aquí
         this.editForm.patchValue({
           itemType: product.itemType,
-          code: product.code,
           description: product.description,
           minQuantity: product.minQuantity,
           maxQuantity: product.maxQuantity,
