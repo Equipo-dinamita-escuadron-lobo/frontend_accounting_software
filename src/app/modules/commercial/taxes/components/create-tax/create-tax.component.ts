@@ -111,20 +111,9 @@ export class CreateTaxComponent {
         depositAccount: this.getAccountCode(this.addForm.value.depositAccount),  
         refundAccount: this.getAccountCode(this.addForm.value.refundAccount)      
       };
-
-      console.log('Created Tax:', createdTax);
-
-      this.taxService.createTax(createdTax).subscribe(
+      this.taxService.getTaxById(createdTax.code, createdTax.idEnterprise).subscribe(
         (response: Tax) => {
-          Swal.fire({
-            title: '¡Impuesto agregado!',
-            text: 'Se agregó el impuesto exitosamente!',
-            icon: 'success',
-          });
-          this.router.navigate(['/general/operations/taxes']);
-        },
-        (error) => {
-          if (error.error === "El impuesto con ese código ya fue creado.") {
+          if (response) {
             Swal.fire({
               title: 'Error',
               text: 'Ya existe un impuesto con ese código.',
@@ -132,12 +121,25 @@ export class CreateTaxComponent {
             });
             return;
           }
-          //console.error('Error al crear el impuesto:', error);
-          Swal.fire({
-            title: 'Error',
-            text: 'Ha ocurrido un error al agregar el impuesto.',
-            icon: 'error',
-          });
+          else {
+            this.taxService.createTax(createdTax).subscribe(
+              (response: Tax) => {
+                Swal.fire({
+                  title: '¡Impuesto agregado!',
+                  text: 'Se agregó el impuesto exitosamente!',
+                  icon: 'success',
+                });
+                this.router.navigate(['/general/operations/taxes']);
+              },
+              (error) => {
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Ha ocurrido un error al agregar el impuesto.',
+                  icon: 'error',
+                });
+              }
+            )
+          }
         }
       );
     } else {

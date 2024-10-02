@@ -113,7 +113,7 @@ export class ListTaxComponent implements OnInit {
       if (result.isConfirmed) {
         this.taxService.deleteTax(taxId).subscribe(
           () => {
-            console.log('Impuesto eliminado con éxito');
+            //console.log('Impuesto eliminado con éxito');
             this.getTaxes(); // Actualizar la lista de impuestos
             Swal.fire({
               title: 'Eliminado con éxito',
@@ -123,7 +123,7 @@ export class ListTaxComponent implements OnInit {
             });
           },
           (error) => {
-            console.error('Error al eliminar el impuesto:', error);
+            //console.error('Error al eliminar el impuesto:', error);
             Swal.fire({
               title: 'Error',
               text: 'No se pudo eliminar el impuesto.',
