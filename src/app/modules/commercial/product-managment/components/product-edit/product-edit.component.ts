@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Product } from '../../models/Product';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
@@ -35,13 +34,11 @@ export class ProductEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
     private router: Router
 
   ) {
     this.editForm = this.formBuilder.group({
       itemType: ['', Validators.required],
-      code: ['', Validators.required],
       description: ['', Validators.required],
       minQuantity: [null, [Validators.required, Validators.min(0)]],
       maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -63,7 +60,6 @@ export class ProductEditComponent implements OnInit {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if(this.entData){
-    this.getThirdParties();
     this.getUnitOfMeasures();
     this.getCategories();
     }
@@ -83,22 +79,6 @@ export class ProductEditComponent implements OnInit {
       );
     }
 
-    // Método para obtener la lista de proveedores
-  getThirdParties(): void {
-
-    this.thirdService.getThirdParties(this.entData,0).subscribe(
-      (thirdParties: any[]) => {
-        // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
-        this.thirdParties = thirdParties;
-        // Llamar a initForm() después de obtener la lista de proveedores
-        this.initForm();
-      },
-      error => {
-        console.error('Error al obtener la lista de proveedores:', error);
-      }
-    );
-  }
-
   // Método para obtener la lista de unidades de medida
   getUnitOfMeasures(): void {
     this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
@@ -117,7 +97,6 @@ export class ProductEditComponent implements OnInit {
       this.productForm = this.formBuilder.group({
         id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
         itemType: ['', [Validators.required]],
-        code: ['', [Validators.required]],
         description: ['', [Validators.required]],
         minQuantity: [null, [Validators.required, Validators.min(0)]],
         maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -140,7 +119,6 @@ export class ProductEditComponent implements OnInit {
         // Puedes asignar los valores del producto al formulario de edición aquí
         this.editForm.patchValue({
           itemType: product.itemType,
-          code: product.code,
           description: product.description,
           minQuantity: product.minQuantity,
           maxQuantity: product.maxQuantity,

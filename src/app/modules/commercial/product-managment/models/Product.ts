@@ -2,7 +2,6 @@
 export interface Product {
     id :string;
     itemType: string;
-    code: string;
     description: string;
     minQuantity: number;
     maxQuantity: number;
@@ -19,7 +18,6 @@ export interface Product {
   export interface ProductList {
     id :string;
     itemType: string;
-    code: string;
     description: string;
     minQuantity: number;
     maxQuantity: number;

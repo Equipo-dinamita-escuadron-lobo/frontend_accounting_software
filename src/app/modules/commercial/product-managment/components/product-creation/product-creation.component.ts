@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa 
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
@@ -30,7 +29,6 @@ export class ProductCreationComponent implements OnInit {
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
     private router: Router
   ) {}
 
@@ -46,7 +44,6 @@ export class ProductCreationComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       id: [''], // 'id' es un string
       itemType: ['', [Validators.required]], // 'itemType' es un string
-      code: ['', [Validators.required]], // 'code' es un string
       description: ['', [Validators.required]], // 'description' es un string
       minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
       maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
@@ -60,8 +57,7 @@ export class ProductCreationComponent implements OnInit {
     ,{ validators: minMaxValidator });
     if (this.entData) {
 
-    this.initForm();
-  this.getThirdParties();
+  this.initForm();
   this.getUnitOfMeasures();
   this.getCategories();
     }
@@ -82,22 +78,6 @@ export class ProductCreationComponent implements OnInit {
     );
   }
 
-  // Método para obtener la lista de proveedores
-getThirdParties(): void {
-
-  this.thirdService.getThirdParties(this.entData,0).subscribe(
-    (thirdParties: any[]) => {
-      // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
-      this.thirdParties = thirdParties;
-      // Llamar a initForm() después de obtener la lista de proveedores
-      this.initForm();
-    },
-    error => {
-      console.error('Error al obtener la lista de proveedores:', error);
-    }
-  );
-}
-
 // Método para obtener la lista de unidades de medida
 getUnitOfMeasures(): void {
   this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
@@ -116,7 +96,6 @@ getUnitOfMeasures(): void {
     this.productForm = this.formBuilder.group({
       id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
       itemType: ['', [Validators.required]],
-      code: ['', [Validators.required]],
       description: ['', [Validators.required]],
       minQuantity: [null, [Validators.required, Validators.min(0)]],
       maxQuantity: [null, [Validators.required, Validators.min(0)]],
@@ -135,7 +114,6 @@ getUnitOfMeasures(): void {
 
     // Verifica que los campos de tipo 'string' no estén vacíos
     const areTextFieldsValid =formValue.itemType.trim() !== '' &&
-                              formValue.code.trim() !== '' &&
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida
@@ -166,7 +144,6 @@ getUnitOfMeasures(): void {
     const formData = this.productForm.value;
 
     // Convertir supplierId a número si es una cadena
-    formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
     formData.price = parseInt(formData.price, 10);
