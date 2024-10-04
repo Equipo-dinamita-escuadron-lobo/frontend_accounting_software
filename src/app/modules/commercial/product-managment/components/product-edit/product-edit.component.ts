@@ -49,7 +49,8 @@ export class ProductEditComponent implements OnInit {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, Validators.required]
+      price: [null, Validators.required],
+      reference: ['']
     }, { validators: minMaxValidator });
   }
 
@@ -124,7 +125,8 @@ export class ProductEditComponent implements OnInit {
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
        // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-        price: [null, [Validators.required, Validators.min(0)]]
+        price: [null, [Validators.required, Validators.min(0)]],
+        reference: ['']
       });
     }
 
@@ -146,7 +148,8 @@ export class ProductEditComponent implements OnInit {
           unitOfMeasureId: product.unitOfMeasureId,
           //supplierId: product.supplierId,
           categoryId: product.categoryId,
-          price: product.price
+          price: product.price,
+          reference: product.reference
         });
       },
       error => {

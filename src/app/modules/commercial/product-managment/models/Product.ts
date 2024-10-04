@@ -14,6 +14,7 @@ export interface Product {
     enterpriseId: string;
     price: number;
     state: string;
+    reference: string;
   }
   
   export interface ProductList {
