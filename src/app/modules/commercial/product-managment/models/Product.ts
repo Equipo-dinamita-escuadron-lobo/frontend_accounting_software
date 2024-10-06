@@ -1,6 +1,7 @@
 
 export interface Product {
     id :string;
+    code: string;
     itemType: string;
     description: string;
     minQuantity: number;
