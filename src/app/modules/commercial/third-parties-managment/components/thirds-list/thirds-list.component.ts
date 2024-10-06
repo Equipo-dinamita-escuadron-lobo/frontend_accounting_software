@@ -75,6 +75,7 @@ export class ThirdsListComponent{
       this.thirdService.getThirdParties(this.entData,0).subscribe({
         next: (response: Third[])=>{
           this.data = response;
+          console.log(response);
         },
         error: (error) => {
           console.log(error)
