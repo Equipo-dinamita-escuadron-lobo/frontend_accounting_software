@@ -63,31 +63,31 @@ export class CategoryService {
 
   // Método para obtener todas las categorías
   getCategories(enterpriseId:string): Observable<Category[]> {
-    const url = `${environment.API_PRODUCTS_URL}categories/findAll/${enterpriseId}`;
+    const url = `${environment.API_URL}categories/findAll/${enterpriseId}`;
     return this.http.get<Category[]>(url);
   }
 
   // Método para obtener una categoría por su ID
   getCategoryById(id: string): Observable<Category> {
-    const url = `${environment.API_PRODUCTS_URL}categories/findById/${id}`;
+    const url = `${environment.API_URL}categories/findById/${id}`;
     return this.http.get<Category>(url);
   }
 
   // Método para crear una nueva categoría
   createCategory(category: Category): Observable<Category> {
-    const url = `${environment.API_PRODUCTS_URL}categories/create`;
+    const url = `${environment.API_URL}categories/create`;
     return this.http.post<Category>(url, category);
   }
 
   // Método para actualizar una categoría existente
   updateCategory(category: Category): Observable<Category> {
-    const url = `${environment.API_PRODUCTS_URL}categories/update/${category.id}`;
+    const url = `${environment.API_URL}categories/update/${category.id}`;
     return this.http.put<Category>(url, category);
   }
 
   // Método para eliminar una categoría
   deleteCategory(id: string): Observable<Category> {
-    const url = `${environment.API_PRODUCTS_URL}categories/delete/${id}`;
+    const url = `${environment.API_URL}categories/delete/${id}`;
     return this.http.delete<Category>(url);
   }
 }

@@ -16,7 +16,8 @@ export class ProductDetailsModalComponent {
     itemType: '',
     code: '',
     description: '',
-    quantity: 0,
+    minQuantity: 0,
+    maxQuantity: 0,
     taxPercentage: 0,
     creationDate: new Date(),
 
@@ -26,7 +27,7 @@ export class ProductDetailsModalComponent {
 
     enterpriseId: '',
 
-    coste: 0,
+    price: 0,
     state: '',
   };
 

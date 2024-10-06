@@ -49,13 +49,14 @@ export class ProductCreationComponent implements OnInit {
       itemType: ['', [Validators.required]], // 'itemType' es un string
       code: ['', [Validators.required]], // 'code' es un string
       description: ['', [Validators.required]], // 'description' es un string
-      quantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
+      minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
+      maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      coste: [null, [Validators.required, Validators.min(0)]] // 'coste' es un número
+      price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
     }
     ,{ validators: minMaxValidator });
     if (this.entData) {
@@ -118,13 +119,14 @@ getUnitOfMeasures(): void {
       itemType: ['', [Validators.required]],
       code: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      quantity: [null, [Validators.required, Validators.min(0)]],
+      minQuantity: [null, [Validators.required, Validators.min(0)]],
+      maxQuantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      coste: [null, [Validators.required, Validators.min(0)]]
+      price: [null, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -138,18 +140,18 @@ getUnitOfMeasures(): void {
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida
-    const areNumberFieldsValid = formValue.quantity !== null && // Revisar que no sea null
-                                formValue.quantity >= 0 &&
+    const areNumberFieldsValid = formValue.minQuantity !== null && // Revisar que no sea null
+                                formValue.maxQuantity !== null && // Revisar que no sea null
+                                formValue.minQuantity >= 0 &&
+                                formValue.maxQuantity >= 0 &&
                                 formValue.taxPercentage !== null && // Revisar que no sea null
                                 formValue.taxPercentage >= 0 &&
                                 formValue.taxPercentage <= 100 &&
-                                formValue.coste !== null && // Revisar que no sea null
-                                formValue.coste >= 0;
+                                formValue.price !== null && // Revisar que no sea null
+                                formValue.price >= 0;
 
     // Verifica que la fecha de creación sea válida
     const isDateValid = formValue.creationDate && new Date(formValue.creationDate).toString() !== 'Invalid Date';
-
-    //  MODIFICAR O ELIMINAR PROCEDIMIENTO ????????????????????????????????????????????????????
 
     // Verifica que minQuantity sea menor que maxQuantity
     const isMinMaxQuantityValid = formValue.minQuantity <= formValue.maxQuantity;
@@ -168,7 +170,7 @@ getUnitOfMeasures(): void {
     formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.coste = parseInt(formData.coste, 10);
+    formData.price = parseInt(formData.price, 10);
 
     formData.enterpriseId = this.entData;
 
@@ -225,16 +227,16 @@ getUnitOfMeasures(): void {
 
   //Método para formatear el precio
   formatPrice(event: any) {
-    let costeInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedCoste = '';
-    if (costeInput !== '') {
+    let priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedPrice = '';
+    if (priceInput !== '') {
       // Convertir el precio a número
-      const coste = parseInt(costeInput, 10);
+      const price = parseInt(priceInput, 10);
       // Formatear el precio con separador de miles y decimales
-      formattedCoste = this.formatNumberWithCommas(coste);
+      formattedPrice = this.formatNumberWithCommas(price);
     }
     // Establecer el valor formateado en el campo de precio del formulario
-    this.productForm.get('price')?.setValue(formattedCoste);
+    this.productForm.get('price')?.setValue(formattedPrice);
   }
 
   // Función para formatear un número con separadores de miles
@@ -252,9 +254,9 @@ getUnitOfMeasures(): void {
 
   // Funcion para validar que el maximo y minimo tengan valores coherentes
   function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-    const minmax = group.controls['minQuantity'].value;
-    //const max = group.controls['maxQuantity'].value;
-    return minmax !== null ? null : { 'minMaxInvalid': true };
+    const min = group.controls['minQuantity'].value;
+    const max = group.controls['maxQuantity'].value;
+    return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
   }
 
 

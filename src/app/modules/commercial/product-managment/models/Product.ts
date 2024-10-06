@@ -7,14 +7,15 @@ export interface Product {
     itemType: string;
     code: string;
     description: string;
-    quantity: number;
+    minQuantity: number;
+    maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
     unitOfMeasureId: number;
     supplierId:  number;
     categoryId: number;
     enterpriseId: string;
-    coste: number;
+    price: number;
     state: string;
   }
   
@@ -23,7 +24,8 @@ export interface Product {
     itemType: string;
     code: string;
     description: string;
-    quantity: number;
+    minQuantity: number;
+    maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
 
@@ -33,6 +35,6 @@ export interface Product {
 
     enterpriseId: string;
 
-    coste: number;
+    price: number;
     state: string;
   }
