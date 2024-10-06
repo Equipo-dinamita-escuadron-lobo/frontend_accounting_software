@@ -37,7 +37,6 @@ export class TaxService {
 
    getTaxes(enterpriseId: string): Observable<Tax[]> {
      const url = this.apiURL + 'taxes/' +enterpriseId;
-     //const url = `${this.apiURL}/taxes/${enterpriseId}`;
      return this.http.get<Tax[]>(url);
    }
 
@@ -49,19 +48,16 @@ export class TaxService {
   updateTax(tax: Tax): Observable<Tax> {
     const id = tax.id;
     const url = this.apiURL + id;
-    //const url = `${this.apiURL}${id}`;
     return this.http.put<Tax>(url, tax);
   }
 
   getTaxById(code: string, enterpriseId: string): Observable<Tax> {
     const url = this.apiURL + code + '/' + enterpriseId;
-    //const url = `${this.apiURL}${code}/${enterpriseId}/`;
     return this.http.get<Tax>(url);
   }
 
   deleteTax(id: number): Observable<Tax> {
     const url = this.apiURL + id;
-    //const url = `${this.apiURL}${id}`;
     return this.http.delete<Tax>(url);
   }
 

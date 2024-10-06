@@ -45,14 +45,14 @@
                 </div>
               </div>
               <div>
-                <label for="depositAccountId" class="block text-sm font-medium text-gray-700">Cuenta</label>
-                <!-- <select formControlName="depositAccountId" id="depositAccountId"
+                <label for="depositAccount" class="block text-sm font-medium text-gray-700">Cuenta</label>
+                <!-- <select formControlName="depositAccount" id="depositAccount"
                         class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="" disabled selected>Selecciona una cuenta</option>
                     <option *ngFor="let account of depositAccounts" [value]="account.id">{{ account.id }}</option>
                 </select> -->
                 <ng-select 
-                formControlName="depositAccountId" id="depositAccountId"
+                formControlName="depositAccount" id="depositAccount"
                   [items]="depositAccounts || []"
                   bindLabel="description"
                   bindValue="id"
@@ -65,16 +65,16 @@
                     <div class="p-2 hover:bg-gray-100">{{item.code}}-{{ item.description }}</div>
                   </ng-template>
                 </ng-select>
-                <div *ngIf="editForm.get('depositAccountId')?.touched && editForm.get('depositAccountId')?.invalid"
+                <div *ngIf="editForm.get('depositAccount')?.touched && editForm.get('depositAccount')?.invalid"
                      class="text-red-500">
-                    <div *ngIf="editForm.get('depositAccountId')?.errors?.['required']">El campo Cuenta es requerido.</div>
+                    <div *ngIf="editForm.get('depositAccount')?.errors?.['required']">El campo Cuenta es requerido.</div>
                 </div>
             </div>
 
             <div>
-              <label for="refundAccountId" class="block text-sm font-medium text-gray-700">Cuenta Devolución:</label>
+              <label for="refundAccount" class="block text-sm font-medium text-gray-700">Cuenta Devolución:</label>
               <ng-select 
-              formControlName="refundAccountId" id="refundAccountId"
+              formControlName="refundAccount" id="refundAccount"
                 [items]="refundAccounts || []"
                 bindLabel="description"
                 bindValue="id"
@@ -87,9 +87,9 @@
                   <div class="p-2 hover:bg-gray-100">{{ item.code }} - {{ item.description }}</div>
                 </ng-template>
               </ng-select>
-              <div *ngIf="editForm.get('refundAccountId')?.touched && editForm.get('refundAccountId')?.invalid"
+              <div *ngIf="editForm.get('refundAccount')?.touched && editForm.get('refundAccount')?.invalid"
                    class="text-red-500">
-                  <div *ngIf="editForm.get('refundAccountId')?.errors?.['required']">El campo Cuenta Devolución es requerido.</div>
+                  <div *ngIf="editForm.get('refundAccount')?.errors?.['required']">El campo Cuenta Devolución es requerido.</div>
               </div>
           </div>
           
