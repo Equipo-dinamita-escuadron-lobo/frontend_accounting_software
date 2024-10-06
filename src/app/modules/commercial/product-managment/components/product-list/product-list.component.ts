@@ -32,9 +32,8 @@ export class ProductListComponent implements OnInit {
     { title: 'Codigo', data: 'code' },
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio', data: 'price' },
-    { title: 'Min', data: 'minQuantity' },
-    //{title:'max',data:'maxQuantity'},
+    { title: 'Costo', data: 'coste' },
+    { title: 'Cantidad', data: 'quantity' },
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},
     { title: 'Unidad', data: 'unitOfMeasure' },
@@ -203,15 +202,14 @@ export class ProductListComponent implements OnInit {
       itemType: product?.itemType,
       code: product?.code,
       description: product?.description,
-      minQuantity: product?.minQuantity,
-      maxQuantity: product?.maxQuantity,
+      quantity: product?.quantity,
       taxPercentage: product?.taxPercentage,
       creationDate: product?.creationDate,
       unitOfMeasureName: this.getUnitOfMeasureName(product?.unitOfMeasureId ?? 0),
       supplierName: this.getProviderName(product?.supplierId??0),
       categoryName: this.getCategoryName(product?.categoryId??0),
       enterpriseId: product?.enterpriseId,
-      price: product?.price,
+      coste: product?.coste,
       state: product?.state,
     };
 
@@ -231,9 +229,9 @@ export class ProductListComponent implements OnInit {
     _popUp.afterClosed().subscribe();
   }
 
-  //Método para formatear el precio
-  formatPrice(price: number): string {
-    // Formatear el precio con separador de miles
-    return price.toLocaleString('es-ES');
+  //Método para formatear el costo
+  formatPrice(coste: number): string {
+    // Formatear el costo con separador de miles
+    return coste.toLocaleString('es-ES');
   }
 }

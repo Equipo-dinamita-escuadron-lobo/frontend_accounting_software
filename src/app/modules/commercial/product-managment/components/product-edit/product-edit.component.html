@@ -184,7 +184,7 @@
       
 
               <div>
-                <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
+                <label for="price" class="block text-sm font-medium text-gray-700">Costo:</label>
                 <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-700">
                   $
@@ -202,7 +202,7 @@
               </div>
                 <div *ngIf="editForm.get('price')?.touched && editForm.get('price')?.invalid" class="text-red-500">
                   <div *ngIf="editForm.get('price')?.errors?.['required']">
-                    El campo Precio es requerido.
+                    El campo Costo es requerido.
                   </div>
                 </div>
               </div>

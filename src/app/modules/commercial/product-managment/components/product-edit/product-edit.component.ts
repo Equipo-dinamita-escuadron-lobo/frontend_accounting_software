@@ -43,14 +43,13 @@ export class ProductEditComponent implements OnInit {
       itemType: ['', Validators.required],
       code: ['', Validators.required],
       description: ['', Validators.required],
-      minQuantity: [null, [Validators.required, Validators.min(0)]],
-      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [null, Validators.required],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, Validators.required]
+      coste: [null, Validators.required]
     }, { validators: minMaxValidator });
   }
 
@@ -119,14 +118,13 @@ export class ProductEditComponent implements OnInit {
         itemType: ['', [Validators.required]],
         code: ['', [Validators.required]],
         description: ['', [Validators.required]],
-        minQuantity: [null, [Validators.required, Validators.min(0)]],
-        maxQuantity: [null, [Validators.required, Validators.min(0)]],
+        quantity: [null, [Validators.required, Validators.min(0)]],
         taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
         creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
         supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-        price: [null, [Validators.required, Validators.min(0)]]
+        coste: [null, [Validators.required, Validators.min(0)]]
       });
     }
 
@@ -142,14 +140,13 @@ export class ProductEditComponent implements OnInit {
           itemType: product.itemType,
           code: product.code,
           description: product.description,
-          minQuantity: product.minQuantity,
-          maxQuantity: product.maxQuantity,
+          quantity: product.quantity,
           taxPercentage: product.taxPercentage,
           creationDate: product.creationDate,
           unitOfMeasureId: product.unitOfMeasureId,
           supplierId: product.supplierId,
           categoryId: product.categoryId,
-          price: product.price
+          coste: product.coste
         });
       },
       error => {
@@ -206,15 +203,15 @@ export class ProductEditComponent implements OnInit {
 
   //Metodo para formatear el precio
   formatPrice(event: any) {
-    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedPrice = '';
-    if (priceInput !== '') {
-      // Convertir el precio a número
-      const price = parseInt(priceInput, 10);
-      // Formatear el precio con separador de miles y decimales
-      formattedPrice = this.formatNumberWithCommas(price);
+    const costeInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedCoste = '';
+    if (costeInput !== '') {
+      // Convertir el costo a número
+      const coste = parseInt(costeInput, 10);
+      // Formatear el costo con separador de miles y decimales
+      formattedCoste = this.formatNumberWithCommas(coste);
     }
-    this.editForm.get('price')?.setValue(formattedPrice);
+    this.editForm.get('coste')?.setValue(formattedCoste);
   }
 
   // Función para formatear un número con separadores de miles
@@ -232,7 +229,6 @@ export class ProductEditComponent implements OnInit {
 
 // Función para validar que el maximo y minimo tengan valores coherentes
 function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-  const min = group.controls['minQuantity'].value;
-  const max = group.controls['maxQuantity'].value;
-  return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
+  const minmax = group.controls['Quantity'].value;
+  return minmax !== null ? null : { 'minMaxInvalid': true };
 }
