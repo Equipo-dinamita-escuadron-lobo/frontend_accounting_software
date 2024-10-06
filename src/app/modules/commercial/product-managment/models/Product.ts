@@ -1,6 +1,3 @@
-import { Third } from "../../third-parties-managment/models/third-model";
-import { Category } from "./Category";
-import { UnitOfMeasure } from "./UnitOfMeasure";
 
 export interface Product {
     id :string;
@@ -12,11 +9,12 @@ export interface Product {
     taxPercentage: number;
     creationDate: Date;
     unitOfMeasureId: number;
-    supplierId:  number;
+   // supplierId:  number;
     categoryId: number;
     enterpriseId: string;
     price: number;
     state: string;
+    reference: string;
   }
   
   export interface ProductList {
@@ -30,7 +28,7 @@ export interface Product {
     creationDate: Date;
 
     unitOfMeasureName: string;
-    supplierName:  string;
+    //supplierName:  string;
     categoryName: string;
 
     enterpriseId: string;

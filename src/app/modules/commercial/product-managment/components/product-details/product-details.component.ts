@@ -1,7 +1,7 @@
-import { Component, Inject, defineInjectable } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Product, ProductList } from '../../models/Product';
+import { ProductList } from '../../models/Product';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class ProductDetailsModalComponent {
     creationDate: new Date(),
 
     unitOfMeasureName: '',
-    supplierName: '',
+    //supplierName: '',
     categoryName: '',
 
     enterpriseId: '',
