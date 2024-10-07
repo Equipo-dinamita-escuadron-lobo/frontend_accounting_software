@@ -22,7 +22,7 @@ export class AccountExportComponent {
     ];
 
     // Recorrer todas las cuentas y sus sub-cuentas
-    this.listAccounts.forEach(account => {
+      this.listAccounts.forEach(account => {
       this.addAccountToExcel(data, account);
     });
     
@@ -101,22 +101,28 @@ export class AccountExportComponent {
   }
 
   // Obtener las cuentas y descargar el archivo Excel cuando se haga clic en el botón
-  getAccounts(): void {
-    this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
-      next: (accounts) => {
-        // Validar que se obtuvieron cuentas válidas
-        if (accounts && accounts.length > 0) {
-          this.listAccounts = accounts.filter(account => account !== null);
-          this.downloadExcel(); // Descargar el Excel automáticamente
-        } else {
-          console.error('No se encontraron cuentas válidas.');
+  getAccounts(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
+        next: (accounts) => {
+          // Validar que se obtuvieron cuentas válidas
+          if (accounts && accounts.length > 0) {
+            this.listAccounts = accounts.filter(account => account !== null);
+            this.downloadExcel(); // Descargar el Excel automáticamente
+            resolve(true); // Retorna true si se descargó el Excel
+          } else {
+            console.error('No se encontraron cuentas válidas.');
+            resolve(false); // Retorna false si no se encontraron cuentas válidas
+          }
+        },
+        error: (error) => {
+          console.error('Error al obtener cuentas', error);
+          resolve(false); // Retorna false en caso de error
         }
-      },
-      error: (error) => {
-        console.error('Error al obtener cuentas', error);
-      }
+      });
     });
   }
+  
 }
 
 // Definir el tipo de archivo y la extensión

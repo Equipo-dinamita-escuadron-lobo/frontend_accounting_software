@@ -104,7 +104,21 @@ export class AccountsListComponent implements OnInit {
   }
 
   exportAccountsToExcel(): void {
-    this.accountExportComponent.getAccounts();
+    this.accountExportComponent.getAccounts().then((success) => {
+    if(success){
+      Swal.fire({
+        title: 'Éxito!',
+        text: 'Se ha generado el archivo correctamente.',
+        icon: 'success'
+      });
+    }else{
+      Swal.fire({
+        title: 'Error!',
+        text: 'No se encontraron cuentas para exportar.',
+        icon: 'error',
+      });
+    }
+    });
   }
   /**
    * Shows the form for adding a new account class.
