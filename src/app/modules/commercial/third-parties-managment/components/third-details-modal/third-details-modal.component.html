@@ -19,7 +19,11 @@
           
           <div class="flex-1">
             <p class="text-md font-medium text-gray-800">Tipo de ID: {{ thirdData.typeId.typeId}}</p>
-            <p class="text-md font-medium text-gray-800">Tipos de Tercero: {{ thirdData.thirdTypes[0].thirdTypeName}}</p>
+            <p class="text-md font-medium text-gray-800">
+              Tipos de Tercero: {{ getThirdTypesNames() }}
+            </p>
+            
+            
             <p class="text-md font-medium text-gray-800">Tipo de Persona: {{ thirdData.personType }}</p>
           </div>
         </div>
