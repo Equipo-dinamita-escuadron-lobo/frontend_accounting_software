@@ -12,6 +12,7 @@ import { ePersonType } from '../../models/ePersonType';
 })
 export class ThirdDetailsModalComponent {
   inputData: any;
+
   thirdData: Third = {
     thId: 0,
     entId: '',
@@ -59,5 +60,13 @@ export class ThirdDetailsModalComponent {
   // Método para concatenar los nombres de los tipos de terceros
   getThirdTypesNames(): string {
     return this.thirdData.thirdTypes.map(type => type.thirdTypeName).join(', ');
+  }
+
+  // Método para verificar y retornar "NO APLICA" si los campos están vacíos
+  getGender(): string {
+    return this.thirdData.gender ? this.thirdData.gender : 'NO APLICA';
+  }
+  getVerificationNumber(): string {
+    return this.thirdData.verificationNumber ? this.thirdData.verificationNumber.toString() : 'NO APLICA';
   }
 }
