@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Enterprise } from '../../models/Enterprise';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-enterprise-list',
@@ -82,8 +83,8 @@ export class EnterpriseListComponent {
       text: 'Tu empresa pasará al estado activo!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: 'rgb(23 37 84)',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: 'Si, activar',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
@@ -94,7 +95,7 @@ export class EnterpriseListComponent {
               title: 'Empresa activada!',
               text: 'Tu empresa esta activa',
               icon: 'success',
-              confirmButtonColor: 'rgb(23 37 84)',
+              confirmButtonColor: buttonColors.confirmationColor,
             });
             this.cdRef.detectChanges();
             this.buttonArchive.nativeElement.click();

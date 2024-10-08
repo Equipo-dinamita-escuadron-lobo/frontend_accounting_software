@@ -4,6 +4,7 @@ import { Enterprise, EnterpriseDetails } from '../../models/Enterprise';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../principal/login/services/auth.service';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-enterprise-details',
@@ -68,8 +69,8 @@ export class EnterpriseDetailsComponent {
       text: "Tu empresa pasará al estado inactivo!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: 'rgb(23 37 84)',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: 'Si, archivar',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
@@ -80,7 +81,7 @@ export class EnterpriseDetailsComponent {
               title: 'Empresa archivada!',
               text: 'Tu empresa ha sido archivada',
               icon: 'success',
-              confirmButtonColor: 'rgb(23 37 84)',
+              confirmButtonColor: buttonColors.confirmationColor,
             });
             this.goToListEnterprises();
           },

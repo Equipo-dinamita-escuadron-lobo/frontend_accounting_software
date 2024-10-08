@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '../../models/User';
 import Swal from 'sweetalert2';
+import { buttonColors } from '../../../../shared/buttonColors';
 
 interface Options{
   name: string;
@@ -89,6 +90,7 @@ export class UserModalCreateComponent {
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado el usuario con éxito!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
         });
         this.closePopUp();
@@ -100,6 +102,7 @@ export class UserModalCreateComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear el Usuario!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       },

@@ -7,6 +7,7 @@ import { Tax } from '../../models/Tax';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-list-tax',
@@ -106,6 +107,8 @@ export class ListTaxComponent implements OnInit {
       text: '¿Estás seguro de que deseas eliminar este impuesto?',
       icon: 'question',
       showCancelButton: true,
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: 'Sí',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -119,6 +122,7 @@ export class ListTaxComponent implements OnInit {
               title: 'Eliminado con éxito',
               text: 'Se ha eliminado el impuesto con éxito.',
               icon: 'success',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
           },
@@ -128,6 +132,7 @@ export class ListTaxComponent implements OnInit {
               title: 'Error',
               text: 'No se pudo eliminar el impuesto.',
               icon: 'error',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
           }

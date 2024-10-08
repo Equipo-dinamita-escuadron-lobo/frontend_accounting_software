@@ -11,6 +11,7 @@ import { AccountImportComponent } from '../account-import/account-import.compone
 import { FinancialStateType } from '../../models/FinancialStateType';
 import { Observable, forkJoin, of, switchMap } from 'rxjs';
 import { AccountExportComponent } from '../account-export/account-export.component';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 /**
  * Component for managing and displaying chart of accounts.
@@ -109,12 +110,14 @@ export class AccountsListComponent implements OnInit {
       Swal.fire({
         title: 'Éxito!',
         text: 'Se ha generado el archivo correctamente.',
+        confirmButtonColor: buttonColors.confirmationColor,
         icon: 'success'
       });
     }else{
       Swal.fire({
         title: 'Error!',
         text: 'No se encontraron cuentas para exportar.',
+        confirmButtonColor: buttonColors.confirmationColor,
         icon: 'error',
       });
     }
@@ -417,6 +420,7 @@ export class AccountsListComponent implements OnInit {
           icon: "error",
           title: "Oops...",
           text: "El documento que quieres importar le falta algunos campos!",
+          confirmButtonColor: buttonColors.confirmationColor,
           footer: '<button (click)="openModalDetails() class="text-purple-500">Obtener mas informacion!</button>'
         });
         console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
@@ -779,6 +783,7 @@ export class AccountsListComponent implements OnInit {
           Swal.fire({
               title: 'Error!',
               text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
+              confirmButtonColor: buttonColors.confirmationColor,
               icon: 'error',
           });
           this.selectAccount(this.accountSelected);
@@ -805,6 +810,7 @@ export class AccountsListComponent implements OnInit {
               Swal.fire({
                   title: 'Error!',
                   text: 'Ha ocurrido un error al crear la cuenta!.',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
               });
               console.log(error);
@@ -815,6 +821,7 @@ export class AccountsListComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'Ya existe una cuenta con el código ingresado!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -832,8 +839,8 @@ export class AccountsListComponent implements OnInit {
         title: '¿Estás seguro?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: buttonColors.confirmationColor,
+        cancelButtonColor: buttonColors.cancelButtonColor,
         confirmButtonText: 'Sí, Eliminar',
         cancelButtonText: 'Cancelar'
       }).then((result) => {
@@ -867,6 +874,7 @@ export class AccountsListComponent implements OnInit {
                 Swal.fire({
                     title: 'Error!',
                     text: 'Ha ocurrido un error al eliminar la cuenta!.',
+                    confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'error',
                   });
               }
@@ -889,6 +897,7 @@ export class AccountsListComponent implements OnInit {
           Swal.fire({
             title: 'Error!',
             text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
           this.selectAccount(this.accountSelected);
@@ -912,12 +921,14 @@ export class AccountsListComponent implements OnInit {
                 Swal.fire({
                   title: 'Error!',
                   text: 'La cuenta tiene la misma información!',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
                 });
               }else{
                 Swal.fire({
                   title: 'Error!',
                   text: 'Ya existe una cuenta con el código ingresado!',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
                 });
               }
@@ -948,6 +959,7 @@ export class AccountsListComponent implements OnInit {
               title: 'Actualización exitosa!',
               showConfirmButton: false,
               icon: 'success',
+              confirmButtonColor: buttonColors.confirmationColor,
               timer: 1000
             });
           });
@@ -956,6 +968,7 @@ export class AccountsListComponent implements OnInit {
         Swal.fire({
             title: 'Error!',
             text: 'Ha ocurrido un error al actualizar la cuenta!.',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
         console.error('Error al actualizar la cuenta:', error);

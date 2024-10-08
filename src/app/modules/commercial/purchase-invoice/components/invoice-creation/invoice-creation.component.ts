@@ -13,6 +13,7 @@ import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -201,6 +202,7 @@ export class InvoiceCreationComponent implements OnInit {
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado la factura con éxito!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
         });
       },
@@ -208,6 +210,7 @@ export class InvoiceCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear la factura.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -249,8 +252,8 @@ export class InvoiceCreationComponent implements OnInit {
             text: "Si cambia de proveerdor se perderan los datos que hayan registrado en productos!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: buttonColors.confirmationColor,
+            cancelButtonColor: buttonColors.cancelButtonColor,
             confirmButtonText: "Confirmar!"
           }).then((result) => {
             if (result.isConfirmed) {

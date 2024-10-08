@@ -7,6 +7,7 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import Swal from 'sweetalert2';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 
 @Component({
@@ -162,6 +163,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
             title: 'Edición exitosa!',
             text: 'Se ha editado la categoría con éxito!',
             icon: 'success',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar',
           });
         },
@@ -171,6 +173,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
             title: 'Error!',
             text: 'Ha ocurrido un error al editar la categoría.',
             icon: 'error',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar',
           });        }
       );
@@ -179,6 +182,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
         title: 'Error!',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
+        confirmButtonColor: buttonColors.confirmationColor,
         confirmButtonText: 'Aceptar',
       });
     }

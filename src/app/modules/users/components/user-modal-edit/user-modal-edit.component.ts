@@ -5,6 +5,7 @@ import { first } from 'rxjs';
 import { User } from '../../models/User';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
+import { buttonColors } from '../../../../shared/buttonColors';
 
 interface Options {
   name: string;
@@ -150,6 +151,7 @@ export class UserModalEditComponent {
         Swal.fire({
           title: 'Edicion exitosa!',
           text: 'Se ha editado el usuario con éxito!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
         });
         this.closePopUp();
@@ -161,6 +163,7 @@ export class UserModalEditComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Ha Ocurrido Un Erro Al Editar El Usuario!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       },

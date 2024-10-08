@@ -79,7 +79,6 @@ export class ChartAccountService {
      * @returns An observable of the created account.
      */
     createAccount(account: Account): Observable<Account>{
-        console.log("Creating account: " + account.code + " - " + account.parent);
         return this.http.post<Account>(this.apiURL, account);
     }
 

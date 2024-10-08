@@ -7,6 +7,7 @@ import { TaxService } from '../../services/tax.service';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 
 
@@ -77,6 +78,7 @@ export class EditTaxComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Error obteniendo detalles del impuesto.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -93,6 +95,7 @@ export class EditTaxComponent {
           Swal.fire({
             title: 'Error!',
             text: 'Cuenta no encontrada.',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
         }
@@ -101,6 +104,7 @@ export class EditTaxComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Error al buscar la cuenta por código.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -135,6 +139,7 @@ export class EditTaxComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error obteniendo cuentas de depósito.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -198,6 +203,7 @@ export class EditTaxComponent {
                 Swal.fire({
                   title: 'Error',
                   text: 'Ya existe un impuesto con ese código.',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
                 });
               } else {
@@ -206,6 +212,7 @@ export class EditTaxComponent {
                     Swal.fire({
                       title: 'Edición exitosa!',
                       text: 'Se ha editado el impuesto exitosamente!',
+                      confirmButtonColor: buttonColors.confirmationColor,
                       icon: 'success',
                     });
                     this.router.navigate(['/general/operations/taxes']); 
@@ -214,6 +221,7 @@ export class EditTaxComponent {
                     Swal.fire({
                       title: 'Error!',
                       text: 'Ha ocurrido un error al editar el impuesto.',
+                      confirmButtonColor: buttonColors.confirmationColor,
                       icon: 'error',
                     });
                   }
@@ -226,6 +234,7 @@ export class EditTaxComponent {
                   Swal.fire({
                     title: 'Edición exitosa!',
                     text: 'Se ha editado el impuesto exitosamente!',
+                    confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'success',
                   });
                   this.router.navigate(['/general/operations/taxes']); 
@@ -234,6 +243,7 @@ export class EditTaxComponent {
                   Swal.fire({
                     title: 'Error!',
                     text: 'Ha ocurrido un error al editar el impuesto.',
+                    confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'error',
                   });
                 }
@@ -245,7 +255,7 @@ export class EditTaxComponent {
             title: 'Error',
             text: 'Por favor, completa correctamente el formulario antes de enviarlo.',
             icon: 'error',
-            confirmButtonText: 'Ok'
+            confirmButtonColor: buttonColors.confirmationColor,
           });
         }
       }

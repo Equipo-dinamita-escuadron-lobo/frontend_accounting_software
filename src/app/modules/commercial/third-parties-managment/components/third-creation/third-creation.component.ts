@@ -12,6 +12,7 @@ import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-third-creation',
@@ -86,6 +87,7 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -100,6 +102,7 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -114,6 +117,7 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -128,6 +132,7 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -187,6 +192,7 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado el producto con éxito!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
         });
         this.OnReset()
@@ -198,7 +204,8 @@ export class ThirdCreationComponent implements OnInit {
         // Mensaje de éxito con alert
         Swal.fire({
           title: 'Error!',
-          text: 'Ha Ocurrido Un Erro Al Crear El Tercero!',
+          text: 'Ha Ocurrido Un Error Al Crear El Tercero!',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       },

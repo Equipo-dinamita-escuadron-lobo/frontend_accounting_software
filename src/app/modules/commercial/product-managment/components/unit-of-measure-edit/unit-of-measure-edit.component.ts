@@ -5,6 +5,7 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-unit-of-measure-edit',
@@ -73,6 +74,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
             title: 'Creación exitosa!',
             text: 'Se ha creado la Unidad de medida con éxito!',
             icon: 'success',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar'
           });
           this.resetForm();
@@ -83,6 +85,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
             title: 'Error!',
             text: 'Ha ocurrido un error al crear la Unidad de medida .',
             icon: 'error',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar'
           });
         }
@@ -92,6 +95,7 @@ export class UnitOfMeasureEditComponent implements OnInit{
         title: 'Error!',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
+        confirmButtonColor: buttonColors.confirmationColor,
         confirmButtonText: 'Aceptar'
       });
     }

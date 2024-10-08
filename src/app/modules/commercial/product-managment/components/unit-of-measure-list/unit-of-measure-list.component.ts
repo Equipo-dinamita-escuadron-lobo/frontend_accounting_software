@@ -6,6 +6,7 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { error } from 'jquery';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import Swal from 'sweetalert2';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-unit-of-measure-list',
@@ -88,6 +89,8 @@ export class UnitOfMeasureListComponent implements OnInit {
         text: '¿Estás seguro de que deseas eliminar esta elemento?',
         icon: 'question',
         showCancelButton: true,
+        confirmButtonColor: buttonColors.confirmationColor,
+        cancelButtonColor: buttonColors.cancelButtonColor,
         confirmButtonText: 'Sí',
         cancelButtonText: 'Cancelar'
       }).then((result) => {
@@ -101,6 +104,7 @@ export class UnitOfMeasureListComponent implements OnInit {
                 title: 'Se eliminó con éxito!',
                 text: 'Se ha eliminado la Unidad de medida con éxito!',
                 icon: 'success',
+                confirmButtonColor: buttonColors.confirmationColor,
                 confirmButtonText: 'Aceptar'
               });
             },
@@ -110,6 +114,7 @@ export class UnitOfMeasureListComponent implements OnInit {
                 title: 'No se puede eliminar ',
                 text: 'La unidad de medida esta siendo usada',
                 icon: 'warning',
+                confirmButtonColor: buttonColors.confirmationColor,
                 confirmButtonText: 'Aceptar'
               });
             }

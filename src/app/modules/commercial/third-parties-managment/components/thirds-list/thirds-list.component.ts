@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { ThirdEditModalComponent } from '../third-edit-modal/third-edit-modal.component';
 import { ThirdDetailsModalComponent } from '../third-details-modal/third-details-modal.component';
 import { ThirdConfigModalComponent } from '../third-config-modal/third-config-modal.component';
+import { buttonColors } from '../../../../../shared/buttonColors';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
@@ -78,6 +79,7 @@ export class ThirdsListComponent{
           Swal.fire({
             title: 'Error!',
             text: 'No se han encontrado terceros para esta empresa!',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
         }
@@ -113,6 +115,7 @@ export class ThirdsListComponent{
           Swal.fire({
             title: 'Exito',
             text: 'Se cambió exitosamente el estado del tercero',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'success',
           });
         }
@@ -122,6 +125,7 @@ export class ThirdsListComponent{
         Swal.fire({
           title: 'Error!',
           text: 'No se pudo cambiar el estado del tercero',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }

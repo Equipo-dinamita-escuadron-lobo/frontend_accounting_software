@@ -8,6 +8,7 @@ import { Product } from '../../models/Product';
 import Swal from 'sweetalert2';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
  @Component({
   selector: 'app-product-creation',
@@ -182,6 +183,7 @@ getUnitOfMeasures(): void {
           title: 'Creación exitosa!',
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
 
         // Restablece el formulario con la fecha actual
@@ -197,6 +199,7 @@ getUnitOfMeasures(): void {
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear el producto.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }

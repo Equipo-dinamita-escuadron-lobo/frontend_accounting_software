@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import Swal from 'sweetalert2';
 import { ThirdType } from '../../../third-parties-managment/models/ThirdType';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-invoice-select-supplier',
@@ -45,6 +46,7 @@ export class InvoiceSelectSupplierComponent {
           Swal.fire({
             title: 'Error!',
             text: 'No se han encontrado terceros para esta empresa!',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
         }
