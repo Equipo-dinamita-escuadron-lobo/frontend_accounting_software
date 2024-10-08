@@ -207,6 +207,29 @@ export class ThirdCreationComponent implements OnInit {
     this.router.navigateByUrl('/general/operations/third-parties');
   }
 
+  //validar campos obligatorios para persona Juridica(Razon Social) y Natural (Nombre y Apellidos)
+  updateValidator(){
+    if(this.button1Checked){
+      this.createdThirdForm.get('socialReason')?.setValidators([Validators.required]);
+    }else{
+      this.createdThirdForm.get('socialReason')?.clearValidators();
+    }
+
+    if(this.button2Checked){
+      this.createdThirdForm.get('names')?.setValidators([Validators.required]);
+      this.createdThirdForm.get('lastNames')?.setValidators([Validators.required]);
+      this.createdThirdForm.get('gender')?.setValidators([Validators.required]);
+    }else{
+      this.createdThirdForm.get('names')?.clearValidators();
+      this.createdThirdForm.get('lastNames')?.clearValidators();
+      this.createdThirdForm.get('gender')?.clearValidators();
+    }
+    this.createdThirdForm.get('socialReason')?.updateValueAndValidity();
+    this.createdThirdForm.get('names')?.updateValueAndValidity();
+    this.createdThirdForm.get('lastNames')?.updateValueAndValidity();
+    this.createdThirdForm.get('gender')?.updateValueAndValidity();
+  }
+
   onCheckChange(buttonId: number): void {
     if (buttonId === 1 && this.button1Checked) {
       this.button2Checked = false;
@@ -217,7 +240,9 @@ export class ThirdCreationComponent implements OnInit {
       this.button1Checked = false;
       this.createdThirdForm.get('socialReason')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
+      
     }
+    this.updateValidator();
     this.updateTypeIds();
   }
 
@@ -225,7 +250,6 @@ export class ThirdCreationComponent implements OnInit {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
         let filteredTypeIds;
-        // Comprobar si button1Checked (Juridica) esta activo
         if (this.button1Checked) {
           filteredTypeIds = response.filter(elemento => 
             elemento.typeIdname && elemento.typeIdname.includes('NIT')
@@ -233,11 +257,8 @@ export class ThirdCreationComponent implements OnInit {
         } else {
           filteredTypeIds = response; 
         }
-        // Actualizar el array typeIds
         this.typeIds = filteredTypeIds;
-  
-        // Limpiar el valor del campo typeId
-        this.createdThirdForm.get('typeId')?.setValue(''); // Establecer explícitamente como vacío
+        this.createdThirdForm.get('typeId')?.setValue('');
       },
       error: (error) => {
         console.log(error);
@@ -265,10 +286,10 @@ export class ThirdCreationComponent implements OnInit {
                 if (control.errors?.['required']) {
                     switch (name) {
                         case 'typeId':
-                            errors.push(`El Tipo de Identificacion es requerido`);
+                            errors.push(`Seleccione un Tipo de Identificacion`);
                             break;
                         case 'thirdTypes':
-                            errors.push(`Debe seleccionar al menos un Tipo de Tercero`);
+                            errors.push(`Seleccione al menos un Tipo de Tercero`);
                             break;
                         case 'personType':
                             errors.push(`Seleccione un Tipo de Persona`);
@@ -297,6 +318,19 @@ export class ThirdCreationComponent implements OnInit {
                         case 'state':
                             errors.push(`Seleccione un estado`);
                             break;
+                        case 'names':
+                            errors.push(`Ingrese un Nombre`);
+                            break;
+                        case 'lastNames':
+                            errors.push(`Ingrese un Apellido`);
+                            break;
+                        case 'socialReason':
+                            errors.push(`Ingrese una Razon Social`);
+                            break;
+                        
+                        case 'gender':
+                            errors.push(`Seleccione un Genero`);
+                            break;
                         default:
                             errors.push(`${name} es requerido`);
                     }
@@ -304,7 +338,7 @@ export class ThirdCreationComponent implements OnInit {
 
                 // Validación del formato de correo electrónico
                 if (control.errors?.['email']) {
-                    errors.push(`Ingrese un correo electrónico válido en ${name}`);
+                    errors.push(`El fromato del Correo Electronico es Invalido`);
                 }
             }
         }

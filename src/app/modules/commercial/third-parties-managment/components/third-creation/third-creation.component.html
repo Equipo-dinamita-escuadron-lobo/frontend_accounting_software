@@ -65,13 +65,22 @@
                   <input formControlName="names" type="text"
                     class="mb-1 w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingre su Nombre">
-                    
+                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('names')?.touched) && createdThirdForm.get('names')?.invalid">
+                      <ng-container *ngIf="createdThirdForm.get('names')?.errors?.['required']">
+                        Ingrese un Nombre
+                      </ng-container>
+                    </div>
                 </div>
                 <div class="space-y-4">
                   <p class="font-semibold">Apellidos *</p>
                   <input formControlName="lastNames" type="text"
                     class="w-full mb-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingrese sus apellidos" />
+                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('lastNames')?.touched) && createdThirdForm.get('lastNames')?.invalid">
+                      <ng-container *ngIf="createdThirdForm.get('lastNames')?.errors?.['required']">
+                        Ingrese un Apellido
+                      </ng-container>
+                    </div>
                 </div>
               
               </div>
@@ -81,6 +90,11 @@
                   <input formControlName="socialReason" type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingrese Razon Social">
+                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('socialReason')?.touched) && createdThirdForm.get('socialReason')?.invalid">
+                      <ng-container *ngIf="createdThirdForm.get('socialReason')?.errors?.['required']">
+                        Ingrese una Razon Social
+                      </ng-container>
+                    </div>
                 </div>
               </div>
 
@@ -117,6 +131,12 @@
                       <option value="Femenino" selected>Femenino</option>
                       <option value="Otro">Otro</option>
                     </select>
+                    <div class="text-red-600"
+                      *ngIf="(submitted || createdThirdForm.get('gender')?.touched) && createdThirdForm.get('gender')?.invalid">
+                      <ng-container *ngIf="createdThirdForm.get('gender')?.errors?.['required']">
+                        Seleccione un Genero
+                      </ng-container>
+                    </div>
                   </div>
                 </div>
               </div>
