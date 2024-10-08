@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Account } from '../../models/ChartAccount';
-import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ChartAccountService } from '../../services/chart-account.service';
 import { NatureType } from '../../models/NatureType';
 import { ClasificationType } from '../../models/ClasificationType';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { AccountImportComponent } from '../account-import/account-import.component';
 import { FinancialStateType } from '../../models/FinancialStateType';
-import { Observable, forkJoin, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, of, switchMap, map } from 'rxjs';
 import { AccountExportComponent } from '../account-export/account-export.component';
 
 /**
@@ -18,7 +18,7 @@ import { AccountExportComponent } from '../account-export/account-export.compone
 @Component({
   selector: 'app-accounts-list',
   templateUrl: './accounts-list.component.html',
-  providers: [AccountExportComponent] , // Inyectar el componente aquí
+  providers: [AccountExportComponent], // Inyectar el componente aquí
   styleUrl: './accounts-list.component.css'
 })
 
@@ -46,11 +46,11 @@ export class AccountsListComponent implements OnInit {
   parentId: string = '';
 
   //Variables for show forms
-  showPrincipalForm: boolean = false;         
-  showFormTransactional: boolean = false;     
+  showPrincipalForm: boolean = false;
+  showFormTransactional: boolean = false;
 
   //selected account
-  selectedAccount: boolean = false;           
+  selectedAccount: boolean = false;
 
   //Variables for show buttons
   showButton = false;
@@ -105,25 +105,25 @@ export class AccountsListComponent implements OnInit {
 
   exportAccountsToExcel(): void {
     this.accountExportComponent.getAccounts().then((success) => {
-    if(success){
-      Swal.fire({
-        title: 'Éxito!',
-        text: 'Se ha generado el archivo correctamente.',
-        icon: 'success'
-      });
-    }else{
-      Swal.fire({
-        title: 'Error!',
-        text: 'No se encontraron cuentas para exportar.',
-        icon: 'error',
-      });
-    }
+      if (success) {
+        Swal.fire({
+          title: 'Éxito!',
+          text: 'Se ha generado el archivo correctamente.',
+          icon: 'success'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se encontraron cuentas para exportar.',
+          icon: 'error',
+        });
+      }
     });
   }
   /**
    * Shows the form for adding a new account class.
    */
-  showFormAddNewClass(){
+  showFormAddNewClass() {
     this.showAddNewClass = true;
     this.noAddNewChild();
     this.noShowPrincipalAndTransactionalForm();
@@ -134,9 +134,9 @@ export class AccountsListComponent implements OnInit {
    */
   noShowFormAddNewClass() {
     this.showAddNewClass = false;
-    if(this.selectedAccount){
+    if (this.selectedAccount) {
       this.showPrincipalAndTransactionalForm();
-    }else{
+    } else {
       this.noShowPrincipalAndTransactionalForm();
     }
   }
@@ -144,13 +144,13 @@ export class AccountsListComponent implements OnInit {
   /**
    * allows show the form for add a new child account
    */
-  addNewChild(){
+  addNewChild() {
     this.addChild = true;
     this.showButton = false;
     this.showButtonDelete = false;
     this.showFormTransactional = false;
     this.showUpdateButton = false;
-    if(this.accountSelected){
+    if (this.accountSelected) {
       this.updateInputAccess(parseInt(this.accountSelected.code));
     }
   }
@@ -158,7 +158,7 @@ export class AccountsListComponent implements OnInit {
   /**
    * Disallows show the form for add a new child account.
    */
-  noAddNewChild(){
+  noAddNewChild() {
     this.addChild = false;
     this.showButton = true;
     this.showButtonDelete = true;
@@ -169,7 +169,7 @@ export class AccountsListComponent implements OnInit {
   /**
    * allows show the main form 
    */
-  showPrincipalAndTransactionalForm(){
+  showPrincipalAndTransactionalForm() {
     this.showPrincipalForm = true;
     this.showFormTransactional = true;
     this.showButton = true;
@@ -179,7 +179,7 @@ export class AccountsListComponent implements OnInit {
   /**
    * disallows show the main form 
    */
-  noShowPrincipalAndTransactionalForm(){
+  noShowPrincipalAndTransactionalForm() {
     this.showPrincipalForm = false;
     this.showFormTransactional = false;
     this.showButton = false;
@@ -249,17 +249,17 @@ export class AccountsListComponent implements OnInit {
    * @param description The description of the selected account.
    */
   createForm(code: string, description: string) {
-    this.accountForm = this.fb.group({}); 
+    this.accountForm = this.fb.group({});
     this.showPrincipalAndTransactionalForm();
-    this.assignName(code, description); 
-    this.updateInputAccess(code.length); 
+    this.assignName(code, description);
+    this.updateInputAccess(code.length);
     this.code = '';
     this.name = '';
     this.parentId = '';
 
     if (code.length >= 1) {
-      this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class },[Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));  
-      this.accountForm.addControl('classCode', new FormControl({ value: code.slice(0, 1), disabled: this.inputAccess.class }, [Validators.maxLength(1), Validators.minLength(1)])); 
+      this.accountForm.addControl('className', new FormControl({ value: this.className, disabled: this.inputAccess.class }, [Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
+      this.accountForm.addControl('classCode', new FormControl({ value: code.slice(0, 1), disabled: this.inputAccess.class }, [Validators.maxLength(1), Validators.minLength(1)]));
       this.currentLevelAccount = 'grupo';
       this.num = 1;
       this.code = 'classCode';
@@ -267,9 +267,9 @@ export class AccountsListComponent implements OnInit {
     }
 
     if (code.length >= 2) {
-      this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group },[Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
+      this.accountForm.addControl('groupName', new FormControl({ value: this.groupName, disabled: this.inputAccess.group }, [Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
       this.accountForm.addControl('groupCode', new FormControl({ value: code.slice(0, 1), disabled: this.inputAccess.group }));
-      this.accountForm.addControl('codeGroup', new FormControl({ value: code.slice(1, 2), disabled: this.inputAccess.group },[Validators.maxLength(1), Validators.minLength(1)]));
+      this.accountForm.addControl('codeGroup', new FormControl({ value: code.slice(1, 2), disabled: this.inputAccess.group }, [Validators.maxLength(1), Validators.minLength(1)]));
       this.currentLevelAccount = 'cuenta';
       this.num = 2;
       this.code = 'codeGroup';
@@ -278,9 +278,9 @@ export class AccountsListComponent implements OnInit {
     }
 
     if (code.length >= 4) {
-      this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account },[Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
+      this.accountForm.addControl('accountName', new FormControl({ value: this.accountName, disabled: this.inputAccess.account }, [Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
       this.accountForm.addControl('accountCode', new FormControl(code.slice(0, 2)));
-      this.accountForm.addControl('codeAccount', new FormControl({ value: code.slice(2, 4), disabled: this.inputAccess.account },[Validators.maxLength(2), Validators.minLength(2)]));
+      this.accountForm.addControl('codeAccount', new FormControl({ value: code.slice(2, 4), disabled: this.inputAccess.account }, [Validators.maxLength(2), Validators.minLength(2)]));
       this.currentLevelAccount = 'subcuenta';
       this.num = 4;
       this.code = 'codeAccount';
@@ -289,9 +289,9 @@ export class AccountsListComponent implements OnInit {
     }
 
     if (code.length >= 6) {
-      this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount },[Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
+      this.accountForm.addControl('subAccountName', new FormControl({ value: this.subAccountName, disabled: this.inputAccess.subAccount }, [Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
       this.accountForm.addControl('subAccountCode', new FormControl(code.slice(0, 4)));
-      this.accountForm.addControl('codeSubAccount', new FormControl({ value: code.slice(4, 6), disabled: this.inputAccess.subAccount },[Validators.maxLength(2), Validators.minLength(2)]));
+      this.accountForm.addControl('codeSubAccount', new FormControl({ value: code.slice(4, 6), disabled: this.inputAccess.subAccount }, [Validators.maxLength(2), Validators.minLength(2)]));
       this.currentLevelAccount = 'auxiliar';
       this.num = 6;
       this.code = 'codeSubAccount';
@@ -300,15 +300,15 @@ export class AccountsListComponent implements OnInit {
     }
 
     if (code.length >= 8) {
-      this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary },[Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
+      this.accountForm.addControl('auxiliaryName', new FormControl({ value: this.auxiliaryName, disabled: this.inputAccess.auxiliary }, [Validators.pattern('^[a-zA-ZÀ-ÿ\u00f1\u00d1,. ]+$')]));
       this.accountForm.addControl('auxiliaryCode', new FormControl(code.slice(0, 6)));
-      this.accountForm.addControl('codeAuxiliary', new FormControl({ value: code.slice(6, 8), disabled: this.inputAccess.auxiliary },[Validators.maxLength(2), Validators.minLength(2)]));
+      this.accountForm.addControl('codeAuxiliary', new FormControl({ value: code.slice(6, 8), disabled: this.inputAccess.auxiliary }, [Validators.maxLength(2), Validators.minLength(2)]));
       this.num = 8;
       this.code = 'codeAuxiliary';
       this.name = 'auxiliaryName';
       this.parentId = code.slice(0, 6);
     }
-    
+
     this.accountForm.valueChanges.subscribe(() => {
       this.showUpdateButton = this.shouldShowUpdateButton();
     });
@@ -336,15 +336,15 @@ export class AccountsListComponent implements OnInit {
    */
   hasFormValueChanged(form: FormGroup): boolean {
     const formValues = form.value;
-    for (const key in formValues){
+    for (const key in formValues) {
       if (formValues.hasOwnProperty(key)) {
         const control = form.get(key);
         if (control && control.dirty) {
-          return true; 
+          return true;
         }
       }
     }
-    return false; 
+    return false;
   }
 
   /**
@@ -440,6 +440,7 @@ export class AccountsListComponent implements OnInit {
 
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
+      console.log(this.listAccounts)
 
       // Reset file input value
       event.target.value = null;
@@ -447,10 +448,14 @@ export class AccountsListComponent implements OnInit {
   }
 
 
-  saveAccountHierarchy(accounts: Account[]): void {
-    accounts.forEach(account => {
-      this.saveAccountRecursively(account).subscribe();
-    });
+  saveAccountHierarchy(accounts: Account[]): Observable<boolean> {
+    const saveObservables = accounts.map(account => this.saveAccountRecursively(account));
+
+    // Retornar el observable de forkJoin
+    return forkJoin(saveObservables).pipe(
+      // Aquí, cuando todas las operaciones terminen, devolvemos `true`
+      map(() => true)
+    );
   }
 
   saveAccountRecursively(account: Account, parentId: number = 0): Observable<Account> {
@@ -462,7 +467,7 @@ export class AccountsListComponent implements OnInit {
         const accountId = savedAccount.id; // Assume the saved account has an `id` property
 
         if (account.children && account.children.length > 0) {
-          const childObservables = account.children.map(child => 
+          const childObservables = account.children.map(child =>
             this.saveAccountRecursively(child, accountId)
           );
 
@@ -485,41 +490,64 @@ export class AccountsListComponent implements OnInit {
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
 
+    // Función para obtener el código del padre dependiendo del nivel
+    const getParentCode = (code: string): string => {
+      if (code.length > 6) return code.slice(0, 6);  // Subcuenta -> Cuenta
+      if (code.length > 4) return code.slice(0, 4);  // Cuenta -> Grupo
+      if (code.length > 2) return code.slice(0, 2);  // Grupo -> Clase
+      if (code.length > 1) return code.slice(0, 1);  // Clase no tiene más padres
+      return "";  // No hay padre para la Clase
+    };
+
     // Agrupar cuentas por código
     for (const account of accounts) {
       const code = account.code;
-      const level = code.length / 2;
 
       if (!hierarchy[code]) {
-        hierarchy[code] = { ...account, children: [] };
+        hierarchy[code] = {
+          ...account,
+          children: [],
+          idEnterprise: this.getIdEnterprise(),  // Asignar idEnterprise a la cuenta actual
+          parent: ""  // Inicialmente, el parent es null
+        };
       } else {
         hierarchy[code].description = account.description;
       }
 
-      if (level >= 1) {
-        const parentCode = code.slice(0, -2);
-        if (!hierarchy[parentCode]) {
-          hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', classification: '', children: [] };
-        }
-        hierarchy[parentCode].children?.push(hierarchy[code]);
-      }
-    }
+      // Crear la jerarquía de padres hasta el nivel Clase
+      let currentCode = code;
+      let parentCode = getParentCode(currentCode);
 
-    // Asociar cada cuenta principal al padre con un solo dígito en el código
-    for (const account of Object.values(hierarchy)) {
-      if (account.code.length === 2) {
-        const parentCode = account.code[0];
-        const parentAccount = hierarchy[parentCode];
-        if (parentAccount) {
-          parentAccount.children?.push(account);
+      while (parentCode) {
+        if (!hierarchy[parentCode]) {
+          hierarchy[parentCode] = {
+            code: parentCode,
+            description: '',
+            nature: '',
+            financialStatus: '',
+            classification: '',
+            children: [],
+            idEnterprise: this.getIdEnterprise(),  // Asignar idEnterprise al padre
+            parent: getParentCode(parentCode)  // Obtener el padre del padre
+          };
         }
+        if (!hierarchy[currentCode].parent) {
+          hierarchy[currentCode].parent = parentCode;  // Asignar parent_id a la cuenta actual si aún no se ha asignado
+        }
+        if (!hierarchy[parentCode].children?.includes(hierarchy[currentCode])) {
+          hierarchy[parentCode].children?.push(hierarchy[currentCode]);  // Agregar solo si no está ya en la lista
+        }
+
+        // Pasar al siguiente nivel (más arriba en la jerarquía)
+        currentCode = parentCode;
+        parentCode = getParentCode(currentCode);
       }
     }
 
     // Obtener cuentas de nivel superior (clases)
     const topLevelAccounts: Account[] = [];
     for (const account of Object.values(hierarchy)) {
-      if (account.code.length === 1) {
+      if (account.code.length === 1) {  // Las cuentas de nivel más alto tienen un solo dígito (Clase)
         topLevelAccounts.push(account);
       }
     }
@@ -527,12 +555,62 @@ export class AccountsListComponent implements OnInit {
     return topLevelAccounts;
   }
 
+
+
   /**
-   * Finds an account by its code and returns its description.
-   * @param accounts The array of accounts to search in.
-   * @param code The code of the account to find.
-   * @returns The description of the found account, or an empty string if not found.
-   */
+   * createHierarchyWithParent(accounts: Account[]): Account[] {
+      const hierarchy: Record<string, Account> = {};
+  
+      // Agrupar cuentas por código
+      for (const account of accounts) {
+        const code = account.code;
+        const level = code.length / 2;
+  
+        if (!hierarchy[code]) {
+          hierarchy[code] = { ...account, children: [] };
+        } else {
+          hierarchy[code].description = account.description;
+        }
+  
+        if (level >= 1) {
+          const parentCode = code.slice(0, -2);
+          if (!hierarchy[parentCode]) {
+            hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', classification: '', children: [] };
+          }
+          hierarchy[parentCode].children?.push(hierarchy[code]);
+        }
+      }
+  
+      // Asociar cada cuenta principal al padre con un solo dígito en el código
+      for (const account of Object.values(hierarchy)) {
+        if (account.code.length === 2) {
+          const parentCode = account.code[0];
+          const parentAccount = hierarchy[parentCode];
+          if (parentAccount) {
+            parentAccount.children?.push(account);
+          }
+        }
+      }
+  
+      // Obtener cuentas de nivel superior (clases)
+      const topLevelAccounts: Account[] = [];
+      for (const account of Object.values(hierarchy)) {
+        if (account.code.length === 1) {
+          topLevelAccounts.push(account);
+        }
+      }
+  
+      return topLevelAccounts;
+    }
+  
+  
+  
+    /**
+     * Finds an account by its code and returns its description.
+     * @param accounts The array of accounts to search in.
+     * @param code The code of the account to find.
+     * @returns The description of the found account, or an empty string if not found.
+     */
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
       if (account.code === code) {
@@ -607,7 +685,7 @@ export class AccountsListComponent implements OnInit {
     this.formTransactional.get('selectedNatureType')?.setValue(event.name);
     this.placeNatureType = '';
   }
-    
+
   /**
    * Handles the selection of a classification type and sets the corresponding form value.
    * @param event The selection event.
@@ -647,8 +725,8 @@ export class AccountsListComponent implements OnInit {
     this.placeFinancialStateType = 'Seleccione una opción';
     this.placeClasificationType = 'Seleccione una opción';
 
-    this.formTransactional.patchValue({ 'selectedNatureType':''});
-    this.formTransactional.patchValue({ 'selectedFinancialStateType': ''});
+    this.formTransactional.patchValue({ 'selectedNatureType': '' });
+    this.formTransactional.patchValue({ 'selectedFinancialStateType': '' });
     this.formTransactional.patchValue({ 'selectedClasificationType': '' });
 
     if (selectedAccount && selectedAccount.nature && selectedAccount.nature != 'Por defecto') {
@@ -672,8 +750,26 @@ export class AccountsListComponent implements OnInit {
    */
   saveImportAccounts() {
     this.importedAccounts = false;
-    this.saveAccountHierarchy(this.listAccounts);
+    this.saveAccountHierarchy(this.listAccounts).subscribe((result) => {
+      if (result) {
+        Swal.fire({
+          title: 'Creación exitosa!',
+          showConfirmButton: false,
+          icon: 'success',
+          timer: 1000
+        });
+        this.ngOnInit();
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error al guardar las cuentas importadas.',
+          icon: 'error',
+        });
+      }
+    });
   }
+
+
 
   /**
    * cancel the import of the file
@@ -687,35 +783,35 @@ export class AccountsListComponent implements OnInit {
   /**
    * hides the form and shows the state it was in again
    */
-  cancel(){
-    if(this.showAddNewClass){
+  cancel() {
+    if (this.showAddNewClass) {
       this.noShowFormAddNewClass();
     }
-    if(this.addChild){
+    if (this.addChild) {
       this.noAddNewChild();
     }
   }
-  
+
   /**
    * If a child account is added, then the parent's code is added, if it is a class, it is added normally
    * @param $event Account with the information that was filled out in the child form
    */
-  addNewAccount($event: Account){
-    if(this.showAddNewClass){
+  addNewAccount($event: Account) {
+    if (this.showAddNewClass) {
       this.saveNewAccountType($event);
     }
-    if(this.addChild){
-      if(this.accountSelected){
+    if (this.addChild) {
+      if (this.accountSelected) {
         const account: Account = {
-        idEnterprise: this.getIdEnterprise(),
-        code: this.accountSelected?.code + $event.code,
-        description: $event.description,
-        nature: $event.nature,
-        financialStatus: $event.financialStatus,
-        classification: $event.classification,
-        parent: this.accountSelected.id
-      }
-      this.saveNewAccountType(account);
+          idEnterprise: this.getIdEnterprise(),
+          code: this.accountSelected?.code + $event.code,
+          description: $event.description,
+          nature: $event.nature,
+          financialStatus: $event.financialStatus,
+          classification: $event.classification,
+          parent: this.accountSelected.id
+        }
+        this.saveNewAccountType(account);
       }
     }
   }
@@ -724,9 +820,9 @@ export class AccountsListComponent implements OnInit {
    * Gets the company ID from localStorage.
    * @returns The company ID
    */
-  getIdEnterprise(): string{
+  getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
-    if(entData){
+    if (entData) {
       return JSON.parse(entData).entId;
     }
     return '';
@@ -759,7 +855,7 @@ export class AccountsListComponent implements OnInit {
   getAccountByCode(account: Account): Promise<boolean> {
     return this._accountService.getAccountByCode(account.code, this.getIdEnterprise()).toPromise()
       .then(cuenta => {
-        return !!cuenta;  
+        return !!cuenta;
       })
       .catch(error => {
         console.error('Error al obtener la cuenta:', error);
@@ -772,19 +868,19 @@ export class AccountsListComponent implements OnInit {
    * @param account account that contains the information to save
    */
   async saveNewAccountType(account: Account) {
-    try {  
+    try {
       const accountExist = await this.getAccountByCode(account);
-      if(!accountExist){
-        if(this.name === 'subAccountName' && this.accountSelected && this.accountSelected.children && this.accountSelected.children.length >= 2){
+      if (!accountExist) {
+        if (this.name === 'subAccountName' && this.accountSelected && this.accountSelected.children && this.accountSelected.children.length >= 2) {
           Swal.fire({
-              title: 'Error!',
-              text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
-              icon: 'error',
+            title: 'Error!',
+            text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
+            icon: 'error',
           });
           this.selectAccount(this.accountSelected);
           this.noShowFormAddNewClass();
           this.noAddNewChild();
-        }else{
+        } else {
           this._accountService.createAccount(account).subscribe(
             (response) => {
               this.getAccounts()
@@ -803,15 +899,15 @@ export class AccountsListComponent implements OnInit {
             },
             (error) => {
               Swal.fire({
-                  title: 'Error!',
-                  text: 'Ha ocurrido un error al crear la cuenta!.',
-                  icon: 'error',
+                title: 'Error!',
+                text: 'Ha ocurrido un error al crear la cuenta!.',
+                icon: 'error',
               });
               console.log(error);
             }
           );
         }
-      }else{
+      } else {
         Swal.fire({
           title: 'Error!',
           text: 'Ya existe una cuenta con el código ingresado!',
@@ -838,7 +934,7 @@ export class AccountsListComponent implements OnInit {
         cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          if(this.accountSelected && this.accountSelected.id){
+          if (this.accountSelected && this.accountSelected.id) {
             this._accountService.deleteAccount(this.accountSelected?.id.toString()).subscribe(
               (response) => {
                 Swal.fire({
@@ -849,8 +945,8 @@ export class AccountsListComponent implements OnInit {
                 });
                 this.getAccounts()
                   .then(() => {
-                    if(this.accountSelected && this.accountSelected.parent){
-                      this._accountService.getAccountByCode(this.accountSelected?.parent,this.getIdEnterprise()).subscribe({
+                    if (this.accountSelected && this.accountSelected.parent) {
+                      this._accountService.getAccountByCode(this.accountSelected?.parent, this.getIdEnterprise()).subscribe({
                         next: (account) => {
                           this.expandAccounts(account);
                           this.selectAccount(account);
@@ -858,21 +954,21 @@ export class AccountsListComponent implements OnInit {
                           this.noAddNewChild();
                         }
                       });
-                    }else{
+                    } else {
                       this.noShowPrincipalAndTransactionalForm();
                     }
                   });
               },
               (error) => {
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Ha ocurrido un error al eliminar la cuenta!.',
-                    icon: 'error',
-                  });
+                  title: 'Error!',
+                  text: 'Ha ocurrido un error al eliminar la cuenta!.',
+                  icon: 'error',
+                });
               }
             );
           }
-      }
+        }
       });
     } catch (error) {
       console.error('Error al eliminar el tipo de cuenta:', error);
@@ -882,17 +978,17 @@ export class AccountsListComponent implements OnInit {
   /**
    * Update an account 
    */
-  async updateAccount(){
-    try {  
-      if(this.accountSelected){
-        if(this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId+this.accountForm.get(this.code)?.value){
+  async updateAccount() {
+    try {
+      if (this.accountSelected) {
+        if (this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId + this.accountForm.get(this.code)?.value) {
           Swal.fire({
             title: 'Error!',
             text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
             icon: 'error',
           });
           this.selectAccount(this.accountSelected);
-        }else{
+        } else {
           const account: Account = {
             code: this.parentId + this.accountForm.get(this.code)?.value,
             description: this.accountForm.get(this.name)?.value,
@@ -902,19 +998,19 @@ export class AccountsListComponent implements OnInit {
           }
           const accountExist = await this.getAccountByCode(account);
 
-          if(!accountExist){
+          if (!accountExist) {
             this.update(this.accountSelected?.id, account);
-          }else{
-            if(this.accountSelected.code === account.code && (this.accountSelected.description != account.description || account.nature != this.accountSelected.nature || account.financialStatus != this.accountSelected.financialStatus || account.classification != this.accountSelected.classification)){
+          } else {
+            if (this.accountSelected.code === account.code && (this.accountSelected.description != account.description || account.nature != this.accountSelected.nature || account.financialStatus != this.accountSelected.financialStatus || account.classification != this.accountSelected.classification)) {
               this.update(this.accountSelected?.id, account);
-            }else{
-              if(this.accountSelected.code === account.code && this.accountSelected.description == account.description){
+            } else {
+              if (this.accountSelected.code === account.code && this.accountSelected.description == account.description) {
                 Swal.fire({
                   title: 'Error!',
                   text: 'La cuenta tiene la misma información!',
                   icon: 'error',
                 });
-              }else{
+              } else {
                 Swal.fire({
                   title: 'Error!',
                   text: 'Ya existe una cuenta con el código ingresado!',
@@ -935,11 +1031,11 @@ export class AccountsListComponent implements OnInit {
    * @param id ID of the account to update
    * @param account account that contains the information to update
    */
-  update(id?: number, account?: Account){
+  update(id?: number, account?: Account) {
     this._accountService.updateAccount(id, account).subscribe(
       (response) => {
         this.getAccounts()
-          .then(() =>{
+          .then(() => {
             this.expandAccounts(response);
             this.selectAccount(response);
             this.noShowFormAddNewClass();
@@ -954,10 +1050,10 @@ export class AccountsListComponent implements OnInit {
       },
       (error) => {
         Swal.fire({
-            title: 'Error!',
-            text: 'Ha ocurrido un error al actualizar la cuenta!.',
-            icon: 'error',
-          });
+          title: 'Error!',
+          text: 'Ha ocurrido un error al actualizar la cuenta!.',
+          icon: 'error',
+        });
         console.error('Error al actualizar la cuenta:', error);
       }
     );
@@ -989,7 +1085,7 @@ export class AccountsListComponent implements OnInit {
                 for (let child of currentAccount.children) {
                   if (child.code === nextCodeSegment) {
                     stack.push(child);
-                    break;  
+                    break;
                   }
                 }
               }
