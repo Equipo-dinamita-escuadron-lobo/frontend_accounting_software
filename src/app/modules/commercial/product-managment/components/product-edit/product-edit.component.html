@@ -65,26 +65,26 @@
                 </div>
               </div>
               <div>
-                <label for="minQuantity" class="block text-sm font-medium text-gray-700">Cantidad Mínima:</label>
+                <label for="quantity" class="block text-sm font-medium text-gray-700">Cantidad:</label>
                 <input
                   type="number"
-                  formControlName="minQuantity"
-                  id="minQuantity"
+                  formControlName="quantity"
+                  id="quantity"
                   min="0"
                   placeholder="Ej: 1"
                   class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                <div *ngIf="editForm.get('minQuantity')?.touched && editForm.get('minQuantity')?.errors" class="text-red-500">
-                  <div *ngIf="editForm.get('minQuantity')?.errors?.['required']">
-                    El campo Cantidad Mínima es requerido.
+                <div *ngIf="editForm.get('quantity')?.touched && editForm.get('quantity')?.errors" class="text-red-500">
+                  <div *ngIf="editForm.get('quantity')?.errors?.['required']">
+                    El campo Cantidad es requerido.
                   </div>
-                  <div *ngIf="editForm.get('minQuantity')?.errors?.['min']">
-                    La Cantidad Mínima no puede ser negativa.
+                  <div *ngIf="editForm.get('quantity')?.errors?.['min']">
+                    La Cantidad no puede ser negativa.
                   </div> 
                   
                 </div>
               </div>
-
+<!--
               <div>
                 <label for="maxQuantity" class="block text-sm font-medium text-gray-700">Cantidad Máxima:</label>
                 <input
@@ -104,14 +104,14 @@
                       </div>                  
                   </div>
 
-                  <div *ngIf="editForm.get('maxQuantity')?.touched || editForm.get('minQuantity')?.touched  " class="text-red-500">
-                  <div *ngIf="+editForm.get('maxQuantity')?.value < +editForm.get('minQuantity')?.value || editForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
+                  <div *ngIf="editForm.get('maxQuantity')?.touched || editForm.get('quantity')?.touched  " class="text-red-500">
+                  <div *ngIf="+editForm.get('maxQuantity')?.value < +editForm.get('quantity')?.value || editForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
                     La cantidad máxima debe ser mayor que la cantidad mínima.
                   </div>
                   </div>
 
               </div>
-              
+      -->        
               <div>
                 <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
                 <input
@@ -181,25 +181,25 @@
       
 
               <div>
-                <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
+                <label for="cost" class="block text-sm font-medium text-gray-700">Costo:</label>
                 <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-700">
                   $
                 </span>
                 <input
                   type="text"
-                  formControlName="price"
-                  id="price"
+                  formControlName="cost"
+                  id="cost"
                   min="0"
                   placeholder="Ej: 12.000"
                   class="pl-8 pr-1 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   inputmode="numeric"
-                  (input)="formatPrice($event)"
+                  (input)="formatcost($event)"
                 />
               </div>
-                <div *ngIf="editForm.get('price')?.touched && editForm.get('price')?.invalid" class="text-red-500">
-                  <div *ngIf="editForm.get('price')?.errors?.['required']">
-                    El campo Precio es requerido.
+                <div *ngIf="editForm.get('cost')?.touched && editForm.get('cost')?.invalid" class="text-red-500">
+                  <div *ngIf="editForm.get('cost')?.errors?.['required']">
+                    El campo Costo es requerido.
                   </div>
                 </div>
               </div>
