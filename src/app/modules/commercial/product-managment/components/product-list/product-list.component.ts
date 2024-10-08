@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Category } from '../../models/Category';
 import { Product } from '../../models/Product'; // Importa el modelo Product
 import { UnitOfMeasure } from '../../models/UnitOfMeasure';
@@ -24,11 +23,9 @@ export class ProductListComponent implements OnInit {
   products: Product[] = []; // Inicializa la lista de productos
   unitOfMeasures: UnitOfMeasure[]= [];
   categories: Category[] = [];
-  providers: any[] = [];
 
   columns: any[] = [
     //{title: 'Id', data: 'id'},
-    { title: 'Codigo', data: 'code' },
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Costo', data: 'cost' },
@@ -51,8 +48,8 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
-    private categoryService: CategoryService,
-    private thirdService: ThirdServiceService,    private router: Router,
+    private categoryService: CategoryService,   
+    private router: Router,
     private fb: FormBuilder,
     private dialog: MatDialog
   ) {
@@ -200,7 +197,6 @@ export class ProductListComponent implements OnInit {
     const productList = {
       id: product?.id ?? '',
       itemType: product?.itemType,
-      code: product?.code,
       description: product?.description,
       quantity: product?.quantity,
       taxPercentage: product?.taxPercentage,

@@ -34,7 +34,7 @@ export class InvoiceSelectProductsComponent {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
         console.log('recibe el id de producto num:', this.inputData.thId)
-        this.products = data.filter(product => product.code === this.inputData.thId);
+        this.products = data.filter(product => product.id === this.inputData.thId);
       },
       (error) => {
         console.log('Error al obtener los productos:', error);

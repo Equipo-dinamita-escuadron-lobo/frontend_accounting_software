@@ -1,9 +1,8 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../models/Product';
 import { environment } from '../../../../../environments/environment';
-import { LocalStorageMethods } from '../../../../shared/methods/local-storage.method';
+import { Product } from '../models/Product';
 
 
 @Injectable({

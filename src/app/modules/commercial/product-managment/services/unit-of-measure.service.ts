@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { UnitOfMeasure } from '../models/UnitOfMeasure';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { UnitOfMeasure } from '../models/UnitOfMeasure';
 
 @Injectable({
   providedIn: 'root'

@@ -1,8 +1,8 @@
 
 export interface Product {
     id :string;
-    itemType: string;
     code: string;
+    itemType: string;
     description: string;
     quantity: number;
     //maxQuantity: number;
@@ -20,7 +20,6 @@ export interface Product {
   export interface ProductList {
     id :string;
     itemType: string;
-    code: string;
     description: string;
     quantity: number;
     //maxQuantity: number;

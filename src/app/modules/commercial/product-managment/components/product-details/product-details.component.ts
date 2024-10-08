@@ -14,7 +14,6 @@ export class ProductDetailsModalComponent {
   productData: ProductList = {
     id: '',
     itemType: '',
-    code: '',
     description: '',
     quantity: 0,
     taxPercentage: 0,

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa 
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
@@ -30,7 +29,6 @@ export class ProductCreationComponent implements OnInit {
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
     private router: Router
   ) {}
 
@@ -59,11 +57,10 @@ export class ProductCreationComponent implements OnInit {
     ,{ validators: quantityValidator });
     if (this.entData) {
 
-    this.initForm();
-    this.getThirdParties();
-    this.getUnitOfMeasures();
-    this.getCategories();
-      }
+  this.initForm();
+  this.getUnitOfMeasures();
+  this.getCategories();
+    }
 
 
   }
@@ -80,22 +77,6 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }
-
-  // Método para obtener la lista de proveedores
-getThirdParties(): void {
-
-  this.thirdService.getThirdParties(this.entData,0).subscribe(
-    (thirdParties: any[]) => {
-      // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
-      this.thirdParties = thirdParties;
-      // Llamar a initForm() después de obtener la lista de proveedores
-      this.initForm();
-    },
-    error => {
-      console.error('Error al obtener la lista de proveedores:', error);
-    }
-  );
-}
 
 // Método para obtener la lista de unidades de medida
 getUnitOfMeasures(): void {
@@ -132,7 +113,7 @@ getUnitOfMeasures(): void {
     const formValue = this.productForm.value;
 
     // Verifica que los campos de tipo 'string' no estén vacíos
-    const areTextFieldsValid =formValue.itemType.trim() !== '' && 
+    const areTextFieldsValid =formValue.itemType.trim() !== '' &&
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida
@@ -161,7 +142,6 @@ getUnitOfMeasures(): void {
     const formData = this.productForm.value;
 
     // Convertir supplierId a número si es una cadena
-    formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
     formData.cost = parseInt(formData.cost, 10);
