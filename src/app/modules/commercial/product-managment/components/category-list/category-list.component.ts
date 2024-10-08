@@ -8,6 +8,7 @@ import { CategoryDetailsComponent } from '../category-details/category-details.c
 import Swal from 'sweetalert2';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 
 @Component({
@@ -150,6 +151,8 @@ export class CategoryListComponent implements OnInit {
       text: '¿Estás seguro de que deseas eliminar esta categoría?',
       icon: 'question',
       showCancelButton: true,
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: 'Sí',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -164,6 +167,7 @@ export class CategoryListComponent implements OnInit {
               title: 'Eliminada con éxito',
               text: 'La categoría se ha eliminado correctamente.',
               icon: 'success',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
           },
@@ -174,6 +178,7 @@ export class CategoryListComponent implements OnInit {
               title: 'Error al eliminar',
               text: 'Ha ocurrido un error al intentar eliminar la categoría.',
               icon: 'error',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
           }

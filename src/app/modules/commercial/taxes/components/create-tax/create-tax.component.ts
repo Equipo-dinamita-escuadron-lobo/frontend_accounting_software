@@ -7,6 +7,7 @@ import { TaxService } from '../../services/tax.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { buttonColors } from '../../../../../shared/buttonColors';
 @Component({
   selector: 'app-create-tax',
   templateUrl: './create-tax.component.html',
@@ -117,6 +118,7 @@ export class CreateTaxComponent {
             Swal.fire({
               title: 'Error',
               text: 'Ya existe un impuesto con ese código.',
+              confirmButtonColor: buttonColors.confirmationColor,
               icon: 'error',
             });
             return;
@@ -127,6 +129,7 @@ export class CreateTaxComponent {
                 Swal.fire({
                   title: '¡Impuesto agregado!',
                   text: 'Se agregó el impuesto exitosamente!',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'success',
                 });
                 this.router.navigate(['/general/operations/taxes']);
@@ -135,6 +138,7 @@ export class CreateTaxComponent {
                 Swal.fire({
                   title: 'Error',
                   text: 'Ha ocurrido un error al agregar el impuesto.',
+                  confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
                 });
               }
@@ -147,7 +151,7 @@ export class CreateTaxComponent {
         title: 'Error',
         text: 'Por favor, completa correctamente el formulario antes de enviarlo.',
         icon: 'error',
-        confirmButtonText: 'Ok'
+        confirmButtonColor: buttonColors.confirmationColor,
       });
     }
   }

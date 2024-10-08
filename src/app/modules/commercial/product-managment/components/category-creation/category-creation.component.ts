@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-category-creation',
@@ -75,6 +76,7 @@ export class CategoryCreationComponent implements OnInit {
             title: 'Creación exitosa!',
             text: 'Se ha creado la categoría con éxito!',
             icon: 'success',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar',
           });
           this.resetForm();
@@ -85,6 +87,7 @@ export class CategoryCreationComponent implements OnInit {
             title: 'Error!',
             text: 'Ha ocurrido un error al crear la categoría.',
             icon: 'error',
+            confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar',
           });
         }
@@ -94,6 +97,7 @@ export class CategoryCreationComponent implements OnInit {
         title: 'Error!',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
+        confirmButtonColor: buttonColors.confirmationColor,
         confirmButtonText: 'Aceptar',
       });
     }

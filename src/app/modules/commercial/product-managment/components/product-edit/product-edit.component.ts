@@ -8,6 +8,7 @@ import { ThirdServiceService } from '../../../third-parties-managment/services/t
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { CategoryService } from '../../services/category.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 
 @Component({
@@ -180,16 +181,18 @@ export class ProductEditComponent implements OnInit {
           Swal.fire({
             title: 'Edición exitosa!',
             text: 'Se ha editado el producto exitosamente!',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'success',
           });
           // Puedes redirigir al usuario a otra página aquí si lo deseas
         },
         (error) => {
-          console.error('Error al editar el producto:', error);
+          //console.error('Error al editar el producto:', error);
           // Mostrar mensaje de error
           Swal.fire({
             title: 'Error!',
             text: 'Ha ocurrido un error al editar el producto.',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
         }
@@ -199,7 +202,7 @@ export class ProductEditComponent implements OnInit {
         title: 'Error',
         text: 'Por favor, completa correctamente el formulario antes de enviarlo.',
         icon: 'error',
-        confirmButtonText: 'Ok'
+        confirmButtonColor: buttonColors.confirmationColor,
       });
     }
   }

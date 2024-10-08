@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
 import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-third-config-modal',
@@ -44,6 +45,7 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -59,6 +61,7 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -122,8 +125,8 @@ export class ThirdConfigModalComponent {
       text: "¡No se podrá revertir esta acción!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: "Si, elimínalo"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -131,6 +134,7 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: "Eliminado!",
           text: "Se eliminó con exito el tipo",
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: "success"
         });
       }

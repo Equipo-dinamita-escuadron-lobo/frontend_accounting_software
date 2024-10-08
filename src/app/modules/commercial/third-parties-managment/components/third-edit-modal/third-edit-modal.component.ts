@@ -10,6 +10,7 @@ import { TypeId } from '../../models/TypeId';
 import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { buttonColors } from '../../../../../shared/buttonColors';
 @Component({
   selector: 'app-third-edit-modal',
   templateUrl: './third-edit-modal.component.html',
@@ -129,6 +130,7 @@ export class ThirdEditModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -144,6 +146,7 @@ export class ThirdEditModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
@@ -176,6 +179,7 @@ export class ThirdEditModalComponent {
       Swal.fire({
         title: 'Edicion exitosa!',
         text: 'Se ha creado el producto con éxito!',
+        confirmButtonColor: buttonColors.confirmationColor,
         icon: 'success',
       });
     },
@@ -187,6 +191,7 @@ export class ThirdEditModalComponent {
       Swal.fire({
         title: 'Error!',
         text: 'Ha Ocurrido Un Erro Al Editar El Tercero!',
+        confirmButtonColor: buttonColors.confirmationColor,
         icon: 'error',
       });
     },

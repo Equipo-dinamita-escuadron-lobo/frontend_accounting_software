@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../modules/principal/login/services/auth.service';
 import Swal from 'sweetalert2';
+import { buttonColors } from '../../shared/buttonColors';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -20,6 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             text: 'Por favor inicie sesión nuevamente',
             icon: 'warning',
             confirmButtonText: 'Aceptar',
+            confirmButtonColor: buttonColors.confirmationColor,
             allowOutsideClick: false
           }).then((result) => {
             if (result.isConfirmed) {

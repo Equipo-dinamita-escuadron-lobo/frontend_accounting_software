@@ -13,6 +13,7 @@ import { CategoryService } from '../../services/category.service';
 import { Observable, catchError, map, of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-product-list',
@@ -162,6 +163,8 @@ export class ProductListComponent implements OnInit {
       title: '¿Estás seguro?',
       text: '¿Estás seguro de que deseas eliminar este producto?',
       icon: 'warning',
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       showCancelButton: true,
       confirmButtonText: 'Sí',
       cancelButtonText: 'Cancelar'
@@ -177,6 +180,7 @@ export class ProductListComponent implements OnInit {
               title: 'Eliminado con éxito',
               text: 'El producto se ha eliminado correctamente.',
               icon: 'success',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
             //this.router.navigate(['/general/operations/products']);
@@ -188,6 +192,7 @@ export class ProductListComponent implements OnInit {
               title: 'Error al eliminar',
               text: 'Ha ocurrido un error al intentar eliminar el producto.',
               icon: 'error',
+              confirmButtonColor: buttonColors.confirmationColor,
               confirmButtonText: 'Aceptar'
             });
           }

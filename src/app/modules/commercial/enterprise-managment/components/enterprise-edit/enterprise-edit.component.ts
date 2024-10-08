@@ -24,6 +24,7 @@ import { environment } from '../../../../../../environments/enviorment.developme
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../principal/login/services/auth.service';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-enterprise-edit',
@@ -293,6 +294,7 @@ export class EnterpriseEditComponent {
         Swal.fire({
           title: 'Error!',
           text: 'El tamaño del archivo excede el límite de 5 MB.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
         reject('El tamaño del archivo excede el límite de 5 MB.');
@@ -304,6 +306,7 @@ export class EnterpriseEditComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Solo se permiten archivos de tipo JPEG o PNG.',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
         reject('Solo se permiten archivos de tipo JPEG o PNG.');
@@ -324,6 +327,7 @@ export class EnterpriseEditComponent {
           Swal.fire({
             title: 'Error!',
             text: 'Ha ocurrido un error al subir el logo.',
+            confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
           reject(error);
@@ -438,6 +442,7 @@ export class EnterpriseEditComponent {
               Swal.fire({
                 title: 'Edición exitosa!',
                 text: 'Se ha editado la empresa con éxito!',
+                confirmButtonColor: buttonColors.confirmationColor,
                 icon: 'success',
               });
               this.router.navigate(['general/operations/home']);
@@ -447,6 +452,7 @@ export class EnterpriseEditComponent {
               Swal.fire({
                 title: 'Error!',
                 text: 'Ha ocurrido un error al editar la empresa.',
+                confirmButtonColor: buttonColors.confirmationColor,
                 icon: 'error',
               });
             }
