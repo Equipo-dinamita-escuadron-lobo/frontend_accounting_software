@@ -52,7 +52,8 @@ export class ProductCreationComponent implements OnInit {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
+      price: [null, [Validators.required, Validators.min(0)]], // 'price' es un número
+      reference: [''], // referencia string
     }
     ,{ validators: minMaxValidator });
     if (this.entData) {
@@ -63,7 +64,7 @@ export class ProductCreationComponent implements OnInit {
     }
 
 
-}
+  }
 
 
   // Método para obtener la lista de categorías
@@ -104,7 +105,8 @@ getUnitOfMeasures(): void {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]]
+      price: [null, [Validators.required, Validators.min(0)]],
+      reference: [''] // Asigna el próximo ID al campo 'id'
     });
   }
 
