@@ -468,7 +468,7 @@ ReadExcel(event: any) {
   fileReader.onload = (e) => {
     var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
     var sheetNames = workBook.SheetNames;
-    
+
     // Convertir la primera hoja del workbook a JSON 
     let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], {
       header: 1,    
@@ -483,11 +483,20 @@ ReadExcel(event: any) {
       row.slice(0, 5).every(cell => cell !== "") // Filtrar filas incompletas
     );
 
+    // Ordenar las cuentas por código (columna 0) de menor a mayor
+    const sortedRows = filteredRows.sort((a: any[], b: any[]) => {
+      const codeA = parseInt(String(a[0]).trim(), 10); // Convertir a número entero
+      const codeB = parseInt(String(b[0]).trim(), 10);
+      
+      // Comparar los valores numéricos
+      return codeA - codeB; // Orden ascendente (de menor a mayor)
+    });
+
     // Mapeamos los datos de las primeras 5 columnas a un formato adecuado para cuentas
     const idEnterprise = this.getIdEnterprise();
-    this.listExcel = filteredRows.map((row: any[]) => ({
+    this.listExcel = sortedRows.map((row: any[]) => ({
       idEnterprise: idEnterprise,
-      code: String(row[0]),          // Primera columna: 'Código'
+      code: String(row[0]).trim(),   // Limpiar espacios
       description: row[1],           // Segunda columna: 'Nombre'
       nature: row[2],                // Tercera columna: 'Naturaleza'
       financialStatus: row[3],       // Cuarta columna: 'Estado Financiero'

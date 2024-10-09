@@ -80,16 +80,21 @@ export class ListTaxComponent implements OnInit {
     return result;
 }
 
-  getTaxes(): void {
-    this.taxService.getTaxes(this.entData).subscribe(
-      (data: Tax[]) => {
-        this.taxes = data;
-      },
-      (error) => {
-        console.error('Error al obtener los impuestos:', error);
-      }
-    );
-  }
+getTaxes(): void {
+  this.taxService.getTaxes(this.entData).subscribe(
+    (data: Tax[]) => {
+      this.taxes = data.sort((a, b) => {
+        const codeA = String(a.code).toLowerCase(); 
+        const codeB = String(b.code).toLowerCase();
+        return codeA.localeCompare(codeB); 
+      });
+    },
+    (error) => {
+      console.error('Error al obtener los impuestos:', error);
+    }
+  );
+}
+
 
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
