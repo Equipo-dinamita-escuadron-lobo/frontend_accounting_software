@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
@@ -16,6 +19,8 @@ import { ProductDetailsModalComponent } from '../product-details/product-details
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
+  standalone: true,
+  imports: [MatButtonModule, MatDividerModule, MatIconModule],
 })
 export class ProductListComponent implements OnInit {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
@@ -25,11 +30,11 @@ export class ProductListComponent implements OnInit {
   categories: Category[] = [];
 
   columns: any[] = [
-    //{title: 'Id', data: 'id'},
+    {title: 'Id', data: 'id'},
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio', data: 'price' },
-    { title: 'Min', data: 'minQuantity' },
+    { title: 'Costo', data: 'price' },
+    //{ title: 'Min', data: 'minQuantity' },
     //{title:'max',data:'maxQuantity'},
     //{title:'tax',data:'taxPercentage'},
     //{title:'f creación',data:'creationDate'},

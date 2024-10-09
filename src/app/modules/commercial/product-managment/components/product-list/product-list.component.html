@@ -83,45 +83,35 @@
             "
             class="hover:bg-gray-100 " (click)=" redirectToEdit(prod.id)"
           >
+            <td class="px-6 py-4 whitespace-nowrap">{{ prod.id }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ prod.itemType }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
               {{ prod.description }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap">{{ formatPrice(prod.price) }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              {{ prod.minQuantity }}
-            </td>
             
             <td class="px-6 py-4 whitespace-nowrap">{{ getUnitOfMeasureName(prod.unitOfMeasureId) }}</td>
 
             <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(prod.categoryId) }}</td>
             <td class="py-4 whitespace-nowrap flex justify-center items-center">
               
-              <button class="px-2 py-2 rounded-lg bg-gray-500 hover:bg-gray-600  mr-2 relative overflow-hidden" (click)="openDetailsModal(prod.id)">
-                <span class="material-icons flex justify-center items-center text-white">visibility</span>
-                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100  hover:text-black transition-opacity">
-                    Ver
-                </span>
-            </button>
-            
+              <div class="view-button-container">
+                <button mat-fab aria-label="View product details button" (click)="openDetailsModal(prod.id)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>  
 
-            
-              <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden" 
-                (click)=" redirectToEdit(prod.id)"
-                >
-                <span class="material-icons flex justify-center items-center text-white ">edit</span>
-                <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
-                  Editar
-                </span>
-              </button>
+              <div class="edit-button-container">
+                <button mat-fab aria-label="Edit product button" (click)="redirectToEdit(prod.id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>     
               
-              <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden" 
-              (click)="deleteProduct(prod.id)">
-              <span class="material-icons flex justify-center items-center text-white">delete</span>
-              <span class="text-sm absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
-                  Eliminar
-              </span>
-              </button>
+              <div class="delete-button-container">
+                <button mat-fab color="primary" aria-label="Delete product button" (click)="deleteProduct(prod.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
       
             </td>
           </tr>
