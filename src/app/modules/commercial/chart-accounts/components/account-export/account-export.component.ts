@@ -4,17 +4,23 @@ import { saveAs } from 'file-saver';
 import { ChartAccountService } from '../../services/chart-account.service';
 import { Account } from '../../models/ChartAccount';
 
+// Definir el tipo de archivo y la extensión
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
+
 @Component({
   selector: 'app-account-export',
   templateUrl: './account-export.component.html',
   styleUrls: ['./account-export.component.css']
 })
 export class AccountExportComponent {
-  listAccounts: Account[] = [];
+  private listAccounts: Account[] = [];
 
-  constructor(private _accountService: ChartAccountService) {}
+  constructor(private _accountService: ChartAccountService) { }
 
-  // Función para descargar el archivo Excel
+  /**
+   * Download the Excel file with the accounts
+   */
   downloadExcel() {
     // Definir las columnas del archivo Excel
     const data: any[] = [
@@ -22,21 +28,20 @@ export class AccountExportComponent {
     ];
 
     // Recorrer todas las cuentas y sus sub-cuentas
-      this.listAccounts.forEach(account => {
+    this.listAccounts.forEach(account => {
       this.addAccountToExcel(data, account);
     });
-    
+
     // Crear una hoja de trabajo (worksheet) con los datos
     const worksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);
-    this.applyHeaderStyle(worksheet);
 
     // Ajustar el tamaño de las columnas
     worksheet['!cols'] = [
-      { wch: 15 }, // Ancho de la primera columna ('Código')
-      { wch: 30 }, // Ancho de la segunda columna ('Nombre')
-      { wch: 20 }, // Ancho de la tercera columna ('Naturaleza')
-      { wch: 30 }, // Ancho de la cuarta columna ('Estado Financiero')
-      { wch: 25 }, // Ancho de la quinta columna ('Clasificación')
+      { wch: 15 },
+      { wch: 30 },
+      { wch: 20 },
+      { wch: 30 },
+      { wch: 25 },
     ];
 
     // Crear un libro de trabajo (workbook)
@@ -46,31 +51,17 @@ export class AccountExportComponent {
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
     // Guardar el archivo
-    this.saveAsExcelFile(excelBuffer, 'CatalogodeCuentas');
+    this.saveAsExcelFile(excelBuffer, 'CatalogoCuentas');
   }
 
-  // Función para aplicar formato a los encabezados
-  applyHeaderStyle(worksheet: XLSX.WorkSheet): void {
-    const headerRange = XLSX.utils.decode_range(worksheet['!ref'] || '');
 
-    for (let col = headerRange.s.c; col <= headerRange.e.c; col++) {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col }); // Dirección de la celda (encabezado)
-      const cell = worksheet[cellAddress];
 
-      if (cell) {
-        cell.s = {
-          fill: {
-            fgColor: { rgb: 'FFFF00' } // Color de fondo amarillo (hex: #FFFF00)
-          },
-          font: {
-            bold: true // Texto en negrita
-          }
-        };
-      }
-    }
-  }
-
-  // Función recursiva para agregar cuentas y sub-cuentas a la data de Excel
+  /**
+   * Function recurive to add accounts to the Excel file
+   * @param data 
+   * @param account 
+   * @param level 
+   */
   addAccountToExcel(data: any[], account: Account, level: number = 0): void {
     // Agregar la cuenta actual como una nueva fila en el Excel
     data.push([
@@ -89,18 +80,27 @@ export class AccountExportComponent {
     }
   }
 
-  // Función para guardar el archivo Excel
+  /**
+   * Save to Excel file
+   * @param buffer
+   * @param fileName
+   * @returns void
+   *  */
   saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, fileName + EXCEL_EXTENSION);
   }
+
 
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
     return entData ? JSON.parse(entData).entId : '';
   }
 
-  // Obtener las cuentas y descargar el archivo Excel cuando se haga clic en el botón
+  /**
+   * Get accounts from the API and download the Excel file
+   * @returns Promise<boolean>
+   */
   getAccounts(): Promise<boolean> {
     return new Promise((resolve) => {
       this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
@@ -122,9 +122,7 @@ export class AccountExportComponent {
       });
     });
   }
-  
+
 }
 
-// Definir el tipo de archivo y la extensión
-const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-const EXCEL_EXTENSION = '.xlsx';
+

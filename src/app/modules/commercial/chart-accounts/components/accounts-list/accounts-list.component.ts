@@ -104,25 +104,7 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
-  exportAccountsToExcel(): void {
-    this.accountExportComponent.getAccounts().then((success) => {
-      if (success) {
-        Swal.fire({
-          title: 'Éxito!',
-          text: 'Se ha generado el archivo correctamente.',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'success'
-        });
-      } else {
-        Swal.fire({
-          title: 'Error!',
-          text: 'No se encontraron cuentas para exportar.',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-      }
-    });
-  }
+
   /**
    * Shows the form for adding a new account class.
    */
@@ -219,6 +201,7 @@ export class AccountsListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAccounts();
+
     this.getNatureType();
     this.getFinancialStateType();
     this.getClasificationType();
@@ -388,10 +371,51 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
+   * Export accounts to an Excel file.
+   */
+  exportAccountsToExcel(): void {
+    this.accountExportComponent.getAccounts().then((success) => {
+      if (success) {
+        Swal.fire({
+          title: 'Éxito!',
+          text: 'Se ha generado el archivo correctamente.',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'success'
+        });
+      } else {
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se encontraron cuentas para exportar.',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'error',
+        });
+      }
+    });
+  }
+
+  /**
+   * Sort the accounts by code.
+   */
+  sortAccountsRecursively(accounts: Account[]): Account[] {
+    // Ordenamos la lista actual numéricamente
+    accounts.sort((a, b) => parseInt(a.code) - parseInt(b.code));
+
+    // Iteramos sobre cada cuenta para ordenar sus hijos recursivamente
+    accounts.forEach(account => {
+      if (account.children && account.children.length > 0) {
+        // Si la cuenta tiene hijos, aplicamos la función recursiva
+        account.children = this.sortAccountsRecursively(account.children);
+      }
+    });
+
+    return accounts;
+  }
+
+
+  /**
    * Reads an Excel file and processes its data.
    * @param event The file input event.
    */
-  /*
   ReadExcel(event: any) {
     let file = event.target.files[0];
 
@@ -407,12 +431,27 @@ export class AccountsListComponent implements OnInit {
     fileReader.onload = (e) => {
       var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
       var sheetNames = workBook.SheetNames;
-      let jsonData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], { raw: false });
+
+      // Aseguramos que jsonData es tratado como un array de arrays (any[][])
+      let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], { raw: false, header: 1 });
+
+      // Filtrar filas que tengan celdas vacías o solo espacios
+      let filteredRows = jsonData.filter(filtered => {
+        return filtered.some(item => item !== null && item !== undefined && item !== '' && String(item).trim() !== '');
+      });
+
+      // Convertir el array a una hoja
+      const worksheet = XLSX.utils.aoa_to_sheet(filteredRows);
+
+      // Convertir la hoja a JSON
+      const jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+      console.log(jsonDataFiltered);
+
 
       // Check required fields
       const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
       const missingFields = requiredFields.filter(field => {
-        const obj = jsonData[0] as { [key: string]: any };
+        const obj = jsonDataFiltered[0] as { [key: string]: any };
         return !Object.keys(obj).includes(field);
       });
 
@@ -422,7 +461,7 @@ export class AccountsListComponent implements OnInit {
           title: "Oops...",
           text: "El documento que quieres importar le falta algunos campos!",
           confirmButtonColor: buttonColors.confirmationColor,
-          footer: '<button (click)="openModalDetails() class="text-purple-500">Obtener mas informacion!</button>'
+          footer: '<button (click)="openModalDetails()" class="text-purple-500">Obtener más información!</button>'
         });
         console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
         return;
@@ -430,7 +469,7 @@ export class AccountsListComponent implements OnInit {
 
       const idEnterprise = this.getIdEnterprise();
 
-      this.listExcel = jsonData.map((item: any) => ({
+      this.listExcel = jsonDataFiltered.map((item: any) => ({
         idEnterprise: idEnterprise,
         code: String(item['Código']), // Ensure the code is a string
         description: item['Nombre'],
@@ -445,81 +484,11 @@ export class AccountsListComponent implements OnInit {
 
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
-      //console.log(this.listAccounts)
 
       // Reset file input value
       event.target.value = null;
     };
   }
-*/
-
-ReadExcel(event: any) {
-  let file = event.target.files[0];
-
-  // Verificar que el archivo sea de tipo xlsx
-  if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-    console.error('El archivo debe ser de tipo xlsx.');
-    return;
-  }
-
-  let fileReader = new FileReader();
-  fileReader.readAsBinaryString(file);
-
-  fileReader.onload = (e) => {
-    var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
-    var sheetNames = workBook.SheetNames;
-
-    // Convertir la primera hoja del workbook a JSON 
-    let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], {
-      header: 1,    
-      defval: "",
-    });
-
-    // jsonData ahora es un array de arrays. Ignoramos la primera fila (headers)
-    const dataRows = jsonData.slice(1);
-
-    // Verificamos que los datos sean correctos (solo filas completas con 5 columnas)
-    const filteredRows = dataRows.filter((row: any[]) => 
-      row.slice(0, 5).every(cell => cell !== "") // Filtrar filas incompletas
-    );
-
-    // Ordenar las cuentas por código (columna 0) de menor a mayor
-    const sortedRows = filteredRows.sort((a: any[], b: any[]) => {
-      const codeA = parseInt(String(a[0]).trim(), 10); // Convertir a número entero
-      const codeB = parseInt(String(b[0]).trim(), 10);
-      
-      // Comparar los valores numéricos
-      return codeA - codeB; // Orden ascendente (de menor a mayor)
-    });
-
-    // Mapeamos los datos de las primeras 5 columnas a un formato adecuado para cuentas
-    const idEnterprise = this.getIdEnterprise();
-    this.listExcel = sortedRows.map((row: any[]) => ({
-      idEnterprise: idEnterprise,
-      code: String(row[0]).trim(),   // Limpiar espacios
-      description: row[1],           // Segunda columna: 'Nombre'
-      nature: row[2],                // Tercera columna: 'Naturaleza'
-      financialStatus: row[3],       // Cuarta columna: 'Estado Financiero'
-      classification: row[4]         // Quinta columna: 'Clasificación'
-    }));
-
-    // Verificamos si hay datos para importar
-    if (this.listExcel.length > 0) {
-      this.importedAccounts = true;
-    } else {
-      console.error("No se encontraron filas válidas en el archivo Excel.");
-      return;
-    }
-
-    // Crea la jerarquía con las cuentas leídas
-    this.listAccountsAux = this.listAccounts;
-    this.listAccounts = this.createHierarchyWithParent(this.listExcel);
-
-    // Reset file input value
-    event.target.value = null;
-  };
-}
-
 
 
   saveAccountHierarchy(accounts: Account[]): Observable<boolean> {
@@ -628,55 +597,6 @@ ReadExcel(event: any) {
 
     return topLevelAccounts;
   }
-
-
-
-  /**
-   * createHierarchyWithParent(accounts: Account[]): Account[] {
-      const hierarchy: Record<string, Account> = {};
-  
-      // Agrupar cuentas por código
-      for (const account of accounts) {
-        const code = account.code;
-        const level = code.length / 2;
-  
-        if (!hierarchy[code]) {
-          hierarchy[code] = { ...account, children: [] };
-        } else {
-          hierarchy[code].description = account.description;
-        }
-  
-        if (level >= 1) {
-          const parentCode = code.slice(0, -2);
-          if (!hierarchy[parentCode]) {
-            hierarchy[parentCode] = { code: parentCode, description: '', nature: '', financialStatus: '', classification: '', children: [] };
-          }
-          hierarchy[parentCode].children?.push(hierarchy[code]);
-        }
-      }
-  
-      // Asociar cada cuenta principal al padre con un solo dígito en el código
-      for (const account of Object.values(hierarchy)) {
-        if (account.code.length === 2) {
-          const parentCode = account.code[0];
-          const parentAccount = hierarchy[parentCode];
-          if (parentAccount) {
-            parentAccount.children?.push(account);
-          }
-        }
-      }
-  
-      // Obtener cuentas de nivel superior (clases)
-      const topLevelAccounts: Account[] = [];
-      for (const account of Object.values(hierarchy)) {
-        if (account.code.length === 1) {
-          topLevelAccounts.push(account);
-        }
-      }
-  
-      return topLevelAccounts;
-    }
-  
   
   
     /**
@@ -844,7 +764,7 @@ ReadExcel(event: any) {
         });
       }
     });
-}
+  }
 
 
 
@@ -916,6 +836,7 @@ ReadExcel(event: any) {
       this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
         next: (accounts) => {
           this.listAccounts = accounts.filter(account => account !== null);
+          this.listAccounts = this.sortAccountsRecursively(this.listAccounts);
           resolve();
         },
         error: (error) => {
@@ -951,10 +872,10 @@ ReadExcel(event: any) {
       if (!accountExist) {
         if (this.name === 'subAccountName' && this.accountSelected && this.accountSelected.children && this.accountSelected.children.length >= 2) {
           Swal.fire({
-              title: 'Error!',
-              text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
-              confirmButtonColor: buttonColors.confirmationColor,
-              icon: 'error',
+            title: 'Error!',
+            text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
+            confirmButtonColor: buttonColors.confirmationColor,
+            icon: 'error',
           });
           this.selectAccount(this.accountSelected);
           this.noShowFormAddNewClass();
@@ -978,10 +899,10 @@ ReadExcel(event: any) {
             },
             (error) => {
               Swal.fire({
-                  title: 'Error!',
-                  text: 'Ha ocurrido un error al crear la cuenta!.',
-                  confirmButtonColor: buttonColors.confirmationColor,
-                  icon: 'error',
+                title: 'Error!',
+                text: 'Ha ocurrido un error al crear la cuenta!.',
+                confirmButtonColor: buttonColors.confirmationColor,
+                icon: 'error',
               });
               console.log(error);
             }
@@ -1043,11 +964,11 @@ ReadExcel(event: any) {
               },
               (error) => {
                 Swal.fire({
-                    title: 'Error!',
-                    text: 'Ha ocurrido un error al eliminar la cuenta!.',
-                    confirmButtonColor: buttonColors.confirmationColor,
-                    icon: 'error',
-                  });
+                  title: 'Error!',
+                  text: 'Ha ocurrido un error al eliminar la cuenta!.',
+                  confirmButtonColor: buttonColors.confirmationColor,
+                  icon: 'error',
+                });
               }
             );
           }
@@ -1137,11 +1058,11 @@ ReadExcel(event: any) {
       },
       (error) => {
         Swal.fire({
-            title: 'Error!',
-            text: 'Ha ocurrido un error al actualizar la cuenta!.',
-            confirmButtonColor: buttonColors.confirmationColor,
-            icon: 'error',
-          });
+          title: 'Error!',
+          text: 'Ha ocurrido un error al actualizar la cuenta!.',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'error',
+        });
         console.error('Error al actualizar la cuenta:', error);
       }
     );
