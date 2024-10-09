@@ -391,6 +391,7 @@ export class AccountsListComponent implements OnInit {
    * Reads an Excel file and processes its data.
    * @param event The file input event.
    */
+  /*
   ReadExcel(event: any) {
     let file = event.target.files[0];
 
@@ -444,12 +445,72 @@ export class AccountsListComponent implements OnInit {
 
       this.listAccountsAux = this.listAccounts;
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
-      console.log(this.listAccounts)
+      //console.log(this.listAccounts)
 
       // Reset file input value
       event.target.value = null;
     };
   }
+*/
+
+ReadExcel(event: any) {
+  let file = event.target.files[0];
+
+  // Verificar que el archivo sea de tipo xlsx
+  if (file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    console.error('El archivo debe ser de tipo xlsx.');
+    return;
+  }
+
+  let fileReader = new FileReader();
+  fileReader.readAsBinaryString(file);
+
+  fileReader.onload = (e) => {
+    var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
+    var sheetNames = workBook.SheetNames;
+    
+    // Convertir la primera hoja del workbook a JSON 
+    let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], {
+      header: 1,    
+      defval: "",
+    });
+
+    // jsonData ahora es un array de arrays. Ignoramos la primera fila (headers)
+    const dataRows = jsonData.slice(1);
+
+    // Verificamos que los datos sean correctos (solo filas completas con 5 columnas)
+    const filteredRows = dataRows.filter((row: any[]) => 
+      row.slice(0, 5).every(cell => cell !== "") // Filtrar filas incompletas
+    );
+
+    // Mapeamos los datos de las primeras 5 columnas a un formato adecuado para cuentas
+    const idEnterprise = this.getIdEnterprise();
+    this.listExcel = filteredRows.map((row: any[]) => ({
+      idEnterprise: idEnterprise,
+      code: String(row[0]),          // Primera columna: 'Código'
+      description: row[1],           // Segunda columna: 'Nombre'
+      nature: row[2],                // Tercera columna: 'Naturaleza'
+      financialStatus: row[3],       // Cuarta columna: 'Estado Financiero'
+      classification: row[4]         // Quinta columna: 'Clasificación'
+    }));
+
+    // Verificamos si hay datos para importar
+    if (this.listExcel.length > 0) {
+      this.importedAccounts = true;
+    } else {
+      console.error("No se encontraron filas válidas en el archivo Excel.");
+      return;
+    }
+
+    // Crea la jerarquía con las cuentas leídas
+    this.listAccountsAux = this.listAccounts;
+    this.listAccounts = this.createHierarchyWithParent(this.listExcel);
+
+    // Reset file input value
+    event.target.value = null;
+  };
+}
+
 
 
   saveAccountHierarchy(accounts: Account[]): Observable<boolean> {
@@ -757,21 +818,25 @@ export class AccountsListComponent implements OnInit {
     this.saveAccountHierarchy(this.listAccounts).subscribe((result) => {
       if (result) {
         Swal.fire({
-          title: 'Creación exitosa!',
-          showConfirmButton: false,
+          title: '¡Importación exitosa!',
+          text: 'Las cuentas han sido guardadas correctamente.',
           icon: 'success',
-          timer: 1000
+          showConfirmButton: false,
+          timer: 2000,
         });
         this.ngOnInit();
-      }else{
+      } else {
         Swal.fire({
-          title: 'Error!',
-          text: 'Ha ocurrido un error al guardar las cuentas importadas.',
+          title: '¡Error al guardar!',
+          text: 'Ocurrió un problema al guardar las cuentas importadas. Por favor, intente nuevamente o verifique los datos.',
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
     });
-  }
+}
+
 
 
 
