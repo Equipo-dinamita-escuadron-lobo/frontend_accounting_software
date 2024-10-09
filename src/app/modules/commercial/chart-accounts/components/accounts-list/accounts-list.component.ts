@@ -432,8 +432,20 @@ export class AccountsListComponent implements OnInit {
       var workBook = XLSX.read(fileReader.result, { type: 'binary', cellText: true });
       var sheetNames = workBook.SheetNames;
 
-      // Aseguramos que jsonData es tratado como un array de arrays (any[][])
+      // Convertimos la hoja a JSON con las columnas originales
       let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], { raw: false, header: 1 });
+
+      
+
+      // Definir las columnas requeridas
+      const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
+
+      // Filtrar solo las columnas deseadas antes de procesar las filas
+      let headers = jsonData[0]; // La primera fila contiene los encabezados
+      let indicesToKeep = headers.map((header: string, index: number) => requiredFields.includes(header) ? index : -1).filter(index => index !== -1);
+
+      // Filtrar las columnas para todas las filas (incluyendo los encabezados)
+      jsonData = jsonData.map(row => indicesToKeep.map(index => row[index]));
 
       // Filtrar filas que tengan celdas vacías o solo espacios
       let filteredRows = jsonData.filter(filtered => {
@@ -444,12 +456,9 @@ export class AccountsListComponent implements OnInit {
       const worksheet = XLSX.utils.aoa_to_sheet(filteredRows);
 
       // Convertir la hoja a JSON
-      const jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false });
-      console.log(jsonDataFiltered);
+      let jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false, header: headers });
 
-
-      // Check required fields
-      const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
+      // Verificar si faltan campos obligatorios
       const missingFields = requiredFields.filter(field => {
         const obj = jsonDataFiltered[0] as { [key: string]: any };
         return !Object.keys(obj).includes(field);
@@ -466,7 +475,8 @@ export class AccountsListComponent implements OnInit {
         console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
         return;
       }
-
+      // Eliminamos la primera fila (índice 0)
+      jsonDataFiltered.shift();
       const idEnterprise = this.getIdEnterprise();
 
       this.listExcel = jsonDataFiltered.map((item: any) => ({
@@ -489,6 +499,7 @@ export class AccountsListComponent implements OnInit {
       event.target.value = null;
     };
   }
+
 
 
   saveAccountHierarchy(accounts: Account[]): Observable<boolean> {
@@ -597,14 +608,14 @@ export class AccountsListComponent implements OnInit {
 
     return topLevelAccounts;
   }
-  
-  
-    /**
-     * Finds an account by its code and returns its description.
-     * @param accounts The array of accounts to search in.
-     * @param code The code of the account to find.
-     * @returns The description of the found account, or an empty string if not found.
-     */
+
+
+  /**
+   * Finds an account by its code and returns its description.
+   * @param accounts The array of accounts to search in.
+   * @param code The code of the account to find.
+   * @returns The description of the found account, or an empty string if not found.
+   */
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
       if (account.code === code) {
