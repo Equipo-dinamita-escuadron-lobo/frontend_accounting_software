@@ -15,7 +15,7 @@ export interface Third {
     names?: string;
     lastNames?: string;
     socialReason?: string;
-    gender?: eThirdGender; // And again, define or reference the actual enum.
+    gender?: eThirdGender | null; // And again, define or reference the actual enum.
     idNumber: number;
     verificationNumber?: number;
     state: boolean;
