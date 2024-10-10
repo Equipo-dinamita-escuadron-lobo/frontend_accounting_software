@@ -12,7 +12,7 @@ export class UnitOfMeasureService {
   constructor(private http: HttpClient) { }
   // GET
   // Método para obtener todas las unidades de medida
-  getUnitOfMeasures(enterpriseId:string): Observable<UnitOfMeasure[]> {
+  getUnitOfMeasures(enterpriseId: string): Observable<UnitOfMeasure[]> {
     const url = `${environment.API_PRODUCTS_URL}unit-measures/findAll/${enterpriseId}`;
     return this.http.get<UnitOfMeasure[]>(url);
   }
