@@ -1,5 +1,5 @@
 
-/* your-component.component.css */
+
 ::ng-deep .ng-select {
   background-color: white; /* Fondo blanco para el componente ng-select */
 }
@@ -17,4 +17,5 @@
   background-color: white; /* Fondo blanco para el panel desplegable */
   color: black; /* Texto en negro para contraste */
 }
+
 
