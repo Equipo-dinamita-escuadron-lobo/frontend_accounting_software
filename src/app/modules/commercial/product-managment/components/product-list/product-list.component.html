@@ -94,25 +94,29 @@
 
             <td class="px-6 py-4 whitespace-nowrap">{{ getCategoryName(prod.categoryId) }}</td>
             <td class="py-4 whitespace-nowrap flex justify-center items-center">
-              
-              <div class="view-button-container">
-                <button mat-fab aria-label="View product details button" (click)="openDetailsModal(prod.id)">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              </div>  
+              <div class="button-row">
+                <div class="button-flex-container">
+                  <div class="button-container">
+                    <div class="view-button-container">
+                      <button mat-fab color="warn" aria-label="View product details button" (click)="openDetailsModal(prod.id)">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                    </div>  
 
-              <div class="edit-button-container">
-                <button mat-fab aria-label="Edit product button" (click)="redirectToEdit(prod.id)">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </div>     
-              
-              <div class="delete-button-container">
-                <button mat-fab color="primary" aria-label="Delete product button" (click)="deleteProduct(prod.id)">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                    <div class="edit-button-container">
+                      <button mat-fab color="accent" aria-label="Edit product button" (click)="redirectToEdit(prod.id)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>     
+                    
+                    <div class="delete-button-container">
+                      <button mat-fab color="primary" aria-label="Delete product button" (click)="deleteProduct(prod.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-      
             </td>
           </tr>
         </tbody>

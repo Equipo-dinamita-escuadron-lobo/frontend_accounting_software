@@ -1,0 +1,26 @@
+.button-flex-container {
+    display: flex;
+    justify-content: space-around;
+}
+  
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+  
+.view-button-container,
+.edit-button-container,
+.delete-button-container {
+display: flex;
+    justify-content: center;
+}
+  
+.mat-fab {
+    border: 1px solid rgba(0, 0, 0, 0.12); /* Añade un borde a los botones */
+}
+  
+.mat-icon {
+    color: inherit; /* Asegúrate de que el color del icono herede el color del botón */
+}
+  

@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -32,8 +32,8 @@ import { SharedModule } from './shared/shared.module';
     MatIconModule,
     MatDialogModule,
     FormsModule,
-    MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    MatButtonModule
   ],
   providers: [
     provideAnimationsAsync(),
@@ -46,6 +46,5 @@ import { SharedModule } from './shared/shared.module';
 
   ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
