@@ -449,15 +449,16 @@ export class AccountsListComponent implements OnInit {
 
       // Filtrar filas que tengan celdas vacías o solo espacios
       let filteredRows = jsonData.filter(filtered => {
-        return filtered.some(item => item !== null && item !== undefined && item !== '' && String(item).trim() !== '');
+        return filtered.every(item => item !== null && item !== undefined && item !== "" && String(item).trim() !== '');
       });
+      
 
       // Convertir el array a una hoja
       const worksheet = XLSX.utils.aoa_to_sheet(filteredRows);
 
       // Convertir la hoja a JSON
       let jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false, header: headers });
-
+      
       // Verificar si faltan campos obligatorios
       const missingFields = requiredFields.filter(field => {
         const obj = jsonDataFiltered[0] as { [key: string]: any };
@@ -493,7 +494,9 @@ export class AccountsListComponent implements OnInit {
       }
 
       this.listAccountsAux = this.listAccounts;
+      
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
+      this.listAccounts = this.sortAccountsRecursively(this.listAccounts);
 
       // Reset file input value
       event.target.value = null;
