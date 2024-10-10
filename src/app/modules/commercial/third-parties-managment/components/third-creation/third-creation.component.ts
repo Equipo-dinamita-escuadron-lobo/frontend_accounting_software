@@ -12,11 +12,7 @@ import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
-<<<<<<< HEAD
-import { buttonColors } from '../../../../../shared/buttonColors';
-=======
 import { eThirdGender } from '../../models/eThirdGender';
->>>>>>> frontendSprint1Grupo1
 
 @Component({
   selector: 'app-third-creation',
@@ -131,59 +127,10 @@ export class ThirdCreationComponent implements OnInit {
         Swal.fire({
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
-          confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
       }
     });
-<<<<<<< HEAD
-
-    this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
-      next: (response: TypeId[])=>{
-        this.typeIds = response;
-      },
-      error: (error) => {
-        console.log(error)
-        Swal.fire({
-          title: 'Error!',
-          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-      }
-    });
-
-    this.thirdServiceConfiguration.getThirdTypes("0").subscribe({
-      next: (response: ThirdType[])=>{
-        response.forEach(elemento => this.thirdTypes.push(elemento));
-      },
-      error: (error) => {
-        console.log(error)
-        Swal.fire({
-          title: 'Error!',
-          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-      }
-    });
-
-    this.thirdServiceConfiguration.getTypeIds("0").subscribe({
-      next: (response: TypeId[])=>{
-        response.forEach(elemento => this.typeIds.push(elemento));
-      },
-      error: (error) => {
-        console.log(error)
-        Swal.fire({
-          title: 'Error!',
-          text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-      }
-    });
-=======
->>>>>>> frontendSprint1Grupo1
   }
 
   //Monitorea los cambios en el selector de Tipos de tercero
@@ -437,32 +384,14 @@ export class ThirdCreationComponent implements OnInit {
       next: (response) => {
         Swal.fire({
           title: 'Creación exitosa!',
-<<<<<<< HEAD
-          text: 'Se ha creado el producto con éxito!',
-          confirmButtonColor: buttonColors.confirmationColor,
-=======
           text: 'Se ha creado el Tercero con Exito!',
->>>>>>> frontendSprint1Grupo1
           icon: 'success',
         });
         this.goToListThirds();
       },
       error: (error) => {
-<<<<<<< HEAD
-        // Handle any errors here
-        console.error('Error:', error);
-        console.log(third);
-        // Mensaje de éxito con alert
-        Swal.fire({
-          title: 'Error!',
-          text: 'Ha Ocurrido Un Error Al Crear El Tercero!',
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-=======
         console.log('Error',error);
         this.errorMessages = this.getFormErrors();
->>>>>>> frontendSprint1Grupo1
       },
     });
   }
