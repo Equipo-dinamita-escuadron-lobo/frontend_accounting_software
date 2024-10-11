@@ -120,13 +120,25 @@ export class ThirdConfigModalComponent {
   }
 
   deleteItem(items: any, index: number) {
+    this.thirdServiceConfiguration.deleteThird(items[index].thirdTypeId).subscribe({
+      next: (response) => {
+        console.log('response: ', response)
+      },
+      error: (error) => {
+        console.error('Error deleting item:', error); // Manejo de errores
+      }
+    });
+  }
+  
+
+  createAlert(items: any, index: number, icono: 'success' | 'error' | 'warning' | 'info' | 'question') {
     Swal.fire({
       title: "¿Estás seguro?",
       text: "¡No se podrá revertir esta acción!",
-      icon: "warning",
+      icon: icono,
       showCancelButton: true,
-      confirmButtonColor: buttonColors.confirmationColor,
-      cancelButtonColor: buttonColors.cancelButtonColor,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
       confirmButtonText: "Si, elimínalo"
     }).then((result) => {
       if (result.isConfirmed) {
@@ -134,7 +146,6 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: "Eliminado!",
           text: "Se eliminó con exito el tipo",
-          confirmButtonColor: buttonColors.confirmationColor,
           icon: "success"
         });
       }

@@ -10,8 +10,8 @@ import { TypeId } from '../models/TypeId';
 })
 export class ThirdServiceConfigurationService {
 
-  private thirdApiUrl = environment.API_URL + 'thirds/configuration/'
-  //private thirdApiUrl = 'http://localhost:8080/api/thirds/configuration/'
+  //private thirdApiUrl = environment.API_URL + 'thirds/configuration/'
+  private thirdApiUrl = 'http://localhost:8081/api/thirds/configuration/'
 
   constructor(private http: HttpClient){
   }
@@ -44,6 +44,15 @@ export class ThirdServiceConfigurationService {
       catchError((error) => {
         console.error('Error occurred: ', error); // Log the error to the console
         return throwError(() => new Error('Error occurred while adding a hero')); // Rethrow the error as a new Observable error
+      })
+    );
+  }
+
+  deleteThird(entId: string): Observable<void> {
+    return this.http.delete<void>(`${this.thirdApiUrl}${entId}`).pipe(
+      catchError((error) => {
+        console.error('Error occurred: ', error); // Log the error to the console
+        return throwError(() => new Error('Error occurred while deleting the third type')); // Rethrow the error as a new Observable error
       })
     );
   }
