@@ -27,6 +27,7 @@ export class ProductDetailsModalComponent {
 
     cost: 0,
     state: '',
+    reference: '',
   };
 
   constructor(

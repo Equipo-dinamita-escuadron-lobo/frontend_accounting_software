@@ -34,4 +34,6 @@ export interface Product {
 
     cost: number;
     state: string;
+
+    reference: string;
   }

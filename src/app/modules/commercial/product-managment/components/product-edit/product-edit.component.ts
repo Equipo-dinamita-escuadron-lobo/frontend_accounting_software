@@ -47,7 +47,7 @@ export class ProductEditComponent implements OnInit {
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, Validators.required],
-      reference: ['']
+      reference: ['', Validators.required]
     }, { validators: quantityValidator });
   }
 
@@ -105,7 +105,7 @@ export class ProductEditComponent implements OnInit {
        // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         cost: [null, [Validators.required, Validators.min(0)]],
-        reference: ['']
+        reference: ['', Validators.required]
       });
     }
 
@@ -127,7 +127,7 @@ export class ProductEditComponent implements OnInit {
           //supplierId: product.supplierId,
           categoryId: product.categoryId,
           cost: product.cost,
-          reference: product.reference
+          reference: product.reference,
         });
       },
       error => {

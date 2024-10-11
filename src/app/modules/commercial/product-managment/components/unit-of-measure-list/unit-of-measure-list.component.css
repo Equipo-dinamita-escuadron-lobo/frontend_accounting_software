@@ -1,0 +1,67 @@
+.bg-blue-950 {
+    background-color: #1e3a8a !important;
+}
+  
+.custom-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px; /* Ajusta según sea necesario */
+    min-width: 56px; /* Ajusta según sea necesario */
+    border-radius: 12px;
+    background-color: #1e3a8a !important; /* Color de fondo */
+    color: white !important; /* Color del texto */
+    padding: 0 16px; /* Ajusta según sea necesario */
+    position: relative;
+}
+  
+.custom-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; /* Ajusta según sea necesario */
+    height: 24px; /* Ajusta según sea necesario */
+    border-radius: 50%;
+    background-color: white;
+    color: #1e3a8a; /* Color del icono */
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+.mat-flat-button {
+    background-color: #112566; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: 2px solid #172554; /* Color del borde */
+    border-radius: 12px; /* Bordes redondeados */
+} 
+
+.bold-text {
+    font-weight: bold;
+}
+  
+
+.button-flex-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+  
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+}
+  
+.view-button-container,
+.edit-button-container,
+.delete-button-container {
+display: flex;
+    justify-content: center;
+}
+  
+.mat-mini-fab {
+    border: 1px solid rgba(117, 221, 31, 0.12); /* Añade un borde a los botones */
+}
+  
+.mat-icon {
+    color: inherit; /* Asegúrate de que el color del icono herede el color del botón */
+}
+  

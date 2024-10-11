@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router'; // Importa Router desde '@angular/router'
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
@@ -17,28 +19,28 @@ import { ProductDetailsModalComponent } from '../product-details/product-details
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, AfterViewInit {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
   products: Product[] = []; // Inicializa la lista de productos
   unitOfMeasures: UnitOfMeasure[]= [];
   categories: Category[] = [];
 
-  columns: any[] = [
-    //{title: 'Id', data: 'id'},
-    { title: 'Nombres', data: 'itemType' },
-    { title: 'Descripción', data: 'description' },
-    { title: 'Costo', data: 'cost' },
-    { title: 'Cantidad', data: 'quantity' },
-    //{title:'max',data:'maxQuantity'},
-    //{title:'tax',data:'taxPercentage'},
-    //{title:'f creación',data:'creationDate'},
-    { title: 'Unidad', data: 'unitOfMeasure' },
-   // { title: 'Proveedor', data: 'supplier' },
-    { title: 'Categoría', data: 'category' },
-    { title: 'Acciones', data: 'actions' },
-  ];
+  displayedColumns: string[] = ['id', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'actions'];
+  dataSource = new MatTableDataSource<Product>(this.products);
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+  // Método para filtrar los productos
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  
   form: FormGroup;
 
   //variables para el doble clic
@@ -51,7 +53,8 @@ export class ProductListComponent implements OnInit {
     private categoryService: CategoryService,   
     private router: Router,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+        
   ) {
     this.form = this.fb.group(this.validationsAll());
   } // Inyecta el servicio ProductService en el constructor
@@ -75,6 +78,8 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts(this.entData).subscribe(
       (data: Product[]) => {
         this.products = data; // Asigna los productos obtenidos del servicio a la propiedad products
+        this.dataSource = new MatTableDataSource<Product>(this.products);
+        this.dataSource.paginator = this.paginator;
       },
       (error) => {
         console.log('Error al obtener los productos:', error);
@@ -207,6 +212,7 @@ export class ProductListComponent implements OnInit {
       enterpriseId: product?.enterpriseId,
       cost: product?.cost,
       state: product?.state,
+      reference: product?.reference, 
     };
 
     this.OpenPopUp(productList, 'Detalles del producto', ProductDetailsModalComponent);
