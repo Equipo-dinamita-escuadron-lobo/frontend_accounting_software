@@ -27,6 +27,8 @@ import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/lis
 import { CreateTaxComponent } from '../../commercial/taxes/components/create-tax/create-tax.component';
 import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edit-tax.component';
 
+import { HelpBoxComponent } from '../../../help-box/help-box.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -74,6 +76,10 @@ const routes: Routes = [
       {
         path: 'third-parties/create',
         component: ThirdCreationComponent
+      },
+      {
+        path: 'third-parties/create2',
+        component: HelpBoxComponent
       },
       {
         path: 'accounts',
