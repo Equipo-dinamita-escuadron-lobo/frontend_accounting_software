@@ -10,7 +10,8 @@ import { environment } from '../../../../../environments/environment';
 export class ThirdServiceService {
 
   private thirdApiUrl = environment.API_URL + 'thirds/'
-  //private thirdApiUrl = 'http://localhost:8080/api/thirds/'
+  //Cambiar para desarrollo local
+  //private thirdApiUrl = 'http://localhost:8081/api/thirds/'
 
   constructor(private http: HttpClient){
   }

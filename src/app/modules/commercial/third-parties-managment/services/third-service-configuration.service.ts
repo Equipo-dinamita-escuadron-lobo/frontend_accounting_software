@@ -9,9 +9,9 @@ import { TypeId } from '../models/TypeId';
   providedIn: 'root'
 })
 export class ThirdServiceConfigurationService {
-
   private thirdApiUrl = environment.API_URL + 'thirds/configuration/'
-  //private thirdApiUrl = 'http://localhost:8080/api/thirds/configuration/'
+  //cambiar para desarrollo local
+  //private thirdApiUrl = 'http://localhost:8081/api/thirds/configuration/'
 
   constructor(private http: HttpClient){
   }
