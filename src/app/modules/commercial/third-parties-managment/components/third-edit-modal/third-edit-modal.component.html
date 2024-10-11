@@ -19,30 +19,62 @@
             <img src="../../../../../../assets/Iconos/third-parties/third-partie-icon-default.png" alt="Icon" class="w-32 h-32 ">
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Tipo de identificación:</label>
-            <input type="text" formControlName="typeId" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Tipo Identificación *</p>
+                  <select formControlName="typeId"
+                    class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    (change)="onTypeIdChange($event)">
+                    <option value="" disabled selected>Seleccione un tipo de identificación</option>
+                    <option *ngFor="let typeId of typeIds" [value]="typeId.typeId">{{ typeId.typeIdname }}</option>
+                  </select>
+                  <div class="text-red-600"
+                    *ngIf="thirdForm.get('typeId')?.invalid && (thirdForm.get('typeId')?.dirty || thirdForm.get('typeId')?.touched)">
+                    El Tipo De Identificación Es Requerido
+                  </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Numero de identificación:</label>
-            <input type="text" formControlName="idNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Número Identificación *</p>
+                    <input formControlName="idNumber" type="number"
+                      class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Ingrese el número de identificación">
+                    <div class="text-red-600"
+                      *ngIf="thirdForm.get('idNumber')?.invalid && (thirdForm.get('idNumber')?.dirty || thirdForm.get('idNumber')?.touched)">
+                      El número de identificación es requerido
+                    </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Tipo de persona:</label>
-            <input type="text" formControlName="personType" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <label class="block text-gray-700 text-sm font-semibold mb-2" for="personType">Tipo Persona *</label>
+            <div class="flex space-x-4">
+              <app-check-button 
+                [isChecked]="thirdForm.get('personType')?.value === 'Juridica'" 
+                (isCheckedChange)="onCheckChange('Juridica')" 
+                texto="Jurídica" 
+                tailConfig="w-32">
+              </app-check-button>
+
+              <app-check-button 
+                [isChecked]="thirdForm.get('personType')?.value === 'Natural'" 
+                (isCheckedChange)="onCheckChange('Natural')" 
+                texto="Natural" 
+                tailConfig="w-32">
+              </app-check-button>
+            </div>
+            
+            <div class="text-red-600 mt-1"
+                 *ngIf="thirdForm.get('personType')?.invalid && (thirdForm.get('personType')?.dirty || thirdForm.get('personType')?.touched)">
+              El Tipo De Persona Es Requerido
+            </div>
           </div>
-          <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Tipos de Tercero:</label>
-            <input type="text" formControlName="thirdTypes" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-          </div>
-          <div  *ngIf="thirdData.personType === 'Natural'">
+          
+          
+          <div  *ngIf="thirdForm.get('personType')?.value === 'Natural'">
             <label class="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
             <input type="text" formControlName="names" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           </div>
-          <div  *ngIf="thirdData.personType === 'Natural'">
+          <div  *ngIf="thirdForm.get('personType')?.value === 'Natural'">
             <label class="block text-gray-700 text-sm font-bold mb-2">Apellidos:</label>
             <input type="text" formControlName="lastNames" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           </div>
-          <div  *ngIf="thirdData.personType === 'Juridica'">
+          <div  *ngIf="thirdForm.get('personType')?.value === 'Natural'">
             <label class="block text-gray-700 text-sm font-bold mb-2">Razón Social:</label>
             <input type="text" formControlName="socialReason" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           </div>
@@ -50,33 +82,95 @@
             <label class="block text-gray-700 text-sm font-bold mb-2">Número de verificación:</label>
             <input type="text" formControlName="verificationNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           </div>
-          <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Género:</label>
-            <input type="text" formControlName="gender" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <div *ngIf="thirdForm.get('personType')?.value !== 'Juridica'">
+            <p class="font-semibold">Género *</p>
+                    <select formControlName="gender"
+                      class="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      (change)="onTypeIdChange($event)">
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino" selected>Femenino</option>
+                      <option value="Otro">Otro</option>
+                    </select>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">País:</label>
-            <input type="text" formControlName="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">País *</p> 
+            <select (change)="onCountryChange($event)" formControlName="country"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="" disabled selected>Seleccione un país</option>
+              <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+            </select>
+            <div class="text-red-600"
+              *ngIf="thirdForm.get('country')?.invalid && (thirdForm.get('country')?.dirty || thirdForm.get('country')?.touched)">
+              El país es requerido
+            </div>            
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Provincia/Departamento:</label>
-            <input type="text" formControlName="province" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Departamento *</p>
+            <select (change)="onStateChange($event)" formControlName="province"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>Seleccione un departamento</option>
+            <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
+            </select>        
+            <div class="text-red-600"
+              *ngIf="thirdForm.get('province')?.invalid && (thirdForm.get('province')?.dirty || thirdForm.get('province')?.touched)">
+              El Departamento es requerido
+            </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Ciudad:</label>
-            <input type="text" formControlName="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Ciudad *</p>
+              <select formControlName="city"
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Seleccione una ciudad</option>
+                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+              </select>
+              <div class="text-red-600"
+                *ngIf="thirdForm.get('city')?.invalid && (thirdForm.get('city')?.dirty || thirdForm.get('city')?.touched)">
+                La Ciudad es requerida
+              </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Dirrección:</label>
-            <input type="text" formControlName="address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Dirección *</p>
+              <input formControlName="address" type="text"
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ingrese la dirección">
+              <div class="text-red-600"
+                *ngIf="thirdForm.get('address')?.invalid && (thirdForm.get('address')?.dirty || thirdForm.get('address')?.touched)">
+                La Dirección es requerida
+              </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Teléfono:</label>
-            <input type="text" formControlName="phoneNumber" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Celular *</p>
+              <input formControlName="phoneNumber" type="tel" 
+                pattern="^[0-9]*$" 
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ej: 3123456789" 
+                required>
+              
+              <div class="text-red-600"
+                *ngIf="thirdForm.get('phoneNumber')?.invalid && 
+                        (thirdForm.get('phoneNumber')?.dirty || thirdForm.get('phoneNumber')?.touched)">
+                <ng-container *ngIf="thirdForm.get('phoneNumber')?.errors?.['required']">
+                  El Teléfono Celular es Requerido
+                </ng-container>
+                <ng-container *ngIf="thirdForm.get('phoneNumber')?.errors?.['pattern']">
+                  Solo se permiten ingresar números en el Celular
+                </ng-container>
+              </div>
           </div>
           <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-            <input type="text" formControlName="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <p class="font-semibold">Correo *</p>
+              <input formControlName="email" type="email"
+                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="ejemplo@dominio.com">
+              <div class="text-red-600"
+                *ngIf="thirdForm.get('email')?.invalid && (thirdForm.get('email')?.dirty || thirdForm.get('email')?.touched)">
+                <ng-container *ngIf="thirdForm.get('email')?.errors?.['required']">
+                  El Correo es Requerido
+                </ng-container>
+                <ng-container *ngIf="thirdForm.get('email')?.errors?.['email']">
+                  Formato de Correo Incorrecto ( ejemplo&#64;dominio.com)
+                </ng-container>
+              </div>
           </div>
         </div>
       </form>
