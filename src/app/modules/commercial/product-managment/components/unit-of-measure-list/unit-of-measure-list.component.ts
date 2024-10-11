@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { UnitOfMeasure } from '../../models/UnitOfMeasure';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { error } from 'jquery';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { UnitOfMeasure } from '../../models/UnitOfMeasure';
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 
 @Component({
   selector: 'app-unit-of-measure-list',
@@ -16,13 +17,20 @@ export class UnitOfMeasureListComponent implements OnInit {
  unitOfMeasures: UnitOfMeasure[] = [];
  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
  entData: any | null = null;
-  columns: any[] = [
-    {title: 'Id', data: 'id'},
-    {title: 'Nombre', data: 'name'},
-    {title: 'Descripción', data: 'description'},
-    {title: 'Abreviatura', data: 'abbreviation'},
-    {title: 'Acciones', data: 'actions'}
-  ];
+
+  displayedColumns: string[] = ['id', 'name', 'description', 'abbreviation', 'actions'];
+  dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+  // Método para filtrar los productos
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   form: FormGroup;
 
@@ -52,6 +60,8 @@ export class UnitOfMeasureListComponent implements OnInit {
     this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (data: UnitOfMeasure[]) => {
         this.unitOfMeasures = data;
+        this.dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
+        this.dataSource.paginator = this.paginator;
       },
       error => {
         console.log('Erro al obtener las unidades de medida:', error);

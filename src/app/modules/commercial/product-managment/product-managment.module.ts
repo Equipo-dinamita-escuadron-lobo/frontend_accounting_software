@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from "../../../shared/shared.module";
 import { CategoryCreationComponent } from './components/category-creation/category-creation.component';
@@ -64,6 +66,9 @@ import { ProductManagmentRoutingModule } from './product-managment-routing.modul
         MatButtonModule,
         MatIconModule,
         MatDividerModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatPaginator,
     ]
 })
 export class ProductManagmentModule { }

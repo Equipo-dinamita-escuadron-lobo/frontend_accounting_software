@@ -1,12 +1,27 @@
+.bg-blue-950 {
+    background-color: #1e3a8a !important;
+}
+
+.mat-flat-button {
+    color: white; /* Color del texto */
+    border-radius: 12px; /* Bordes redondeados */
+} 
+
+.bold-text {
+    font-weight: bold;
+}
+  
+
 .button-flex-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
   
 .button-container {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    justify-content: center;
+    width: 100px;
 }
   
 .view-button-container,
@@ -16,7 +31,7 @@ display: flex;
     justify-content: center;
 }
   
-.mat-fab {
+.mat-mini-fab {
     border: 1px solid rgba(0, 0, 0, 0.12); /* Añade un borde a los botones */
 }
   

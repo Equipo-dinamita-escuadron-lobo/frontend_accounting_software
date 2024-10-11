@@ -45,17 +45,16 @@ export class ProductCreationComponent implements OnInit {
       id: [''], // 'id' es un string
       itemType: ['', [Validators.required]], // 'itemType' es un string
       description: ['', [Validators.required]], // 'description' es un string
-      minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
-      maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
+      quantity: [null, [Validators.required, Validators.min(0)]], // 'quantity' es un número
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]], // 'price' es un número
+      cost: [null, [Validators.required, Validators.min(0)]], // 'cost' es un número
       reference: [''], // referencia string
     }
-    ,{ validators: minMaxValidator });
+    ,{ validators: quantityValidator });
     if (this.entData) {
 
   this.initForm();
@@ -98,14 +97,13 @@ getUnitOfMeasures(): void {
       id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
       itemType: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      minQuantity: [null, [Validators.required, Validators.min(0)]],
-      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]],
+      cost: [null, [Validators.required, Validators.min(0)]],
       reference: [''] // Asigna el próximo ID al campo 'id'
     });
   }
@@ -119,23 +117,21 @@ getUnitOfMeasures(): void {
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida
-    const areNumberFieldsValid = formValue.minQuantity !== null && // Revisar que no sea null
-                                formValue.maxQuantity !== null && // Revisar que no sea null
-                                formValue.minQuantity >= 0 &&
-                                formValue.maxQuantity >= 0 &&
+    const areNumberFieldsValid = formValue.quantity !== null && // Revisar que no sea null
+                                formValue.quantity >= 0 &&
                                 formValue.taxPercentage !== null && // Revisar que no sea null
                                 formValue.taxPercentage >= 0 &&
                                 formValue.taxPercentage <= 100 &&
-                                formValue.price !== null && // Revisar que no sea null
-                                formValue.price >= 0;
+                                formValue.cost !== null && // Revisar que no sea null
+                                formValue.cost >= 0;
 
     // Verifica que la fecha de creación sea válida
     const isDateValid = formValue.creationDate && new Date(formValue.creationDate).toString() !== 'Invalid Date';
 
-    // Verifica que minQuantity sea menor que maxQuantity
-    const isMinMaxQuantityValid = formValue.minQuantity <= formValue.maxQuantity;
+    // Verifica que quantity sea menor que maxQuantity
+    //const isMinMaxQuantityValid = formValue.quantity <= formValue.maxQuantity;
 
-    return areTextFieldsValid && areNumberFieldsValid && isDateValid && isMinMaxQuantityValid;
+    return areTextFieldsValid && areNumberFieldsValid && isDateValid;
   }
 
   //Método para enviar el formulario y crear un nuevo producto
@@ -148,14 +144,14 @@ getUnitOfMeasures(): void {
     // Convertir supplierId a número si es una cadena
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.price = parseInt(formData.price, 10);
+    formData.cost = parseInt(formData.cost, 10);
 
     formData.enterpriseId = this.entData;
 
 
     this.productService.createProduct(formData).subscribe(
       (response: any) => {
-        // Mensaje de éxito con alert
+        // Mensaje de éxito con alerta
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado el producto con éxito!',
@@ -204,17 +200,17 @@ getUnitOfMeasures(): void {
   }
 
   //Método para formatear el precio
-  formatPrice(event: any) {
-    let priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedPrice = '';
-    if (priceInput !== '') {
+  formatcost(event: any) {
+    let costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedcost = '';
+    if (costInput !== '') {
       // Convertir el precio a número
-      const price = parseInt(priceInput, 10);
+      const cost = parseInt(costInput, 10);
       // Formatear el precio con separador de miles y decimales
-      formattedPrice = this.formatNumberWithCommas(price);
+      formattedcost = this.formatNumberWithCommas(cost);
     }
     // Establecer el valor formateado en el campo de precio del formulario
-    this.productForm.get('price')?.setValue(formattedPrice);
+    this.productForm.get('cost')?.setValue(formattedcost);
   }
 
   // Función para formatear un número con separadores de miles
@@ -231,10 +227,9 @@ getUnitOfMeasures(): void {
 }
 
   // Funcion para validar que el maximo y minimo tengan valores coherentes
-  function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-    const min = group.controls['minQuantity'].value;
-    const max = group.controls['maxQuantity'].value;
-    return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
+  function quantityValidator(group: FormGroup): { [key: string]: any } | null {
+    const quantity = group.controls['quantity'].value;
+    return quantity !== null ? null : { 'quantityInvalid': true };
   }
 
 

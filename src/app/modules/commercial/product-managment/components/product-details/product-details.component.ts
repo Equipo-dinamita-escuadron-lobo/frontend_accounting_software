@@ -15,8 +15,7 @@ export class ProductDetailsModalComponent {
     id: '',
     itemType: '',
     description: '',
-    minQuantity: 0,
-    maxQuantity: 0,
+    quantity: 0,
     taxPercentage: 0,
     creationDate: new Date(),
 
@@ -26,8 +25,9 @@ export class ProductDetailsModalComponent {
 
     enterpriseId: '',
 
-    price: 0,
+    cost: 0,
     state: '',
+    reference: '',
   };
 
   constructor(

@@ -40,16 +40,15 @@ export class ProductEditComponent implements OnInit {
     this.editForm = this.formBuilder.group({
       itemType: ['', Validators.required],
       description: ['', Validators.required],
-      minQuantity: [null, [Validators.required, Validators.min(0)]],
-      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [null, Validators.required],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, Validators.required],
-      reference: ['']
-    }, { validators: minMaxValidator });
+      cost: [null, Validators.required],
+      reference: ['', Validators.required]
+    }, { validators: quantityValidator });
   }
 
   ngOnInit(): void {
@@ -99,15 +98,14 @@ export class ProductEditComponent implements OnInit {
         id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
         itemType: ['', [Validators.required]],
         description: ['', [Validators.required]],
-        minQuantity: [null, [Validators.required, Validators.min(0)]],
-        maxQuantity: [null, [Validators.required, Validators.min(0)]],
+        quantity: [null, [Validators.required, Validators.min(0)]],
         taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
         creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
        // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-        price: [null, [Validators.required, Validators.min(0)]],
-        reference: ['']
+        cost: [null, [Validators.required, Validators.min(0)]],
+        reference: ['', Validators.required]
       });
     }
 
@@ -122,15 +120,14 @@ export class ProductEditComponent implements OnInit {
         this.editForm.patchValue({
           itemType: product.itemType,
           description: product.description,
-          minQuantity: product.minQuantity,
-          maxQuantity: product.maxQuantity,
+          quantity: product.quantity,
           taxPercentage: product.taxPercentage,
           creationDate: product.creationDate,
           unitOfMeasureId: product.unitOfMeasureId,
           //supplierId: product.supplierId,
           categoryId: product.categoryId,
-          price: product.price,
-          reference: product.reference
+          cost: product.cost,
+          reference: product.reference,
         });
       },
       error => {
@@ -186,16 +183,16 @@ export class ProductEditComponent implements OnInit {
   }
 
   //Metodo para formatear el precio
-  formatPrice(event: any) {
-    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedPrice = '';
-    if (priceInput !== '') {
+  formatcost(event: any) {
+    const costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedcost = '';
+    if (costInput !== '') {
       // Convertir el precio a número
-      const price = parseInt(priceInput, 10);
+      const cost = parseInt(costInput, 10);
       // Formatear el precio con separador de miles y decimales
-      formattedPrice = this.formatNumberWithCommas(price);
+      formattedcost = this.formatNumberWithCommas(cost);
     }
-    this.editForm.get('price')?.setValue(formattedPrice);
+    this.editForm.get('cost')?.setValue(formattedcost);
   }
 
   // Función para formatear un número con separadores de miles
@@ -212,8 +209,8 @@ export class ProductEditComponent implements OnInit {
 }
 
 // Función para validar que el maximo y minimo tengan valores coherentes
-function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-  const min = group.controls['minQuantity'].value;
-  const max = group.controls['maxQuantity'].value;
-  return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
+function quantityValidator(group: FormGroup): { [key: string]: any } | null {
+  const quantity = group.controls['quantity'].value;
+  //const max = group.controls['maxQuantity'].value;
+  return quantity !== null ? null : { 'quantityInvalid': true };
 }

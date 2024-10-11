@@ -81,28 +81,28 @@
               </div>
               <div>
                 <label
-                  for="minQuantity"
+                  for="quantity"
                   class="block text-sm font-medium text-gray-700"
-                  >Cantidad Mínima:</label
+                  >Cantidad:</label
                 >
                 <input
                   type="number"
-                  formControlName="minQuantity"
-                  id="minQuantity"
+                  formControlName="quantity"
+                  id="quantity"
                   min="0"
                   placeholder="Ej: 1"
                   class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
-                <div [ *ngIf ="productForm.get('minQuantity')?.touched && productForm.get('minQuantity')?.errors" class="text-red-500" ]></div>
-                  <div [ *ngIf="productForm.get('minQuantity')?.errors?.['required']"] >
-                    El campo Cantidad Mínima es requerido.
+                <div [ *ngIf ="productForm.get('quantity')?.touched && productForm.get('quantity')?.errors" class="text-red-500" ]></div>
+                  <div [ *ngIf="productForm.get('quantity')?.errors?.['required']"] >
+                    El campo Cantidad es requerido.
                   </div>
-                  <div *ngIf="productForm.get('minQuantity')?.errors?.['min']">
-                    La Cantidad Mínima no puede ser negativa.
+                  <div *ngIf="productForm.get('quantity')?.errors?.['min']">
+                    La Cantidad no puede ser negativa.
                   </div>
                 </div>
               </div>
-              <div>
+        <!--      <div>
                 <label
                   for="maxQuantity"
                   class="block text-sm font-medium text-gray-700"
@@ -125,14 +125,14 @@
                   </div>     
                 </div>
 
-                <div *ngIf="productForm.get('maxQuantity')?.touched || productForm.get('minQuantity')?.touched  " class="text-red-500">
-                  <div *ngIf="+productForm.get('maxQuantity')?.value < +productForm.get('minQuantity')?.value || productForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
+                <div *ngIf="productForm.get('maxQuantity')?.touched || productForm.get('quantity')?.touched  " class="text-red-500">
+                  <div *ngIf="+productForm.get('maxQuantity')?.value < +productForm.get('quantity')?.value || productForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
                     La cantidad máxima debe ser mayor que la cantidad mínima.
                   </div>
                   </div>
 
               </div>
-
+-->
               <div>
                 <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
                 <input
@@ -162,51 +162,7 @@
               <label for="unitOfMeasureId" class="block text-sm font-medium text-gray-700">Unidad de Medida:</label>
               <select formControlName="unitOfMeasureId" id="unitOfMeasureId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="">Selecciona una unidad de medida</option>
-                <!-- Unidad general -->
-                <option value="U">Unidad General</option>
-                <!-- Unidades de peso -->
-                <option value="kg">Kilogramos</option>
-                <option value="g">Gramos</option>
-                <option value="mg">Miligramos</option>
-                <option value="lb">Libras</option>
-                <option value="oz">Onzas</option>
-                
-                <!-- Unidades de volumen -->
-                <option value="l">Litros</option>
-                <option value="ml">Mililitros</option>
-                <option value="m3">Metros cúbicos</option>
-                <option value="cm3">Centímetros cúbicos</option>
-                <option value="gal">Galones</option>
-                <option value="fl_oz">Onzas fluidas</option>
-                
-                <!-- Unidades de distancia lineal -->
-                <option value="m">Metros</option>
-                <option value="cm">Centímetros</option>
-                <option value="mm">Milímetros</option>
-                <option value="km">Kilómetros</option>
-                <option value="in">Pulgadas</option>
-                <option value="ft">Pies</option>
-                <option value="yd">Yardas</option>
-                <option value="mi">Millas</option>
-                
-                <!-- Unidades de área -->
-                <option value="m2">Metros cuadrados</option>
-                <option value="cm2">Centímetros cuadrados</option>
-                <option value="km2">Kilómetros cuadrados</option>
-                <option value="in2">Pulgadas cuadradas</option>
-                <option value="ft2">Pies cuadrados</option>
-                <option value="yd2">Yardas cuadradas</option>
-                <option value="mi2">Millas cuadradas</option>
-                
-                <!-- Unidades de volumen (cúbicas) -->
-                <option value="m3">Metros cúbicos</option>
-                <option value="cm3">Centímetros cúbicos</option>
-                <option value="km3">Kilómetros cúbicos</option>
-                <option value="in3">Pulgadas cúbicas</option>
-                <option value="ft3">Pies cúbicos</option>
-                <option value="yd3">Yardas cúbicas</option>
-                <option value="mi3">Millas cúbicas</option>
-                  <option *ngFor="let unit of unitOfMeasures" [value]=unit.id>{{ unit.name }}</option>
+                <option *ngFor="let unit of unitOfMeasures" [value]=unit.id>{{ unit.name }}</option>
               </select>
               <div *ngIf="productForm.get('unitOfMeasureId')?.touched && productForm.get('unitOfMeasureId')?.invalid" class="text-red-500">
                   <div *ngIf="productForm.get('unitOfMeasureId')?.errors?.['required']">
@@ -233,25 +189,25 @@
           </div>
 
               <div>
-                <label for="price" class="block text-sm font-medium text-gray-700">Precio:</label>
+                <label for="cost" class="block text-sm font-medium text-gray-700">Costo:</label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-700">
                         $
                     </span>
                     <input
                         type="text"
-                        formControlName="price"
-                        id="price"
+                        formControlName="cost"
+                        id="cost"
                         min="0"
                         placeholder="Ej: 12.000"
                         class="pl-8 pr-1 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         inputmode="numeric"
-                        (input)="formatPrice($event)"
+                        (input)="formatcost($event)"
                     />
                 </div>
-                <div *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid" class="text-red-500">
-                    <div *ngIf="productForm.get('price')?.errors?.['required']">
-                        El campo Precio es requerido 
+                <div *ngIf="productForm.get('cost')?.touched && productForm.get('cost')?.invalid" class="text-red-500">
+                    <div *ngIf="productForm.get('cost')?.errors?.['required']">
+                        El campo Costo es requerido 
                     </div>
                 </div>
             </div>
