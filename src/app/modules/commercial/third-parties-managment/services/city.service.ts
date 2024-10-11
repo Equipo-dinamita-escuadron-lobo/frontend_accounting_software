@@ -26,6 +26,7 @@ export class CityService {
 
   getListCitiesByDepartment(id: number): Observable<City> {
     const url = `${this.apiUrl}/${id}`;
+    console.log('Datos de ', url);
     return this.http.get<City>(url);
   }
 
