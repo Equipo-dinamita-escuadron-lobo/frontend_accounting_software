@@ -22,20 +22,17 @@ export class ThirdsListComponent{
 
   data: Third[] = [];
   columnsBrief: any[] = [
-    { title: 'Tipo Persona', data: 'personType'},
-    { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
+    { title: 'Tipo(s)', data: 'thirdTypes'},
     { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
-    { title: 'Número de verificación'},
     { title: 'Correo', data: 'email' },
     { title: 'Estado', data: 'state' },
     { title: 'Acciones'}
   ];
 
   columnsComplete: any[] = [
-    { title: 'Tipo Persona', data: 'personType'},
-    { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
+    { title: 'Tipo(s)', data: 'thirdTypes'},
     { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
@@ -76,7 +73,6 @@ export class ThirdsListComponent{
       this.thirdService.getThirdParties(this.entData,0).subscribe({
         next: (response: Third[])=>{
           this.data = response;
-          console.log(response);
         },
         error: (error) => {
           console.log(error)

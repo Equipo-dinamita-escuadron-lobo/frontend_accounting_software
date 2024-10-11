@@ -10,9 +10,6 @@ import { FilterList } from './pipes/filter.pipe';
 import { ThirdEditModalComponent } from './components/third-edit-modal/third-edit-modal.component';
 import { ThirdDetailsModalComponent } from './components/third-details-modal/third-details-modal.component';
 import { ThirdConfigModalComponent } from './components/third-config-modal/third-config-modal.component';
-
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxDropzoneModule } from 'ngx-dropzone';
 @NgModule({
   declarations: [
     ThirdsListComponent,
@@ -27,9 +24,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ThirdPartiesManagmentRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    FormsModule,
-    NgSelectModule,
-    NgxDropzoneModule
+    FormsModule
   ]
 })
 export class ThirdPartiesManagmentModule { }

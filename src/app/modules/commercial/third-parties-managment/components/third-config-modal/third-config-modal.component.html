@@ -25,7 +25,7 @@
                 </button>
               </li>
               <li *ngIf="showInputTypeId" class="bg-white my-2 mx-auto rounded-lg shadow flex items-center p-2 w-full max-w-sm">
-                <input type="text" [(ngModel)]="newIdentificatioName" class="form-input flex-1 text-gray-800 text-lg pr-2" placeholder="Nueva identificación">
+                <input type="text" [(ngModel)]="newItemName" class="form-input flex-1 text-gray-800 text-lg pr-2" placeholder="Nueva identificación">
                 <div>
                   <button (click)="addTypeId(typesId)" class="bg-green-500 text-white p-2 mr-1 rounded">✓</button>
                   <button (click)="cancelAddTypeId()" class="bg-red-500 text-white p-2 rounded">✗</button>
@@ -51,7 +51,7 @@
                 </button>
               </li>
               <li *ngIf="showInputThirdType" class="bg-white my-2 mx-auto rounded-lg shadow flex items-center p-2 w-full max-w-sm">
-                <input type="text" [(ngModel)]="newThirdTypeName" class="form-input flex-1 text-gray-800 text-lg pr-2" placeholder="Nuevo tipo de tercero">
+                <input type="text" [(ngModel)]="newItemName" class="form-input flex-1 text-gray-800 text-lg pr-2" placeholder="Nuevo tipo de tercero">
                 <div>
                   <button (click)="addThirdType(thirdTypes)" class="bg-green-500 text-white p-2 mr-1 rounded">✓</button>
                   <button (click)="cancelAddThirdType()" class="bg-red-500 text-white p-2 rounded">✗</button>

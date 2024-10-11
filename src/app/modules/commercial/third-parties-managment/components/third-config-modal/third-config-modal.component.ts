@@ -20,10 +20,7 @@ export class ThirdConfigModalComponent {
   entData: any | null = null;
   showInputThirdType = false;
   showInputTypeId = false;
-
-  //Se agregaron 2 nuevas propiedades(newIdentificatioName newThirdTypeName) para evitar que se dupliquen los datos en los campos de Tipo de Identificacion y Tipo de Tercero
-  newIdentificatioName = '';
-  newThirdTypeName = '';
+  newItemName = '';
 
   typesId: TypeId[] = []
   thirdTypes: ThirdType[] = [];
@@ -71,79 +68,54 @@ export class ThirdConfigModalComponent {
     });
   }
 
-   //correccion HU-1.1
-   //Al momento de crear un nuevo Tipo de identificacion se muestra un mensaje en pantalla
-   //Se actualiza la tabla donde se muestran todos los tipos de identifiacion registrados en el sistema
   addTypeId(items:any) {
-    console.log(this.newIdentificatioName)
+    console.log(this.newItemName)
     let sendTypeId: TypeId = {
     entId: this.entData,
-    typeId: this.newIdentificatioName,
-    typeIdname: this.newIdentificatioName};
+    typeId: this.newItemName,
+    typeIdname: this.newItemName};
     this.thirdServiceConfiguration.createTypeId(sendTypeId).subscribe({
       next: (response) => {
-        this.typesId.push(response);
-        this.newIdentificatioName = '';
-        this.showInputTypeId = false;
-        Swal.fire({
-          title: 'Éxito!',
-          text: 'Tipo de identificación agregado con éxito',
-          icon: 'success'
-        });
+        // Handle the successful response here
+        console.log('Success:', response);
       },
       error: (error) => {
+        // Handle any errors here
         console.error('Error:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Hubo un error al agregar el Tipo de Identifiacion',
-          icon: 'error'
-        });
+        // Mensaje de éxito con alert
       },
     });
 
   }
 
-
-  //correccion HU-1.2
-  //Al momento de crear un nuevo Tipo de Tercero se muestra un mensaje en pantalla
-  //Se actualiza la tabla donde se muestran todos los tipos de Terceros registrados en el sistema
   addThirdType(items:any) {
-    console.log(this.newThirdTypeName)
+    console.log(this.newItemName)
     let sendTypeId: ThirdType = {
     entId: this.entData,
     thirdTypeId: Math.floor(Math.random() * 1001),
-    thirdTypeName: this.newThirdTypeName};
+    thirdTypeName: this.newItemName};
     console.log(sendTypeId)
     this.thirdServiceConfiguration.createThirdType(sendTypeId).subscribe({
       next: (response) => {
-        this.thirdTypes.push(response);
-        this.newThirdTypeName = '';
-        this.showInputThirdType = false;
-        Swal.fire({
-          title: 'Éxito!',
-          text: 'Tipo de tercero agregado con exito',
-          icon: 'success'
-        });
+        // Handle the successful response here
+        console.log('Success:', response);
       },
       error: (error) => {
+        // Handle any errors here
         console.error('Error:', error);
-        Swal.fire({
-          title: 'Error!',
-          text: 'Hubo un error al agregar el Tipo de Tercero',
-          icon: 'error'
-        });
+        // Mensaje de éxito con alert
       },
     });
 
   }
 
   cancelAddThirdType() {
-    this.newThirdTypeName = '';
+    this.newItemName = '';
     this.showInputThirdType = false;
   }
 
   cancelAddTypeId() {
-    this.newIdentificatioName = '';
+    this.newItemName = '';
     this.showInputTypeId = false;
   }
 
