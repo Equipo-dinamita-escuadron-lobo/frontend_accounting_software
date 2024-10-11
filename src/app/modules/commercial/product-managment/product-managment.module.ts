@@ -17,8 +17,21 @@ import { UnitOfMeasureCreationComponent } from './components/unit-of-measure-cre
 import { UnitOfMeasureEditComponent } from './components/unit-of-measure-edit/unit-of-measure-edit.component';
 import { ProductDetailsModalComponent } from './components/product-details/product-details.component';
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
+import { ProductTypeCreationComponent } from './components/product-type-creation/product-type-creation.component';
+import { ProductTypeEditComponent } from './components/product-type-edit/product-type-edit.component';
+import { ProductTypeListComponent } from './components/product-type-list/product-type-list.component';
 import { FilterAccountPipe } from './pipes/filter-account.pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+
+
 
 @NgModule({
     declarations: [
@@ -36,6 +49,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
         UnitOfMeasureEditComponent,
         ProductDetailsModalComponent,
         CategoryDetailsComponent,
+        ProductTypeCreationComponent,
+        ProductTypeEditComponent,
+        ProductTypeListComponent,
         FilterAccountPipe
     ],
     exports: [
@@ -57,6 +73,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
         ProductManagmentRoutingModule,
         SharedModule,
         FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        MatTableModule,
         NgSelectModule  
     ]
 })
