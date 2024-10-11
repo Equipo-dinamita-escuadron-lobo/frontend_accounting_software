@@ -101,6 +101,9 @@ export class InvoiceCreationComponent implements OnInit {
   createSupplier() {
     this.router.navigate(['/general/operations/third-parties/create']);
   }
+  createSupplier2() {
+    this.router.navigate(['/general/operations/third-parties/create2']);
+  }
 
   showSectionThridM() {
     this.showSectionThrid = !this.showSectionThrid;

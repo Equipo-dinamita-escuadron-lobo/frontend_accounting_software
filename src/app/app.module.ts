@@ -17,10 +17,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HelpBoxComponent } from './help-box/help-box.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HelpBoxComponent,
   ],
   imports: [
     SharedModule,
