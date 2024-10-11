@@ -7,25 +7,19 @@ import { EditTaxComponent } from './components/edit-tax/edit-tax.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartAccountsModule } from '../chart-accounts/chart-accounts.module';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     CreateTaxComponent,
     ListTaxComponent,
-    EditTaxComponent,
+    EditTaxComponent
   ],
   imports: [
     CommonModule,
     TaxesRoutingModule,
     ReactiveFormsModule,
     ChartAccountsModule,
-    NgSelectModule,
-    MatFormFieldModule,  
-    MatInputModule,     
-    MatTooltipModule,    
+    NgSelectModule
   ]
 })
 export class TaxesModule { }

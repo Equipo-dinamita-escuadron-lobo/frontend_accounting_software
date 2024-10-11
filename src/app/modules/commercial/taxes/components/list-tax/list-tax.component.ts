@@ -24,7 +24,7 @@ export class ListTaxComponent implements OnInit {
   columns: any[] = [
     { title: 'Código', data: 'code' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Tarifa', data: 'interest' },
+    { title: 'Interés', data: 'interest' },
     { title: 'Cuenta', data: 'depositAccount' },
     { title: 'Cuenta Devolución', data: 'refundAccount' },
     { title: 'Acciones', data: 'actions' }
