@@ -27,7 +27,7 @@ export class ThirdsListComponent{
     { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
-    { title: 'Número de verificación'},
+    { title: 'Digito de verificación'},
     { title: 'Correo', data: 'email' },
     { title: 'Estado', data: 'state' },
     { title: 'Acciones'}
@@ -39,7 +39,7 @@ export class ThirdsListComponent{
     { title: 'Nombre/Razón Social', data: 'socialReason' },
     { title: 'Tipo Id', data: 'typeId' },
     { title: 'Número de Documento'},
-    { title: 'Número de verificación', data: 'verificationNumber' },
+    { title: 'Digito de verificación', data: 'verificationNumber' },
     { title: 'Correo', data: 'email' },
     { title: 'País', data: 'country' },
     { title: 'Departamento', data: 'province' },
