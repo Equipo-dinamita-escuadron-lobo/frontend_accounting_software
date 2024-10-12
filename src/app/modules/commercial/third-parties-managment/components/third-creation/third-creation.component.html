@@ -7,20 +7,17 @@
           Ingrese la información requerida para crear un nuevo Tercero:
         </p>
       </div>
-      <form (submit)="OnSubmit()" [formGroup]="createdThirdForm" class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
+      <form (submit)="OnSubmit()" [formGroup]="createdThirdForm"
+        class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div class="mb-5">
               <label class="block text-gray-700 text-sm font-semibold mb-2" for="thirdTypes">Tipo Terceros *</label>
               <div>
-                <ng-select [items]="thirdTypes"
-                           bindLabel="thirdTypeName"
-                           [multiple]="true"
-                           [clearable]="false"
-                           [placeholder]="'Seleccione tipos de terceros'"
-                           formControlName="thirdTypes"
-                           class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
-                           (change)="onThirdTypeSelect($event)">
+                <ng-select [items]="thirdTypes" bindLabel="thirdTypeName" [multiple]="true" [clearable]="false"
+                  [placeholder]="'Seleccione tipos de terceros'" formControlName="thirdTypes"
+                  class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
+                  (change)="onThirdTypeSelect($event)">
                   <ng-template ng-option-tmp let-item="item">
                     <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
                       {{ item.thirdTypeName }}
@@ -28,13 +25,13 @@
                   </ng-template>
                 </ng-select>
                 <div class="text-red-600"
-                *ngIf="(submitted || createdThirdForm.get('thirdTypes')?.touched) && createdThirdForm.get('thirdTypes')?.invalid">
-                <ng-container *ngIf="createdThirdForm.get('thirdTypes')?.errors?.['required']">
-                  Seleccione al menos un Tipo de Tercero
-                </ng-container>
+                  *ngIf="(submitted || createdThirdForm.get('thirdTypes')?.touched) && createdThirdForm.get('thirdTypes')?.invalid">
+                  <ng-container *ngIf="createdThirdForm.get('thirdTypes')?.errors?.['required']">
+                    Seleccione al menos un Tipo de Tercero
+                  </ng-container>
+                </div>
               </div>
-              </div>
-              
+
             </div>
           </div>
 
@@ -48,11 +45,11 @@
                   formControlName="personType" value="Natural" texto="Natural" tailConfig="w-32"></app-check-button>
               </div>
               <div class="text-red-600"
-              *ngIf="(submitted || createdThirdForm.get('personType')?.touched) && createdThirdForm.get('personType')?.invalid">
-              <ng-container *ngIf="createdThirdForm.get('personType')?.errors?.['required']">
-                Seleccione un Tipo de Persona (Juridica o Natural)
-              </ng-container>
-            </div>
+                *ngIf="(submitted || createdThirdForm.get('personType')?.touched) && createdThirdForm.get('personType')?.invalid">
+                <ng-container *ngIf="createdThirdForm.get('personType')?.errors?.['required']">
+                  Seleccione un Tipo de Persona (Juridica o Natural)
+                </ng-container>
+              </div>
             </div>
           </div>
 
@@ -65,24 +62,26 @@
                   <input formControlName="names" type="text"
                     class="mb-1 w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingre su Nombre">
-                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('names')?.touched) && createdThirdForm.get('names')?.invalid">
-                      <ng-container *ngIf="createdThirdForm.get('names')?.errors?.['required']">
-                        Ingrese un Nombre
-                      </ng-container>
-                    </div>
+                  <div class="text-red-600"
+                    *ngIf="(submitted || createdThirdForm.get('names')?.touched) && createdThirdForm.get('names')?.invalid">
+                    <ng-container *ngIf="createdThirdForm.get('names')?.errors?.['required']">
+                      Ingrese un Nombre
+                    </ng-container>
+                  </div>
                 </div>
                 <div class="space-y-4">
                   <p class="font-semibold">Apellidos *</p>
                   <input formControlName="lastNames" type="text"
                     class="w-full mb-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingrese sus apellidos" />
-                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('lastNames')?.touched) && createdThirdForm.get('lastNames')?.invalid">
-                      <ng-container *ngIf="createdThirdForm.get('lastNames')?.errors?.['required']">
-                        Ingrese un Apellido
-                      </ng-container>
-                    </div>
+                  <div class="text-red-600"
+                    *ngIf="(submitted || createdThirdForm.get('lastNames')?.touched) && createdThirdForm.get('lastNames')?.invalid">
+                    <ng-container *ngIf="createdThirdForm.get('lastNames')?.errors?.['required']">
+                      Ingrese un Apellido
+                    </ng-container>
+                  </div>
                 </div>
-              
+
               </div>
               <div *ngIf="button1Checked" class="space-y-4">
                 <div class="space-y-4 m-1">
@@ -90,16 +89,17 @@
                   <input formControlName="socialReason" type="text"
                     class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Ingrese Razon Social">
-                    <div class="text-red-600" *ngIf="(submitted || createdThirdForm.get('socialReason')?.touched) && createdThirdForm.get('socialReason')?.invalid">
-                      <ng-container *ngIf="createdThirdForm.get('socialReason')?.errors?.['required']">
-                        Ingrese una Razon Social
-                      </ng-container>
-                    </div>
+                  <div class="text-red-600"
+                    *ngIf="(submitted || createdThirdForm.get('socialReason')?.touched) && createdThirdForm.get('socialReason')?.invalid">
+                    <ng-container *ngIf="createdThirdForm.get('socialReason')?.errors?.['required']">
+                      Ingrese una Razon Social
+                    </ng-container>
+                  </div>
                 </div>
               </div>
 
               <div class="space-y-4">
-                
+
                 <!-- Agregamos un nuevo estado Activo e Inactivo-->
                 <p class="font-semibold">Estado *</p>
                 <div class="flex gap-4">
@@ -115,11 +115,11 @@
                   </label>
                 </div>
                 <div class="text-red-600"
-                *ngIf="(submitted || createdThirdForm.get('state')?.touched) && createdThirdForm.get('state')?.invalid">
-                <ng-container *ngIf="createdThirdForm.get('state')?.errors?.['required']">
-                  Seleccione un estado (Activo o Inactivo)
-                </ng-container>
-              </div>
+                  *ngIf="(submitted || createdThirdForm.get('state')?.touched) && createdThirdForm.get('state')?.invalid">
+                  <ng-container *ngIf="createdThirdForm.get('state')?.errors?.['required']">
+                    Seleccione un estado (Activo o Inactivo)
+                  </ng-container>
+                </div>
 
                 <!--Solo se muestra el genero cuando se selecciona un tipo de Persona Natural-->
                 <div class="grid grid-cols-2 gap-4">
@@ -160,7 +160,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="space-y-4">
                 <form [formGroup]="createdThirdForm">
                   <div>
@@ -169,15 +169,17 @@
                       class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Ingrese el número de identificación">
                     <div class="text-red-600"
-                      *ngIf="(submitted || createdThirdForm.get('idNumber')?.touched) && createdThirdForm.get('idNumber')?.invalid">
-                      <ng-container *ngIf="createdThirdForm.get('idNumber')?.errors?.['required']">
-                        El número de identificación es requerido
-                      </ng-container>
+                      *ngIf="createdThirdForm.get('idNumber')?.hasError('required') && (createdThirdForm.get('idNumber')?.dirty || createdThirdForm.get('idNumber')?.touched)">
+                      El número de identificación es requerido
+                    </div>
+                    <div class="text-red-600"
+                      *ngIf="!createdThirdForm.get('idNumber')?.hasError('notUnique') && (createdThirdForm.get('idNumber')?.dirty || createdThirdForm.get('idNumber')?.touched)">
+                      El ID ya está en uso. 
                     </div>
                   </div>
                   
-                
-                
+
+
                   <div *ngIf="createdThirdForm.get('verificationNumber')?.enabled" class="space-y-2">
                     <p class="font-semibold">Dígito Verificación</p>
                     <input formControlName="verificationNumber" type="number"
@@ -208,7 +210,7 @@
                 </ng-container>
               </div>
             </div>
-          
+
 
             <div class="space-y-2">
               <p class="font-semibold">Departamento *</p>
@@ -224,7 +226,7 @@
                 </ng-container>
               </div>
             </div>
-          
+
 
             <div class="space-y-2">
               <p class="font-semibold">Ciudad *</p>
@@ -234,13 +236,13 @@
                 <option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</option>
               </select>
               <div class="text-red-600"
-              *ngIf="(submitted || createdThirdForm.get('city')?.touched) && createdThirdForm.get('city')?.invalid">
-              <ng-container *ngIf="createdThirdForm.get('city')?.errors?.['required']">
-                Seleccione una ciudad
-              </ng-container>
+                *ngIf="(submitted || createdThirdForm.get('city')?.touched) && createdThirdForm.get('city')?.invalid">
+                <ng-container *ngIf="createdThirdForm.get('city')?.errors?.['required']">
+                  Seleccione una ciudad
+                </ng-container>
+              </div>
             </div>
-            </div>
-          
+
           </div>
 
           <div class="space-y-4">
@@ -250,14 +252,14 @@
               <input formControlName="address" type="text"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ingrese la dirección">
-                <div class="text-red-600"
+              <div class="text-red-600"
                 *ngIf="(submitted || createdThirdForm.get('address')?.touched) && createdThirdForm.get('address')?.invalid">
                 <ng-container *ngIf="createdThirdForm.get('address')?.errors?.['required']">
                   Ingrese una Direccion
                 </ng-container>
               </div>
             </div>
-          
+
 
             <div class="space-y-2">
               <p class="font-semibold">Correo *</p>
@@ -274,16 +276,14 @@
                 </ng-container>
               </div>
             </div>
-            
-          
+
+
             <div class="space-y-2">
               <p class="font-semibold">Celular *</p>
-              <input formControlName="phoneNumber" type="tel" 
-                pattern="^[0-9]*$" 
+              <input formControlName="phoneNumber" type="tel" pattern="^[0-9]*$"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Ej: 3123456789" 
-                required>
-              
+                placeholder="Ej: 3123456789" required>
+
               <div class="text-red-600"
                 *ngIf="(submitted || createdThirdForm.get('phoneNumber')?.touched) && createdThirdForm.get('phoneNumber')?.invalid">
                 <ng-container *ngIf="createdThirdForm.get('phoneNumber')?.errors?.['required']">
@@ -294,6 +294,7 @@
                 </ng-container>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -302,7 +303,7 @@
             class="py-2 px-4 mr-1 bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white font-bold rounded-lg text-lg cursor-pointer">
             Cancelar
           </a>
-            <button type="submit"
+          <button type="submit"
             class="py-2 px-4 ml-1 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 text-white font-bold rounded-lg text-lg">
             Crear
           </button>
@@ -311,5 +312,3 @@
     </div>
   </div>
 </div>
-
-

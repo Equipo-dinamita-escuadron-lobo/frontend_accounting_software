@@ -104,6 +104,26 @@ export class ThirdsListComponent{
   openConfigTPModal():void{
     this.openPopUp(0, 'Configuración de Terceros',ThirdConfigModalComponent)
   }
+  deleteThird(thId: number): void {
+    this.thirdService.deleteThird(thId).subscribe({
+      next: (response) => {
+        console.log('Tercero eliminado exitosamente', response);
+        Swal.fire({
+          title: 'Eliminación exitosa!',
+          text: 'El Tercero ha sido eliminado con éxito!',
+          icon: 'success',
+        });
+      },
+      error: (error) => {
+        console.error('Error al eliminar el Tercero', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error al eliminar el Tercero!',
+          icon: 'error',
+        });
+      }
+    });
+  }
 
   changeThirdPartieState(thId:number):void{
     this.thirdService.changeThirdPartieState(thId).subscribe({

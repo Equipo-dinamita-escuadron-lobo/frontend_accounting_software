@@ -14,6 +14,10 @@ export class ThirdService {
   getThirdParties(): Observable<Third[]> {
     return this.http.get<Third[]>(this.apiUrl);
   }
+  getThirdByID(id: String):Observable<Third>{
+    const url = `${this.apiUrl}third/${id}`;
+    return this.http.get<Third>(url);
+  }
 
   // Aquí podrías añadir más métodos para manejar terceros, como agregar, editar, eliminar, etc.
 }
