@@ -1,4 +1,16 @@
-.force-display-flex {
-    display: flex !important;
-  }
-  
+/* styles.css */
+.button-custom {
+    display: flex; /* Este es el equivalente a "flex" en tu HTML */
+    justify-content: center; /* Este es el equivalente a "justify-center" */
+    align-items: center; /* Este es el equivalente a "items-center" */
+    
+}
+
+.sg-justify-end {
+    justify-content: flex-end; /* Alinea los elementos al final del contenedor */
+}
+
+/* Asegúrate de incluir cualquier otro estilo que necesites */
+/* 
+button-ad flex justify-center sg:justify-end items-center
+*/
