@@ -75,7 +75,7 @@ export class ThirdCreationComponent implements OnInit {
       gender: [null],
       idNumber: ['', Validators.required],
       verificationNumber: [{ value: '', disabled: true }],
-      state: ['', Validators.required],
+      state: ['Activo', Validators.required],
       photoPath: [''],
       country: ['', Validators.required],
       province: ['', Validators.required],
