@@ -21,30 +21,24 @@
 
     <div class="bg-white grid p-7 pb-6 rounded-xl shadow-lg">
 
-      <div
-        class="container-buttons-search grid grid-cols-1 sm:grid-cols-2 w-full mb-12 items-center justify-between mr-5">
-        <div
-          class="border-b-2 border-blue-800 rounded-md w-full sm:w-4/5 col-span-1 flex ml-3 mb-4 sm:mb-0 smaller-border">
-          <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
+      <div class="container-buttons-search grid grid-cols-1 sm:grid-cols-2 w-full mb-12 items-center justify-between mr-5">
+        <div class="border-b-2 border-blue-800 rounded-md w-full sm:w-4/5 col-span-1 flex ml-3 mb-4 sm:mb-0 smaller-border">
+          <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
           <form [formGroup]="form" class="flex justify-start items-start w-full">
-            <input type="text" class="mb-2 w-full outline-none bg-transparent" id="stringSearch" placeholder="Buscar"
-              name="stringSearch" formControlName="stringSearch" />
+            <input type="text" class="mb-2 w-full outline-none bg-transparent" id="stringSearch" placeholder="Buscar" name="stringSearch" formControlName="stringSearch" />
           </form>
         </div>
 
         <div class="col-span-1 w-full flex justify-end items-center text-md">
           <div class="flex">
-            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white text-center"
-              (click)="showDetailTableFunction()">
+            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white text-center" (click)="showDetailTableFunction()">
               <span *ngIf="!showDetailTable">Vista completa</span>
               <span *ngIf="showDetailTable">Vista resumida</span>
             </button>
-            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
-              (click)="redirectTo('/general/operations/third-parties/create')">
+            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white" (click)="redirectTo('/general/operations/third-parties/create')">
               Agregar
             </button>
           </div>
@@ -214,7 +208,8 @@
                     Ver
                   </span>
                 </button>
-                <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
+                <button
+                  class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
                   (click)="openModalEdit(third.thId)">
                   <span class="material-icons flex justify-center items-center text-white ">edit</span>
                   <span
@@ -222,15 +217,6 @@
                     Editar
                   </span>
                 </button>
-                <button class="px-2 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden"
-                  (click)="deleteThird(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white">delete</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Eliminar
-                  </span>
-                </button>
-
                 <button
                   class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
                   *ngIf="third.state === true" (click)="changeThirdPartieState(third.thId)">

@@ -18,7 +18,7 @@ export class ThirdServiceService {
 
   //Crear Un Tercero
   createThird(Third:Third): Observable<Third>{
-    console.log('Request Body:', Third);
+    console.log('Request Body:', Third); 
     return this.http.post<Third>(this.thirdApiUrl,Third) .pipe(
       catchError((error) => {
         console.error('Error occurred: ', error); // Log the error to the console
@@ -37,16 +37,6 @@ export class ThirdServiceService {
     );
   }
 
-  deleteThird(thId: number): Observable<any> {
-    return this.http.delete(this.thirdApiUrl+`delete?thId=${thId}`).pipe(
-      catchError((error) => {
-        console.error('Error occurred: ', error);
-        return throwError(() => new Error('Error occurred while deleting the entity'));
-      })
-    );
-  }
-
-
   getThirdParties(entId: String, numPage: number): Observable<Third[]> {
     let params = new HttpParams()
     .set('entId', entId.toString())
@@ -59,10 +49,7 @@ export class ThirdServiceService {
   }
 
   getThirdPartie(thId:number): Observable<Third>{
-    return this.http.get<Third>(this.thirdApiUrl+`third?thId=${thId}`)
-  }
-  existThird(thId:number): Observable<boolean>{
-    return this.http.get<boolean>(this.thirdApiUrl+`existBy?thId=${thId}`)
+    return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
   }
 
   changeThirdPartieState(thId:number): Observable<Boolean>{
