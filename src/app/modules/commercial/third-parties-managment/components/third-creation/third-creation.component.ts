@@ -93,7 +93,7 @@ export class ThirdCreationComponent implements OnInit {
         updateOn: 'blur' // Para que la validación asíncrona se ejecute al perder el foco
       }],
       verificationNumber: [{ value: '', disabled: true }],
-      state: ['', Validators.required],
+      state: ['Activo', Validators.required],
       photoPath: [''],
       country: ['', Validators.required],
       province: ['', Validators.required],
