@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject,OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { Third } from '../../models/Third';
+import { ReactiveFormsModule } from '@angular/forms';
 import { eTypeId } from '../../models/eTypeId';
 import { ePersonType } from '../../models/ePersonType';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -19,7 +20,8 @@ import { eThirdGender } from '../../models/eThirdGender';
   templateUrl: './third-edit-modal.component.html',
   styleUrl: './third-edit-modal.component.css'
 })
-export class ThirdEditModalComponent {
+
+export class ThirdEditModalComponent implements OnInit {
 
   inputData: any;
   thirdTypes: ThirdType[] = [];
@@ -32,7 +34,9 @@ export class ThirdEditModalComponent {
   countryCode!: string;
   states: any[] = [];
   selectedThirdTypes: ThirdType[] = [];
+  verificationNumber: number | null = null;
   cities: any[] = [];
+  selectedcity: any;
   countries: any[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   showAdditionalDiv = false;
@@ -52,7 +56,6 @@ export class ThirdEditModalComponent {
     socialReason: undefined,
     gender: undefined,
     idNumber: 0,
-    verificationNumber: undefined,
     state: false,
     photoPath: undefined,
     country: 0,
@@ -73,6 +76,7 @@ export class ThirdEditModalComponent {
     lastNames: [this.thirdData.lastNames, Validators.required],
     socialReason: [this.thirdData.socialReason, Validators.required],
     verificationNumber: [this.thirdData.verificationNumber],
+    selectedcity: 0,
     gender: [this.thirdData.gender],
     country: [this.thirdData.country, Validators.required],
     province: [this.thirdData.province, Validators.required],
@@ -82,9 +86,16 @@ export class ThirdEditModalComponent {
     email: [this.thirdData.email, [Validators.required, Validators.email]]
   });
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdEditModalComponent>, private service:ThirdServiceService, private fb:FormBuilder,private thirdServiceConfiguration: ThirdServiceConfigurationService,private departmentService: DepartmentService,private cityService: CityService,){
-
-  }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private ref: MatDialogRef<ThirdEditModalComponent>, 
+    private service: ThirdServiceService, 
+    private fb: FormBuilder,  // Correcto
+    private thirdServiceConfiguration: ThirdServiceConfigurationService,
+    private departmentService: DepartmentService,
+    private cityService: CityService
+  ) {}
+  
 
   ngOnInit(){
     this.inputData = this.data;
@@ -111,26 +122,21 @@ export class ThirdEditModalComponent {
           phoneNumber: [this.thirdData.phoneNumber],
           email: [this.thirdData.email]
         });
-
-
-        const countryId = Number(this.thirdData.country);
-        this.thirdForm.get('country')?.setValue(countryId);
-        if (countryId) {
-          if (countryId === 1) {
+        console.log('El tipo de tercero guardado es:', this.thirdData.thirdTypes);
+        this.thirdForm.get('thirdTypes')?.setValue(this.thirdData.thirdTypes);
+        const countryName = this.thirdData.country;
+        const selectedCountry = this.countries.find(country => country.name === countryName);
+        this.thirdForm.get('country')?.setValue(selectedCountry.id);
+        if (selectedCountry.id) {
+          if (selectedCountry.id === 1) {
             console.log('El pais si es colombia');
             this.states = this.departmentService.getListDepartments();
-            const provinceId = Number(this.thirdData.province);
-            this.thirdForm.get('province')?.setValue(provinceId);
-            if (provinceId) {
-              this.getCities(provinceId)
-              console.log('el departamento ID es', provinceId);
-              // Cargar las ciudades correspondientes al departamento
-              const cityId = Number(this.thirdData.city);
-              this.thirdForm.get('city')?.setValue(cityId);
-
-              console.log('el id de ciudad es:', cityId); // Muestra la lista de ciudades cargadas
-
-
+            const provinceName = this.thirdData.province;
+            const selectedprovince = this.states.find(province => province.name === provinceName);
+            console.log('El id del departamento es ', selectedprovince);
+            this.thirdForm.get('province')?.setValue(selectedprovince.id);
+            if (selectedprovince.id) {
+              this.getCities(selectedprovince.id)
             } else {
               //console.log('Departamento no encontrado:', ProvinceName);
             }
@@ -140,6 +146,8 @@ export class ThirdEditModalComponent {
         }
       })
     }
+    
+    
 
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[]) => {
@@ -272,6 +280,11 @@ export class ThirdEditModalComponent {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
       this.cities = data.cities;
       console.log('Las ciudades son:', this.cities); // Muestra la lista de ciudades cargadas
+      const cityName = String(this.thirdData.city).trim();
+      console.log('El nombre de la ciudad es', cityName);
+      this.selectedcity = this.cities.find(city => city.name === cityName);
+      console.log('El id de la ciudad es', this.selectedcity);
+      this.thirdForm.get('city')?.setValue(this.selectedcity.id);
     });
   }
 
@@ -325,6 +338,41 @@ export class ThirdEditModalComponent {
       this.selectedThirdTypes.push(item);
     }
   }
+
+    //Funcion para generar un nuevo digito de verificacion
+    private updateVerificationNumber(idNumber: number): void {
+      const idNumberStr = idNumber.toString();
+      const duplicatedStr = idNumberStr + idNumberStr;
+      const duplicatedNumber = parseInt(duplicatedStr, 10);
+      const verificationNumber = this.calculateVerificationNumber(idNumberStr);
+      this.verificationNumber = verificationNumber;
+      this.thirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
+    }
+
+    // Función para calcular el numero de verificación
+  private calculateVerificationNumber(input: string): number {
+    const numero = input.padStart(15, '0');
+    let suma = 0;
+    const pesos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+    for (let i = 0; i < 15; i++) {
+        const digito = parseInt(numero[14 - i]);
+        suma += digito * pesos[i];
+    }
+    if (suma == 0){
+      return 0;
+    }else if(suma == 1){
+      return 1;
+    }
+    return 11-suma % 11;
+  }
+
+    //Monitorea los cambios en el selector de Tipos de tercero
+    onThirdTypeSelect(selectedItems: ThirdType[]): void {
+      this.selectedThirdTypes = [];
+      this.selectedThirdTypes.push(...selectedItems);
+      this.thirdForm.get('thirdTypes')?.setValue(this.selectedThirdTypes);
+      console.log('Tipos seleccionados actualizados:', this.selectedThirdTypes);
+    }
 
   closePopUp(){
     this.ref.close('closing from modal details');
