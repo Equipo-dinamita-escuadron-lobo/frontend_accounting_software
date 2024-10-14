@@ -148,4 +148,6 @@ export class ThirdsListComponent{
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+
+  
 }

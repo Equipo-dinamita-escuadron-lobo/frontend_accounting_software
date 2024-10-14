@@ -1,0 +1,61 @@
+.help-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .help-symbol {
+    font-size: 16px;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .tooltip-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1;
+  }
+  
+  .tooltip-input {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+
+
+
+
+
+  /*****************/
+  
+
+.help-icon {
+    cursor: pointer; /* Cambia el cursor al pasar sobre el ícono */
+    color: blue; /* Color del icono */
+    font-weight: bold; /* Resalta el ícono */
+    margin-bottom: 10px; /* Espacio entre el ícono y el texto */
+}
+
+.help-text {
+    position: absolute; /* Para que el cuadro se posicione basado en las coordenadas del mouse */
+    z-index: 1000; /* Para asegurarte de que aparezca por encima de otros elementos */
+    max-width: 300px; /* Ajusta este valor según el tamaño deseado */
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word; /* Ajusta el texto dentro del cuadro */
+    white-space: normal; /* Para que el texto haga saltos de línea */
+}
+.edit-input {
+    width: 100%;
+    box-sizing: border-box;
+}
