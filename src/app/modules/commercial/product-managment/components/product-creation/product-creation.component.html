@@ -1,228 +1,190 @@
-<!DOCTYPE html>
-<div class="px-14 py-5 bg-gray-100 font-projectFont">
+<mat-card class="mx-8 my-8 p-4 shadow-lg rounded-lg">
+  <mat-card-header class="flex items-center mb-2 gap-2">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <section>
+      <mat-card-title class="text-lg font-semibold text-gray-800">
+        Crear Producto
+      </mat-card-title>
+    </section>
+  </mat-card-header>
 
-    
-  <h1 class="text-2xl font-bold text-blue-950  mt-8">Creación de Producto</h1>
+  <mat-card-content>
+    <p class="mt-4 font-projectFont">
+      Ingrese la información requerida para crear un nuevo producto:
+    </p>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Nombre:</mat-label>
+            <input
+              matInput
+              formControlName="itemType"
+              id="tipoItem"
+              placeholder="Ej: Banano"
+            />
+            <mat-error *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid">
+              <span *ngIf="productForm.get('itemType')?.errors?.['required']">
+                El campo Nombre es requerido.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-  <p class=" mt-4 font-projectFont">
-    Ingrese la información requerida para crear un nuevo producto:
-  </p>
-  <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-    <button
-    class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
-    (click)="goBack()"
-  >
-    <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
-      <i class="fas fa-arrow-left text-blue-950"></i>
-    </span>
-  </button>
-  </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Referencia:</mat-label>
+            <input
+              matInput
+              formControlName="reference"
+              id="reference"
+              placeholder="Ej: tropical"
+            />
+          </mat-form-field>
+        </div>
 
-    <div class="container mx-auto mt-8">
-      <div class="grid grid-cols-1 m-6 gap-6">
-        <div class="p-4 bg-white rounded shadow">
-          <form [formGroup]="productForm" (ngSubmit)='onSubmit()' > 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-              <div>
-                <label
-                  for="tipoItem"
-                  class="block text-sm font-medium text-gray-700"
-                  >Nombre:</label
-                >
-                <input
-                  type="text"
-                  formControlName="itemType"
-                  id="tipoItem"
-                  placeholder="Ej: Banano"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                    El campo Nombre es requerido.
-                  </div>
-                  
-                </div>
-              </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Descripción:</mat-label>
+            <input
+              matInput
+              formControlName="description"
+              id="descripcion"
+              placeholder="Ej: Fruta"
+            />
+            <mat-error *ngIf="productForm.get('description')?.touched && productForm.get('description')?.invalid">
+              <span *ngIf="productForm.get('description')?.errors?.['required']">
+                El campo Descripción es requerido.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-              <div>
-                <label
-                  for="reference"
-                  class="block text-sm font-medium text-gray-700"
-                  >Referencia:</label
-                >
-                <input
-                  type="text"
-                  formControlName="reference"
-                  id="reference"
-                  placeholder="Ej: tropical"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Cantidad:</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="quantity"
+              id="quantity"
+              min="0"
+              placeholder="Ej: 1"
+            />
+            <mat-error *ngIf="productForm.get('quantity')?.touched && productForm.get('quantity')?.errors">
+              <span *ngIf="productForm.get('quantity')?.errors?.['required']">
+                El campo Cantidad es requerido.
+              </span>
+              <span *ngIf="productForm.get('quantity')?.errors?.['min']">
+                La Cantidad no puede ser negativa.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-              <div>
-                <label
-                  for="descripcion"
-                  class="block text-sm font-medium text-gray-700"
-                  >Descripción:</label
-                >
-                <input
-                  type="text"
-                  formControlName="description"
-                  id="descripcion"
-                  placeholder="Ej: Fruta"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Descripción es requerido.
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label
-                  for="quantity"
-                  class="block text-sm font-medium text-gray-700"
-                  >Cantidad:</label
-                >
-                <input
-                  type="number"
-                  formControlName="quantity"
-                  id="quantity"
-                  min="0"
-                  placeholder="Ej: 1"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div [ *ngIf ="productForm.get('quantity')?.touched && productForm.get('quantity')?.errors" class="text-red-500" ]></div>
-                  <div [ *ngIf="productForm.get('quantity')?.errors?.['required']"] >
-                    El campo Cantidad es requerido.
-                  </div>
-                  <div *ngIf="productForm.get('quantity')?.errors?.['min']">
-                    La Cantidad no puede ser negativa.
-                  </div>
-                </div>
-              </div>
-        <!--      <div>
-                <label
-                  for="maxQuantity"
-                  class="block text-sm font-medium text-gray-700"
-                  >Cantidad Máxima:</label
-                >
-                <input
-                  type="number"
-                  formControlName="maxQuantity"
-                  id="maxQuantity"
-                  min="0"
-                  placeholder="Ej: 12"
-                  class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('itemType')?.touched && productForm.get('itemType')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('itemType')?.errors?.['required']">
-                  El campo Cantidad Máxima es requerido.
-                  </div>
-                  <div *ngIf="productForm.get('maxQuantity')?.errors?.['max']">
-                    La Cantidad Máxima no puede ser negativa.
-                  </div>     
-                </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Porcentaje de IVA (%):</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="taxPercentage"
+              id="taxPercentage"
+              min="0"
+              max="100"
+              placeholder="Ej: 0 - 100"
+            />
+            <mat-error *ngIf="productForm.get('taxPercentage')?.touched && productForm.get('taxPercentage')?.invalid">
+              <span *ngIf="productForm.get('taxPercentage')?.errors?.['required']">
+                El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
+              </span>
+              <span *ngIf="productForm.get('taxPercentage')?.errors?.['min']">
+                El Porcentaje de IVA no puede ser negativo.
+              </span>
+              <span *ngIf="productForm.get('taxPercentage')?.errors?.['max']">
+                El Porcentaje de IVA no puede ser mayor que 100.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-                <div *ngIf="productForm.get('maxQuantity')?.touched || productForm.get('quantity')?.touched  " class="text-red-500">
-                  <div *ngIf="+productForm.get('maxQuantity')?.value < +productForm.get('quantity')?.value || productForm.get('maxQuantity')?.errors?.['min']" class="text-red-500">
-                    La cantidad máxima debe ser mayor que la cantidad mínima.
-                  </div>
-                  </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Unidad de Medida:</mat-label>
+            <mat-select formControlName="unitOfMeasureId" id="unitOfMeasureId">
+              <mat-option value="">Selecciona una unidad de medida</mat-option>
+              <mat-option *ngFor="let unit of unitOfMeasures" [value]="unit.id">
+                {{ unit.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="productForm.get('unitOfMeasureId')?.touched && productForm.get('unitOfMeasureId')?.invalid">
+              <span *ngIf="productForm.get('unitOfMeasureId')?.errors?.['required']">
+                El campo Unidad de Medida es requerido.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-              </div>
--->
-              <div>
-                <label for="taxPercentage" class="block text-sm font-medium text-gray-700">Porcentaje de IVA (%):</label>
-                <input
-                    type="number"
-                    formControlName="taxPercentage"
-                    id="taxPercentage"
-                    min="0"
-                    max="100"
-                    placeholder="Ej: 0 - 100"
-                    class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-                <div *ngIf="productForm.get('taxPercentage')?.touched && productForm.get('taxPercentage')?.invalid" class="text-red-500">
-                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['required']">
-                        El campo Porcentaje de IVA es requerido y debe estar entre 0 y 100.
-                    </div>
-                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['min']">
-                        El Porcentaje de IVA no puede ser negativo.
-                    </div>
-                    <div *ngIf="productForm.get('taxPercentage')?.errors?.['max']">
-                        El Porcentaje de IVA no puede ser mayor que 100.
-                    </div>
-                </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Categoría:</mat-label>
+            <mat-select formControlName="categoryId" id="categoryId">
+              <mat-option value="">Selecciona una categoría</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid">
+              <span *ngIf="productForm.get('categoryId')?.errors?.['required']">
+                El campo Categoría es requerido.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Costo $:</mat-label>
+            <div class="relative">
+              <input
+                matInput
+                formControlName="cost"
+                id="cost"
+                min="0"
+                placeholder="Ej: 12.000"
+                inputmode="numeric"
+                (input)="formatcost($event)"
+                class="pl-8 pr-1 py-2"
+              />
             </div>
-            
-            
-            <div>
-              <label for="unitOfMeasureId" class="block text-sm font-medium text-gray-700">Unidad de Medida:</label>
-              <select formControlName="unitOfMeasureId" id="unitOfMeasureId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <option value="">Selecciona una unidad de medida</option>
-                <option *ngFor="let unit of unitOfMeasures" [value]=unit.id>{{ unit.name }}</option>
-              </select>
-              <div *ngIf="productForm.get('unitOfMeasureId')?.touched && productForm.get('unitOfMeasureId')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('unitOfMeasureId')?.errors?.['required']">
-                      El campo Unidad de Medida es requerido.
-                  </div>
-              </div>
-          </div>
-          
-             
-          
-            
-          
-            <div>
-              <label for="categoryId" class="block text-sm font-medium text-gray-700">Categoría:</label>
-              <select formControlName="categoryId" id="categoryId" class="mt-1 p-2 block w-full rounded-md text-black bg-white border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                  <option value="">Selecciona una categoría</option>
-                  <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-              </select>
-              <div *ngIf="productForm.get('categoryId')?.touched && productForm.get('categoryId')?.invalid" class="text-red-500">
-                  <div *ngIf="productForm.get('categoryId')?.errors?.['required']">
-                      El campo Categoría es requerido.
-                  </div>
-              </div>
-          </div>
+            <mat-error *ngIf="productForm.get('cost')?.touched && productForm.get('cost')?.invalid">
+              <span *ngIf="productForm.get('cost')?.errors?.['required']">
+                El campo Costo es requerido.
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-              <div>
-                <label for="cost" class="block text-sm font-medium text-gray-700">Costo:</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-700">
-                        $
-                    </span>
-                    <input
-                        type="text"
-                        formControlName="cost"
-                        id="cost"
-                        min="0"
-                        placeholder="Ej: 12.000"
-                        class="pl-8 pr-1 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                        inputmode="numeric"
-                        (input)="formatcost($event)"
-                    />
-                </div>
-                <div *ngIf="productForm.get('cost')?.touched && productForm.get('cost')?.invalid" class="text-red-500">
-                    <div *ngIf="productForm.get('cost')?.errors?.['required']">
-                        El campo Costo es requerido 
-                    </div>
-                </div>
-            </div>
-            
-            
-            
-              
-              <div>
-                <button type="submit" class="buttonsC h-10 w-auto">
-                  Crear Producto
-                </button>
-              </div>               
-         
-        </form>                 
-      </div>  
-    </div>
-  </div>
-</div>
+        <div>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Tipo de Producto:</mat-label>
+            <mat-select formControlName="productTypeId" id="productTypeId">
+              <mat-option value="">Selecciona un tipo de producto</mat-option>
+              <mat-option *ngFor="let productType of productTypes" [value]="productType.id">
+                {{ productType.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" type="submit" class="h-10 w-auto">
+            Crear Producto
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

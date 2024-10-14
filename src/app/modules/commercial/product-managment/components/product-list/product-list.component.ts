@@ -26,7 +26,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   unitOfMeasures: UnitOfMeasure[]= [];
   categories: Category[] = [];
 
-  displayedColumns: string[] = ['id', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'actions'];
+  displayedColumns: string[] = ['id', 'code', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference','productType','actions'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -38,6 +38,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    
   }
 
   
@@ -80,6 +81,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
         this.products = data; // Asigna los productos obtenidos del servicio a la propiedad products
         this.dataSource = new MatTableDataSource<Product>(this.products);
         this.dataSource.paginator = this.paginator;
+        console.log(this.dataSource);
+        
       },
       (error) => {
         console.log('Error al obtener los productos:', error);
@@ -201,6 +204,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     let product = this.products.find(prod => prod.id === id) || null;
     const productList = {
       id: product?.id ?? '',
+
       itemType: product?.itemType,
       description: product?.description,
       quantity: product?.quantity,

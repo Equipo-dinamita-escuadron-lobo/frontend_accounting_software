@@ -6,6 +6,8 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { ProductTypeService } from '../../services/product-type-service.service';
+import { ProductType } from '../../models/ProductType';
 
 @Component({
   selector: 'app-product-creation',
@@ -18,17 +20,22 @@ export class ProductCreationComponent implements OnInit {
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
+  productTypes: ProductType[] = [];
+
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
   nextProductId: number = 1; // Inicializa el contador del ID del producto
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+  
+
 
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
+    private productTypeService: ProductTypeService,
     private router: Router
   ) {}
 
@@ -53,16 +60,31 @@ export class ProductCreationComponent implements OnInit {
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]], // 'cost' es un número
       reference: [''], // referencia string
+      productTypeId: [''] // Nuevo campo para el tipo de producto
+
     }
     ,{ validators: quantityValidator });
     if (this.entData) {
+      this.initForm();
+      this.getUnitOfMeasures();
+      this.getCategories();
+      this.loadProductTypes();
 
-  this.initForm();
-  this.getUnitOfMeasures();
-  this.getCategories();
     }
 
 
+  }
+
+
+  loadProductTypes(): void {
+    this.productTypeService.getAllProductTypes().subscribe(
+      (data: ProductType[]) => {
+        this.productTypes = data;
+      },
+      error => {
+        console.error('Error al cargar los tipos de producto', error);
+      }
+    );
   }
 
 
@@ -147,6 +169,7 @@ getUnitOfMeasures(): void {
     formData.cost = parseInt(formData.cost, 10);
 
     formData.enterpriseId = this.entData;
+    formData.productTypeId = parseInt(formData.productTypeId, 10);
 
 
     this.productService.createProduct(formData).subscribe(

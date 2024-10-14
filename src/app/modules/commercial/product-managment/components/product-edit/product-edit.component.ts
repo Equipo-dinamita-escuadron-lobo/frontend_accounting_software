@@ -7,6 +7,8 @@ import { Product } from '../../models/Product';
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { ProductType } from '../../models/ProductType';
+import { ProductTypeService } from '../../services/product-type-service.service';
 
 
 @Component({
@@ -24,7 +26,7 @@ export class ProductEditComponent implements OnInit {
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-
+  productTypes: ProductType[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -34,6 +36,7 @@ export class ProductEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
+    private productTypeService: ProductTypeService,
     private router: Router
 
   ) {
@@ -47,7 +50,8 @@ export class ProductEditComponent implements OnInit {
       //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, Validators.required],
-      reference: ['', Validators.required]
+      reference: [''],
+      productTypeId: ['']
     }, { validators: quantityValidator });
   }
 
@@ -60,12 +64,24 @@ export class ProductEditComponent implements OnInit {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if(this.entData){
-    this.getUnitOfMeasures();
-    this.getCategories();
+      this.getUnitOfMeasures();
+      this.getCategories();
+      this.loadProductTypes();
     }
 
   }
+  
 
+  loadProductTypes(): void {
+    this.productTypeService.getAllProductTypes().subscribe(
+      (data: ProductType[]) => {
+        this.productTypes = data;
+      },
+      error => {
+        console.error('Error al cargar los tipos de producto', error);
+      }
+    );
+  }
 
     // Método para obtener la lista de categorías
     getCategories(): void {
@@ -105,7 +121,8 @@ export class ProductEditComponent implements OnInit {
        // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         cost: [null, [Validators.required, Validators.min(0)]],
-        reference: ['', Validators.required]
+        reference: [''],
+        productTypeId: ['']
       });
     }
 
@@ -128,6 +145,7 @@ export class ProductEditComponent implements OnInit {
           categoryId: product.categoryId,
           cost: product.cost,
           reference: product.reference,
+          productTypeId: product.productType.id,
         });
       },
       error => {

@@ -1,9 +1,9 @@
 
 
-export interface ProductType {
-    id: number; 
-    name: string; 
-    description: string;
-    enterpriseId: string;
+export class ProductType {
+    id = 0; 
+    name = ''; 
+    description = '';
+    enterpriseId = '';
   }
   

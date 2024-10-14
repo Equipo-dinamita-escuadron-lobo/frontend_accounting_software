@@ -3,14 +3,8 @@
   <span class="text-4xl text-blue-950 self-start">Productos</span>
 </div>
 
-<div
-    class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
->
-
-
-  <div
-  class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex ml-3"
-    >
+<div class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center  mx-4 py-2">
+  <div class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex">
       <svg
         class="h-6 w-6 text-blue-500 mr-2"
         viewBox="0 0 24 24"
@@ -35,24 +29,32 @@
       </form>
     </div>
 
-    <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
+    <div class="gap-2 col-span-1 w-full flex items-end justify-end text-lg">
+
       <button
         mat-flat-button color="primary"
-        class="h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+        class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
+        (click)="redirectTo('/general/operations/product-types')"
+      >
+        Tipo de Productos
+      </button>
+      <button
+        mat-flat-button color="primary"
+        class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
         (click)="redirectTo('/general/operations/categories')"
       >
         Categorías
       </button>
       <button
         mat-flat-button color="primary"
-        class="h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+        class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
         (click)="redirectTo('/general/operations/unities')"
       >
         Unidades
       </button>
       <button
         mat-flat-button color="primary"
-        class="h-10 p-1 min-w-14 block w-28 rounded-xl bg-blue-950 text-white"
+        class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
         (click)="redirectTo('/general/operations/products/create')"
       >
         Agregar
@@ -67,6 +69,11 @@
           <td mat-cell *matCellDef="let prod"> {{prod.id}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef class="bold-text"> Código </th>
+          <td mat-cell *matCellDef="let prod"> {{prod.code}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="itemType">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Nombre </th>
           <td mat-cell *matCellDef="let prod"> {{prod.itemType}} </td>
@@ -78,7 +85,7 @@
         </ng-container>
 
         <ng-container matColumnDef="cost">
-          <th mat-header-cell *matHeaderCellDef class="bold-text"> Costo*Gramo </th>
+          <th mat-header-cell *matHeaderCellDef class="bold-text"> Costo x Unidad </th>
           <td mat-cell *matCellDef="let prod"> {{formatCost(prod.cost)}} </td>
         </ng-container>
 
@@ -95,6 +102,16 @@
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Categoría </th>
           <td mat-cell *matCellDef="let prod"> {{getCategoryName(prod.categoryId)}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="productType">
+          <th mat-header-cell *matHeaderCellDef class="bold-text"> Tipo de producto </th>
+          <td mat-cell *matCellDef="let prod"> {{prod.productType.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reference">
+          <th mat-header-cell *matHeaderCellDef class="bold-text"> Referencia </th>
+          <td mat-cell *matCellDef="let prod"> {{prod.reference}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Acciones </th>

@@ -1,3 +1,4 @@
+import { ProductType } from "./ProductType";
 
 export interface Product {
     id :string;
@@ -15,10 +16,12 @@ export interface Product {
     cost: number;
     state: string;
     reference: string;
+    productType: ProductType;
   }
   
   export interface ProductList {
     id :string;
+    code: string;
     itemType: string;
     description: string;
     quantity: number;
@@ -36,4 +39,5 @@ export interface Product {
     state: string;
 
     reference: string;
+    productType: ProductType;
   }

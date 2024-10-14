@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
-import Swal from 'sweetalert2';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator'; // Importa MatPaginator
+import { MatTableDataSource } from '@angular/material/table'; // Importa MatTableDataSource
+import Swal from 'sweetalert2';
 import { ProductType } from '../../models/ProductType';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
@@ -12,10 +13,13 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
   styleUrls: ['./product-type-list.component.css']
 })
 export class ProductTypeListComponent implements OnInit {
-  productTypes: ProductType[] = [];
+  displayedColumns: string[] = ['name', 'description']; // Define las columnas que se mostrarán
+  dataSource = new MatTableDataSource<ProductType>(); // Cambia a MatTableDataSource
   loading: boolean = false;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator; // Agrega la referencia al paginator
 
   constructor(
     private productTypeService: ProductTypeService,
@@ -24,7 +28,6 @@ export class ProductTypeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProductTypes();
-    
   }
 
   loadProductTypes(): void {
@@ -32,7 +35,8 @@ export class ProductTypeListComponent implements OnInit {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.productTypeService.getAllProductTypesEnterprise(this.entData).subscribe(
       (data: ProductType[]) => {
-        this.productTypes = data;
+        this.dataSource.data = data; // Asigna los datos al dataSource
+        this.dataSource.paginator = this.paginator; // Asigna el paginator al dataSource
         this.loading = false;
       },
       error => {
@@ -50,6 +54,10 @@ export class ProductTypeListComponent implements OnInit {
 
   editProductType(id: string): void {
     this.router.navigate([`/general/operations/product-types/edit/${id}`]);
+  }
+
+  goBack(){
+    this.router.navigate([`/general/operations/products`]);
   }
 
   deleteProductType(id: string): void {
