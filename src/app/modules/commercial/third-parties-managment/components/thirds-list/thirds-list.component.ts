@@ -131,6 +131,9 @@ export class ThirdsListComponent{
       }
     });
   }
+  deleteThirdPartie(thId:number):void{
+    
+  }
 
   openPopUp(thId:any, title: any, component: any){
     var _popUp = this.dialog.open(component, {
@@ -148,4 +151,6 @@ export class ThirdsListComponent{
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+
+  
 }

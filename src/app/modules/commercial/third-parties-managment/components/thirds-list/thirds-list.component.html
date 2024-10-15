@@ -1,144 +1,86 @@
 <div class="flex w-full h-full font-projectFont">
-  <div class="container max-w-full mx-auto px-5 sg:px-16 py-10 w-full">
-    <div class="container__title text-center sm:text-left grid grid-cols-1 sg:grid-cols-2 mx-4 gap-4">
+  <div class="container ">
+    <div class="container__title">
       <div class="title">
-        <h1 class="text-3xl font-bold text-blue-950">Terceros</h1>
-        <p class="text-base mb-3 sg:mb-7">Aquí podrá crear, editar, cambiar el
-          estado y ver los detalles de los terceros de su empresa</p>
+        <h1 class="title-text">Terceros</h1>
+        <p class="description">Aquí podrá crear, editar, cambiar el estado y ver los detalles de los terceros de su
+          empresa</p>
       </div>
-      <div class="button-ad flex justify-center sg:justify-end items-center">
+      <div class="buttonAgregar">
         <div class="relative group">
-          <button class="text-4xl text-blue-950 hover:text-blue-700 focus:outline-none" (click)="openConfigTPModal()">
+          <button class="icon-button" (click)="openConfigTPModal()">
             <span class="material-icons">settings</span>
           </button>
-          <div
-            class="absolute w-auto p-2 text-white text-sm bg-blue-900 rounded hidden group-hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -translate-x-1/2 left-1/2 bottom-full mb-1">
-            Configuración
-          </div>
+          <div class="tooltip">Configuración</div>
         </div>
       </div>
     </div>
 
-    <div class="bg-white grid p-7 pb-6 rounded-xl shadow-lg">
-
-      <div class="container-buttons-search grid grid-cols-1 sm:grid-cols-2 w-full mb-12 items-center justify-between mr-5">
-        <div class="border-b-2 border-blue-800 rounded-md w-full sm:w-4/5 col-span-1 flex ml-3 mb-4 sm:mb-0 smaller-border">
-          <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div class="content-wrapper">
+      <div class="container-buttons-search">
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <form [formGroup]="form" class="flex justify-start items-start w-full">
-            <input type="text" class="mb-2 w-full outline-none bg-transparent" id="stringSearch" placeholder="Buscar" name="stringSearch" formControlName="stringSearch" />
+          <form [formGroup]="form" class="form-group">
+            <input type="text" id="stringSearch" class="search-input" placeholder="Buscar" name="stringSearch"
+              formControlName="stringSearch" />
           </form>
         </div>
 
-        <div class="col-span-1 w-full flex justify-end items-center text-md">
-          <div class="flex">
-            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white text-center" (click)="showDetailTableFunction()">
-              <span *ngIf="!showDetailTable">Vista completa</span>
-              <span *ngIf="showDetailTable">Vista resumida</span>
-            </button>
-            <button class="h-10 mr-5 min-w-14 block w-28 rounded-xl bg-blue-950 text-white" (click)="redirectTo('/general/operations/third-parties/create')">
-              Agregar
-            </button>
-          </div>
+        <div class="buttons">
+          <button class="btn-full-view" (click)="showDetailTableFunction()">
+            <span *ngIf="!showDetailTable">Vista completa</span>
+            <span *ngIf="showDetailTable">Vista resumida</span>
+          </button>
+          <button class="btn-full-view" (click)="redirectTo('/general/operations/third-parties/create')">Agregar</button>
         </div>
       </div>
 
+      <!-- Tabla para Vista Completa -->
       <div class="relative overflow-x-auto" *ngIf="showDetailTable">
-        <table class="w-full text-md text-left rtl:text-right text-black divide-gray-200 m-5 rounded-lg">
-          <thead class="text-md text-black bg-white dark:text-gray-400">
+        <table class="table">
+          <thead>
             <tr>
-              <th scope="col" class="px-6 py-3 text-md bg-blue-950 text-white font-bold overflow-hidden text-left"
-                *ngFor="let col of columnsComplete">
-                {{ col.title }}
-              </th>
+              <th *ngFor="let col of columnsComplete">{{ col.title }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let third of data | filterList : form.value.stringSearch" class="hover:bg-gray-100">
-              <!--Muestra el tipo de persona "Natural" o "Juridica"-->
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.personType }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span *ngFor="let type of third.thirdTypes">
-                  <span>○ </span>{{type.thirdTypeName}}<br>
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.names ? third.names + ' ' + third.lastNames :
-                third.socialReason }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-center">
-                {{ third.typeId.typeId }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.idNumber }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
+            <tr *ngFor="let third of data | filterList : form.value.stringSearch">
+              <td>{{ third.personType }}</td>
+              <td><span *ngFor="let type of third.thirdTypes">{{ type.thirdTypeName }}<br></span></td>
+              <td>{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
+              <td>{{ third.typeId.typeId }}</td>
+              <td>{{ third.idNumber }}</td>
+              <td>
                 <div [ngSwitch]="third.verificationNumber">
-                  <span *ngSwitchCase="null">
-                    NO APLICA
-                  </span>
-                  <span *ngSwitchDefault>
-                    {{ third.verificationNumber }}
-                  </span>
+                  <span *ngSwitchCase="null">NO APLICA</span>
+                  <span *ngSwitchDefault>{{ third.verificationNumber }}</span>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.email }}
+              <td>{{ third.email }}</td>
+              <td>{{ third.country }}</td>
+              <td>{{ third.province }}</td>
+              <td>{{ third.city }}</td>
+              <td>{{ third.address }}</td>
+              <td>{{ third.phoneNumber }}</td>
+              <td>
+                <p *ngIf="third.state" class="state-active">Activo</p>
+                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.country }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.province }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.city }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.address }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.phoneNumber }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <p *ngIf="third.state" class="px-2 py-2 rounded-lg bg-green-500 text-white text-center">
-                  Activo
-                </p>
-                <p *ngIf="!third.state" class="px-2 py-2 rounded-lg bg-red-500 text-white text-center">
-                  Inactivo
-                </p>
-              </td>
-              <td class="py-4 whitespace-nowrap flex justify-center items-center">
-
-                <button class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
-                  (click)="openModalEdit(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white ">edit</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Editar
-                  </span>
+              <td class="actions">
+                <button class="edit-button" (click)="openModalEdit(third.thId)">
+                  <span class="material-icons">edit</span>
                 </button>
-                <button
-                  class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
-                  *ngIf="third.state === true" (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white ">toggle_off</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Estado
-                  </span>
+                <button *ngIf="third.state === true" class="toggle-off-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_off</span>
                 </button>
-                <button
-                  class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden flex justify-center items-center"
-                  *ngIf="third.state === false" (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons text-white">toggle_on</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Estado
-                  </span>
+                <button *ngIf="third.state === false" class="toggle-on-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_on</span>
                 </button>
               </td>
             </tr>
@@ -146,100 +88,53 @@
         </table>
       </div>
 
+      <!-- Tabla para Vista Resumida -->
       <div class="relative overflow-x-auto" *ngIf="!showDetailTable">
-        <table class="w-full text-md text-left rtl:text-right text-black divide-gray-200 m-5 rounded-lg">
-          <thead class="text-md text-black bg-white dark:text-gray-400">
+        <table class="table">
+          <thead>
             <tr>
-              <th scope="col" class="px-6 py-3 text-md bg-blue-950 text-white font-bold overflow-hidden text-left"
-                *ngFor="let col of columnsBrief">
-                {{ col.title }}
-              </th>
+              <th *ngFor="let col of columnsBrief">{{ col.title }}</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr *ngFor="let third of data | filterList : form.value.stringSearch" class="hover:bg-gray-100">
-              <!--Muestra el tipo de persona "Natural" o "Juridica"-->
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.personType }}
-              </td>
-              <!--Muestra el primer tipo de tercero o solo el unico que tiene-->
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.thirdTypes[0].thirdTypeName}}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.names ? third.names + ' ' + third.lastNames :
-                third.socialReason }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-center">
-                {{ third.typeId.typeId }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.idNumber }}
-              </td>
-              <!--Muestra el numero de verificacion, si tiene NIT o un no aplica si tiene
-              otro tipo de identificacion-->
-              <td class="px-6 py-4 whitespace-nowrap">
+          <tbody>
+            <tr *ngFor="let third of data | filterList : form.value.stringSearch">
+              <td>{{ third.personType }}</td>
+              <td>{{ third.thirdTypes[0]?.thirdTypeName }}</td>
+              <td>{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
+              <td>{{ third.typeId.typeId }}</td>
+              <td>{{ third.idNumber }}</td>
+              <td>
                 <div [ngSwitch]="third.verificationNumber">
-                  <span *ngSwitchCase="null">
-                    NO APLICA
-                  </span>
-                  <span *ngSwitchDefault>
-                    {{ third.verificationNumber }}
-                  </span>
+                  <span *ngSwitchCase="null">NO APLICA</span>
+                  <span *ngSwitchDefault>{{ third.verificationNumber }}</span>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                {{ third.email }}
+              <td>{{ third.email }}</td>
+              <td>
+                <p *ngIf="third.state" class="state-active">Activo</p>
+                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <p *ngIf="third.state" class="px-2 py-2 rounded-lg bg-green-500 text-white text-center">
-                  Activo
-                </p>
-                <p *ngIf="!third.state" class="px-2 py-2 rounded-lg bg-red-500 text-white text-center">
-                  Inactivo
-                </p>
-              </td>
-              <td class="py-4 whitespace-nowrap flex justify-center items-center">
-                <button class="px-2 py-2 rounded-lg bg-gray-400 hover:bg-gray-500 mr-2 relative overflow-hidden"
-                  (click)="openModalDetails(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white">visibility</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Ver
-                  </span>
+              <td class="actions">
+                <button (click)="openModalDetails(third.thId)"> <span class="material-icons">visibility</span> </button>
+                <button (click)="openModalEdit(third.thId)"> <span class="material-icons">edit</span> </button>
+                <button (click)="deleteThirdPartie(third.thId)">
+                  <span class="material-icons">delete</span>
                 </button>
-                <button
-                  class="px-2 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-60 mr-2 relative overflow-hidden"
-                  (click)="openModalEdit(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white ">edit</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Editar
-                  </span>
+                <button *ngIf="third.state === true" class="toggle-off-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_off</span>
                 </button>
-                <button
-                  class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 mr-2 relative overflow-hidden flex justify-center items-center"
-                  *ngIf="third.state === true" (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons flex justify-center items-center text-white ">toggle_off</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Estado
-                  </span>
-                </button>
-                <button
-                  class="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 mr-2 relative overflow-hidden flex justify-center items-center"
-                  *ngIf="third.state === false" (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons text-white">toggle_on</span>
-                  <span
-                    class="text-sm font-bold absolute inset-0 flex justify-center items-center opacity-0 hover:opacity-100 hover:text-black transition-opacity">
-                    Estado
-                  </span>
+                <button *ngIf="third.state === false" class="toggle-on-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_on</span>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+
     </div>
   </div>
 </div>

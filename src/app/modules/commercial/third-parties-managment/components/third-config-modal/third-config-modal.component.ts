@@ -90,7 +90,7 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Éxito!',
           text: 'Tipo de identificación agregado con éxito',
-          icon: 'success'
+          icon: "success"
         });
       },
       error: (error) => {
@@ -122,9 +122,10 @@ export class ThirdConfigModalComponent {
         this.newThirdTypeName = '';
         this.showInputThirdType = false;
         Swal.fire({
+          
           title: 'Éxito!',
           text: 'Tipo de tercero agregado con exito',
-          icon: 'success'
+          icon: "success"
         });
       },
       error: (error) => {

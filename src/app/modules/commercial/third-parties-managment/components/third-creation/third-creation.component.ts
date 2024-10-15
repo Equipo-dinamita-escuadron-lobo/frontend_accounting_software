@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
 import { ThirdServiceService } from '../../services/third-service.service';
@@ -13,6 +13,7 @@ import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
 import { eThirdGender } from '../../models/eThirdGender';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-third-creation',
@@ -20,7 +21,91 @@ import { eThirdGender } from '../../models/eThirdGender';
   styleUrl: './third-creation.component.css',
   providers: [DatePipe],
 })
+
 export class ThirdCreationComponent implements OnInit {
+
+
+  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+  mousePosition = { x: 0, y: 0 }; // Posición del mouse
+  positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
+  
+
+  helpTexts: { [key: string]: string } = {}; // Almacena los textos de ayuda
+  editingHelp: string | null = null; // Para rastrear qué cuadro está en edición
+  visibleHelp: string | null = null; // Para rastrear cuál cuadro es visible
+
+  
+
+  updateHelpText(helpId: string, value: string): void {
+    this.helpTexts[helpId] = value; // Actualiza el texto de ayuda
+  }
+
+  showHelp(helpId: string): void {
+    this.visibleHelp = helpId; // Muestra el cuadro de ayuda
+  }
+
+  hideHelp(helpId: string): void {
+    if (this.editingHelp !== helpId) {
+      this.visibleHelp = null; // Oculta el cuadro de ayuda
+      this.stopEditing(); // Cierra la edición si no se está editando
+    }
+  }
+
+  toggleHelp(helpId: string, event: MouseEvent): void {
+    if (this.editingHelp === helpId) {
+      this.stopEditing(); // Cierra el cuadro si ya está editando
+    } else {
+      this.setEditing(helpId, event); // Abre el cuadro para edición
+    }
+  }
+
+  setEditing(helpId: string, event: MouseEvent): void {
+    this.editingHelp = helpId; // Establece el cuadro actual en edición
+    this.visibleHelp = helpId; // Mantiene el cuadro visible mientras se edita
+    this.mousePosition = { x: event.clientX +10, y: event.clientY +10 }; 
+    /*if (this.mousePosition.x === this.positionInicial.x) { // Captura la posición del mouse
+      this.mousePosition = {
+        x: event.clientX + 10,
+        y: event.clientY + 10
+      };
+    }*/
+    
+  }
+
+  stopEditing(): void {
+    this.editingHelp = null; // Salir del modo de edición
+    this.visibleHelp = null;
+    localStorage.setItem('helpTexts', JSON.stringify(this.helpTexts)); // Guarda los textos de ayuda en el almacenamiento local
+  }
+
+  isEditing(helpId: string): boolean {
+    return this.editingHelp === helpId; // Retorna si el cuadro está en edición
+  }
+
+  isHelpVisible(helpId: string): boolean {
+    return this.visibleHelp === helpId || this.isEditing(helpId); // Muestra el cuadro si está visible o en edición
+  }
+  noisHelpVisible(helpId: string): boolean {
+    return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
   selectedThirdTypes: ThirdType[] = [];
   createdThirdForm!: FormGroup;
   submitted = false;
@@ -42,6 +127,7 @@ export class ThirdCreationComponent implements OnInit {
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+  isDuplicated: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,7 +137,7 @@ export class ThirdCreationComponent implements OnInit {
     private cityService: CityService,
     private departmentService: DepartmentService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
@@ -59,10 +145,15 @@ export class ThirdCreationComponent implements OnInit {
     this.getCountries();
     this.getTypesID();
     this.getThirdTypes();
-  
+
+    // Cargar textos de ayuda del almacenamiento local al iniciar
+    const savedHelpTexts = localStorage.getItem('helpTexts');
+    if (savedHelpTexts) {
+      this.helpTexts = JSON.parse(savedHelpTexts);
+    }
   }
 
-  private initializeForm():void{
+  private initializeForm(): void {
     this.createdThirdForm = this.formBuilder.group({
       entId: [''],
       typeId: ['', Validators.required],
@@ -73,7 +164,7 @@ export class ThirdCreationComponent implements OnInit {
       lastNames: [''],
       socialReason: [''],
       gender: [null],
-      idNumber: ['', Validators.required],
+      idNumber: ['', {validators: [Validators.required], asyncValidators:[this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur'}],
       verificationNumber: [{ value: '', disabled: true }],
       state: ['Activo', Validators.required],
       photoPath: [''],
@@ -84,7 +175,7 @@ export class ThirdCreationComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], //Validacion requerida para que tenga el formato correcto de correo electronico
       creationDate: [''],
-      updateDate: ['']
+      updateDate: ['']      
     });
 
     this.createdThirdForm.get('idNumber')?.valueChanges.subscribe(value => {
@@ -96,14 +187,14 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  private getCountries():void{
-        //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
-        this.countries = [ {name: 'Colombia', id: 1}];
+  private getCountries(): void {
+    //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
+    this.countries = [{ name: 'Colombia', id: 1 }];
   }
 
-  private getTypesID():void{
+  private getTypesID(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
-      next: (response: TypeId[])=>{
+      next: (response: TypeId[]) => {
         this.typeIds = response;
       },
       error: (error) => {
@@ -117,9 +208,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  private getThirdTypes(): void{
+  private getThirdTypes(): void {
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
-      next: (response: ThirdType[])=>{
+      next: (response: ThirdType[]) => {
         this.thirdTypes = response;
       },
       error: (error) => {
@@ -140,7 +231,7 @@ export class ThirdCreationComponent implements OnInit {
     this.createdThirdForm.get('thirdTypes')?.setValue(this.selectedThirdTypes);
     console.log('Tipos seleccionados actualizados:', this.selectedThirdTypes);
   }
-  
+
 
   //Funcion para generar un nuevo digito de verificacion
   private updateVerificationNumber(idNumber: number): void {
@@ -152,21 +243,21 @@ export class ThirdCreationComponent implements OnInit {
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
-// Función para calcular el numero de verificación
+  // Función para calcular el numero de verificación
   private calculateVerificationNumber(input: string): number {
     const numero = input.padStart(15, '0');
     let suma = 0;
     const pesos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
     for (let i = 0; i < 15; i++) {
-        const digito = parseInt(numero[14 - i]);
-        suma += digito * pesos[i];
+      const digito = parseInt(numero[14 - i]);
+      suma += digito * pesos[i];
     }
-    if (suma == 0){
+    if (suma == 0) {
       return 0;
-    }else if(suma == 1){
+    } else if (suma == 1) {
       return 1;
     }
-    return 11-suma % 11;
+    return 11 - suma % 11;
   }
 
 
@@ -193,33 +284,33 @@ export class ThirdCreationComponent implements OnInit {
 
   onTypeIdChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;//Obtenemos el valor del evento
-    if(value.includes('NIT')){
+    if (value.includes('NIT')) {
       console.log("tipo ID", value, " Se genera digito de verificacion");
       this.createdThirdForm.get('verificationNumber')?.enable();
-    }else{
+    } else {
       console.log("No se genera digito de verificacion");
       this.createdThirdForm.get('verificationNumber')?.disable();
     }
-    
+
   }
 
-  goToListThirds():void{
+  goToListThirds(): void {
     this.router.navigateByUrl('/general/operations/third-parties');
   }
 
   //validar campos obligatorios para persona Juridica(Razon Social) y Natural (Nombre y Apellidos)
-  updateValidator(){
-    if(this.button1Checked){
+  updateValidator() {
+    if (this.button1Checked) {
       this.createdThirdForm.get('socialReason')?.setValidators([Validators.required]);
-    }else{
+    } else {
       this.createdThirdForm.get('socialReason')?.clearValidators();
     }
 
-    if(this.button2Checked){
+    if (this.button2Checked) {
       this.createdThirdForm.get('names')?.setValidators([Validators.required]);
       this.createdThirdForm.get('lastNames')?.setValidators([Validators.required]);
       this.createdThirdForm.get('gender')?.setValidators([Validators.required]);
-    }else{
+    } else {
       this.createdThirdForm.get('names')?.clearValidators();
       this.createdThirdForm.get('lastNames')?.clearValidators();
       this.createdThirdForm.get('gender')?.clearValidators();
@@ -233,14 +324,14 @@ export class ThirdCreationComponent implements OnInit {
   onCheckChange(buttonId: number): void {
     if (buttonId === 1 && this.button1Checked) {
       this.button2Checked = false;
-      this.createdThirdForm.get('names')?.setValue(''); 
-      this.createdThirdForm.get('lastNames')?.setValue(''); 
+      this.createdThirdForm.get('names')?.setValue('');
+      this.createdThirdForm.get('lastNames')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
     } else if (buttonId === 2 && this.button2Checked) {
       this.button1Checked = false;
       this.createdThirdForm.get('socialReason')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
-      
+
     }
     this.updateValidator();
     this.updateTypeIds();
@@ -251,11 +342,11 @@ export class ThirdCreationComponent implements OnInit {
       next: (response: TypeId[]) => {
         let filteredTypeIds;
         if (this.button1Checked) {
-          filteredTypeIds = response.filter(elemento => 
+          filteredTypeIds = response.filter(elemento =>
             elemento.typeIdname && elemento.typeIdname.includes('NIT')
           );
         } else {
-          filteredTypeIds = response; 
+          filteredTypeIds = response;
         }
         this.typeIds = filteredTypeIds;
         this.createdThirdForm.get('typeId')?.setValue('');
@@ -270,7 +361,7 @@ export class ThirdCreationComponent implements OnInit {
       }
     });
   }
-  
+
   //Manejo de errores, campos rqueridos
   private getFormErrors(): string[] {
     const errors = [];
@@ -278,73 +369,86 @@ export class ThirdCreationComponent implements OnInit {
 
     // Verificar si el formulario fue enviado
     if (this.submitted) {
-        for (const name in controls) {
-            const control = controls[name];
+      for (const name in controls) {
+        const control = controls[name];
 
-            if (control.invalid) {
-                // Si el control es requerido y esta vacio
-                if (control.errors?.['required']) {
-                    switch (name) {
-                        case 'typeId':
-                            errors.push(`Seleccione un Tipo de Identificacion`);
-                            break;
-                        case 'thirdTypes':
-                            errors.push(`Seleccione al menos un Tipo de Tercero`);
-                            break;
-                        case 'personType':
-                            errors.push(`Seleccione un Tipo de Persona`);
-                            break;
-                        case 'idNumber':
-                            errors.push(`Ingrese un Numero de Identificacion`);
-                            break;
-                        case 'country':
-                            errors.push(`Seleccione un Pais`);
-                            break;
-                        case 'province':
-                            errors.push(`Seleccione un Departamento`);
-                            break;
-                        case 'city':
-                            errors.push(`Seleccione una Ciudad`);
-                            break;
-                        case 'address':
-                            errors.push(`Ingrese una Direccion `);
-                            break;
-                        case 'phoneNumber':
-                            errors.push(`Ingrese un numero de Celular`);
-                            break;
-                        case 'email':
-                            errors.push(`Ingrese un Correo Electronico`);
-                            break;
-                        case 'state':
-                            errors.push(`Seleccione un estado`);
-                            break;
-                        case 'names':
-                            errors.push(`Ingrese un Nombre`);
-                            break;
-                        case 'lastNames':
-                            errors.push(`Ingrese un Apellido`);
-                            break;
-                        case 'socialReason':
-                            errors.push(`Ingrese una Razon Social`);
-                            break;
-                        
-                        case 'gender':
-                            errors.push(`Seleccione un Genero`);
-                            break;
-                        default:
-                            errors.push(`${name} es requerido`);
-                    }
-                }
+        if (control.invalid) {
+          // Si el control es requerido y esta vacio
+          if (control.errors?.['required']) {
+            switch (name) {
+              case 'typeId':
+                errors.push(`Seleccione un Tipo de Identificacion`);
+                break;
+              case 'thirdTypes':
+                errors.push(`Seleccione al menos un Tipo de Tercero`);
+                break;
+              case 'personType':
+                errors.push(`Seleccione un Tipo de Persona`);
+                break;
+              case 'idNumber':
+                errors.push(`Ingrese un Numero de Identificacion`);
+                break;
+              case 'country':
+                errors.push(`Seleccione un Pais`);
+                break;
+              case 'province':
+                errors.push(`Seleccione un Departamento`);
+                break;
+              case 'city':
+                errors.push(`Seleccione una Ciudad`);
+                break;
+              case 'address':
+                errors.push(`Ingrese una Direccion `);
+                break;
+              case 'phoneNumber':
+                errors.push(`Ingrese un numero de Celular`);
+                break;
+              case 'email':
+                errors.push(`Ingrese un Correo Electronico`);
+                break;
+              case 'state':
+                errors.push(`Seleccione un estado`);
+                break;
+              case 'names':
+                errors.push(`Ingrese un Nombre`);
+                break;
+              case 'lastNames':
+                errors.push(`Ingrese un Apellido`);
+                break;
+              case 'socialReason':
+                errors.push(`Ingrese una Razon Social`);
+                break;
 
-                // Validación del formato de correo electrónico
-                if (control.errors?.['email']) {
-                    errors.push(`El fromato del Correo Electronico es Invalido`);
-                }
+              case 'gender':
+                errors.push(`Seleccione un Genero`);
+                break;
+              default:
+                errors.push(`${name} es requerido`);
             }
+          }
+
+          // Validación del formato de correo electrónico
+          if (control.errors?.['email']) {
+            errors.push(`El fromato del Correo Electronico es Invalido`);
+          }
+          //validacion id duplicado
+          if (control.errors?.['idDuplicado']) {
+            errors.push(`El Número de Identificación ya existe`);
+          }
         }
+      }
     }
 
     return errors;
+  }
+  
+  idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return thirdService.existThird(control.value).pipe(
+        map((isDuplicated: any) => (isDuplicated ? { idDuplicado: true } : null)),
+        catchError(() => of(null)) // Manejar errores del servicio
+      );
+    };
   }
 
   OnSubmit() {
@@ -360,7 +464,7 @@ export class ThirdCreationComponent implements OnInit {
         confirmButtonText: 'Aceptar'
       });
       return;
-    }  
+    }
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
     third.city = this.createdThirdForm.get('city')?.value;
@@ -373,12 +477,12 @@ export class ThirdCreationComponent implements OnInit {
     third.creationDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
     third.updateDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd')!;
     let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.createdThirdForm.get('typeId')?.value);
-    if(typeIdValue !== null && typeIdValue !== undefined){
+    if (typeIdValue !== null && typeIdValue !== undefined) {
       third.typeId = typeIdValue;
     }
-    if(third.typeId.typeIdname.includes('NIT')){
-      third.verificationNumber =this.verificationNumber?.valueOf();
-      console.log('Digito de Verificacion',third.verificationNumber);
+    if (third.typeId.typeIdname.includes('NIT')) {
+      third.verificationNumber = this.verificationNumber?.valueOf();
+      console.log('Digito de Verificacion', third.verificationNumber);
     }
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
@@ -390,7 +494,7 @@ export class ThirdCreationComponent implements OnInit {
         this.goToListThirds();
       },
       error: (error) => {
-        console.log('Error',error);
+        console.log('Error', error);
         this.errorMessages = this.getFormErrors();
       },
     });

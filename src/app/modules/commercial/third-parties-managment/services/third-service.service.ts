@@ -51,6 +51,9 @@ export class ThirdServiceService {
   getThirdPartie(thId:number): Observable<Third>{
     return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
   }
+  existThird(thId:number): Observable<boolean>{
+    return this.http.get<boolean>(this.thirdApiUrl+`existBy?thId=${thId}`)
+  }
 
   changeThirdPartieState(thId:number): Observable<Boolean>{
     let params = new HttpParams()
