@@ -46,7 +46,7 @@
               <h5 class="text-md font-bold text-blue-900 mb-4">Tipos de Tercero</h5>
               <li *ngFor="let thirdType of thirdTypes; let i = index" class="bg-white my-2 mx-auto rounded-lg shadow flex items-center p-2 w-full max-w-sm">
                 <span class="flex-1 text-gray-800 text-lg pr-2">{{ thirdType.thirdTypeName }}</span>
-                <button (click)="deleteItem(thirdTypes,i)" class="flex items-center justify-center p-2 ml-2 rounded-md text-red-600 hover:bg-red-600 hover:text-white">
+                <button (click)="deleteItemId(thirdTypes,i)" class="flex items-center justify-center p-2 ml-2 rounded-md text-red-600 hover:bg-red-600 hover:text-white">
                     <span class="material-icons">delete</span>
                 </button>
               </li>
