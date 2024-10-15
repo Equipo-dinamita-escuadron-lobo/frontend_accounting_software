@@ -1,7 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { Third } from '../../models/Third';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,19 +15,23 @@ import { ThirdConfigModalComponent } from '../third-config-modal/third-config-mo
   styleUrls: ['./thirds-list.component.css']
 })
 export class ThirdsListComponent{
-[x: string]: any;
   @ViewChild('thirdEditModal') thirdEditModal !: ThirdEditModalComponent;
 
   form: FormGroup;
 
   data: Third[] = [];
+  columnsBrief: any[] = [
+    { title: 'Tipo Persona', data: 'personType'},
+    { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
+    { title: 'Nombre/Razón Social', data: 'socialReason' },
+    { title: 'Tipo Id', data: 'typeId' },
+    { title: 'Número de Documento'},
+    { title: 'Digito de verificación'},
+    { title: 'Correo', data: 'email' },
+    { title: 'Estado', data: 'state' },
+    { title: 'Acciones'}
+  ];
 
-  displayedColumnsBrief: string[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'verificationNumber', 'email', 'state', 'actions'];
-  displayedColumnsComplete: string[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'verificationNumber', 'email', 'country', 'province', 'city', 'address', 'phoneNumber', 'state', 'actions'];
-  dataSource = new MatTableDataSource<Third>(this.data);
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-/*
   columnsComplete: any[] = [
     { title: 'Tipo Persona', data: 'personType'},
     { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
@@ -45,7 +47,7 @@ export class ThirdsListComponent{
     { title: 'Celular', data: 'phoneNumber' },
     { title: 'Estado', data: 'state' },
     { title: 'Acciones'}
-  ];*/
+  ];
 
   showDetailTable = false;
 
@@ -56,10 +58,6 @@ export class ThirdsListComponent{
 
   constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
   }
 
   validationsAll(){
@@ -78,8 +76,6 @@ export class ThirdsListComponent{
         next: (response: Third[])=>{
           this.data = response;
           console.log(response);
-          this.dataSource = new MatTableDataSource<Third>(this.data);
-          this.dataSource.paginator = this.paginator;
         },
         error: (error) => {
           console.log(error)
