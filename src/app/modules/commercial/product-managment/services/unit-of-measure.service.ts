@@ -38,7 +38,7 @@ export class UnitOfMeasureService {
   // POST
   // Método para crear una nueva unidad de medida
   createUnitOfMeasure(unitOfMeasure: UnitOfMeasure): Observable<UnitOfMeasure> {
-    const url = `${environment.API_PRODUCTS_URL}products/unit-measures/create`;
+    const url = `${environment.API_PRODUCTS_URL}unit-measures/create`;
     console.log('unitOfMeasure', unitOfMeasure);
     return this.http.post<UnitOfMeasure>(url, unitOfMeasure);
   }
