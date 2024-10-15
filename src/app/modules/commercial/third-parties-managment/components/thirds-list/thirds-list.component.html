@@ -117,6 +117,9 @@
               <td class="actions">
                 <button (click)="openModalDetails(third.thId)"> <span class="material-icons">visibility</span> </button>
                 <button (click)="openModalEdit(third.thId)"> <span class="material-icons">edit</span> </button>
+                <button (click)="deleteThirdPartie(third.thId)">
+                  <span class="material-icons">delete</span>
+                </button>
                 <button *ngIf="third.state === true" class="toggle-off-button"
                   (click)="changeThirdPartieState(third.thId)">
                   <span class="material-icons">toggle_off</span>

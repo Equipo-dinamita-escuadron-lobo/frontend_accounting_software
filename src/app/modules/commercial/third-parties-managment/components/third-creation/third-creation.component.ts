@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
 import { ThirdServiceService } from '../../services/third-service.service';
@@ -13,6 +13,7 @@ import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
 import { eThirdGender } from '../../models/eThirdGender';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-third-creation',
@@ -126,6 +127,7 @@ export class ThirdCreationComponent implements OnInit {
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+  isDuplicated: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -162,7 +164,7 @@ export class ThirdCreationComponent implements OnInit {
       lastNames: [''],
       socialReason: [''],
       gender: [null],
-      idNumber: ['', Validators.required],
+      idNumber: ['', {validators: [Validators.required], asyncValidators:[this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur'}],
       verificationNumber: [{ value: '', disabled: true }],
       state: ['Activo', Validators.required],
       photoPath: [''],
@@ -173,7 +175,7 @@ export class ThirdCreationComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], //Validacion requerida para que tenga el formato correcto de correo electronico
       creationDate: [''],
-      updateDate: ['']
+      updateDate: ['']      
     });
 
     this.createdThirdForm.get('idNumber')?.valueChanges.subscribe(value => {
@@ -429,11 +431,24 @@ export class ThirdCreationComponent implements OnInit {
           if (control.errors?.['email']) {
             errors.push(`El fromato del Correo Electronico es Invalido`);
           }
+          //validacion id duplicado
+          if (control.errors?.['idDuplicado']) {
+            errors.push(`El Número de Identificación ya existe`);
+          }
         }
       }
     }
 
     return errors;
+  }
+  
+  idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return thirdService.existThird(control.value).pipe(
+        map((isDuplicated: any) => (isDuplicated ? { idDuplicado: true } : null)),
+        catchError(() => of(null)) // Manejar errores del servicio
+      );
+    };
   }
 
   OnSubmit() {

@@ -189,6 +189,9 @@
                 <ng-container *ngIf="createdThirdForm.get('idNumber')?.errors?.['required']">
                   El número de identificación es requerido
                 </ng-container>
+                <ng-container *ngIf="createdThirdForm.get('idNumber')?.errors?.['idDuplicado']">
+                  El número de identificación ya existe
+                </ng-container>
               </div>
             </div>
           </div>
