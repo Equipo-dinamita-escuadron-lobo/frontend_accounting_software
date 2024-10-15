@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { ThirdPartiesManagmentRoutingModule } from './third-parties-managment-routing.module';
 import { ThirdsListComponent } from './components/thirds-list/thirds-list.component';
@@ -29,7 +31,9 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ReactiveFormsModule,
     FormsModule,
     NgSelectModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    MatTableModule,
+    MatPaginatorModule
   ]
 })
 export class ThirdPartiesManagmentModule { }
