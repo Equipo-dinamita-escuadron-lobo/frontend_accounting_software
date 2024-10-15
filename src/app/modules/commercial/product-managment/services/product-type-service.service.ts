@@ -10,7 +10,7 @@ import { ProductType } from '../models/ProductType';
 })
 export class ProductTypeService {
 
-  private readonly apiUrl = `${environment.API_URL}product-types`; // Cambia esta URL según tu configuración
+  private readonly apiUrl = `${environment.API_PRODUCTS_URL}product-types`; // Cambia esta URL según tu configuración
 
   constructor(private http: HttpClient) { }
 
