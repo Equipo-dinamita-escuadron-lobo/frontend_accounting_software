@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Category, CategoryList } from '../../models/Category';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CategoryService } from '../../services/category.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
+import { Category } from '../../models/Category';
+import { CategoryService } from '../../services/category.service';
+import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
 
@@ -23,16 +25,19 @@ export class CategoryListComponent implements OnInit {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
-  columns: any[] = [
-    { title: 'Id', data: 'id' },
-    { title: 'Nombre', data: 'name' },
-    { title: 'Descripción', data: 'description' },
-    { title: 'Inventario', data: 'inventory' },
-    { title: 'Costo', data: 'cost' },
-    { title: 'Venta', data: 'sale' },
-    { title: 'Devolución', data: 'return' },
-    { title: 'Acciones', data: 'actions' },
-  ];
+  displayedColumns: string[] = ['id', 'name', 'description', 'inventory', 'cost', 'sale', 'return', 'actions'];
+  dataSource = new MatTableDataSource<Category>(this.categories);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+  // Método para filtrar los productos
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   form: FormGroup;
 
@@ -105,6 +110,8 @@ export class CategoryListComponent implements OnInit {
     this.categoryService.getCategories(this.entData).subscribe(
       (data: Category[]) => {
         this.categories = data;
+        this.dataSource = new MatTableDataSource<Category>(this.categories);
+        this.dataSource.paginator = this.paginator;
       },
       (error) => {
         console.log('Error al obtener las categorías:', error);

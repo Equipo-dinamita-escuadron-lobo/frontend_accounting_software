@@ -1,61 +1,55 @@
-<div class="px-14 py-5 bg-gray-100 font-projectFont">
-  <div class="mb-6 self-start">
-    <span class="text-4xl text-blue-950 self-start">Creacion de Unidad de medida</span>
-  </div>
-
-  <p class="mt-4 font-projectFont">
-    Ingrese la información requerida para crear una nueva Unidad de Medida:
-  </p>
-  <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
-    <button
-      class="flex items-center justify-center h-10 min-w-14 rounded-xl bg-blue-950 text-white px-4 relative"
-      (click)="goBack()"
-    >
-      <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
-        <i class="fas fa-arrow-left text-blue-950"></i>
-      </span>
+<mat-card class="mx-8 my-8 p-4 shadow-lg rounded-lg">
+  <mat-card-header class="flex items-center mb-2 gap-2">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
     </button>
-  </div>
+    <section>
+      <mat-card-title class="text-4xl text-blue-950">
+        Creación de Unidad de Medida
+      </mat-card-title>
+    </section>
+  </mat-card-header>
 
-  <div class="container mx-auto mt-8">
-    <div class="grid grid-cols-1 m-6 gap-6">
-      <div class="p-4 bg-white rounded shadow">
-        <form [formGroup]="unitOfMeasureForm" (ngSubmit)="onSubmit()">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="name" class="block text-sm font-medium text-gray-700">Nombre:</label>
-              <input type="text" formControlName="name" id="name" placeholder="Ej: Kilogramo" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-              <div *ngIf="unitOfMeasureForm.get('name')?.touched && unitOfMeasureForm.get('name')?.invalid" class="text-red-500">
-                <div *ngIf="unitOfMeasureForm.get('name')?.errors?.['required']">
-                  El campo Nombre es requerido.
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="description" class="block text-sm font-medium text-gray-700">Descripción:</label>
-              <input type="text" formControlName="description" id="description" placeholder="Ej: Unidad de medida de masa" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-              <div *ngIf="unitOfMeasureForm.get('description')?.touched && unitOfMeasureForm.get('description')?.invalid" class="text-red-500">
-                <div *ngIf="unitOfMeasureForm.get('description')?.errors?.['required']">
-                  El campo Descripción es requerido.
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="abbreviation" class="block text-sm font-medium text-gray-700">Abreviatura:</label>
-              <input type="text" formControlName="abbreviation" id="abbreviation" placeholder="Ej: Kg" class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-              <div *ngIf="unitOfMeasureForm.get('abbreviation')?.touched && unitOfMeasureForm.get('abbreviation')?.invalid" class="text-red-500">
-                <div *ngIf="unitOfMeasureForm.get('abbreviation')?.errors?.['required']">
-                  El campo Abreviatura es requerido.
-                </div>
-              </div>
-            </div>
-            <!-- Botón de envío -->
-            <div>
-              <button type="submit" class="buttonsC h-10 w-auto">Crear Unidad</button>
-            </div>
-          </div>
-        </form>
+  <mat-card-content>
+    <p class="mt-4">
+      Ingrese la información requerida para crear una nueva Unidad de Medida:
+    </p>
+    <form [formGroup]="unitOfMeasureForm" (ngSubmit)="onSubmit()" class="space-y-4 mt-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Nombre -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Nombre</mat-label>
+          <input matInput placeholder="Ej: Kilogramo" formControlName="name" required />
+          <mat-error *ngIf="unitOfMeasureForm.get('name')?.hasError('required')">
+            El campo Nombre es requerido.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Descripción -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Descripción</mat-label>
+          <input matInput placeholder="Ej: Unidad de medida de masa" formControlName="description" required />
+          <mat-error *ngIf="unitOfMeasureForm.get('description')?.hasError('required')">
+            El campo Descripción es requerido.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Abreviatura -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Abreviatura</mat-label>
+          <input matInput placeholder="Ej: Kg" formControlName="abbreviation" required />
+          <mat-error *ngIf="unitOfMeasureForm.get('abbreviation')?.hasError('required')">
+            El campo Abreviatura es requerido.
+          </mat-error>
+        </mat-form-field>
       </div>
-    </div>
-  </div>
-</div>
+
+      <!-- Botón de envío -->
+      <div class="flex justify-start">
+        <button mat-raised-button color="primary" type="submit">
+          Crear Unidad
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

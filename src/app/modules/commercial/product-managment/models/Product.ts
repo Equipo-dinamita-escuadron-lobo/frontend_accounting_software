@@ -1,40 +1,43 @@
-import { Third } from "../../third-parties-managment/models/third-model";
-import { Category } from "./Category";
-import { UnitOfMeasure } from "./UnitOfMeasure";
+import { ProductType } from "./ProductType";
 
 export interface Product {
     id :string;
-    itemType: string;
     code: string;
+    itemType: string;
     description: string;
-    minQuantity: number;
-    maxQuantity: number;
+    quantity: number;
+    //maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
     unitOfMeasureId: number;
-    supplierId:  number;
+   // supplierId:  number;
     categoryId: number;
     enterpriseId: string;
-    price: number;
+    cost: number;
     state: string;
+    reference: string;
+    productType: ProductType;
   }
   
   export interface ProductList {
     id :string;
-    itemType: string;
     code: string;
+    itemType: string;
     description: string;
-    minQuantity: number;
-    maxQuantity: number;
+    quantity: number;
+    //maxQuantity: number;
     taxPercentage: number;
     creationDate: Date;
 
     unitOfMeasureName: string;
-    supplierName:  string;
+    //supplierName:  string;
     categoryName: string;
 
     enterpriseId: string;
 
-    price: number;
+    cost: number;
     state: string;
+
+    reference: string;
+    productType: ProductType;
   }

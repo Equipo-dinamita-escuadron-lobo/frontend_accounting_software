@@ -17,20 +17,18 @@
         <!-- Aquí agregas la información específica del producto -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Agrega aquí los detalles del producto, por ejemplo: -->
-          <p class="text-md font-medium text-gray-800">Nombre: {{ productData.description }}</p>
+          <p class="text-md font-medium text-gray-800">Nombre: {{ productData.itemType }}</p>
           <p class="text-md font-medium text-gray-800">Descripción: {{ productData.description }}</p>
-          <p class="text-md font-medium text-gray-800">Precio: {{ productData.price }}</p>
+          <p class="text-md font-medium text-gray-800">Costo: {{ productData.cost }}</p>
           <!-- Agrega los campos faltantes -->
           <!-- <p class="text-md font-medium text-gray-800">ID: {{ productData.id }}</p> -->
           <p class="text-md font-medium text-gray-800">Tipo de ítem: {{ productData.itemType }}</p>
-          <p class="text-md font-medium text-gray-800">Código: {{ productData.code }}</p>
-          <p class="text-md font-medium text-gray-800">Cantidad mínima: {{ productData.minQuantity }}</p>
-          <p class="text-md font-medium text-gray-800">Cantidad máxima: {{ productData.maxQuantity }}</p>
+          <p class="text-md font-medium text-gray-800">Cantidad: {{ productData.quantity }}</p>
           <p class="text-md font-medium text-gray-800">Porcentaje de impuestos: {{ productData.taxPercentage }}</p>
           <p class="text-md font-medium text-gray-800">Fecha de creación: {{ productData.creationDate }}</p>
-          <p class="text-md font-medium text-gray-800">unidad de medida: {{ productData.unitOfMeasureName }}</p>
-          <p class="text-md font-medium text-gray-800">proveedor: {{ productData.supplierName }}</p>
-          <p class="text-md font-medium text-gray-800">categoría: {{ productData.categoryName }}</p>
+          <p class="text-md font-medium text-gray-800">Unidad de medida: {{ productData.unitOfMeasureName }}</p>
+          <p class="text-md font-medium text-gray-800">Categoría: {{ productData.categoryName }}</p>
+          <p class="text-md font-medium text-gray-800">Referencia: {{ productData.reference }}</p>
           <!-- <p class="text-md font-medium text-gray-800">ID de empresa: {{ productData.enterpriseId }}</p> -->
           <!-- <p class="text-md font-medium text-gray-800">Estado: {{ productData.state }}</p> -->
           <!-- Agrega más detalles según sea necesario -->

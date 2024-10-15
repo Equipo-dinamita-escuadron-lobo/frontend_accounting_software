@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
 import { Product } from '../../../product-managment/models/Product';
 import { ProductService } from '../../../product-managment/services/product.service';
 
@@ -34,8 +33,8 @@ export class InvoiceSelectProductsComponent {
   getProducts(): void {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
-        console.log('recibe el id de provedor num:', this.inputData.thId)
-        this.products = data.filter(product => product.supplierId === this.inputData.thId);
+        console.log('recibe el id de producto num:', this.inputData.thId)
+        this.products = data.filter(product => product.id === this.inputData.thId);
       },
       (error) => {
         console.log('Error al obtener los productos:', error);

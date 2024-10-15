@@ -31,12 +31,16 @@ export const navbarData: INavbarData[] = [
         label: 'Productos',
       },
       {
+        routeLink: '/general/operations/product-types',
+        label: 'Tipo de Productos',
+      },
+      {
         routeLink: '/general/operations/categories',
         label: 'Categorías',
       },
       {
         routeLink: '/general/operations/unities',
-        label: 'Unidades de medida',
+        label: 'Unidades de Medida',
       }
     ]
   },

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { CategoryService } from '../../services/category.service';
-import { Router } from '@angular/router';
-import { Product } from '../../models/Product';
-import Swal from 'sweetalert2';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
-import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ProductTypeService } from '../../services/product-type-service.service';
+import { ProductType } from '../../models/ProductType';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
- @Component({
+@Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
@@ -21,18 +21,22 @@ export class ProductCreationComponent implements OnInit {
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
+  productTypes: ProductType[] = [];
+
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
   nextProductId: number = 1; // Inicializa el contador del ID del producto
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
+  
+
 
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
+    private productTypeService: ProductTypeService,
     private router: Router
   ) {}
 
@@ -48,28 +52,41 @@ export class ProductCreationComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       id: [''], // 'id' es un string
       itemType: ['', [Validators.required]], // 'itemType' es un string
-      code: ['', [Validators.required]], // 'code' es un string
       description: ['', [Validators.required]], // 'description' es un string
-      minQuantity: [null, [Validators.required, Validators.min(0)]], // 'minQuantity' es un número
-      maxQuantity: [null, [Validators.required, Validators.min(0)]], // 'maxQuantity' es un número
+      quantity: [null, [Validators.required, Validators.min(0)]], // 'quantity' es un número
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]] // 'price' es un número
+      cost: [null, [Validators.required, Validators.min(0)]], // 'cost' es un número
+      reference: [''], // referencia string
+      productTypeId: [''] // Nuevo campo para el tipo de producto
+
     }
-    ,{ validators: minMaxValidator });
+    ,{ validators: quantityValidator });
     if (this.entData) {
+      this.initForm();
+      this.getUnitOfMeasures();
+      this.getCategories();
+      this.loadProductTypes();
 
-    this.initForm();
-  this.getThirdParties();
-  this.getUnitOfMeasures();
-  this.getCategories();
     }
 
 
-}
+  }
+
+
+  loadProductTypes(): void {
+    this.productTypeService.getAllProductTypes().subscribe(
+      (data: ProductType[]) => {
+        this.productTypes = data;
+      },
+      error => {
+        console.error('Error al cargar los tipos de producto', error);
+      }
+    );
+  }
 
 
   // Método para obtener la lista de categorías
@@ -83,22 +100,6 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }
-
-  // Método para obtener la lista de proveedores
-getThirdParties(): void {
-
-  this.thirdService.getThirdParties(this.entData,0).subscribe(
-    (thirdParties: any[]) => {
-      // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
-      this.thirdParties = thirdParties;
-      // Llamar a initForm() después de obtener la lista de proveedores
-      this.initForm();
-    },
-    error => {
-      console.error('Error al obtener la lista de proveedores:', error);
-    }
-  );
-}
 
 // Método para obtener la lista de unidades de medida
 getUnitOfMeasures(): void {
@@ -118,16 +119,15 @@ getUnitOfMeasures(): void {
     this.productForm = this.formBuilder.group({
       id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
       itemType: ['', [Validators.required]],
-      code: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      minQuantity: [null, [Validators.required, Validators.min(0)]],
-      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, [Validators.required, Validators.min(0)]]
+      cost: [null, [Validators.required, Validators.min(0)]],
+      reference: [''] // Asigna el próximo ID al campo 'id'
     });
   }
 
@@ -137,27 +137,24 @@ getUnitOfMeasures(): void {
 
     // Verifica que los campos de tipo 'string' no estén vacíos
     const areTextFieldsValid =formValue.itemType.trim() !== '' &&
-                              formValue.code.trim() !== '' &&
                               formValue.description.trim() !== ''// Suponiendo que esto sea un valor seleccionado, no un objeto
 
     // Verifica que los números no sean negativos y que la fecha sea válida
-    const areNumberFieldsValid = formValue.minQuantity !== null && // Revisar que no sea null
-                                formValue.maxQuantity !== null && // Revisar que no sea null
-                                formValue.minQuantity >= 0 &&
-                                formValue.maxQuantity >= 0 &&
+    const areNumberFieldsValid = formValue.quantity !== null && // Revisar que no sea null
+                                formValue.quantity >= 0 &&
                                 formValue.taxPercentage !== null && // Revisar que no sea null
                                 formValue.taxPercentage >= 0 &&
                                 formValue.taxPercentage <= 100 &&
-                                formValue.price !== null && // Revisar que no sea null
-                                formValue.price >= 0;
+                                formValue.cost !== null && // Revisar que no sea null
+                                formValue.cost >= 0;
 
     // Verifica que la fecha de creación sea válida
     const isDateValid = formValue.creationDate && new Date(formValue.creationDate).toString() !== 'Invalid Date';
 
-    // Verifica que minQuantity sea menor que maxQuantity
-    const isMinMaxQuantityValid = formValue.minQuantity <= formValue.maxQuantity;
+    // Verifica que quantity sea menor que maxQuantity
+    //const isMinMaxQuantityValid = formValue.quantity <= formValue.maxQuantity;
 
-    return areTextFieldsValid && areNumberFieldsValid && isDateValid && isMinMaxQuantityValid;
+    return areTextFieldsValid && areNumberFieldsValid && isDateValid;
   }
 
   //Método para enviar el formulario y crear un nuevo producto
@@ -168,17 +165,17 @@ getUnitOfMeasures(): void {
     const formData = this.productForm.value;
 
     // Convertir supplierId a número si es una cadena
-    formData.supplierId = parseInt(formData.supplierId, 10);
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.price = parseInt(formData.price, 10);
+    formData.cost = parseInt(formData.cost, 10);
 
     formData.enterpriseId = this.entData;
+    formData.productTypeId = parseInt(formData.productTypeId, 10);
 
 
     this.productService.createProduct(formData).subscribe(
       (response: any) => {
-        // Mensaje de éxito con alert
+        // Mensaje de éxito con alerta
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado el producto con éxito!',
@@ -229,17 +226,17 @@ getUnitOfMeasures(): void {
   }
 
   //Método para formatear el precio
-  formatPrice(event: any) {
-    let priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedPrice = '';
-    if (priceInput !== '') {
+  formatcost(event: any) {
+    let costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedcost = '';
+    if (costInput !== '') {
       // Convertir el precio a número
-      const price = parseInt(priceInput, 10);
+      const cost = parseInt(costInput, 10);
       // Formatear el precio con separador de miles y decimales
-      formattedPrice = this.formatNumberWithCommas(price);
+      formattedcost = this.formatNumberWithCommas(cost);
     }
     // Establecer el valor formateado en el campo de precio del formulario
-    this.productForm.get('price')?.setValue(formattedPrice);
+    this.productForm.get('cost')?.setValue(formattedcost);
   }
 
   // Función para formatear un número con separadores de miles
@@ -256,10 +253,9 @@ getUnitOfMeasures(): void {
 }
 
   // Funcion para validar que el maximo y minimo tengan valores coherentes
-  function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-    const min = group.controls['minQuantity'].value;
-    const max = group.controls['maxQuantity'].value;
-    return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
+  function quantityValidator(group: FormGroup): { [key: string]: any } | null {
+    const quantity = group.controls['quantity'].value;
+    return quantity !== null ? null : { 'quantityInvalid': true };
   }
 
 

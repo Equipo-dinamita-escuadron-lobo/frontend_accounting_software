@@ -26,6 +26,10 @@ import { InvoiceCreationComponent } from '../../commercial/purchase-invoice/comp
 import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/list-tax.component';
 import { CreateTaxComponent } from '../../commercial/taxes/components/create-tax/create-tax.component';
 import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edit-tax.component';
+import { ProductTypeListComponent } from '../../commercial/product-managment/components/product-type-list/product-type-list.component';
+import { ProductTypeCreationComponent } from '../../commercial/product-managment/components/product-type-creation/product-type-creation.component';
+import { ProductTypeEditComponent } from '../../commercial/product-managment/components/product-type-edit/product-type-edit.component';
+
 
 
 const routes: Routes = [
@@ -103,6 +107,18 @@ const routes: Routes = [
       {
         path: 'products/edit/:id',
         component: ProductEditComponent
+      },
+      {
+        path: 'product-types',
+        component: ProductTypeListComponent
+      },
+      {
+        path: 'product-types/create',
+        component: ProductTypeCreationComponent
+      },
+      {
+        path: 'product-types/edit/:id',
+        component: ProductTypeEditComponent
       },
       {
         path: 'unities',

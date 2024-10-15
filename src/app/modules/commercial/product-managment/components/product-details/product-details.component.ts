@@ -1,8 +1,9 @@
-import { Component, Inject, defineInjectable } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Product, ProductList } from '../../models/Product';
+import { ProductList } from '../../models/Product';
 import { ProductService } from '../../services/product.service';
+import { ProductType } from '../../models/ProductType';
 
 @Component({
   selector: 'app-product-details-modal',
@@ -13,22 +14,23 @@ export class ProductDetailsModalComponent {
   inputData: any;
   productData: ProductList = {
     id: '',
-    itemType: '',
     code: '',
+    itemType: '',
     description: '',
-    minQuantity: 0,
-    maxQuantity: 0,
+    quantity: 0,
     taxPercentage: 0,
     creationDate: new Date(),
 
     unitOfMeasureName: '',
-    supplierName: '',
+    //supplierName: '',
     categoryName: '',
 
     enterpriseId: '',
 
-    price: 0,
+    cost: 0,
     state: '',
+    reference: '',
+    productType: new ProductType(),
   };
 
   constructor(

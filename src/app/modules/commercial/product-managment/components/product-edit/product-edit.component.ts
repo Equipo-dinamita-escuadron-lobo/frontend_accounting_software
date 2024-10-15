@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/Product';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
-import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { CategoryService } from '../../services/category.service';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { Product } from '../../models/Product';
+import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
+import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
+import { ProductType } from '../../models/ProductType';
+import { ProductTypeService } from '../../services/product-type-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
 
@@ -26,7 +27,7 @@ export class ProductEditComponent implements OnInit {
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-
+  productTypes: ProductType[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -36,23 +37,23 @@ export class ProductEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
-    private thirdService: ThirdServiceService, // Inyecta el servicio ThirdService en el constructor,
+    private productTypeService: ProductTypeService,
     private router: Router
 
   ) {
     this.editForm = this.formBuilder.group({
       itemType: ['', Validators.required],
-      code: ['', Validators.required],
       description: ['', Validators.required],
-      minQuantity: [null, [Validators.required, Validators.min(0)]],
-      maxQuantity: [null, [Validators.required, Validators.min(0)]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [null, Validators.required],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-      price: [null, Validators.required]
-    }, { validators: minMaxValidator });
+      cost: [null, Validators.required],
+      reference: [''],
+      productTypeId: ['']
+    }, { validators: quantityValidator });
   }
 
   ngOnInit(): void {
@@ -64,13 +65,24 @@ export class ProductEditComponent implements OnInit {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if(this.entData){
-    this.getThirdParties();
-    this.getUnitOfMeasures();
-    this.getCategories();
+      this.getUnitOfMeasures();
+      this.getCategories();
+      this.loadProductTypes();
     }
 
   }
+  
 
+  loadProductTypes(): void {
+    this.productTypeService.getAllProductTypes().subscribe(
+      (data: ProductType[]) => {
+        this.productTypes = data;
+      },
+      error => {
+        console.error('Error al cargar los tipos de producto', error);
+      }
+    );
+  }
 
     // Método para obtener la lista de categorías
     getCategories(): void {
@@ -83,22 +95,6 @@ export class ProductEditComponent implements OnInit {
         }
       );
     }
-
-    // Método para obtener la lista de proveedores
-  getThirdParties(): void {
-
-    this.thirdService.getThirdParties(this.entData,0).subscribe(
-      (thirdParties: any[]) => {
-        // Asigna la lista de proveedores a una propiedad del componente para usarla en el formulario
-        this.thirdParties = thirdParties;
-        // Llamar a initForm() después de obtener la lista de proveedores
-        this.initForm();
-      },
-      error => {
-        console.error('Error al obtener la lista de proveedores:', error);
-      }
-    );
-  }
 
   // Método para obtener la lista de unidades de medida
   getUnitOfMeasures(): void {
@@ -118,16 +114,16 @@ export class ProductEditComponent implements OnInit {
       this.productForm = this.formBuilder.group({
         id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
         itemType: ['', [Validators.required]],
-        code: ['', [Validators.required]],
         description: ['', [Validators.required]],
-        minQuantity: [null, [Validators.required, Validators.min(0)]],
-        maxQuantity: [null, [Validators.required, Validators.min(0)]],
+        quantity: [null, [Validators.required, Validators.min(0)]],
         taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
         creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
         unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-        supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+       // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-        price: [null, [Validators.required, Validators.min(0)]]
+        cost: [null, [Validators.required, Validators.min(0)]],
+        reference: [''],
+        productTypeId: ['']
       });
     }
 
@@ -141,16 +137,16 @@ export class ProductEditComponent implements OnInit {
         // Puedes asignar los valores del producto al formulario de edición aquí
         this.editForm.patchValue({
           itemType: product.itemType,
-          code: product.code,
           description: product.description,
-          minQuantity: product.minQuantity,
-          maxQuantity: product.maxQuantity,
+          quantity: product.quantity,
           taxPercentage: product.taxPercentage,
           creationDate: product.creationDate,
           unitOfMeasureId: product.unitOfMeasureId,
-          supplierId: product.supplierId,
+          //supplierId: product.supplierId,
           categoryId: product.categoryId,
-          price: product.price
+          cost: product.cost,
+          reference: product.reference,
+          productTypeId: product.productType.id,
         });
       },
       error => {
@@ -163,7 +159,7 @@ export class ProductEditComponent implements OnInit {
     if (this.editForm.valid) {
       const formData = this.productForm.value;
       formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-      formData.supplierId = parseInt(formData.supplierId, 10);
+     // formData.supplierId = parseInt(formData.supplierId, 10);
       formData.categoryId = parseInt(formData.categoryId, 10);
 
 
@@ -208,16 +204,16 @@ export class ProductEditComponent implements OnInit {
   }
 
   //Metodo para formatear el precio
-  formatPrice(event: any) {
-    const priceInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedPrice = '';
-    if (priceInput !== '') {
+  formatcost(event: any) {
+    const costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    let formattedcost = '';
+    if (costInput !== '') {
       // Convertir el precio a número
-      const price = parseInt(priceInput, 10);
+      const cost = parseInt(costInput, 10);
       // Formatear el precio con separador de miles y decimales
-      formattedPrice = this.formatNumberWithCommas(price);
+      formattedcost = this.formatNumberWithCommas(cost);
     }
-    this.editForm.get('price')?.setValue(formattedPrice);
+    this.editForm.get('cost')?.setValue(formattedcost);
   }
 
   // Función para formatear un número con separadores de miles
@@ -234,8 +230,8 @@ export class ProductEditComponent implements OnInit {
 }
 
 // Función para validar que el maximo y minimo tengan valores coherentes
-function minMaxValidator(group: FormGroup): { [key: string]: any } | null {
-  const min = group.controls['minQuantity'].value;
-  const max = group.controls['maxQuantity'].value;
-  return min !== null && max !== null && min <= max ? null : { 'minMaxInvalid': true };
+function quantityValidator(group: FormGroup): { [key: string]: any } | null {
+  const quantity = group.controls['quantity'].value;
+  //const max = group.controls['maxQuantity'].value;
+  return quantity !== null ? null : { 'quantityInvalid': true };
 }

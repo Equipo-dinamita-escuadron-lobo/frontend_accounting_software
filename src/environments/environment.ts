@@ -6,6 +6,7 @@ export const environment = {
     storageDirectory: 'cloudinary-enterprise',
     keycloak_url: 'http://contables.unicauca.edu.co/keycloak/token/',
     URL: 'http://contables.unicauca.edu.co/',
+    API_PRODUCTS_URL: 'http://contables.unicauca.edu.co/api/',
     API_LOCAL_URL: '',
     microservice: ''
   };
