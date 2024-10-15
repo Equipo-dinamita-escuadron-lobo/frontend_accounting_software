@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import { ThirdType } from '../models/ThirdType';
 import { TypeId } from '../models/TypeId';
@@ -47,5 +47,37 @@ export class ThirdServiceConfigurationService {
       })
     );
   }
+  deleteThird(entId: string): Observable<void> {
+    return this.http.delete<void>(`${this.thirdApiUrl}${entId}`).pipe(
+        catchError((error: HttpErrorResponse) => {
+            console.error('Error occurred: ', error); // Log the error to the console
+
+            // Aquí puedes transformar el error para incluir el mensaje que deseas
+            const errorMessage = error.error && error.error.text ? error.error.text : 'Error occurred while deleting the third type';
+            return throwError(() => new HttpErrorResponse({
+                error: { text: errorMessage }, // Mantiene la estructura esperada
+                status: error.status,
+                statusText: error.statusText,
+                
+            }));
+        })
+    );
+}
+ deleteId(entId: string): Observable<void> {
+    return this.http.delete<void>(`${this.thirdApiUrl}${entId}`).pipe(
+        catchError((error: HttpErrorResponse) => {
+            console.error('Error occurred: ', error); // Log the error to the console
+
+            // Aquí puedes transformar el error para incluir el mensaje que deseas
+            const errorMessage = error.error && error.error.text ? error.error.text : 'Error occurred while deleting the third type';
+            return throwError(() => new HttpErrorResponse({
+                error: { text: errorMessage }, // Mantiene la estructura esperada
+                status: error.status,
+                statusText: error.statusText,
+                
+            }));
+        })
+    );
+}
 
 }
