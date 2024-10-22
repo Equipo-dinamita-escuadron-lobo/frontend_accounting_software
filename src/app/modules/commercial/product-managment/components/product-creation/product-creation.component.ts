@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa 
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { ProductType } from '../../models/ProductType';
 import { CategoryService } from '../../services/category.service';
+import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { ProductTypeService } from '../../services/product-type-service.service';
-import { ProductType } from '../../models/ProductType';
 
 @Component({
   selector: 'app-product-creation',
@@ -19,7 +19,6 @@ export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
-  thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   productTypes: ProductType[] = [];
 
   formSubmitAttempt: boolean = false;
@@ -56,7 +55,6 @@ export class ProductCreationComponent implements OnInit {
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]], // 'taxPercentage' es un número
       creationDate: [today, [Validators.required]], // 'creationDate' es un Date
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]], // 'cost' es un número
       reference: [''], // referencia string
@@ -123,10 +121,10 @@ getUnitOfMeasures(): void {
       taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-      //supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]],
-      reference: [''] // Asigna el próximo ID al campo 'id'
+      reference: [''],// Asigna el próximo ID al campo 'id'
+      productType: [null, [Validators.required, Validators.pattern(/^\d+$/)]] // Nuevo campo para el tipo de producto
     });
   }
 
@@ -163,15 +161,12 @@ getUnitOfMeasures(): void {
   if (this.isFormValid()) {
     const formData = this.productForm.value;
 
-    // Convertir supplierId a número si es una cadena
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
     formData.cost = parseInt(formData.cost, 10);
-
-    formData.enterpriseId = this.entData;
     formData.productTypeId = parseInt(formData.productTypeId, 10);
-
-
+    formData.enterpriseId = this.entData;
+    
     this.productService.createProduct(formData).subscribe(
       (response: any) => {
         // Mensaje de éxito con alerta
@@ -180,7 +175,7 @@ getUnitOfMeasures(): void {
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
         });
-
+        console.info(response);
         // Restablece el formulario con la fecha actual
         this.resetFormWithCurrentDate();
         this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
@@ -197,7 +192,7 @@ getUnitOfMeasures(): void {
           icon: 'error',
         });
       }
-    );
+    ); 
   } else {
     // Mensaje de error si el formulario es inválido
     alert('No se pudo crear el producto. Por favor revisa los campos.');

@@ -4,11 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Product } from '../../models/Product';
+import { ProductType } from '../../models/ProductType';
 import { CategoryService } from '../../services/category.service';
+import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-import { ProductType } from '../../models/ProductType';
-import { ProductTypeService } from '../../services/product-type-service.service';
 
 
 @Component({
@@ -145,7 +145,7 @@ export class ProductEditComponent implements OnInit {
           categoryId: product.categoryId,
           cost: product.cost,
           reference: product.reference,
-          productTypeId: product.productType.id,
+          productTypeId: product.productType.id.toFixed(0),
         });
       },
       error => {

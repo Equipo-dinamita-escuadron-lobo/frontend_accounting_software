@@ -8,8 +8,10 @@ import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Category } from '../../models/Category';
 import { Product } from '../../models/Product'; // Importa el modelo Product
+import { ProductType } from '../../models/ProductType';
 import { UnitOfMeasure } from '../../models/UnitOfMeasure';
 import { CategoryService } from '../../services/category.service';
+import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service'; // Importa el servicio ProductService
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ProductDetailsModalComponent } from '../product-details/product-details.component';
@@ -25,8 +27,9 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   products: Product[] = []; // Inicializa la lista de productos
   unitOfMeasures: UnitOfMeasure[]= [];
   categories: Category[] = [];
+  types: ProductType[] = [];
 
-  displayedColumns: string[] = ['id', 'code', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference','productType','actions'];
+  displayedColumns: string[] = ['id', 'code', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -51,7 +54,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   constructor(
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
-    private categoryService: CategoryService,   
+    private categoryService: CategoryService,
+    private typeProductService: ProductTypeService,   
     private router: Router,
     private fb: FormBuilder,
     private dialog: MatDialog,
@@ -112,6 +116,17 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     );
   }
 
+  getTypeProduct(): void {
+    this.typeProductService.getAllProductTypes().subscribe(
+      (data: ProductType[]) => {
+        console.log('Tipos de producto:', data);
+      },
+      (error) => {
+        console.error('Error al obtener los tipos de producto:', error);
+      }
+    );
+  }
+
  /* getProviders(): void {
   this.thirdService.getThirdParties(this.entData,0).subscribe(
     (data: any[]) => {
@@ -129,6 +144,11 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   getUnitOfMeasureName(id: number): string {
     const uom = this.unitOfMeasures.find(unitOfMeasure => unitOfMeasure.id === id);
     return uom ? uom.name : 'No encontrado';
+  }
+
+  getProductTypeName(id: ProductType): string{
+    const ptn =  this.types.find(type => type.id === id.id);
+    return ptn ? ptn.name : 'No encontrado';
   }
 
   /*getProviderName(id: number): string {
