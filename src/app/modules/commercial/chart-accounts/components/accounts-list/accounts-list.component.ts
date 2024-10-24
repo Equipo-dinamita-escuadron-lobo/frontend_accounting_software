@@ -411,6 +411,53 @@ export class AccountsListComponent implements OnInit {
     return accounts;
   }
 
+  changeFinancialStateType(accounts: Account[]): Account[] {
+    accounts.forEach(account => {
+      var code = account.code[0];
+      if (code === "1" || code === "2" || code === "3") {
+        account.financialStatus = "Estado de situacion financiero";
+      }
+      if (code === "4" || code === "5" || code === "6") {
+        account.financialStatus = "Estado de resultados";
+      }
+      if (account.children) { // Verificamos que children no sea undefined
+        account.children = this.changeFinancialStateType(account.children);
+      }
+    });
+    return accounts;
+  }
+
+  changeNatureType(accounts: Account[]): Account[] {
+    accounts.forEach(account => {
+      var code = account.code[0];
+      var codeAccount = account.code.slice(0, 4);
+      if (code === "1" || code === "5" || code === "6") {
+        account.nature = "Debito";
+      }
+      if (code === "2" || code === "3" || code === "4") {
+        account.nature = "Credito";
+      }
+      if (codeAccount === "1592" || codeAccount === "1399" || codeAccount === "1499") {
+        account.nature = "Credito";
+      }
+      if (account.children) { // Verificamos que children no sea undefined
+        account.children = this.changeNatureType(account.children);
+      }
+    });
+    return accounts;
+  }
+
+  filterByCodeLength(data: any[][]): any[][] {
+    return data.filter(row => {
+      const code = row[0]; // Toma el valor de la primera columna (código)
+      const codeStr = String(code); // Convertir a cadena en caso de que sea un número
+      const codeLength = codeStr.length; // Obtener la longitud del código
+      return (codeLength === 1 || codeLength === 2 || codeLength === 4 || codeLength === 6 || codeLength === 8);
+    });
+  }
+
+
+
 
   /**
    * Reads an Excel file and processes its data.
@@ -435,8 +482,6 @@ export class AccountsListComponent implements OnInit {
       // Convertimos la hoja a JSON con las columnas originales
       let jsonData: any[][] = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], { raw: false, header: 1 });
 
-      
-
       // Definir las columnas requeridas
       const requiredFields = ['Código', 'Nombre', 'Naturaleza', 'Estado Financiero', 'Clasificación'];
 
@@ -447,22 +492,44 @@ export class AccountsListComponent implements OnInit {
       // Filtrar las columnas para todas las filas (incluyendo los encabezados)
       jsonData = jsonData.map(row => indicesToKeep.map(index => row[index]));
 
+      jsonData = jsonData.filter(row => /^\d+$/.test(String(row[0]))) // Filtra las filas donde el primer elemento es un número
+        .map(row => row.map(item => /^\d+$/.test(String(item)) ? parseInt(item) : item)); // Convierte elementos numéricos a enteros
+
+      // Agregar los encabezados de nuevo si es necesario
+      jsonData.unshift(headers.filter((_, index) => indicesToKeep.includes(index))); // Agregar encabezados filtrados al inicio si lo deseas
+
+      jsonData = this.filterByCodeLength(jsonData);
+      
       // Filtrar filas que tengan celdas vacías o solo espacios
       let filteredRows = jsonData.filter(filtered => {
-        return filtered.every(item => item !== null && item !== undefined && item !== "" && String(item).trim() !== '');
+        return filtered.every(item =>
+          item !== null &&
+          item !== undefined &&
+          item !== "" &&
+          String(item).trim() !== ''
+
+        );
       });
-      
+
+
+
 
       // Convertir el array a una hoja
       const worksheet = XLSX.utils.aoa_to_sheet(filteredRows);
 
       // Convertir la hoja a JSON
       let jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false, header: headers });
+
       
-      // Verificar si faltan campos obligatorios
+
       const missingFields = requiredFields.filter(field => {
-        const obj = jsonDataFiltered[0] as { [key: string]: any };
-        return !Object.keys(obj).includes(field);
+        if (jsonDataFiltered.length === 0) {
+          const obj = "vacio";
+          return !Object.keys(obj).includes(field);
+        } else {
+          const obj = jsonDataFiltered[0] as { [key: string]: any };
+          return !Object.keys(obj).includes(field);
+        }
       });
 
       if (missingFields.length > 0) {
@@ -494,7 +561,7 @@ export class AccountsListComponent implements OnInit {
       }
 
       this.listAccountsAux = this.listAccounts;
-      
+
       this.listAccounts = this.createHierarchyWithParent(this.listExcel);
       this.listAccounts = this.sortAccountsRecursively(this.listAccounts);
 
@@ -850,7 +917,10 @@ export class AccountsListComponent implements OnInit {
       this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
         next: (accounts) => {
           this.listAccounts = accounts.filter(account => account !== null);
+          this.listAccounts = this.changeNatureType(this.listAccounts);
+          this.listAccounts = this.changeFinancialStateType(this.listAccounts);
           this.listAccounts = this.sortAccountsRecursively(this.listAccounts);
+
           resolve();
         },
         error: (error) => {
