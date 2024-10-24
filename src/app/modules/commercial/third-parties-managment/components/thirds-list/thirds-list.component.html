@@ -116,7 +116,7 @@
               </td>
               <td class="actions">
                 <button (click)="openModalDetails(third.thId)"> <span class="material-icons">visibility</span> </button>
-                <button (click)="openModalEdit(third.thId)"> <span class="material-icons">edit</span> </button>
+                <button class="edit-button" (click)="redirectToEdit(third.thId)"><span class="material-icons">edit</span></button>
                 <button (click)="deleteThirdPartie(third.thId)">
                   <span class="material-icons">delete</span>
                 </button>
