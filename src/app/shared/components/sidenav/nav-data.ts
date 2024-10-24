@@ -52,6 +52,10 @@ export const navbarData: INavbarData[] = [
       {
         routeLink: '/general/operations/invoice',
         label: 'Factura de compra'
+      },
+      {
+        routeLink: '/general/operations/invoice/sale',
+        label: 'Factura de venta'
       }
     ]
   }

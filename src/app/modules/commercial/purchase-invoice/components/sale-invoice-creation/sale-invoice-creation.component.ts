@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { EnterpriseDetails } from '../../../enterprise-managment/models/Enterprise';
 import { EnterpriseService } from '../../../enterprise-managment/services/enterprise.service';
@@ -13,14 +14,17 @@ import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { buttonColors } from '../../../../../shared/buttonColors';
-
+import { buttonColors } from '../../../../../shared/buttonColors'
 @Component({
-  selector: 'app-invoice-creation',
-  templateUrl: './invoice-creation.component.html',
-  styleUrls: ['./invoice-creation.component.css']
+  
+  selector: 'app-sale-invoice-creation',
+  templateUrl: './sale-invoice-creation.component.html',
+  styleUrls: ['./sale-invoice-creation.component.css']
 })
-export class InvoiceCreationComponent implements OnInit {
+
+
+
+export class SaleInvoiceCreationComponent implements OnInit {
   enterpriseSelected?: EnterpriseDetails;
 
   // Variables for third parties

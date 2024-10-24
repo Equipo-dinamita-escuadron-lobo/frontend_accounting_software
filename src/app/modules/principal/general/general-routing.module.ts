@@ -29,6 +29,7 @@ import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edi
 import { ProductTypeListComponent } from '../../commercial/product-managment/components/product-type-list/product-type-list.component';
 import { ProductTypeCreationComponent } from '../../commercial/product-managment/components/product-type-creation/product-type-creation.component';
 import { ProductTypeEditComponent } from '../../commercial/product-managment/components/product-type-edit/product-type-edit.component';
+import { SaleInvoiceCreationComponent } from '../../commercial/purchase-invoice/components/sale-invoice-creation/sale-invoice-creation.component';
 
 
 
@@ -155,6 +156,10 @@ const routes: Routes = [
       },{
         path: 'invoice',
         component: InvoiceCreationComponent
+      },
+      {
+        path: 'invoice/sale', // Agregar esta ruta para la factura de venta
+        component: SaleInvoiceCreationComponent
       }
     ],
     canActivate: [permissionsGuard],

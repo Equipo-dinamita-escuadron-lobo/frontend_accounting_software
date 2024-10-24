@@ -1,3 +1,4 @@
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
@@ -6,11 +7,14 @@ import { ThirdType } from '../../../third-parties-managment/models/ThirdType';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
-  selector: 'app-invoice-select-supplier',
-  templateUrl: './invoice-select-supplier.component.html',
-  styleUrl: './invoice-select-supplier.component.css'
+  selector: 'app-sale-invoice-selected-supplier',
+  templateUrl: './sale-invoice-selected-supplier.component.html',
+  styleUrl: './sale-invoice-selected-supplier.component.css'
 })
-export class InvoiceSelectSupplierComponent {
+
+
+
+export class SaleInvoiceSelectedSupplierComponent {
   inputData: any;
   filterThird: string = '';
   lstThirds: any[] = [];
@@ -26,7 +30,7 @@ export class InvoiceSelectSupplierComponent {
    { title: 'Acciones'}
  ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<InvoiceSelectSupplierComponent>, private thirdService: ThirdServiceService){
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<SaleInvoiceSelectedSupplierComponent>, private thirdService: ThirdServiceService){
 
   }
 

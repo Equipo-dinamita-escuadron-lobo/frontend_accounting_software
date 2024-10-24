@@ -19,10 +19,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { SaleInvoiceCreationComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-creation/sale-invoice-creation.component';
+import { SaleInvoiceSelectedProductsComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-selected-products/sale-invoice-selected-products.component';
+import { SaleInvoiceSelectedSupplierComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     SharedModule,

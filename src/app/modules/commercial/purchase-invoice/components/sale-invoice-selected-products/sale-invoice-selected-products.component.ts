@@ -4,11 +4,15 @@ import { Product } from '../../../product-managment/models/Product';
 import { ProductService } from '../../../product-managment/services/product.service';
 
 @Component({
-  selector: 'app-invoice-select-products',
-  templateUrl: './invoice-select-products.component.html',
-  styleUrl: './invoice-select-products.component.css'
+  selector: 'app-sale-invoice-selected-products',
+  templateUrl: './sale-invoice-selected-products.component.html',
+  styleUrl: './sale-invoice-selected-products.component.css'
 })
-export class InvoiceSelectProductsComponent {
+
+
+
+
+export class SaleInvoiceSelectedProductsComponent {
   inputData: any;
 
   filterProductS: string = '';
@@ -23,7 +27,7 @@ export class InvoiceSelectProductsComponent {
     { title: 'Seleccionar' }
   ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<InvoiceSelectProductsComponent>, private productService: ProductService,) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<SaleInvoiceSelectedProductsComponent>, private productService: ProductService,) { }
 
   ngOnInit() {
     this.inputData = this.data;

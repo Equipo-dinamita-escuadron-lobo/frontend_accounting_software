@@ -8,6 +8,10 @@ import { InvoiceSelectProductsComponent } from './components/invoice-select-prod
 import { InvoiceSelectSupplierComponent } from './components/invoice-select-supplier/invoice-select-supplier.component';
 import { FilterPipe } from './components/pipes/filter.pipe';
 import { FilterProductPipe } from './components/pipes/filter-product.pipe';
+import { SaleInvoiceCreationComponent } from './components/sale-invoice-creation/sale-invoice-creation.component';
+import { SaleInvoiceSelectedProductsComponent } from './components/sale-invoice-selected-products/sale-invoice-selected-products.component';
+import { SaleInvoiceSelectedSupplierComponent } from './components/sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
+import { Router } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -15,12 +19,17 @@ import { FilterProductPipe } from './components/pipes/filter-product.pipe';
     InvoiceSelectProductsComponent,
     InvoiceSelectSupplierComponent,
     FilterPipe,
-    FilterProductPipe
+    FilterProductPipe,
+    SaleInvoiceCreationComponent,
+    SaleInvoiceSelectedProductsComponent,
+    SaleInvoiceSelectedSupplierComponent,
   ],
   imports: [
     CommonModule,
+    
     PurchaseInvoiceRoutingModule,
-    FormsModule
+    FormsModule,
+    
   ]
 })
 export class PurchaseInvoiceModule { }
