@@ -4,20 +4,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Facture } from '../models/facture';
 
+let API_URL = '';
+// If the microservice is for account catalogue, set the API URL to local URL
+if (environment.microservice == 'accountCatalogue') {
+  API_URL = environment.API_LOCAL_URL;
+} else {
+  API_URL = environment.API_URL;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class InvoiceServiceService {
 
   private apiUrl = environment.API_URL + 'factures/';
+  
+constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) { }
 
-  saveInvoice(facture: any): Observable<Blob> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
 
-    return this.http.post(this.apiUrl, facture, { headers: headers, responseType: 'blob' });
-  }
+saveInvoice(facture: any): Observable < Blob > {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.post(this.apiUrl, facture, { headers: headers, responseType: 'blob' });
+}
 }
