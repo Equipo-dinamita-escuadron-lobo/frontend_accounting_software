@@ -19,6 +19,9 @@ export class ThirdsListComponent{
 
   form: FormGroup;
 
+  selectedThirdId: string | null = null;
+  timer: any;
+
   data: Third[] = [];
   columnsBrief: any[] = [
     { title: 'Tipo Persona', data: 'personType'},
@@ -100,6 +103,13 @@ export class ThirdsListComponent{
   openModalEdit(thId:number):void{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
+
+
+  redirectToEdit(ThirdId: string): void {
+    console.log("El id del tercero es", ThirdId)
+    this.router.navigate(['/general/operations/third-parties/edit', ThirdId]);  
+  }
+
 
   openConfigTPModal():void{
     this.openPopUp(0, 'Configuración de Terceros',ThirdConfigModalComponent)

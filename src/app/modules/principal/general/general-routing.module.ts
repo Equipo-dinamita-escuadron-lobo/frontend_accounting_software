@@ -7,6 +7,9 @@ import { GeneralViewComponent } from './components/general-view/general-view.com
 import { ProductListComponent } from '../../commercial/product-managment/components/product-list/product-list.component';
 import { ThirdsListComponent } from '../../commercial/third-parties-managment/components/thirds-list/thirds-list.component';
 import { ThirdCreationComponent } from '../../commercial/third-parties-managment/components/third-creation/third-creation.component';
+//editar
+import { ThirdEditModalComponent } from '../../commercial/third-parties-managment/components/third-edit-modal/third-edit-modal.component';
+//
 import { ProductCreationComponent } from '../../commercial/product-managment/components/product-creation/product-creation.component';
 import { UnitOfMeasureListComponent } from '../../commercial/product-managment/components/unit-of-measure-list/unit-of-measure-list.component';
 import { UnitOfMeasureCreationComponent } from '../../commercial/product-managment/components/unit-of-measure-creation/unit-of-measure-creation.component';
@@ -75,6 +78,12 @@ const routes: Routes = [
         path: 'third-parties/create',
         component: ThirdCreationComponent
       },
+      //Edicion de tercero
+      {
+        path: 'third-parties/edit/:id',
+        component: ThirdEditModalComponent
+      },
+      //
       {
         path: 'accounts',
         component: AccountsListComponent
