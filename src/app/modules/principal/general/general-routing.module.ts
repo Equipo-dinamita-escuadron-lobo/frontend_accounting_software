@@ -29,6 +29,8 @@ import { InvoiceCreationComponent } from '../../commercial/purchase-invoice/comp
 import { ListTaxComponent } from '../../commercial/taxes/components/list-tax/list-tax.component';
 import { CreateTaxComponent } from '../../commercial/taxes/components/create-tax/create-tax.component';
 import { EditTaxComponent } from '../../commercial/taxes/components/edit-tax/edit-tax.component';
+//crear tercero pdf rut
+import { ThirdCreatePdfRUTComponent } from '../../commercial/third-parties-managment/components/third-create-pdf-rut/third-create-pdf-rut.component';
 
 const routes: Routes = [
   {
@@ -77,6 +79,11 @@ const routes: Routes = [
       {
         path: 'third-parties/create',
         component: ThirdCreationComponent
+      },
+      {
+        //crear tercero pdf rut 
+        path: 'third-parties/create-pdf-RUT',
+        component:ThirdCreatePdfRUTComponent
       },
       //Edicion de tercero
       {

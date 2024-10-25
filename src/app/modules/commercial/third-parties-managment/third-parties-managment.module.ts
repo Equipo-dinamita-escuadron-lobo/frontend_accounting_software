@@ -13,6 +13,7 @@ import { ThirdConfigModalComponent } from './components/third-config-modal/third
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ThirdCreatePdfRUTComponent } from './components/third-create-pdf-rut/third-create-pdf-rut.component';
 @NgModule({
   declarations: [
     ThirdsListComponent,
@@ -20,7 +21,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     ThirdEditModalComponent,
     ThirdDetailsModalComponent,
     ThirdConfigModalComponent,
-    FilterList
+    FilterList,
+    ThirdCreatePdfRUTComponent
   ],
   imports: [
     CommonModule,

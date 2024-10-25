@@ -58,6 +58,8 @@ export class ThirdsListComponent{
   entData: any | null = null;
 
   showModal = false;
+  //Crear tercero apartir del PDF del RUT
+  createPdfRUT: boolean = false;
 
   constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
@@ -103,7 +105,14 @@ export class ThirdsListComponent{
   openModalEdit(thId:number):void{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
-
+  //Abrir Crear tercero apartir del PDF del RUT
+  openCreatePDFRunt():void{
+    this.createPdfRUT = true;
+  }
+ //cerrar Crear tercero apartir del PDF del RUT
+  closeCreatePDFRunt():void{
+    this.createPdfRUT = false;
+  }
 
   redirectToEdit(ThirdId: string): void {
     console.log("El id del tercero es", ThirdId)
