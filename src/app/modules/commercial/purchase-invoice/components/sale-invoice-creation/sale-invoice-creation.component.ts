@@ -15,6 +15,8 @@ import { InvoiceServiceService } from '../../services/invoice-service.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { buttonColors } from '../../../../../shared/buttonColors'
+import { SaleInvoiceSelectedSupplierComponent } from '../sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
+import { SaleInvoiceSelectedProductsComponent } from '../sale-invoice-selected-products/sale-invoice-selected-products.component';
 @Component({
   
   selector: 'app-sale-invoice-creation',
@@ -98,7 +100,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   // Método para ventana emergente de terceros
   selectSupplier() {
-    this.OpenListThirds('Seleccion de proveedor', this.enterpriseSelected?.id, InvoiceSelectSupplierComponent);
+    this.OpenListThirds('Seleccion de proveedor', this.enterpriseSelected?.id, SaleInvoiceSelectedSupplierComponent);
   }
 
   // Método para llevar al formulario de crear tercero
@@ -113,7 +115,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   // Método para mostrar ventana emergente de productos
   selectProducts() {
-    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, InvoiceSelectProductsComponent);
+    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, SaleInvoiceSelectedProductsComponent);
   }
 
   createProduct() {

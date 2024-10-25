@@ -158,7 +158,7 @@ const routes: Routes = [
         component: InvoiceCreationComponent
       },
       {
-        path: 'invoice/sale', // Agregar esta ruta para la factura de venta
+        path: 'invoice/sale',
         component: SaleInvoiceCreationComponent
       }
     ],

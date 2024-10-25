@@ -121,7 +121,7 @@ export class InvoiceCreationComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return price.toString();
+    return price.toLocaleString('es-ES');
   }
 
   // Paara calcular total de cada producto
@@ -140,7 +140,6 @@ export class InvoiceCreationComponent implements OnInit {
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    console.log("Subtotal: ", this.subTotal)
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
     this.total = this.subTotal + this.taxTotal - this.retention;
@@ -290,20 +289,7 @@ export class InvoiceCreationComponent implements OnInit {
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
         console.log('Información recibida del modal:', result);
-        this.lstProducts = result.map((prod: any) => {
-          return {
-            id: prod.id,
-            itemType: prod.itemType,
-            description: prod.description,
-            price: prod.cost,
-            taxPercentage: prod.taxPercentage,
-            IVA: 0,
-            amount: 0,
-            totalValue: 0
-          };
-        }
-        );
-        console.log('Productos seleccionados:', this.lstProducts[0].price);
+        this.lstProducts = result;
         this.lstProducts.forEach(prod => {
           prod.IVA = prod.taxPercentage;
           prod.amount = 1;
