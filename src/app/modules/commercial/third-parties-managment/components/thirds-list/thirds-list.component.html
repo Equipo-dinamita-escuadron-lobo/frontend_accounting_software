@@ -35,7 +35,12 @@
             <span *ngIf="!showDetailTable">Vista completa</span>
             <span *ngIf="showDetailTable">Vista resumida</span>
           </button>
+          <!-- Crear Tercero con PDF RUT -->
           <button class="btn-full-view" (click)="redirectTo('/general/operations/third-parties/create')">Agregar</button>
+          <button (click)="openCreatePDFRunt()" class="btn-full-view">
+            PDF RUT
+          </button>
+          <app-third-create-pdf-rut *ngIf="createPdfRUT" (close)="closeCreatePDFRunt()"></app-third-create-pdf-rut>
         </div>
       </div>
 
@@ -133,8 +138,6 @@
           </tbody>
         </table>
       </div>
-
-
     </div>
   </div>
 </div>

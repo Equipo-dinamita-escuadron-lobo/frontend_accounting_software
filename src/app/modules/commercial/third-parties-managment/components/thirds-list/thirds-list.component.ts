@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { ThirdEditModalComponent } from '../third-edit-modal/third-edit-modal.component';
 import { ThirdDetailsModalComponent } from '../third-details-modal/third-details-modal.component';
 import { ThirdConfigModalComponent } from '../third-config-modal/third-config-modal.component';
+import { ThirdCreatePdfRUTComponent } from '../third-create-pdf-rut/third-create-pdf-rut.component';
 @Component({
   selector: 'app-thirds-list',
   templateUrl: './thirds-list.component.html',
@@ -59,6 +60,9 @@ export class ThirdsListComponent{
 
   showModal = false;
 
+  //Crear tercero apartir del PDF del RUT
+  createPdfRUT: boolean = false;
+
   constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
   }
@@ -104,6 +108,14 @@ export class ThirdsListComponent{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
 
+  //Abrir Crear tercero apartir del PDF del RUT
+  openCreatePDFRunt():void{
+    this.createPdfRUT = true;
+  }
+ //cerrar Crear tercero apartir del PDF del RUT
+  closeCreatePDFRunt():void{
+    this.createPdfRUT = false;
+  }
 
   redirectToEdit(ThirdId: string): void {
     console.log("El id del tercero es", ThirdId)
@@ -161,6 +173,4 @@ export class ThirdsListComponent{
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
-
-  
 }
