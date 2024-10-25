@@ -60,25 +60,25 @@
                     </svg>
                     }
 
-                    Información de proveedor
+                    Información del cliente
                 </div>
             </button>
 
 
             @if(showSectionThrid){
             <div>
-                <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
-                    un proveedor.
+                <p class="mb-2">Querido usuario, para poder continuar con el proceso de venta debe seleccionar o crear
+                    un Cliente.
                 </p>
                 <div class="botones flex justify-center items-center mb-5">
                     <div class="inline-flex">
                         <button (click)="selectSupplier()"
                             class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-l-full">
-                            Elegir proveedor
+                            Elegir Cliente
                         </button>
                         <button (click)="createSupplier()"
                             class="bg-blue-700 hover:bg-blue-950 hover:text-white text-white font-bold py-2 px-4 rounded-r-full">
-                            Crear proveedor
+                            Crear Cliente
                         </button>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
                     <line x1="12" y1="9" x2="12" y2="13" />
                     <line x1="12" y1="17" x2="12.01" y2="17" />
                 </svg>
-                Usuario, primero debe elegir un provedor para poder elegir productos
+                Usuario, primero debe elegir un Cliente para poder elegir productos
             </div>
 
             @if(showSectionProducts){
@@ -165,7 +165,7 @@
             </div>
 
 
-            <p class="mb-2">Querido usuario, para poder continuar con el proceso de compra debe seleccionar o crear
+            <p class="mb-2">Querido usuario, para poder continuar con el proceso de venta debe seleccionar o crear
                 productos.
             </p>
             <div class="botones flex justify-center items-center mb-5">

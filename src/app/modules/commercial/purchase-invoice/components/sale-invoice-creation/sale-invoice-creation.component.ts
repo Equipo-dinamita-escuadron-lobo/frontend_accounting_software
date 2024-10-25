@@ -100,7 +100,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   // Método para ventana emergente de terceros
   selectSupplier() {
-    this.OpenListThirds('Seleccion de proveedor', this.enterpriseSelected?.id, SaleInvoiceSelectedSupplierComponent);
+    this.OpenListThirds('Seleccion de Cliente', this.enterpriseSelected?.id, SaleInvoiceSelectedSupplierComponent);
   }
 
   // Método para llevar al formulario de crear tercero
