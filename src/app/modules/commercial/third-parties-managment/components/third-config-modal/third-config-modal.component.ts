@@ -9,6 +9,7 @@ import { TypeId } from '../../models/TypeId';
 import { buttonColors } from '../../../../../shared/buttonColors';
 import { HttpErrorResponse } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-third-config-modal',
   templateUrl: './third-config-modal.component.html',
@@ -16,6 +17,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class ThirdConfigModalComponent {
   inputData: any;
+
+  /*aquie empiezo */
+  showIdentifications = true;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
