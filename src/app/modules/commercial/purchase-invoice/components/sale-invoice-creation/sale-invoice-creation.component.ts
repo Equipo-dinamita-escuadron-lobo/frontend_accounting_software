@@ -166,7 +166,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: "123",
-      factureType: "Compra",
+      factureType: "Venta",
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
@@ -300,6 +300,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
           return {
             id: prod.id,
             itemType: prod.itemType,
+
             description: prod.description,
             price: prod.cost,
             taxPercentage: prod.taxPercentage,

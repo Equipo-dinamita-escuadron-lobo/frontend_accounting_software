@@ -11,6 +11,6 @@ export const environment = {
   API_ENTERPRISE_URL: 'http://contables.unicauca.edu.co/api/',
   API_PRODUCTS_URL: 'http://contables.unicauca.edu.co/api/',
   API_THIRS_URL: 'http://contables.unicauca.edu.co/api/',
-  API_LOCAL_URL: 'http://contables.unicauca.edu.co/api/',
-  microservice: 'accountCatalogue' // accountCatalogue, enterprise
+  API_LOCAL_URL: 'http://localhost:8080/api/',
+  microservice: 'factureManagment' // accountCatalogue, enterprise
 };
