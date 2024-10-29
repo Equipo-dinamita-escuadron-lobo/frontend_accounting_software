@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Facture } from '../models/facture';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceServiceService {
 
-  private apiUrl = environment.API_URL + 'factures/';
+  private apiUrl = environment.API_FEATURES_URL + 'factures/';
 
   constructor(private http: HttpClient) { }
 

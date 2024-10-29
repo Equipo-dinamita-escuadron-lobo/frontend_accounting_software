@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 import { ThirdType } from '../models/ThirdType';
 import { TypeId } from '../models/TypeId';
 
@@ -10,7 +10,7 @@ import { TypeId } from '../models/TypeId';
 })
 export class ThirdServiceConfigurationService {
 
-  private thirdApiUrl = environment.API_URL + 'thirds/configuration/'
+  private thirdApiUrl = environment.API_THIRS_URL + 'thirds/configuration/'
   //private thirdApiUrl = 'http://localhost:8080/api/thirds/configuration/'
 
   constructor(private http: HttpClient){
