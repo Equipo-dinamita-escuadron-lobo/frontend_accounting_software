@@ -18,7 +18,7 @@ import { buttonColors } from '../../../../../shared/buttonColors'
 import { SaleInvoiceSelectedSupplierComponent } from '../sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
 import { SaleInvoiceSelectedProductsComponent } from '../sale-invoice-selected-products/sale-invoice-selected-products.component';
 @Component({
-  
+
   selector: 'app-sale-invoice-creation',
   templateUrl: './sale-invoice-creation.component.html',
   styleUrls: ['./sale-invoice-creation.component.css']
@@ -107,7 +107,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   createSupplier() {
     this.router.navigate(['/general/operations/third-parties/create']);
   }
-  
+
 
   showSectionThridM() {
     this.showSectionThrid = !this.showSectionThrid;
@@ -153,15 +153,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   saveFacture() {
-    this.lstProductsSend = this.lstProducts.map(prod => ({
-      productId: parseInt(prod.id),
-      amount: prod.amount,
-      description: prod.description,
-      vat: prod.IVA / 100,
-      unitPrice: prod.price,
-      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
-    }));
-
+    this.loadFactureInfo();
+    
     const factureS: Facture = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
@@ -225,7 +218,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     );
   }
 
-  changeSupplier(){
+  changeSupplier() {
 
   }
 
@@ -254,7 +247,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showSectionProducts = true;
         this.getSupplier(result);
 
-        if((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)){
+        if ((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)) {
           Swal.fire({
             title: "Cambio de proveedor",
             text: "Si cambia de proveerdor se perderan los datos que hayan registrado en productos!",
@@ -324,4 +317,64 @@ export class SaleInvoiceCreationComponent implements OnInit {
       }
     });
   }
+
+  async generatePdfPreview() {
+
+    this.loadFactureInfo();
+
+    const previewFacture: Facture = {
+      entId: this.enterpriseSelected?.id,
+      thId: this.supplierS?.thId,
+      factCode: "123",
+      factureType: "Venta",
+      factProducts: this.lstProductsSend,
+      factSubtotals: this.subTotal,
+      facSalesTax: this.taxTotal,
+      facWithholdingSource: this.retention
+    };
+
+    if (!previewFacture) {
+      Swal.fire({
+        title: 'Error!',
+        text: 'No hay factura disponible para mostrar.',
+        icon: 'error',
+        confirmButtonColor: buttonColors.confirmationColor,
+      });
+      return;
+    }
+
+    this.invoiceService.generateInvoicePreview(previewFacture).subscribe(
+      (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+        Swal.fire({
+          title: 'Visualización exitosa!',
+          text: 'Se ha generado la vista previa de la factura.',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'success',
+        });
+      },
+      (error) => {
+        Swal.fire({
+          title: 'Error!',
+          text: 'Ha ocurrido un error al generar la vista previa de la factura.',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'error',
+        });
+      }
+    );
+  }
+
+  loadFactureInfo(){
+    this.lstProductsSend = this.lstProducts.map(prod => ({
+      productId: parseInt(prod.id),
+      amount: prod.amount,
+      description: prod.description,
+      vat: prod.IVA / 100,
+      unitPrice: prod.price,
+      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
+    }));
+  }
+
+
 }
