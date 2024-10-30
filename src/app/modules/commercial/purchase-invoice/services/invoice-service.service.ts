@@ -19,11 +19,7 @@ export class InvoiceServiceService {
 
   private apiUrl = API_URL + 'factures/';
 
-  
-
   constructor(private http: HttpClient) { }
-
-  
 
   saveInvoice(facture: any): Observable<Blob> {
     const headers = new HttpHeaders({
@@ -31,5 +27,12 @@ export class InvoiceServiceService {
     });
 
     return this.http.post(this.apiUrl, facture, { headers: headers, responseType: 'blob' });
+  }
+
+  generateInvoicePreview(facture: any): Observable<Blob> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}generatePreview`, facture, { headers: headers, responseType: 'blob' });
   }
 }
