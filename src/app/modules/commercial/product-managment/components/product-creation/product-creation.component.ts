@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa 
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
-import { ProductType } from '../../models/ProductType';
 import { CategoryService } from '../../services/category.service';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
@@ -19,7 +18,7 @@ export class ProductCreationComponent implements OnInit {
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
-  productTypes: ProductType[] = [];
+  productTypes: any[] = [];
 
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
@@ -57,8 +56,8 @@ export class ProductCreationComponent implements OnInit {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]], // 'cost' es un número
-      reference: [''], // referencia string
-      productTypeId: [''] // Nuevo campo para el tipo de producto
+      reference: [null, [Validators.pattern(/^\d+$/)]],// Asigna el próximo ID al campo 'id'
+      productTypeId: [null, [ Validators.pattern(/^\d+$/)]], // Nuevo campo para el tipo de producto
 
     }
     ,{ validators: quantityValidator });
@@ -76,8 +75,8 @@ export class ProductCreationComponent implements OnInit {
 
   loadProductTypes(): void {
     this.productTypeService.getAllProductTypes().subscribe(
-      (data: ProductType[]) => {
-        this.productTypes = data;
+      (productTypes: any[]) => {
+        this.productTypes = productTypes;
       },
       error => {
         console.error('Error al cargar los tipos de producto', error);
@@ -123,8 +122,8 @@ getUnitOfMeasures(): void {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]],
-      reference: [''],// Asigna el próximo ID al campo 'id'
-      productType: [null, [Validators.required, Validators.pattern(/^\d+$/)]] // Nuevo campo para el tipo de producto
+      reference: [null, [Validators.pattern(/^\d+$/)]],// Asigna el próximo ID al campo 'id'
+      productTypeId: [null, [ Validators.pattern(/^\d+$/)]], // Nuevo campo para el tipo de producto
     });
   }
 
@@ -223,7 +222,7 @@ getUnitOfMeasures(): void {
     let formattedcost = '';
     if (costInput !== '') {
       // Convertir el precio a número
-      const cost = parseInt(costInput, 10);
+      const cost = parseInt(costInput);
       // Formatear el precio con separador de miles y decimales
       formattedcost = this.formatNumberWithCommas(cost);
     }

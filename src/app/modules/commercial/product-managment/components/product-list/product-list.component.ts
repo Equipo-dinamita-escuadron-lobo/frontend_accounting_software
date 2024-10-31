@@ -76,6 +76,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       this.getProducts(); // Llama al método getProducts() al inicializar el componente
       this.getUnitOfMeasures();
       this.getCategories();
+      this.getTypeProduct();
       //this.getProviders();
     }
   }
@@ -120,6 +121,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     this.typeProductService.getAllProductTypes().subscribe(
       (data: ProductType[]) => {
         console.log('Tipos de producto:', data);
+        this.types = data;
       },
       (error) => {
         console.error('Error al obtener los tipos de producto:', error);
@@ -146,8 +148,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     return uom ? uom.name : 'No encontrado';
   }
 
-  getProductTypeName(id: ProductType): string{
-    const ptn =  this.types.find(type => type.id === id.id);
+  getProductTypeName(id: number): string{
+    const ptn =  this.types.find(type => type.id === id);
     return ptn ? ptn.name : 'No encontrado';
   }
 
@@ -237,6 +239,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
       cost: product?.cost,
       state: product?.state,
       reference: product?.reference, 
+      productTypeName: this.getProductTypeName(product?.productTypeId??0),
     };
 
     this.OpenPopUp(productList, 'Detalles del producto', ProductDetailsModalComponent);

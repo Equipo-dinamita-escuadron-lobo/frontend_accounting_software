@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
+import { ProductType } from '../../models/ProductType';
 import { ProductTypeService } from '../../services/product-type-service.service';
 
 @Component({
@@ -12,7 +13,9 @@ import { ProductTypeService } from '../../services/product-type-service.service'
 })
 export class ProductTypeEditComponent implements OnInit {
   productTypeForm: FormGroup;
-  productTypeId: string | null = null;
+  productTypeName: string | null = null;
+  productTypeId: string = '';
+  typeProduct: ProductType = {} as ProductType;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,17 +30,20 @@ export class ProductTypeEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productTypeId = this.route.snapshot.paramMap.get('id');
-    if (this.productTypeId) {
-      this.productTypeService.getProductTypeById(this.productTypeId).subscribe(productType => {
+    this.route.params.subscribe(params => {
+      this.productTypeId = params['id']; // Obtener el ID del producto de los parámetros de ruta
+      this.getTypeProduct(); // Llamar a la función para obtener los detalles del tipo de producto
+    });
+    if (this.productTypeName) {
+      this.productTypeService.getProductTypeById(this.productTypeName).subscribe(productType => {
         this.productTypeForm.patchValue(productType);
       });
     }
   }
 
   onSubmit(): void {
-    if (this.productTypeId) {
-      this.productTypeService.updateProductType(this.productTypeId, this.productTypeForm.value).subscribe(
+    if (this.productTypeName) {
+      this.productTypeService.updateProductType(this.productTypeName, this.productTypeForm.value).subscribe(
         () => {
           Swal.fire('Actualización exitosa!', 'El tipo de producto ha sido actualizado.', 'success');
           this.router.navigate(['/general/operations/product-types']);
@@ -50,9 +56,27 @@ export class ProductTypeEditComponent implements OnInit {
     }
   }
 
+  getTypeProduct(): void {
+    this.productTypeService.getProductTypeById(this.productTypeId).subscribe(
+      (Type: ProductType) => {
+        this.typeProduct = Type;
+        console.log(this.typeProduct);
+
+        // Puedes asignar los valores del producto al formulario de edición aquí
+        this.productTypeForm.patchValue({
+          name: this.typeProduct.name,
+          description: this.typeProduct.description
+        });
+      },
+      error => {
+        console.error('Error obteniendo detalles del producto:', error);
+      }
+    );
+  }
+
   deleteProductType(): void {
-    if (this.productTypeId) {
-      this.productTypeService.deleteProductType(this.productTypeId).subscribe(
+    if (this.productTypeName) {
+      this.productTypeService.deleteProductType(this.productTypeName).subscribe(
         () => {
           Swal.fire('Eliminación exitosa!', 'El tipo de producto ha sido eliminado.', 'success');
           this.router.navigate(['/general/operations/product-types']);

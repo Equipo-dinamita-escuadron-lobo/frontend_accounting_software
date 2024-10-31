@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Product } from '../../models/Product';
-import { ProductType } from '../../models/ProductType';
 import { CategoryService } from '../../services/category.service';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
@@ -26,7 +25,7 @@ export class ProductEditComponent implements OnInit {
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-  productTypes: ProductType[] = [];
+  productTypes: any[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -51,7 +50,7 @@ export class ProductEditComponent implements OnInit {
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, Validators.required],
       reference: [''],
-      productTypeId: ['']
+      productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
     }, { validators: quantityValidator });
   }
 
@@ -74,7 +73,7 @@ export class ProductEditComponent implements OnInit {
 
   loadProductTypes(): void {
     this.productTypeService.getAllProductTypes().subscribe(
-      (data: ProductType[]) => {
+      (data: any[]) => {
         this.productTypes = data;
       },
       error => {
@@ -122,7 +121,7 @@ export class ProductEditComponent implements OnInit {
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         cost: [null, [Validators.required, Validators.min(0)]],
         reference: [''],
-        productTypeId: ['']
+        productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
       });
     }
 
@@ -145,7 +144,7 @@ export class ProductEditComponent implements OnInit {
           categoryId: product.categoryId,
           cost: product.cost,
           reference: product.reference,
-          productTypeId: product.productType.id.toFixed(0),
+          productTypeId: product.productTypeId,
         });
       },
       error => {

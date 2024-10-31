@@ -50,7 +50,7 @@ export class InvoiceCreationComponent implements OnInit {
   columnsProducts: any[] = [
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio Unitario', data: 'price' },
+    { title: 'Costo Unitario', data: 'cost' },
     { title: 'Cantidad' },
     { title: 'IVA' },
     { title: 'Subtotal' },
@@ -129,15 +129,15 @@ export class InvoiceCreationComponent implements OnInit {
 
   // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
-    const subtotalProduct = prod.amount * prod.price;
+    const subtotalProduct = prod.amount * prod.cost;
     return subtotalProduct;
   }
 
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
-    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.cost * prod.amount)), 0);
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.cost * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
     this.total = this.subTotal + this.taxTotal - this.retention;
   }
@@ -148,8 +148,8 @@ export class InvoiceCreationComponent implements OnInit {
       amount: prod.amount,
       description: prod.description,
       vat: prod.IVA / 100,
-      unitPrice: prod.price,
-      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
+      unitPrice: prod.cost,
+      subtotal: (prod.cost * prod.amount * (1 + prod.IVA / 100))
     }));
 
     const factureS: Facture = {

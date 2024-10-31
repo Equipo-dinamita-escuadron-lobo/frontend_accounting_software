@@ -3,7 +3,6 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductList } from '../../models/Product';
 import { ProductService } from '../../services/product.service';
-import { ProductType } from '../../models/ProductType';
 
 @Component({
   selector: 'app-product-details-modal',
@@ -30,7 +29,7 @@ export class ProductDetailsModalComponent {
     cost: 0,
     state: '',
     reference: '',
-    productType: new ProductType(),
+    productTypeName: '',
   };
 
   constructor(
