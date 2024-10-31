@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { buttonColors } from '../../../../../shared/buttonColors'
 import { SaleInvoiceSelectedSupplierComponent } from '../sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
 import { SaleInvoiceSelectedProductsComponent } from '../sale-invoice-selected-products/sale-invoice-selected-products.component';
+import { FactureV } from '../../models/factureV';
 @Component({
 
   selector: 'app-sale-invoice-creation',
@@ -155,16 +156,19 @@ export class SaleInvoiceCreationComponent implements OnInit {
   saveFacture() {
     this.loadFactureInfo();
     
-    const factureS: Facture = {
+    const factureS: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
-      factCode: "123",
+      factCode: 0,
+      factObservations: "nnn", //Modificar cuando se agregue campo en la vista
+      descounts: 12.5, //Modificar cuando se agregue campo en la vista
       factureType: "Venta",
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
       facWithholdingSource: this.retention
     };
+    console.log(factureS);
 
     this.saveInvoice(factureS);
   }
@@ -322,11 +326,13 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     this.loadFactureInfo();
 
-    const previewFacture: Facture = {
+    const previewFacture: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
-      factCode: "123",
+      factCode: 0,
       factureType: "Venta",
+      descounts: 12.4, //Modificar cuando se agregue campo en la vista
+      factObservations: "", //Modificar cuando se agregue campo en la vista
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
