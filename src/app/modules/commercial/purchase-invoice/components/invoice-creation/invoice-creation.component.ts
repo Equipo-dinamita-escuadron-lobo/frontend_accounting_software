@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import { EnterpriseDetails } from '../../../enterprise-managment/models/Enterprise';
 import { EnterpriseService } from '../../../enterprise-managment/services/enterprise.service';
-import { MatDialog } from '@angular/material/dialog';
-import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoice-select-supplier.component';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Third } from '../../../third-parties-managment/models/Third';
-import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
-import { ProductI } from '../../models/productInvoice';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Facture } from '../../models/facture';
+import { ProductI } from '../../models/productInvoice';
 import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
+import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoice-select-supplier.component';
 
 @Component({
   selector: 'app-invoice-creation',
@@ -51,7 +50,7 @@ export class InvoiceCreationComponent implements OnInit {
   columnsProducts: any[] = [
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio Unitario', data: 'price' },
+    { title: 'Costo Unitario', data: 'cost' },
     { title: 'Cantidad' },
     { title: 'IVA' },
     { title: 'Subtotal' },
@@ -107,7 +106,7 @@ export class InvoiceCreationComponent implements OnInit {
 
   // Método para mostrar ventana emergente de productos
   selectProducts() {
-    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, InvoiceSelectProductsComponent);
+    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, InvoiceSelectProductsComponent);
   }
 
   createProduct() {
@@ -130,15 +129,15 @@ export class InvoiceCreationComponent implements OnInit {
 
   // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
-    const subtotalProduct = prod.amount * prod.price;
+    const subtotalProduct = prod.amount * prod.cost;
     return subtotalProduct;
   }
 
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
-    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.cost * prod.amount)), 0);
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.cost * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
     this.total = this.subTotal + this.taxTotal - this.retention;
   }
@@ -149,8 +148,8 @@ export class InvoiceCreationComponent implements OnInit {
       amount: prod.amount,
       description: prod.description,
       vat: prod.IVA / 100,
-      unitPrice: prod.price,
-      subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
+      unitPrice: prod.cost,
+      subtotal: (prod.cost * prod.amount * (1 + prod.IVA / 100))
     }));
 
     const factureS: Facture = {
@@ -269,7 +268,7 @@ export class InvoiceCreationComponent implements OnInit {
     });
   }
 
-  OpenListProducts(title: any, entId: any, thId: any, component: any) {
+  OpenListProducts(title: any, entId: any, component: any) {
     const _popUp = this.dialog.open(component, {
       width: '0%',
       height: 'auto',
@@ -277,8 +276,7 @@ export class InvoiceCreationComponent implements OnInit {
       exitAnimationDuration: '100ms',
       data: {
         title: title,
-        entId: entId,
-        thId: thId
+        entId: entId
       }
     });
 

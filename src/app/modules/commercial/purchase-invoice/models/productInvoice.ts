@@ -1,19 +1,20 @@
+import { ProductType } from "./ProductType";
 export interface ProductI {
-    id :string;
-    itemType: string;
-    code: string;
-    description: string;
-    minQuantity: number;
-    maxQuantity: number;
-    taxPercentage: number;
-    creationDate: Date;
-    unitOfMeasureId: number;
-    supplierId:  number;
-    categoryId: number;
-    enterpriseId: string;
-    price: number;
-    state: string;
-    amount: number;
-    IVA: number;
-    totalValue: number;
-  }
+  id :string;
+  code: string;
+  itemType: string;
+  description: string;
+  quantity: number;
+  taxPercentage: number;
+  creationDate: Date;
+  unitOfMeasureId: number;
+  categoryId: number;
+  enterpriseId: string;
+  cost: number;
+  reference: string;
+  productType: ProductType;
+  state: string;
+  amount: number;
+  IVA: number;
+  totalValue: number;
+}
