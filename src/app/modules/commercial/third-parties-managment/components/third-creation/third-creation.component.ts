@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
@@ -13,6 +13,9 @@ import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
 import { DepartmentService } from '../../services/department.service';
 import { eThirdGender } from '../../models/eThirdGender';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-third-creation',
@@ -44,6 +47,7 @@ export class ThirdCreationComponent implements OnInit {
   entData: any | null = null;
 
   constructor(
+    @Optional() private dialogRef: MatDialogRef<ThirdCreationComponent>,
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
@@ -51,6 +55,7 @@ export class ThirdCreationComponent implements OnInit {
     private cityService: CityService,
     private departmentService: DepartmentService,
     private router: Router,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
   ) {}
 
   ngOnInit(): void {
@@ -204,7 +209,11 @@ export class ThirdCreationComponent implements OnInit {
   }
 
   goToListThirds():void{
+    if (this.data && this.data.destination === 'destination') {
+      this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
+    } else {
     this.router.navigateByUrl('/general/operations/third-parties');
+    }
   }
 
   //validar campos obligatorios para persona Juridica(Razon Social) y Natural (Nombre y Apellidos)
@@ -387,7 +396,11 @@ export class ThirdCreationComponent implements OnInit {
           text: 'Se ha creado el Tercero con Exito!',
           icon: 'success',
         });
+        if (this.data && this.data.destination === 'destination') {
+          this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
+        } else {
         this.goToListThirds();
+        }
       },
       error: (error) => {
         console.log('Error',error);

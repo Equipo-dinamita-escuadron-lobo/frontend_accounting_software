@@ -22,6 +22,7 @@ import { buttonColors } from '../../../../../shared/buttonColors'
 import { SaleInvoiceSelectedSupplierComponent } from '../sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
 import { SaleInvoiceSelectedProductsComponent } from '../sale-invoice-selected-products/sale-invoice-selected-products.component';
 import { FactureV } from '../../models/factureV';
+import { ThirdCreationComponent } from '../../../third-parties-managment/components/third-creation/third-creation.component';
 @Component({
 
   selector: 'app-sale-invoice-creation',
@@ -114,10 +115,24 @@ export class SaleInvoiceCreationComponent implements OnInit {
     this.OpenListThirds('Seleccion de Cliente', this.enterpriseSelected?.id, SaleInvoiceSelectedSupplierComponent);
   }
 
-  // Método para llevar al formulario de crear tercero
   createSupplier() {
-    this.router.navigate(['/general/operations/third-parties/create']);
+    const dialogRef = this.dialog.open(ThirdCreationComponent, {
+      width: '900px',
+      height: '80vh', // Establece una altura del 80% del viewport
+      data: { destination: "destination" }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        // Redirección al módulo de facturas
+        this.router.navigate(['/general/operations/invoices']);
+      }
+      if (result === 'close') {
+        this.router.navigate(['/general/operations/invoices']);
+      }
+    });
   }
+  
   
 
 
