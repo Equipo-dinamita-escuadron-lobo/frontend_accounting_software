@@ -8,30 +8,20 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { buttonColors } from '../../../../../shared/buttonColors';
-import { map } from 'rxjs';
-import { cuentasDiferentesValidator } from '../../customValidators/validateTaxInputs';
-
-
-
-
 @Component({
   selector: 'app-create-tax',
   templateUrl: './create-tax.component.html',
   styleUrl: './create-tax.component.css'
 })
-
-
-
 export class CreateTaxComponent {
   taxId: number = 0;
   tax: Tax = {} as Tax
   addForm: FormGroup;
-  depositAccounts: Account[] = [];
-  refundAccounts: Account[] = [];
+  depositAccounts: any[] = [];
+  refundAccounts: any[] = [];
+  selectedAccount: any;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
-  selectedAccount: Account | null = null;
-  selectedRefundAccount: Account | null = null;
 
   accounts: any[] = [];
   filterAccount: string = '';
@@ -44,47 +34,25 @@ export class CreateTaxComponent {
     private chartAccountService: ChartAccountService,
   ) {
     this.accounts = [];
+
     this.addForm = this.formBuilder.group({
       code: ['', Validators.required],
       description: ['', Validators.required],
       interest: [null, [Validators.required, Validators.min(0)]],
       depositAccount: [null, Validators.required],
       refundAccount: [null, Validators.required]
-    }, { validators: cuentasDiferentesValidator });
-
+    });
   }
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getCuentas();
   }
-
-  // Función recursiva para obtener el último hijo o el padre si no tiene hijos
-   collectLeaves(item: Account, leaves: Account[]): Account[] {
-    if (item.children && item.children.length > 0) {
-      // Recorrer todos los hijos
-      item.children.forEach(child => this.collectLeaves(child, leaves));
-    } else {
-      // Si no hay hijos, agregar el nodo actual a la lista de hojas
-      leaves.push(item);
-    }
-    return leaves;
-  }
-
-
   getCuentas(): void {
-    this.chartAccountService.getListAccounts(this.entData).pipe(
-
-      map(dataArray => {
-        this.accounts = this.mapAccountToList(dataArray);
-        const allLeaves:Account[] = [];
-        // Aplicar la función a cada elemento del array
-        dataArray.forEach((item:Account) => this.collectLeaves(item, allLeaves));
-        return allLeaves; // Regresar el nuevo arreglo con los últimos hijos
-      })
-    ).subscribe(
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
       (data: any[]) => {
-         this.depositAccounts = data;
-         this.refundAccounts = data;
+        this.accounts = this.mapAccountToList(data);
+        this.depositAccounts = this.accounts;
+        this.refundAccounts = this.accounts;
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
@@ -141,11 +109,9 @@ export class CreateTaxComponent {
         code: this.addForm.value.code,
         description: this.addForm.value.description,
         interest: this.addForm.value.interest,
-        depositAccount: this.getAccountCode(this.addForm.value.depositAccount),
-        refundAccount: this.getAccountCode(this.addForm.value.refundAccount)
+        depositAccount: this.getAccountCode(this.addForm.value.depositAccount),  
+        refundAccount: this.getAccountCode(this.addForm.value.refundAccount)      
       };
-      console.log(createdTax)
-
       this.taxService.getTaxById(createdTax.code, createdTax.idEnterprise).subscribe(
         (response: Tax) => {
           if (response) {
