@@ -37,6 +37,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   isSavingPdf: boolean = false;
   // Variables for third parties
   showSectionThrid: boolean = true;
+  SectionNotas: boolean = false;
   showInfoThird: boolean = false;
   selectedSupplier: any;
   selectedSupplierS?: number;
@@ -54,6 +55,9 @@ export class SaleInvoiceCreationComponent implements OnInit {
   subTotal: number = 0;
   taxTotal: number = 0;
   retention: number = 0;
+  descuentoPorc: number = 0;
+  descuentoVal: number = 0;
+  descuentoTotal: number = 0;
   total: number = 0;
 
   currentDate: Date = new Date();
@@ -62,13 +66,17 @@ export class SaleInvoiceCreationComponent implements OnInit {
   lstProductsSend: ProductS[] = [];
 
   columnsProducts: any[] = [
-    { title: 'Nombres', data: 'itemType' },
+    { title: '#'},
+    { title: 'Codigo', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio Unitario', data: 'price' },
     { title: 'Cantidad' },
+    { title: 'Precio Unitario', data: 'price' },
+    { title: 'Descuento'},
     { title: 'IVA' },
     { title: 'Subtotal' },
   ];
+
+  nota: string = "";
 
   constructor(private enterpriseService: EnterpriseService,
     private location: Location,
@@ -125,6 +133,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
     this.showSectionThrid = !this.showSectionThrid;
   }
 
+  showSectionNotas(){
+    this.SectionNotas = !this.SectionNotas;
+  }
+
   // Método para mostrar ventana emergente de productos
   selectProducts() {
     this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, SaleInvoiceSelectedProductsComponent);
@@ -162,6 +174,16 @@ export class SaleInvoiceCreationComponent implements OnInit {
     this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
+  switchDescuento(type: 'porc' | 'val') {
+    this.descuentoTotal = 0;
+    if (type === 'porc') {
+      this.descuentoVal = 0; // Vacía el descuento en valor si se escribe en porcentaje
+    } else if (type === 'val') {
+      this.descuentoPorc = 0; // Vacía el descuento en porcentaje si se escribe en valor
+    }
+    this.calculateInvoiceTotals();
+  }
+
   // para calcular valor total del producto incluyendo IVA
   calculateTotalValue(prod: ProductI): number {
     const subtotalProduct = prod.amount * prod.price;
@@ -175,7 +197,16 @@ export class SaleInvoiceCreationComponent implements OnInit {
     console.log("Subtotal: ", this.subTotal)
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
-    this.total = this.subTotal + this.taxTotal - this.retention;
+    if(this.descuentoVal==0 || this.descuentoVal==null) 
+      this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * this.descuentoPorc / 100), 0);
+    else if(this.descuentoPorc==0 || this.descuentoPorc==null)
+      this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ( this.descuentoVal), 0);
+    else
+      this.descuentoTotal = 0;
+    console.log("Descuento: ", this.descuentoTotal)
+    console.log("1: ", this.descuentoVal)
+    console.log("2: ", this.descuentoPorc)
+    this.total = this.subTotal + this.taxTotal - this.retention-this.descuentoTotal;
   }
 
   saveFacture() {
@@ -185,14 +216,15 @@ export class SaleInvoiceCreationComponent implements OnInit {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: 0,
-      factObservations: "nnn", //Modificar cuando se agregue campo en la vista
-      descounts: 12.5, //Modificar cuando se agregue campo en la vista
+      factObservations: this.nota, //Modificar cuando se agregue campo en la vista
+      descounts: this.descuentoTotal, //Modificar cuando se agregue campo en la vista
       factureType: "Venta",
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
       facWithholdingSource: this.retention
     };
+    
     console.log(factureS);
 
     this.saveInvoice(factureS);
@@ -222,8 +254,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.taxTotal = 0;
         this.retention = 0;
         this.total = 0;
-
-
+        this.nota = "";
+        this.descuentoVal = 0;
+        this.descuentoPorc = 0;
+        this.descuentoTotal = 0;
 
         link.setAttribute('download', fileName || 'facture.pdf');
         document.body.appendChild(link);
@@ -358,13 +392,15 @@ export class SaleInvoiceCreationComponent implements OnInit {
       thId: this.supplierS?.thId,
       factCode: 0,
       factureType: "Venta",
-      descounts: 12.4, //Modificar cuando se agregue campo en la vista
-      factObservations: "", //Modificar cuando se agregue campo en la vista
+      descounts: this.descuentoTotal, //Modificar cuando se agregue campo en la vista
+      factObservations: this.nota, //Modificar cuando se agregue campo en la vista
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
       facWithholdingSource: this.retention
     };
+
+    console.log(previewFacture);
 
     if (!previewFacture) {
       Swal.fire({
