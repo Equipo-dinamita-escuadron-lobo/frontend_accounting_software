@@ -44,8 +44,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
   showInfoProducts: boolean = false;
   lstProducts: ProductI[] = [];
   lstProductsSecurity: ProductI[] = [];
-  isLoadingPdfPreview: boolean = false;
-  isSavingPdf: boolean = false;
 
   // Variables for purchase invoice
   subTotal: number = 0;
@@ -157,7 +155,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   saveFacture() {
     this.loadFactureInfo();
-
+    
     const factureS: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
@@ -176,7 +174,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   async saveInvoice(facture: any) {
-    this.isSavingPdf = true;
     this.invoiceService.saveInvoice(facture).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -206,7 +203,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
-        this.isSavingPdf = false;
+
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado la factura con éxito!',
@@ -215,7 +212,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
-      this.isSavingPdf = false;
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear la factura.',
@@ -353,10 +349,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
       return;
     }
 
-    this.isLoadingPdfPreview = true;
     this.invoiceService.generateInvoicePreview(previewFacture).subscribe(
       (blob) => {
-        this.isLoadingPdfPreview = false;
         const url = window.URL.createObjectURL(blob);
         window.open(url);
         Swal.fire({
@@ -367,7 +361,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
-        this.isLoadingPdfPreview = false;
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al generar la vista previa de la factura.',
