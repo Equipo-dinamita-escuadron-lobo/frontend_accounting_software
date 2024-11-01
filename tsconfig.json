@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
+	"noUnusedLocals": true
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
