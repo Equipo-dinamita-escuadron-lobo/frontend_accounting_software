@@ -55,7 +55,7 @@ export class ThirdServiceService {
     );
   }
 
-  UpdateThird(Third:Third): Observable<Third>{
+  UpdateThird(Third:object): Observable<Third>{
     console.log('Request Body:', Third); 
     return this.http.post<Third>(this.thirdApiUrl+"update",Third) .pipe(
       catchError((error) => {
