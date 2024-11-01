@@ -186,17 +186,17 @@ export class SaleInvoiceCreationComponent implements OnInit {
   // Paara calcular total de cada producto
   calculateTotal(prod: ProductI): void {
     prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
-    this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
+    this.calculateInvoiceTotals(prod); //Llama para que se vaya actualizando los labels de abajo
   }
 
-  switchDescuento(type: 'porc' | 'val') {
+  switchDescuento(type: 'porc' | 'val',prod: ProductI): void {
     this.descuentoTotal = 0;
     if (type === 'porc') {
-      this.descuentoVal = 0; // Vacía el descuento en valor si se escribe en porcentaje
+      prod.descuentos[1] = 0; // Vacía el descuento en valor si se escribe en porcentaje
     } else if (type === 'val') {
-      this.descuentoPorc = 0; // Vacía el descuento en porcentaje si se escribe en valor
+       prod.descuentos[0]= 0; // Vacía el descuento en porcentaje si se escribe en valor
     }
-    this.calculateInvoiceTotals();
+    this.calculateInvoiceTotals(prod);
   }
 
   // para calcular valor total del producto incluyendo IVA
@@ -206,18 +206,22 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   //para calcular los datos como impuesto, subtotal y total de la factura
-  calculateInvoiceTotals(): void {
+  calculateInvoiceTotals(prod?: ProductI): void {
     console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
     console.log("Subtotal: ", this.subTotal)
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
-    if(this.descuentoVal==0 || this.descuentoVal==null) 
-      this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * this.descuentoPorc / 100), 0);
-    else if(this.descuentoPorc==0 || this.descuentoPorc==null)
-      this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ( this.descuentoVal), 0);
-    else
-      this.descuentoTotal = 0;
+
+    if(prod){
+      if(prod.descuentos[1]==0 || prod.descuentos[1]==null) 
+        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.descuentos[0] / 100), 0);
+      else if(prod.descuentos[0]==0 || prod.descuentos[0]==null)
+        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ( prod.descuentos[1]), 0);
+      else
+        this.descuentoTotal = 0;
+    }
+    
     console.log("Descuento: ", this.descuentoTotal)
     console.log("1: ", this.descuentoVal)
     console.log("2: ", this.descuentoPorc)
@@ -379,7 +383,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
             taxPercentage: prod.taxPercentage,
             IVA: 0,
             amount: 0,
-            totalValue: 0
+            totalValue: 0,
+            descuentos: [0, 0]
           };
         }
         );

@@ -16,4 +16,5 @@ export interface ProductI {
     amount: number;
     IVA: number;
     totalValue: number;
+    descuentos: [number, number];
   }
