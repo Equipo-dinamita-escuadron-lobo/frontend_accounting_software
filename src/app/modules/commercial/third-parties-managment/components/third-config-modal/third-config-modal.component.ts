@@ -199,16 +199,10 @@ export class ThirdConfigModalComponent {
       text: text,
       icon: icono,
       showCancelButton: true,
-<<<<<<< HEAD
-      confirmButtonColor: buttonColors.confirmationColor,
-      cancelButtonColor: buttonColors.cancelButtonColor,
-      confirmButtonText: "Si, elimínalo"
-=======
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: confirmed ? confirmButtonText : undefined,
       showConfirmButton: confirmed
->>>>>>> frontendSprint1Grupo1
     }).then((result) => {
       if (confirmed && result.isConfirmed) {
         items.splice(index, 1);
