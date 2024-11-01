@@ -61,12 +61,14 @@
                   <td class="px-4 py-1 whitespace-nowrap">{{ prod.code }}</td>
                   <td class="px-4 py-1 whitespace-nowrap">{{ prod.itemType }}</td>
                   <td class="px-4 py-1 whitespace-nowrap">{{ prod.description }}</td>
-                  <td class="px-4 py-1 whitespace-nowrap">{{ prod.cost }}</td>
+                  <td class="px-4 py-1 whitespace-nowrap">{{ prod.price }}</td>
                   <td class="px-4 py-1 whitespace-nowrap">
-                    <input type="checkbox" class="ml-10" (change)="toggleSelection(prod)">
+                    <input type="checkbox" class="ml-10" [(ngModel)]="prod.selected" (change)="toggleSelection(prod)">
                   </td>
                 </tr>
               </tbody>
+              
+              
             </table>
           </div>
         </div>

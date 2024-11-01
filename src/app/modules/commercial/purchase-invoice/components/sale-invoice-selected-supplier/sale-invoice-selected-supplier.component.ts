@@ -65,6 +65,8 @@ export class SaleInvoiceSelectedSupplierComponent {
   }
 
   closePopUp() {
-    this.ref.close();
+    if(this.data.entId){
+      this.ref.close("close");
+    }
   }
 }
