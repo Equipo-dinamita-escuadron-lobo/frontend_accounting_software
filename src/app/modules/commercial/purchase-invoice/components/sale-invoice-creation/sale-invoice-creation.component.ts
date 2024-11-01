@@ -29,7 +29,8 @@ import { FactureV } from '../../models/factureV';
 
 export class SaleInvoiceCreationComponent implements OnInit {
   enterpriseSelected?: EnterpriseDetails;
-
+  isLoadingPdfPreview: boolean = false;
+  isSavingPdf: boolean = false;
   // Variables for third parties
   showSectionThrid: boolean = true;
   showInfoThird: boolean = false;
@@ -155,7 +156,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   saveFacture() {
     this.loadFactureInfo();
-    
+
     const factureS: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
@@ -174,6 +175,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   async saveInvoice(facture: any) {
+    this.isSavingPdf = true;
     this.invoiceService.saveInvoice(facture).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -203,7 +205,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
-
+        this.isSavingPdf = false;
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado la factura con éxito!',
@@ -212,6 +214,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
+        this.isSavingPdf = false;
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear la factura.',
@@ -348,11 +351,12 @@ export class SaleInvoiceCreationComponent implements OnInit {
       });
       return;
     }
-
+    this.isLoadingPdfPreview = true;
     this.invoiceService.generateInvoicePreview(previewFacture).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
         window.open(url);
+        this.isLoadingPdfPreview = false;
         Swal.fire({
           title: 'Visualización exitosa!',
           text: 'Se ha generado la vista previa de la factura.',
@@ -361,6 +365,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
+        this.isLoadingPdfPreview = false;
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al generar la vista previa de la factura.',
