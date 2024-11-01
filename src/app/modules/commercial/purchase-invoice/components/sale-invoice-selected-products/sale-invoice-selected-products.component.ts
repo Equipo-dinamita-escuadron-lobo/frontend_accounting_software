@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Product } from '../../../product-managment/models/Product';
 import { ProductService } from '../../../product-managment/services/product.service';
@@ -16,7 +16,7 @@ export class SaleInvoiceSelectedProductsComponent {
   inputData: any;
   filterProductS: string = '';
   products: SelectableProduct[] = []; // Array para todos los productos
-  selectedProductIds: number[] = []; // Array de IDs de los productos seleccionados
+  selectedProducts: Product[] = []; // Array para los productos seleccionados
 
   columnsProducts: any[] = [
     { title: 'Código', data: 'code' },
@@ -29,24 +29,26 @@ export class SaleInvoiceSelectedProductsComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<SaleInvoiceSelectedProductsComponent>,
-    private productService: ProductService
+    private productService: ProductService,
+    private cdRef: ChangeDetectorRef // Detecta cambios en la vista
   ) {}
 
   ngOnInit() {
     this.inputData = this.data;
-    // Almacenar IDs de productos ya seleccionados
-    this.selectedProductIds = this.data.lstProducts ? this.data.lstProducts.map((product: Product) => product.id) : [];
+    this.selectedProducts = this.data.lstProducts ? [...this.data.lstProducts] : [];
     this.getProducts();
   }
 
   getProducts(): void {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
-        // Mapear productos y establecer `selected` si el ID está en `selectedProductIds`
         this.products = data.map(product => ({
           ...product,
-          selected: this.selectedProductIds.includes(product.id) // Chequeo de selección basado en IDs
+          selected: this.isProductSelected(product) // Marcar productos seleccionados
         }));
+
+        // Forzar la detección de cambios después de la carga
+        this.cdRef.detectChanges();
       },
       (error) => {
         console.log('Error al obtener los productos:', error);
@@ -54,21 +56,22 @@ export class SaleInvoiceSelectedProductsComponent {
     );
   }
 
+  isProductSelected(product: Product): boolean {
+    return this.selectedProducts.some(selected => selected.id === product.id);
+  }
+
   toggleSelection(product: SelectableProduct) {
-    if (product.selected) {
-      // Si está seleccionado, remover su ID de `selectedProductIds`
-      this.selectedProductIds = this.selectedProductIds.filter(id => id !== product.id);
+    const index = this.selectedProducts.findIndex(p => p.id === product.id);
+    if (index === -1) {
+      this.selectedProducts.push(product);
     } else {
-      // Si no está seleccionado, agregar su ID a `selectedProductIds`
-      this.selectedProductIds.push(product.id);
+      this.selectedProducts.splice(index, 1);
     }
-    product.selected = !product.selected; // Cambiar visualmente el estado de selección
+    product.selected = !product.selected;
   }
 
   confirmSelection() {
-    // Filtrar los productos seleccionados basados en `selectedProductIds`
-    const selectedProducts = this.products.filter(product => this.selectedProductIds.includes(product.id));
-    this.ref.close(selectedProducts);
+    this.ref.close(this.selectedProducts);
   }
 
   closePopUp() {
