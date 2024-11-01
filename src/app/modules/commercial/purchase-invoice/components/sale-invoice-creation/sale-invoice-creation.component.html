@@ -233,31 +233,33 @@
                 <div class="">
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Subtotales:</p>
-                        <p class="w-3/4">{{ formatPrice(subTotal) }}</p>
+                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(subTotal) }}</p>
                     </div>
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
-                        <p class="w-3/4">{{ formatPrice(taxTotal) }}</p>
+                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(taxTotal) }}</p>
                     </div>
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
-                        <p class="w-3/4">{{ formatPrice(retention) }}</p>
+                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(retention) }}</p>
                     </div>
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
-                        <p class="w-3/4">{{ formatPrice(total) }}</p>
+                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(total) }}</p>
                     </div>
                 </div>
                 <hr>
                 <div class="mt-3">
                     <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-center">
                         <button type="button" (click)="generatePdfPreview()"
-                            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                            Ver Factura
+                            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                            [disabled]="isLoadingPdfPreview" [ngClass]="{'opacity-50': isLoadingPdfPreview}">
+                            {{isLoadingPdfPreview ? 'Generando vista previa...' : 'Ver Factura'}}
                         </button>
                         <button type="button" (click)="saveFacture()"
-                            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                            Guardar
+                            class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                            [ngClass]="{'opacity-50': isSavingPdf}" [disabled]="isSavingPdf">
+                            {{isSavingPdf ? 'Guardando...' : 'Guardar'}}
                         </button>
                     </div>
                 </div>
