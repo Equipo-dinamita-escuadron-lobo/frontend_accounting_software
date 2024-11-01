@@ -8,6 +8,19 @@ import { environment } from '../../../../../environments/environment';
   providedIn: 'root'
 })
 export class ThirdServiceService {
+  private infoThirdRUT: string |null=null;
+
+  setInfoThirdRUT(info: string): void {
+    this.infoThirdRUT = info;
+  }
+
+  getInfoThirdRUT(): string | null {
+    return this.infoThirdRUT;
+  }
+
+  clearInfoThirdRUT(): void {
+    this.infoThirdRUT = null;
+  }
 
   private thirdApiUrl = environment.API_URL + 'thirds/'
   //Cambiar para desarrollo local
@@ -23,6 +36,21 @@ export class ThirdServiceService {
       catchError((error) => {
         console.error('Error occurred: ', error); // Log the error to the console
         return throwError(() => new Error('Error occurred while adding a hero')); // Rethrow the error as a new Observable error
+      })
+    );
+  }
+
+  //Extraer informacion del PDF del RUT para crear un tercero
+  ExtractInfoPDFRUT (file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    console.log('Request Body:', formData);
+
+    return this.http.post<any>(this.thirdApiUrl+"content-PDF-RUT", formData).pipe(
+      catchError((error) => {
+        console.error('Error occurred: ', error);
+        return throwError(() => new Error('Error occurred while uploading the file'));
       })
     );
   }

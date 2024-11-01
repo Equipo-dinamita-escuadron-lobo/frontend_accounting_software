@@ -1,9 +1,9 @@
 <div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopUp()"></div>
 <div class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center">
-  <div class="relative w-auto my-6 mx-auto max-w-4xl">
+  <div class="relative w-full my-6 mx-auto" style="width: 60%; max-width: 800px;"> 
     <div class="bg-white rounded-lg shadow-lg">
       <div class="flex items-start justify-between p-5 border-b border-gray-200 rounded-t">
-        <h3 class="text-4xl font-semibold text-gray-900">{{ inputData.title }}</h3>
+        <h3 class="text-4xl font-semibold text-gray-900 text-center w-full">{{ inputData.title }}</h3> 
         <button class="p-1 ml-auto bg-transparent border-0 text-red-500 text-3xl leading-none font-semibold" (click)="closePopUp()">
           <span class="text-2xl">×</span>
         </button>
@@ -13,7 +13,7 @@
         <input type="file" (change)="onFileChange($event)" accept="application/pdf" class="form-input mt-2" />
         <div *ngIf="pdfUrl" class="mt-4 w-full">
           <h6 class="text-lg font-bold text-gray-900 mb-2">Vista previa del PDF:</h6>
-          <iframe [src]="pdfUrl" width="100%" height="400px"></iframe>
+          <iframe [src]="pdfUrl" width="100%" height="600px" style="border: none;"></iframe>
         </div>
       </div>
       <div class="flex items-center justify-center p-6 border-t border-gray-200 space-x-4">
@@ -27,4 +27,3 @@
     </div>
   </div>
 </div>
-

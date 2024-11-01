@@ -23,19 +23,13 @@ import { catchError, map, Observable, of } from 'rxjs';
 })
 
 export class ThirdCreationComponent implements OnInit {
-
-
+  
   //aaaaaaaaaaaaaaaaaaaaaaaaaaa
-
   mousePosition = { x: 0, y: 0 }; // Posición del mouse
   positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
-  
-
   helpTexts: { [key: string]: string } = {}; // Almacena los textos de ayuda
   editingHelp: string | null = null; // Para rastrear qué cuadro está en edición
   visibleHelp: string | null = null; // Para rastrear cuál cuadro es visible
-
-  
 
   updateHelpText(helpId: string, value: string): void {
     this.helpTexts[helpId] = value; // Actualiza el texto de ayuda
@@ -90,22 +84,8 @@ export class ThirdCreationComponent implements OnInit {
     return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-
+  contendPDFRUT: string | null = null;
+  infoThird: string[] | null = null;
   selectedThirdTypes: ThirdType[] = [];
   createdThirdForm!: FormGroup;
   submitted = false;
@@ -145,6 +125,16 @@ export class ThirdCreationComponent implements OnInit {
     this.getCountries();
     this.getTypesID();
     this.getThirdTypes();
+    //verificar si se esta creando apartir del PDF del RUT 
+    this.contendPDFRUT = this.thirdService.getInfoThirdRUT(); 
+    if (this.contendPDFRUT) {
+      this.infoThird = this.contendPDFRUT.split(";");
+      console.log("eppaaaaaaaaaaaa Información recibida:", this.infoThird);
+      this.thirdService.clearInfoThirdRUT();
+      this.initializeFormPDFRUT();
+    } else {
+      console.log("No se recibe ninguna info PDF RUT");
+    }
 
     // Cargar textos de ayuda del almacenamiento local al iniciar
     const savedHelpTexts = localStorage.getItem('helpTexts');
@@ -185,6 +175,35 @@ export class ThirdCreationComponent implements OnInit {
         this.verificationNumber = null;
       }
     });
+  }
+
+  //Cargar datos apartir del PDF del RUT
+  private initializeFormPDFRUT(): void {
+    if(this.infoThird?.[0].includes("Persona jurídica")){
+      this.button1Checked = true;
+      this.button2Checked = false;
+      this.createdThirdForm.patchValue({personType: 'Juridica'});
+      this.createdThirdForm.patchValue({socialReason:this.infoThird?.[3] ?? ''});
+    }else{
+      this.button1Checked = false;
+      this.button2Checked = true;
+      this.createdThirdForm.patchValue({personType: 'Natural'});
+      this.createdThirdForm.patchValue({names:this.infoThird?.[5] ?? '',lastNames:this.infoThird?.[4] ?? '',});
+    }
+    this.updateValidator();
+    this.createdThirdForm.patchValue({
+      typeId:this.infoThird?.[1] ?? '',
+      address:this.infoThird?.[9] ?? '',
+      thirdTypes:'',
+      idNumber:this.infoThird?.[2] ?? '',
+      email:this.infoThird?.[10] ?? '',
+      phoneNumber:this.infoThird?.[11] ?? '',
+      country:'',
+      province:'',
+      city:''
+    });
+    this.onTypeIdChange2(this.infoThird?.[1] ?? '');
+    
   }
 
   private getCountries(): void {
@@ -291,7 +310,16 @@ export class ThirdCreationComponent implements OnInit {
       console.log("No se genera digito de verificacion");
       this.createdThirdForm.get('verificationNumber')?.disable();
     }
+  }
 
+  onTypeIdChange2(value: string): void {
+    if (value.includes('NIT')) {
+        console.log("tipo ID", value, " Se genera digito de verificacion");
+        this.createdThirdForm.get('verificationNumber')?.enable();
+    } else {
+        console.log("No se genera digito de verificacion");
+        this.createdThirdForm.get('verificationNumber')?.disable();
+    }
   }
 
   goToListThirds(): void {
