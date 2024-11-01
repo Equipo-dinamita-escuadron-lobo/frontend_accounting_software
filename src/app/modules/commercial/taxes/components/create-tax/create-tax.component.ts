@@ -8,6 +8,8 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { cuentasDiferentesValidator } from '../../customValidators/validateTaxInputs';
+import { map } from 'rxjs';
 @Component({
   selector: 'app-create-tax',
   templateUrl: './create-tax.component.html',
@@ -41,18 +43,39 @@ export class CreateTaxComponent {
       interest: [null, [Validators.required, Validators.min(0)]],
       depositAccount: [null, Validators.required],
       refundAccount: [null, Validators.required]
-    });
+    }, { validators: cuentasDiferentesValidator });
   }
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getCuentas();
   }
+
+    // Función recursiva para obtener el último hijo o el padre si no tiene hijos
+    collectLeaves(item: Account, leaves: Account[]): Account[] {
+      if (item.children && item.children.length > 0) {
+        // Recorrer todos los hijos
+        item.children.forEach(child => this.collectLeaves(child, leaves));
+      } else {
+        // Si no hay hijos, agregar el nodo actual a la lista de hojas
+        leaves.push(item);
+      }
+      return leaves;
+    }
+
   getCuentas(): void {
-    this.chartAccountService.getListAccounts(this.entData).subscribe(
+    this.chartAccountService.getListAccounts(this.entData).pipe(
+
+      map(dataArray => {
+        this.accounts = this.mapAccountToList(dataArray);
+        const allLeaves:Account[] = [];
+        // Aplicar la función a cada elemento del array
+        dataArray.forEach((item:Account) => this.collectLeaves(item, allLeaves));
+        return allLeaves; // Regresar el nuevo arreglo con los últimos hijos
+      })
+    ).subscribe(
       (data: any[]) => {
-        this.accounts = this.mapAccountToList(data);
-        this.depositAccounts = this.accounts;
-        this.refundAccounts = this.accounts;
+        this.depositAccounts = data;
+        this.refundAccounts = data;
       },
       error => {
         console.error('Error obteniendo cuentas de depósito:', error);
@@ -109,8 +132,8 @@ export class CreateTaxComponent {
         code: this.addForm.value.code,
         description: this.addForm.value.description,
         interest: this.addForm.value.interest,
-        depositAccount: this.getAccountCode(this.addForm.value.depositAccount),  
-        refundAccount: this.getAccountCode(this.addForm.value.refundAccount)      
+        depositAccount: this.getAccountCode(this.addForm.value.depositAccount),
+        refundAccount: this.getAccountCode(this.addForm.value.refundAccount)
       };
       this.taxService.getTaxById(createdTax.code, createdTax.idEnterprise).subscribe(
         (response: Tax) => {
