@@ -7,7 +7,7 @@ import { ProductCreationComponent } from '../../../product-managment/components/
 import { CommonModule } from '@angular/common';
 import { EnterpriseDetails } from '../../../enterprise-managment/models/Enterprise';
 import { EnterpriseService } from '../../../enterprise-managment/services/enterprise.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoice-select-supplier.component';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { Third } from '../../../third-parties-managment/models/Third';
@@ -118,10 +118,21 @@ export class SaleInvoiceCreationComponent implements OnInit {
     }
   }
 
-  // Método para ventana emergente de terceros
   selectSupplier() {
-    this.OpenListThirds('Seleccion de Cliente', this.enterpriseSelected?.id, SaleInvoiceSelectedSupplierComponent);
+    const dialogRef = this.OpenListThirds(
+      'Seleccion de Cliente',
+      this.enterpriseSelected?.id,
+      SaleInvoiceSelectedSupplierComponent
+    );
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created' || result === 'close') {
+        this.router.navigate(['/general/operations/invoices']);
+      }
+    });
   }
+  
+  
 
   createSupplier() {
     const dialogRef = this.dialog.open(ThirdCreationComponent, {
@@ -154,7 +165,19 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   // Método para mostrar ventana emergente de productos
   selectProducts() {
-    this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, this.supplierS?.idNumber, SaleInvoiceSelectedProductsComponent);
+   
+    const dialogRef = this.OpenListProducts(
+      'Seleccion de Productos',
+      this.enterpriseSelected?.id,
+      this.supplierS?.thId,
+      SaleInvoiceSelectedProductsComponent
+    );
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created' || result === 'close') {
+        this.router.navigate(['/general/operations/invoices']);
+      }
+    });
+  
   }
 
   createProduct() {
@@ -307,7 +330,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     return matches && matches[1] ? matches[1] : null;
   }
 
-  OpenListThirds(title: any, entId: any, component: any) {
+  OpenListThirds(title: any, entId: any, component: any): MatDialogRef<any> {
     const _popUp = this.dialog.open(component, {
       width: '50%',
       height: 'auto',
@@ -318,7 +341,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         entId: entId
       }
     });
-
+  
     _popUp.afterClosed().subscribe(result => {
       if (result) {
         console.log('Información recibida del modal:', result);
@@ -326,18 +349,18 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showInfoThird = true;
         this.showSectionProducts = true;
         this.getSupplier(result);
-
-        if ((this.supplierS?.thId !== this.supplierSCopy?.thId) && (this.lstProducts.length !== 0)) {
+  
+        if (this.supplierS?.thId !== this.supplierSCopy?.thId && this.lstProducts.length !== 0) {
           Swal.fire({
             title: "Cambio de proveedor",
-            text: "Si cambia de proveerdor se perderan los datos que hayan registrado en productos!",
+            text: "Si cambia de proveedor se perderán los datos que hayan registrado en productos!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: buttonColors.confirmationColor,
             cancelButtonColor: buttonColors.cancelButtonColor,
             confirmButtonText: "Confirmar!"
-          }).then((result) => {
-            if (result.isConfirmed) {
+          }).then((swalResult) => {
+            if (swalResult.isConfirmed) {
               this.supplierSCopy = this.supplierS;
               this.lstProducts = [];
               this.showInfoProducts = false;
@@ -351,29 +374,31 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showSectionProducts = false;
       }
     });
+  
+    return _popUp;
   }
-
-  OpenListProducts(title: any, entId: any, thId: any, component: any) {
+  
+  OpenListProducts(title: any, entId: any, thId: any, component: any): MatDialogRef<any> {
     const _popUp = this.dialog.open(component, {
-      width: '0%',
+      width: '50%', // Cambia a un valor mayor para que sea visible
       height: 'auto',
       enterAnimationDuration: '0ms',
       exitAnimationDuration: '100ms',
       data: {
         title: title,
         entId: entId,
-        thId: thId
+        thId: thId,
+        products: this.lstProducts
       }
     });
-
+  
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
         console.log('Información recibida del modal:', result);
-        this.lstProducts = result.map((prod: any) => {
+        let products = result.map((prod: any) => {
           return {
             id: prod.id,
             itemType: prod.itemType,
-
             description: prod.description,
             price: prod.cost,
             taxPercentage: prod.taxPercentage,
@@ -381,9 +406,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
             amount: 0,
             totalValue: 0
           };
-        }
-        );
-        console.log('Productos seleccionados:', this.lstProducts[0].price);
+        });
+        this.lstProducts.push(...products);
+        
+        console.log('Productos seleccionados:', this.lstProducts[0]?.price);
         this.lstProducts.forEach(prod => {
           prod.IVA = prod.taxPercentage;
           prod.amount = 1;
@@ -392,10 +418,12 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showInfoProducts = true;
         this.calculateInvoiceTotals();
       } else {
-        console.log('No selecciono ningun producto');
+        console.log('No seleccionó ningún producto');
         this.showInfoProducts = false;
       }
     });
+  
+    return _popUp;
   }
 
   async generatePdfPreview() {
