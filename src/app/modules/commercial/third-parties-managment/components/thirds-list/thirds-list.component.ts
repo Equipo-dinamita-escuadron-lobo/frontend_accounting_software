@@ -20,6 +20,9 @@ export class ThirdsListComponent{
 
   form: FormGroup;
 
+  selectedThirdId: string | null = null;
+  timer: any;
+
   data: Third[] = [];
   columnsBrief: any[] = [
     { title: 'Tipo Persona', data: 'personType'},
@@ -56,6 +59,8 @@ export class ThirdsListComponent{
   entData: any | null = null;
 
   showModal = false;
+  //Crear tercero apartir del PDF del RUT
+  createPdfRUT: boolean = false;
 
   constructor(private thirdService: ThirdServiceService,private fb: FormBuilder,private router: Router, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
@@ -102,6 +107,20 @@ export class ThirdsListComponent{
   openModalEdit(thId:number):void{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
+  //Abrir Crear tercero apartir del PDF del RUT
+  openCreatePDFRunt():void{
+    this.createPdfRUT = true;
+  }
+ //cerrar Crear tercero apartir del PDF del RUT
+  closeCreatePDFRunt():void{
+    this.createPdfRUT = false;
+  }
+
+  redirectToEdit(ThirdId: string): void {
+    console.log("El id del tercero es", ThirdId)
+    this.router.navigate(['/general/operations/third-parties/edit', ThirdId]);  
+  }
+
 
   openConfigTPModal():void{
     this.openPopUp(0, 'Configuración de Terceros',ThirdConfigModalComponent)
@@ -135,6 +154,9 @@ export class ThirdsListComponent{
       }
     });
   }
+  deleteThirdPartie(thId:number):void{
+    
+  }
 
   openPopUp(thId:any, title: any, component: any){
     var _popUp = this.dialog.open(component, {
@@ -152,4 +174,6 @@ export class ThirdsListComponent{
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
+
+  
 }

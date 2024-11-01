@@ -8,6 +8,19 @@ import { environment } from '../../../../../environments/environment';
   providedIn: 'root'
 })
 export class ThirdServiceService {
+  private infoThirdRUT: string |null=null;
+
+  setInfoThirdRUT(info: string): void {
+    this.infoThirdRUT = info;
+  }
+
+  getInfoThirdRUT(): string | null {
+    return this.infoThirdRUT;
+  }
+
+  clearInfoThirdRUT(): void {
+    this.infoThirdRUT = null;
+  }
 
   private thirdApiUrl = environment.API_URL + 'thirds/'
   //Cambiar para desarrollo local
@@ -27,7 +40,22 @@ export class ThirdServiceService {
     );
   }
 
-  UpdateThird(Third:Third): Observable<Third>{
+  //Extraer informacion del PDF del RUT para crear un tercero
+  ExtractInfoPDFRUT (file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    console.log('Request Body:', formData);
+
+    return this.http.post<any>(this.thirdApiUrl+"content-PDF-RUT", formData).pipe(
+      catchError((error) => {
+        console.error('Error occurred: ', error);
+        return throwError(() => new Error('Error occurred while uploading the file'));
+      })
+    );
+  }
+
+  UpdateThird(Third:object): Observable<Third>{
     console.log('Request Body:', Third); 
     return this.http.post<Third>(this.thirdApiUrl+"update",Third) .pipe(
       catchError((error) => {
@@ -50,6 +78,9 @@ export class ThirdServiceService {
 
   getThirdPartie(thId:number): Observable<Third>{
     return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
+  }
+  existThird(thId:number): Observable<boolean>{
+    return this.http.get<boolean>(this.thirdApiUrl+`existBy?thId=${thId}`)
   }
 
   changeThirdPartieState(thId:number): Observable<Boolean>{

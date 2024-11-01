@@ -7,6 +7,8 @@ import { ThirdServiceConfigurationService } from '../../services/third-service-c
 import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-third-config-modal',
@@ -16,10 +18,16 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 export class ThirdConfigModalComponent {
   inputData: any;
 
+  /*aquie empiezo */
+  showIdentifications = true;
+
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
   showInputThirdType = false;
   showInputTypeId = false;
+  newItemName = '';
+
+  
 
   //Se agregaron 2 nuevas propiedades(newIdentificatioName newThirdTypeName) para evitar que se dupliquen los datos en los campos de Tipo de Identificacion y Tipo de Tercero
   newIdentificatioName = '';
@@ -88,7 +96,7 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Éxito!',
           text: 'Tipo de identificación agregado con éxito',
-          icon: 'success'
+          icon: "success"
         });
       },
       error: (error) => {
@@ -120,9 +128,10 @@ export class ThirdConfigModalComponent {
         this.newThirdTypeName = '';
         this.showInputThirdType = false;
         Swal.fire({
+          
           title: 'Éxito!',
           text: 'Tipo de tercero agregado con exito',
-          icon: 'success'
+          icon: "success"
         });
       },
       error: (error) => {
@@ -148,16 +157,60 @@ export class ThirdConfigModalComponent {
   }
 
   deleteItem(items: any, index: number) {
+    this.thirdServiceConfiguration.deleteThird(items[index].thirdTypeId).subscribe({
+      next: (response) => {
+      },
+      error: (error: HttpErrorResponse) => {
+        
+        if (error.error.text === 'SUCCESS') {
+          
+          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio",'success', true, "si, eliminalo")
+          
+        }
+        else{
+          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario",'error', false, undefined)
+        }
+      
+      }
+    });
+  }
+  deleteItemId(items: any, index: number) {
+    this.thirdServiceConfiguration.deleteThird(items[index].thirdTypeId).subscribe({
+      next: (response) => {
+      },
+      error: (error: HttpErrorResponse) => {
+        
+        if (error.error.text === 'SUCCESS') {
+          
+          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio",'success', true, "si, eliminalo")
+          
+        }
+        else{
+          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario",'error', false, undefined)
+        }
+      
+      }
+    });
+  }
+
+  createAlert(items: any, index: number, title: string, text: string, icono: 'success' | 'error' | 'warning' | 'info' | 'question', confirmed: boolean, confirmButtonText: string| undefined ) {
     Swal.fire({
-      title: "¿Estás seguro?",
-      text: "¡No se podrá revertir esta acción!",
-      icon: "warning",
+      title: title,
+      text: text,
+      icon: icono,
       showCancelButton: true,
+<<<<<<< HEAD
       confirmButtonColor: buttonColors.confirmationColor,
       cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: "Si, elimínalo"
+=======
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: confirmed ? confirmButtonText : undefined,
+      showConfirmButton: confirmed
+>>>>>>> frontendSprint1Grupo1
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (confirmed && result.isConfirmed) {
         items.splice(index, 1);
         Swal.fire({
           title: "Eliminado!",
@@ -167,5 +220,6 @@ export class ThirdConfigModalComponent {
         });
       }
     });
-  }
+  }  
+  
 }
