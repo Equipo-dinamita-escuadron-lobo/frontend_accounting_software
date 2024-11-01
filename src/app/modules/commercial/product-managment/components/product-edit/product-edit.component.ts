@@ -201,21 +201,29 @@ export class ProductEditComponent implements OnInit {
 
   //Metodo para formatear el precio
   formatcost(event: any) {
-    const costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    // Remover todos los puntos (separadores de miles) del input
+    const costInput = event.target.value.replace(/\./g, '');
     let formattedcost = '';
+
     if (costInput !== '') {
-      // Convertir el precio a número
-      const cost = parseInt(costInput, 10);
-      // Formatear el precio con separador de miles y decimales
-      formattedcost = this.formatNumberWithCommas(cost);
+        // Convertir el precio a número entero (asumiendo que no hay decimales)
+        const cost = parseInt(costInput, 10);
+
+        if (!isNaN(cost)) {
+            // Formatear el precio con separador de miles (sin decimales)
+            formattedcost = this.formatNumberWithCommas(cost);
+        }
     }
+
     this.editForm.get('cost')?.setValue(formattedcost);
-  }
+}
+
 
   // Función para formatear un número con separadores de miles
-  formatNumberWithCommas(number: number): string {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+  formatNumberWithCommas(value: number): string {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 
 
   goBack(): void {

@@ -129,16 +129,6 @@ export class ProductListComponent implements OnInit, AfterViewInit {
     );
   }
 
- /* getProviders(): void {
-  this.thirdService.getThirdParties(this.entData,0).subscribe(
-    (data: any[]) => {
-      this.providers = data;
-    },
-    error => {
-      console.error('Error al obtener la lista de proveedores:', error);
-    }
-  );
-}*/
   getCategoryName(id: number): string {
     const cat = this.categories.find(category => category.id === id);
     return cat ? cat.name : 'No encontrado';
