@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+
+import { ProductCreationComponent } from '../../../product-managment/components/product-creation/product-creation.component';
+
 
 import { CommonModule } from '@angular/common';
 import { EnterpriseDetails } from '../../../enterprise-managment/models/Enterprise';
@@ -66,6 +70,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   ];
 
   constructor(private enterpriseService: EnterpriseService,
+    private location: Location,
     private dialog: MatDialog,
     private thirdService: ThirdServiceService,
     private invoiceService: InvoiceServiceService,
@@ -89,6 +94,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
     return this.enterpriseSelected;
   }
 
+  cancelCreateProduct() {
+    this.location.back(); // Navega hacia atrás en el historial
+  }
+  
   getSupplier(thirdId: any) {
     if (thirdId) {
       this.thirdService.getThirdPartie(thirdId).subscribe({
@@ -108,6 +117,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   createSupplier() {
     this.router.navigate(['/general/operations/third-parties/create']);
   }
+  
 
 
   showSectionThridM() {
@@ -120,8 +130,22 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   createProduct() {
-    this.router.navigate(['/general/operations/products/create']);
+    const dialogRef = this.dialog.open(ProductCreationComponent, {
+      width: '600px',
+      data: { destination: "destination" }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        // Realiza la redirección al módulo de facturas
+        this.router.navigate(['/general/operations/invoices']);
+      }
+      if(result=== 'close'){
+        this.router.navigate(['/general/operations/invoices']);
+      }
+    });
   }
+  
 
   showSectionProductsM() {
     this.showSectionProducts = !this.showSectionProducts;

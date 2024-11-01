@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -9,6 +9,8 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductType } from '../../models/ProductType';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-creation',
@@ -32,12 +34,14 @@ export class ProductCreationComponent implements OnInit {
 
 
   constructor(
+    private dialogRef: MatDialogRef<ProductCreationComponent>,
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
     private productTypeService: ProductTypeService,
-    private router: Router
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: { destination?: string } 
   ) {}
 
 
@@ -182,6 +186,7 @@ getUnitOfMeasures(): void {
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,
         });
+        this.dialogRef.close('created');
 
         // Restablece el formulario con la fecha actual
         this.resetFormWithCurrentDate();
@@ -196,6 +201,7 @@ getUnitOfMeasures(): void {
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear el producto.',
+          
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
@@ -247,9 +253,14 @@ getUnitOfMeasures(): void {
 
 
   goBack(): void {
-    this.router.navigate(['/general/operations/products']);
+    alert(this.data.destination)   
+     if (this.data.destination === 'destination') {
+      this.dialogRef.close('close');
+      
+    } else {
+      this.router.navigate(['/general/operations/products']);
+    }
   }
-
 }
 
   // Funcion para validar que el maximo y minimo tengan valores coherentes
