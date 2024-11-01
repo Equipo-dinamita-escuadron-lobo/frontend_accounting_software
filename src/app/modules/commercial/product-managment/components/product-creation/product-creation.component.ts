@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'; // Importa los módulos necesarios para trabajar con formularios reactivos
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -16,6 +16,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
   styleUrls: ['./product-creation.component.css'],
+  
 })
 
 export class ProductCreationComponent implements OnInit {
@@ -34,14 +35,16 @@ export class ProductCreationComponent implements OnInit {
 
 
   constructor(
-    private dialogRef: MatDialogRef<ProductCreationComponent>,
+    @Optional() private dialogRef: MatDialogRef<ProductCreationComponent>,
+    
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private unitOfMeasureService: UnitOfMeasureService,
     private categoryService: CategoryService,
     private productTypeService: ProductTypeService,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: { destination?: string } 
+    @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
+
   ) {}
 
 
@@ -186,7 +189,9 @@ getUnitOfMeasures(): void {
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,
         });
-        this.dialogRef.close('created');
+        if(this.dialogRef){
+          this.dialogRef.close('created');
+        }
 
         // Restablece el formulario con la fecha actual
         this.resetFormWithCurrentDate();
@@ -252,15 +257,14 @@ getUnitOfMeasures(): void {
 
 
 
-  goBack(): void {
-    alert(this.data.destination)   
-     if (this.data.destination === 'destination') {
-      this.dialogRef.close('close');
-      
+  goBack(): void { 
+    if (this.data && this.data.destination === 'destination') {
+      this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
     } else {
       this.router.navigate(['/general/operations/products']);
     }
   }
+  
 }
 
   // Funcion para validar que el maximo y minimo tengan valores coherentes
