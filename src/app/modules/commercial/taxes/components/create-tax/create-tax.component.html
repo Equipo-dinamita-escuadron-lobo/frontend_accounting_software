@@ -104,7 +104,6 @@
                 class="text-red-500">
                 <div *ngIf="addForm.get('refundAccount')?.errors?.['required']">El campo Cuenta Devolución es
                   requerido.</div>
-
               </div>
               <div *ngIf="addForm.errors?.['cuentasIguales'] && addForm.get('refundAccount')?.touched"
                 class="text-red-500">
