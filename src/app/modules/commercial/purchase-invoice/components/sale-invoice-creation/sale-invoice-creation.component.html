@@ -215,11 +215,11 @@
                                 
                                 <td class="px-4 py-1 whitespace-nowrap flex items-center space-x-2">
                                     <div class="flex items-center">
-                                      <input class="text-center max-w-11" type="number" min="0" max="99"[(ngModel)]="descuentoPorc" (input)="switchDescuento('porc')">
+                                      <input class="text-center max-w-11 border border-gray-300 rounded-md" type="number" min="0" max="99"[(ngModel)]="prod.descuentos[0]" (input)="switchDescuento('porc',prod)">
                                       <span>%</span>
                                     </div>
                                     <div class="flex items-center">
-                                      <input class="text-center max-w-15" type="number" min="0"  [(ngModel)]="descuentoVal" (input)="switchDescuento('val')">
+                                      <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" min="0"  [(ngModel)]="prod.descuentos[1]" (input)="switchDescuento('val',prod)">
                                       <span>$</span>
                                     </div>
                                   </td>
