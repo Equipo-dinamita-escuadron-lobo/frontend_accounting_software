@@ -470,6 +470,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
       amount: prod.amount,
       description: prod.description,
       vat: prod.IVA / 100,
+      descount: prod.descuentos[0],
+      code: prod.itemType,
       unitPrice: prod.price,
       subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
     }));
