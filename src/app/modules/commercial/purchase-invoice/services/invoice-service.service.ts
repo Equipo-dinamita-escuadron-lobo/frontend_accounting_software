@@ -34,5 +34,16 @@ export class InvoiceServiceService {
       'Content-Type': 'application/json'
     });
     return this.http.post(`${this.apiUrl}generatePreview`, facture, { headers: headers, responseType: 'blob' });
+  
   }
+  generateInvoiceQR(factId: number): Observable<Blob> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+    });
+    return this.http.get(`${this.apiUrl}facture/?factId=${factId}`, {
+        headers: headers,
+        responseType: 'blob'
+    });
+}
+
 }

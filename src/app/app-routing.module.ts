@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FacturesSaleQRComponentComponent } from './modules/commercial/purchase-invoice/components/factures-sale-qrcomponent/factures-sale-qrcomponent.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,12 @@ const routes: Routes = [
   {
     path: 'general',
     loadChildren: () => import('./modules/principal/general/general.module').then(m => m.GeneralModule),
+  },
+  {
+    path: 'facturasQR/:id',
+    //loadChildren: () => import('./modules/commercial/purchase-invoice/purchase-invoice.module').then(m => m.PurchaseInvoiceModule),
+    
+    component: FacturesSaleQRComponentComponent,
   },
 
   {

@@ -12,6 +12,7 @@ import { SaleInvoiceCreationComponent } from './components/sale-invoice-creation
 import { SaleInvoiceSelectedProductsComponent } from './components/sale-invoice-selected-products/sale-invoice-selected-products.component';
 import { SaleInvoiceSelectedSupplierComponent } from './components/sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
 import { Router } from '@angular/router';
+import { FacturesSaleQRComponentComponent } from './components/factures-sale-qrcomponent/factures-sale-qrcomponent.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { Router } from '@angular/router';
     SaleInvoiceCreationComponent,
     SaleInvoiceSelectedProductsComponent,
     SaleInvoiceSelectedSupplierComponent,
+    FacturesSaleQRComponentComponent,
   ],
   imports: [
     CommonModule,
