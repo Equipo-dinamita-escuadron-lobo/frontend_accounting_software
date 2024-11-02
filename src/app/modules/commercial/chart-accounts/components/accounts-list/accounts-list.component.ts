@@ -12,7 +12,10 @@ import { FinancialStateType } from '../../models/FinancialStateType';
 import { Observable, forkJoin, of, switchMap, map } from 'rxjs';
 import { AccountExportComponent } from '../account-export/account-export.component';
 import { buttonColors } from '../../../../../shared/buttonColors';
-
+import { TaxService } from '../../../taxes/services/tax.service';
+import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
+import { Tax } from '../../../taxes/models/Tax';
+import { data } from 'jquery';
 /**
  * Component for managing and displaying chart of accounts.
  */
@@ -85,17 +88,25 @@ export class AccountsListComponent implements OnInit {
   listAccountsAux: Account[] = [];
   listNature: NatureType[] = [];
   listClasification: ClasificationType[] = [];
+  listRefundAccount: string[] = [];
+  listDepositAccount: string[] = [];
 
   //variables that have the placeholder of the select
   placeNatureType: string = '';
   placeFinancialStateType: string = '';
   placeClasificationType: string = '';
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  entData: any | null = null;
+  taxes: Tax[] = [];
 
   constructor(
     private accountExportComponent: AccountExportComponent,
     private fb: FormBuilder,
     private _accountService: ChartAccountService,
-    private dialog: MatDialog) {
+
+    private dialog: MatDialog,
+    private taxService: TaxService) {
+
     this.accountForm = this.fb.group({})
     this.formTransactional = this.fb.group({
       selectedNatureType: [''],
@@ -201,10 +212,15 @@ export class AccountsListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAccounts();
-
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.getTaxesByCodes();
     this.getNatureType();
     this.getFinancialStateType();
     this.getClasificationType();
+
+    this.accountForm.valueChanges.subscribe(value => {
+      console.log(value); // Log the values of the form whenever it changes
+    });
   }
 
   /**
@@ -499,7 +515,7 @@ export class AccountsListComponent implements OnInit {
       jsonData.unshift(headers.filter((_, index) => indicesToKeep.includes(index))); // Agregar encabezados filtrados al inicio si lo deseas
 
       jsonData = this.filterByCodeLength(jsonData);
-      
+
       // Filtrar filas que tengan celdas vacías o solo espacios
       let filteredRows = jsonData.filter(filtered => {
         return filtered.every(item =>
@@ -520,7 +536,7 @@ export class AccountsListComponent implements OnInit {
       // Convertir la hoja a JSON
       let jsonDataFiltered = XLSX.utils.sheet_to_json(worksheet, { raw: false, header: headers });
 
-      
+
 
       const missingFields = requiredFields.filter(field => {
         if (jsonDataFiltered.length === 0) {
@@ -1009,19 +1025,30 @@ export class AccountsListComponent implements OnInit {
    * Delete an account by calling the service
    */
   deleteAccount() {
-    try {
-      Swal.fire({
-        title: '¿Estás seguro?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: buttonColors.confirmationColor,
-        cancelButtonColor: buttonColors.cancelButtonColor,
-        confirmButtonText: 'Sí, Eliminar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if (this.accountSelected && this.accountSelected.id) {
-            this._accountService.deleteAccount(this.accountSelected?.id.toString()).subscribe(
+    // Validate if the account is linked to any tax
+    if (this.accountSelected && this.accountSelected.id) {
+      const isLinked = this.searchIfAccountIsLinked(this.accountSelected.code);
+      if (isLinked) {        
+        Swal.fire({
+          title: 'Error!',
+          text: 'No se puede eliminar debido a que tiene asociado un impuesto!',
+          confirmButtonColor: buttonColors.confirmationColor,
+          icon: 'error',
+        });
+        return
+      }
+      try {
+        Swal.fire({
+          title: '¿Estás seguro?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: buttonColors.confirmationColor,
+          cancelButtonColor: buttonColors.cancelButtonColor,
+          confirmButtonText: 'Sí, Eliminar',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed && this.accountSelected?.id) {
+            this._accountService.deleteAccount(this.accountSelected.id.toString()).subscribe(
               (response) => {
                 Swal.fire({
                   title: 'Eliminación exitosa!',
@@ -1056,13 +1083,14 @@ export class AccountsListComponent implements OnInit {
               }
             );
           }
-        }
-      });
-    } catch (error) {
-      console.error('Error al eliminar el tipo de cuenta:', error);
+
+        })
+
+      } catch (error) {
+        console.error('Error al eliminar el tipo de cuenta: ', error);
+      }
     }
   }
-
   /**
    * Update an account 
    */
@@ -1196,4 +1224,29 @@ export class AccountsListComponent implements OnInit {
       }
     });
   }
+
+  getTaxesByCodes(): void {
+    this.taxService.getTaxes(this.entData).pipe(
+      map((taxes: Tax[]) => {
+        const depositAccounts = taxes.map(tax => tax.depositAccount);
+        const refundAccounts = taxes.map(tax => tax.refundAccount);
+        return { depositAccounts, refundAccounts };
+      })
+    ).subscribe(
+      (data) => {
+        console.log(data);
+        const { depositAccounts, refundAccounts } = data;
+        this.listDepositAccount = depositAccounts;
+        this.listRefundAccount = refundAccounts;
+      },
+      (error) => {
+        console.error('Error al obtener los impuestos:', error);
+      }
+    );
+  }
+
+  searchIfAccountIsLinked(accountCode: string) {
+    return this.listRefundAccount.some(account => account === accountCode) || this.listDepositAccount.some(account => account === accountCode)
+  }
+
 }

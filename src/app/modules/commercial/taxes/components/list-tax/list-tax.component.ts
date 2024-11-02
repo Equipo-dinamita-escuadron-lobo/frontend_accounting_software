@@ -16,7 +16,7 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 })
 export class ListTaxComponent implements OnInit {
 
-  taxes: any[] = [];
+  taxes: Tax[]= [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
   accounts: any[] = [];
