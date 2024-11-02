@@ -15,11 +15,11 @@ interface SelectableProduct extends Product {
 export class SaleInvoiceSelectedProductsComponent {
   inputData: any;
   filterProductS: string = '';
-  products: SelectableProduct[] = []; // Array para todos los productos
-  selectedProducts: Product[] = []; // Array para los productos seleccionados
-
+  products: SelectableProduct[] = []; // Array for all products
+  selectedProducts: SelectableProduct[] = []; // Array for selected products
+  productsInvoice: Product[] = [];
   columnsProducts: any[] = [
-    { title: 'Código', data: 'code' },
+    { title: 'Codigo', data: 'code' },
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Precio', data: 'price' },
@@ -30,25 +30,33 @@ export class SaleInvoiceSelectedProductsComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<SaleInvoiceSelectedProductsComponent>,
     private productService: ProductService,
-    private cdRef: ChangeDetectorRef // Detecta cambios en la vista
+    private cdr: ChangeDetectorRef // Inyección de ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.inputData = this.data;
-    this.selectedProducts = this.data.lstProducts ? [...this.data.lstProducts] : [];
+    this.productsInvoice = this.data.products || [];
     this.getProducts();
   }
 
   getProducts(): void {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
-        this.products = data.map(product => ({
+        this.products = data.map((product) => ({
           ...product,
-          selected: this.isProductSelected(product) // Marcar productos seleccionados
+          selected: false // Marca todos los productos como no seleccionados inicialmente
         }));
 
-        // Forzar la detección de cambios después de la carga
-        this.cdRef.detectChanges();
+        
+        this.products.forEach((product) => {
+          const index = this.productsInvoice.findIndex(p => p.id === product.id);
+          if (index !== -1) {
+            product.selected = true;
+            this.selectedProducts.push(product);
+          }
+        });
+
+        this.cdr.detectChanges(); // Forzar la detección de cambios
       },
       (error) => {
         console.log('Error al obtener los productos:', error);
@@ -56,18 +64,16 @@ export class SaleInvoiceSelectedProductsComponent {
     );
   }
 
-  isProductSelected(product: Product): boolean {
-    return this.selectedProducts.some(selected => selected.id === product.id);
-  }
-
   toggleSelection(product: SelectableProduct) {
     const index = this.selectedProducts.findIndex(p => p.id === product.id);
     if (index === -1) {
+      product.selected = true;
       this.selectedProducts.push(product);
     } else {
+      product.selected = false;
       this.selectedProducts.splice(index, 1);
     }
-    product.selected = !product.selected;
+    this.cdr.detectChanges(); // Forzar la detección de cambios
   }
 
   confirmSelection() {
@@ -76,7 +82,7 @@ export class SaleInvoiceSelectedProductsComponent {
 
   closePopUp() {
     if (this.data.entId) {
-      this.ref.close("close");
+      this.ref.close();
     }
   }
 }

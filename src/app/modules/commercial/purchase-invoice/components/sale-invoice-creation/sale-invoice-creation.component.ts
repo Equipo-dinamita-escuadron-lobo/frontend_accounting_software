@@ -67,12 +67,12 @@ export class SaleInvoiceCreationComponent implements OnInit {
   lstProductsSend: ProductS[] = [];
 
   columnsProducts: any[] = [
-    { title: '#'},
+    { title: '#' },
     { title: 'Codigo', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Cantidad' },
     { title: 'Precio Unitario', data: 'price' },
-    { title: 'Descuento'},
+    { title: 'Descuento' },
     { title: 'IVA' },
     { title: 'Subtotal' },
   ];
@@ -107,7 +107,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   cancelCreateProduct() {
     this.location.back(); // Navega hacia atrás en el historial
   }
-  
+
   getSupplier(thirdId: any) {
     if (thirdId) {
       this.thirdService.getThirdPartie(thirdId).subscribe({
@@ -124,15 +124,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
       this.enterpriseSelected?.id,
       SaleInvoiceSelectedSupplierComponent
     );
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'created' || result === 'close') {
-        this.router.navigate(['/general/operations/invoices']);
-      }
-    });
+
   }
-  
-  
+
+
 
   createSupplier() {
     const dialogRef = this.dialog.open(ThirdCreationComponent, {
@@ -140,44 +135,31 @@ export class SaleInvoiceCreationComponent implements OnInit {
       height: '80vh', // Establece una altura del 80% del viewport
       data: { destination: "destination" }
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'created') {
-        // Redirección al módulo de facturas
-        this.router.navigate(['/general/operations/invoices']);
-      }
-      if (result === 'close') {
-        this.router.navigate(['/general/operations/invoices']);
-      }
-    });
+
   }
-  
-  
+
+
 
 
   showSectionThridM() {
     this.showSectionThrid = !this.showSectionThrid;
   }
 
-  showSectionNotas(){
+  showSectionNotas() {
     this.SectionNotas = !this.SectionNotas;
   }
 
   // Método para mostrar ventana emergente de productos
   selectProducts() {
-   
+
     const dialogRef = this.OpenListProducts(
       'Seleccion de Productos',
       this.enterpriseSelected?.id,
       this.supplierS?.thId,
       SaleInvoiceSelectedProductsComponent
     );
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'created' || result === 'close') {
-        this.router.navigate(['/general/operations/invoices']);
-      }
-    });
-  
+
+
   }
 
   createProduct() {
@@ -185,18 +167,9 @@ export class SaleInvoiceCreationComponent implements OnInit {
       width: '600px',
       data: { destination: "destination" }
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'created') {
-        // Realiza la redirección al módulo de facturas
-        this.router.navigate(['/general/operations/invoices']);
-      }
-      if(result=== 'close'){
-        this.router.navigate(['/general/operations/invoices']);
-      }
-    });
+
   }
-  
+
 
   showSectionProductsM() {
     this.showSectionProducts = !this.showSectionProducts;
@@ -212,12 +185,12 @@ export class SaleInvoiceCreationComponent implements OnInit {
     this.calculateInvoiceTotals(prod); //Llama para que se vaya actualizando los labels de abajo
   }
 
-  switchDescuento(type: 'porc' | 'val',prod: ProductI): void {
+  switchDescuento(type: 'porc' | 'val', prod: ProductI): void {
     this.descuentoTotal = 0;
     if (type === 'porc') {
       prod.descuentos[1] = 0; // Vacía el descuento en valor si se escribe en porcentaje
     } else if (type === 'val') {
-       prod.descuentos[0]= 0; // Vacía el descuento en porcentaje si se escribe en valor
+      prod.descuentos[0] = 0; // Vacía el descuento en porcentaje si se escribe en valor
     }
     this.calculateInvoiceTotals(prod);
   }
@@ -230,25 +203,20 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(prod?: ProductI): void {
-    console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    console.log("Subtotal: ", this.subTotal)
+
     this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
     this.retention = this.subTotal * 0.025;
 
-    if(prod){
-      if(prod.descuentos[1]==0 || prod.descuentos[1]==null) 
+    if (prod) {
+      if (prod.descuentos[1] == 0 || prod.descuentos[1] == null)
         this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.descuentos[0] / 100), 0);
-      else if(prod.descuentos[0]==0 || prod.descuentos[0]==null)
-        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ( prod.descuentos[1]), 0);
+      else if (prod.descuentos[0] == 0 || prod.descuentos[0] == null)
+        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + (prod.descuentos[1]), 0);
       else
         this.descuentoTotal = 0;
     }
-    
-    console.log("Descuento: ", this.descuentoTotal)
-    console.log("1: ", this.descuentoVal)
-    console.log("2: ", this.descuentoPorc)
-    this.total = this.subTotal + this.taxTotal - this.retention-this.descuentoTotal;
+    this.total = this.subTotal + this.taxTotal - this.retention - this.descuentoTotal;
   }
 
   saveFacture() {
@@ -266,8 +234,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
       facSalesTax: this.taxTotal,
       facWithholdingSource: this.retention
     };
-    
-    console.log(factureS);
 
     this.saveInvoice(factureS);
   }
@@ -345,7 +311,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         entId: entId
       }
     });
-  
+
     _popUp.afterClosed().subscribe(result => {
       if (result) {
         console.log('Información recibida del modal:', result);
@@ -353,7 +319,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showInfoThird = true;
         this.showSectionProducts = true;
         this.getSupplier(result);
-  
+
         if (this.supplierS?.thId !== this.supplierSCopy?.thId && this.lstProducts.length !== 0) {
           Swal.fire({
             title: "Cambio de proveedor",
@@ -378,10 +344,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showSectionProducts = false;
       }
     });
-  
+
     return _popUp;
   }
-  
+
   OpenListProducts(title: any, entId: any, thId: any, component: any): MatDialogRef<any> {
     const _popUp = this.dialog.open(component, {
       width: '50%', // Cambia a un valor mayor para que sea visible
@@ -395,7 +361,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         products: this.lstProducts
       }
     });
-  
+
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
         console.log('Información recibida del modal:', result);
@@ -412,9 +378,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
             descuentos: [0, 0]
           };
         });
-        this.lstProducts.push(...products);
-        
-        console.log('Productos seleccionados:', this.lstProducts[0]?.price);
+        this.lstProducts = products;
+
         this.lstProducts.forEach(prod => {
           prod.IVA = prod.taxPercentage;
           prod.amount = 1;
@@ -427,7 +392,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         this.showInfoProducts = false;
       }
     });
-  
+
     return _popUp;
   }
 
@@ -448,7 +413,6 @@ export class SaleInvoiceCreationComponent implements OnInit {
       facWithholdingSource: this.retention
     };
 
-    console.log(previewFacture);
 
     if (!previewFacture) {
       Swal.fire({
@@ -484,7 +448,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     );
   }
 
-  loadFactureInfo(){
+  loadFactureInfo() {
     this.lstProductsSend = this.lstProducts.map(prod => ({
       productId: parseInt(prod.id),
       amount: prod.amount,
