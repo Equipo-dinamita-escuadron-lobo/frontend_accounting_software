@@ -37,6 +37,7 @@ import { SaleInvoiceCreationComponent } from '../../commercial/purchase-invoice/
 
 //crear tercero pdf rut
 import { ThirdCreatePdfRUTComponent } from '../../commercial/third-parties-managment/components/third-create-pdf-rut/third-create-pdf-rut.component';
+import { FacturesSaleQRComponentComponent } from '../../commercial/purchase-invoice/components/factures-sale-qrcomponent/factures-sale-qrcomponent.component';
 
 const routes: Routes = [
   {
@@ -176,6 +177,10 @@ const routes: Routes = [
       {
         path: 'invoice/sale',
         component: SaleInvoiceCreationComponent
+      },
+      {
+        path: 'invoice/facturaQR/:id',
+        component: FacturesSaleQRComponentComponent
       }
     ],
     canActivate: [permissionsGuard],

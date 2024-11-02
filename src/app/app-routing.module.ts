@@ -23,12 +23,7 @@ const routes: Routes = [
     path: 'general',
     loadChildren: () => import('./modules/principal/general/general.module').then(m => m.GeneralModule),
   },
-  {
-    path: 'facturasQR/:id',
-    loadChildren: () => import('./modules/commercial/purchase-invoice/purchase-invoice.module').then(m => m.PurchaseInvoiceModule),
-    
-    //component: FacturesSaleQRComponentComponent,
-  },
+  
 
   {
     path: 'enterprise-management',
