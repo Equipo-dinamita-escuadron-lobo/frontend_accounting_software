@@ -60,6 +60,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
   descuentoVal: number = 0;
   descuentoTotal: number = 0;
   total: number = 0;
+  impuestoCheck: boolean = true;
+  retencionCheck: boolean = true;
 
   currentDate: Date = new Date();
   dueDate?: string;
@@ -71,6 +73,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     { title: 'Codigo', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Cantidad' },
+    { title: 'U/M'},
     { title: 'Precio Unitario', data: 'price' },
     { title: 'Descuento'},
     { title: 'IVA' },
@@ -209,6 +212,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   // Paara calcular total de cada producto
   calculateTotal(prod: ProductI): void {
     prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+    prod.IvaValor= prod.totalValue * prod.IVA / 100;
     this.calculateInvoiceTotals(prod); //Llama para que se vaya actualizando los labels de abajo
   }
 
@@ -233,8 +237,18 @@ export class SaleInvoiceCreationComponent implements OnInit {
     console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
     console.log("Subtotal: ", this.subTotal)
-    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
-    this.retention = this.subTotal * 0.025;
+
+    if(this.impuestoCheck){
+      this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    }else{
+      this.taxTotal = 0;
+    }
+    
+    if(this.retencionCheck){
+      this.retention = this.subTotal * 0.025;
+    }else{
+      this.retention = 0;
+    }
 
     if(prod){
       if(prod.descuentos[1]==0 || prod.descuentos[1]==null) 
@@ -407,6 +421,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
             price: prod.cost,
             taxPercentage: prod.taxPercentage,
             IVA: 0,
+            IvaValor:0,
             amount: 0,
             totalValue: 0,
             descuentos: [0, 0]
@@ -417,6 +432,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         console.log('Productos seleccionados:', this.lstProducts[0]?.price);
         this.lstProducts.forEach(prod => {
           prod.IVA = prod.taxPercentage;
+          prod.IvaValor = prod.price * prod.IVA / 100;
           prod.amount = 1;
           prod.totalValue = 0;
         });

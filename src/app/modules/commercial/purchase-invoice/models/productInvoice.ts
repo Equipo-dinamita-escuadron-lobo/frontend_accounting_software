@@ -15,6 +15,7 @@ export interface ProductI {
     state: string;
     amount: number;
     IVA: number;
+    IvaValor: number;
     totalValue: number;
     descuentos: [number, number];
   }
