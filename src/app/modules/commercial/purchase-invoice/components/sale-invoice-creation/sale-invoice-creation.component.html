@@ -211,7 +211,15 @@
                                     </svg>
                                     </div>
                                 </td>
-                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(prod.price) }}</td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    -/-
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" min="0"[(ngModel)]="prod.price" (input)="calculateTotal(prod)">
+                                        <span>$</span>
+                                      </div>
+                                </td>
                                 
                                 <td class="px-4 py-1 whitespace-nowrap flex items-center space-x-2">
                                     <div class="flex items-center">
@@ -223,15 +231,24 @@
                                       <span>$</span>
                                     </div>
                                   </td>
-                                <td class="px-4 py-1 whitespace-nowrap">
-                                    <select [(ngModel)]="prod.IVA" (change)="calculateTotal(prod)">
-                                        <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
-                                        <option value="0">0%</option>
-                                        <option value="5">5%</option>
-                                        <option value="19">19%</option>
-                                    </select>
+                                  <td class="px-4 py-1 whitespace-nowrap">
+                                    <div class="flex items-center space-x-2"> <!-- Contenedor principal con `flex` y `space-x-2` para el espacio entre elementos -->
+                                        <select class="text-center border border-gray-300 rounded-md" [(ngModel)]="prod.IVA" (ngModelChange)="calculateTotal(prod)">
+                                            <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
+                                            <option value="0">0%</option>
+                                            <option value="5">5%</option>
+                                            <option value="19">19%</option>
+                                        </select>
+                                        <div class="flex items-center space-x-2">
+                                            {{prod.IvaValor}}
+                                            <span>$</span>
+                                        </div>
+                                        
+                                    </div>
                                 </td>
-                                <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(calculateTotalValue(prod)) }}
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    {{ formatPrice(calculateTotalValue(prod)) }}
+                                    <span>$</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -244,19 +261,25 @@
                 <div class="">
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Subtotales:</p>
-                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(subTotal) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(subTotal) }}</p>
                     </div>
-                    <div class="flex">
+                    <div class="flex items-baseline">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
-                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(taxTotal) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(taxTotal) }}</p>
+                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="impuestoCheck" (ngModelChange)="calculateInvoiceTotals()">
                     </div>
-                    <div class="flex">
-                        <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
-                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(retention) }}</p>
+                    <div class="flex items-baseline">
+                        <div class="bg-gray-200 w-1/4 pb-2">
+                            <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
+                            <label class="text-gray-700 font-medium">UVT : </label>
+                            <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" >
+                        </div>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(retention) }}</p>
+                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="retencionCheck" (ngModelChange)="calculateInvoiceTotals()">
                     </div>
-                    <div class="flex">
+                    <div class="flex marg mt-3">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
-                        <p class="w-3/4 ps-1 pt-1">{{ formatPrice(total) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(total) }}</p>
                     </div>
                 </div>
                 <hr>
