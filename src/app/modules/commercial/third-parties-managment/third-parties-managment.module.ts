@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatInputModule} from '@angular/material/input';
 
 import { ThirdPartiesManagmentRoutingModule } from './third-parties-managment-routing.module';
 import { ThirdsListComponent } from './components/thirds-list/thirds-list.component';
@@ -31,7 +34,10 @@ import { ThirdCreatePdfRUTComponent } from './components/third-create-pdf-rut/th
     ReactiveFormsModule,
     FormsModule,
     NgSelectModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatInputModule
   ]
 })
 export class ThirdPartiesManagmentModule { }
