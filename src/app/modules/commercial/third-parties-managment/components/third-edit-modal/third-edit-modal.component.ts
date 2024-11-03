@@ -22,6 +22,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs'; // Asegúrate de que esta línea esté incluida
 import { state } from '@angular/animations';
+import { buttonColors } from '../../../../../shared/buttonColors';
 @Injectable({
   providedIn: 'root'
 })
@@ -312,6 +313,7 @@ export class ThirdEditModalComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Identifiacion Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -328,6 +330,7 @@ export class ThirdEditModalComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -466,6 +469,7 @@ export class ThirdEditModalComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Identificación Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -635,6 +639,7 @@ console.log("Se actualizara")
           title: 'Edición exitosa!',
           text: 'Se ha editado el tercero exitosamente!',
           icon: 'success',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       },
       (error) => {
@@ -645,6 +650,7 @@ console.log("Se actualizara")
           title: 'Error!',
           text: 'Ha ocurrido un error al editar el tercero.',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     );

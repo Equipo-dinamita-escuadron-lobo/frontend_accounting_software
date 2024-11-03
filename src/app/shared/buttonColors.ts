@@ -1,5 +1,5 @@
 export const buttonColors = 
 {
-    confirmationColor: '#3085d6',
-    cancelButtonColor: '#d33',
+    confirmationColor: '#000066',
+    cancelButtonColor: '#9D0311',
 }

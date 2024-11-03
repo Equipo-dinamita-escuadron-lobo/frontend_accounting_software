@@ -1,6 +1,6 @@
-<div class="fixed inset-0 z-40 bg-black bg-opacity-50" (click)="closePopUp()"></div>
+<div class="fixed inset-0 z-40 bg-black bg-opacity-50 font-titillium" (click)="closePopUp()"></div>
 <div
-  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center w-5/6 sm:w-full font-projectFont">
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none flex items-center justify-center w-5/6 sm:w-full font-titillium">
   <div class="relative w-auto my-6 mx-auto max-w-4xl">
     <!--content-->
     <div class="bg-white rounded-lg shadow-lg">
@@ -38,14 +38,14 @@
 
           <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-end">
             <button type="button" (click)="confirmSelection()"
-              class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
+              class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
               Confirmar selección
             </button>
           </div>
         </div>
 
         <!--Table-->
-        <div class="lg:text-md mx-auto w-full">
+        <div class="lg:text-md mx-auto w-full mt-8">
           <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-200 ">

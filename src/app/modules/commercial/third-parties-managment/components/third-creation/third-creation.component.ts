@@ -16,6 +16,7 @@ import { eThirdGender } from '../../models/eThirdGender';
 import { catchError, map, Observable, of } from 'rxjs';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 
 @Component({
@@ -227,6 +228,7 @@ export class ThirdCreationComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Identifiacion Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -243,6 +245,7 @@ export class ThirdCreationComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -394,6 +397,7 @@ export class ThirdCreationComponent implements OnInit {
           title: 'Error!',
           text: 'No se han encontrado Tipos De Identificación Para esta Empresa',
           icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
       }
     });
@@ -498,7 +502,8 @@ export class ThirdCreationComponent implements OnInit {
         title: 'Errores en el formulario',
         html: `<ul>${this.errorMessages.map(error => `<li>${error}</li>`).join('')}</ul>`,
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: buttonColors.confirmationColor
       });
       return;
     }
@@ -527,6 +532,7 @@ export class ThirdCreationComponent implements OnInit {
           title: 'Creación exitosa!',
           text: 'Se ha creado el Tercero con Exito!',
           icon: 'success',
+          confirmButtonColor: buttonColors.confirmationColor,
         });
         if (this.data && this.data.destination === 'destination') {
           this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef

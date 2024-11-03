@@ -1,17 +1,18 @@
 <mat-card class="mx-8 my-8 p-4 shadow-lg rounded-lg">
-  <mat-card-header class="flex items-center mb-2 gap-2">
-    <button mat-icon-button (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
+  <div class="p-4 col-span-1 w-full flex items-end justify-end text-lg">
+    <button class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300" (click)="goBack()">
+      <span class="rounded-full bg-white w-6 h-6 flex items-center justify-center mr-2">
+        <i class="fas fa-arrow-left text-blue-950"></i>
+      </span>
     </button>
-    <section>
-      <mat-card-title class="text-lg font-semibold text-gray-800">
-        Crear Producto
-      </mat-card-title>
-    </section>
-  </mat-card-header>
+  </div>
+  <div class="mb-6 self-start">
+    <h1 class="text-3xl blueP1 font-bold">Crear Producto</h1>
+  </div>
+
 
   <mat-card-content>
-    <p class="mt-4 font-projectFont">
+    <p class="mt-4 font-titillium">
       Ingrese la información requerida para crear un nuevo producto:
     </p>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
@@ -180,7 +181,7 @@
         </div>
 
         <div>
-          <button mat-raised-button color="primary" type="submit" class="h-10 w-auto">
+          <button type="submit" class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
             Crear Producto
           </button>
         </div>
