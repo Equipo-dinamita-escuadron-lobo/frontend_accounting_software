@@ -1,0 +1,5 @@
+.dialog-scrollable .mat-dialog-content {
+    max-height: calc(100% - 64px); /* Ajusta el espacio según el tamaño del encabezado */
+    overflow-y: auto;
+  }
+  

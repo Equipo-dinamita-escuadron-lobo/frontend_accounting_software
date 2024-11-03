@@ -140,10 +140,11 @@ export class SaleInvoiceCreationComponent implements OnInit {
     const dialogRef = this.dialog.open(ThirdCreationComponent, {
       width: '900px',
       height: '80vh', // Establece una altura del 80% del viewport
-      data: { destination: "destination" }
+      data: { destination: "destination" },
+      panelClass: 'dialog-scrollable' // Agrega una clase personalizada al diálogo
     });
-
   }
+
 
   getUnitOfMeasureForId(lstProducts: ProductI[]): ProductI[] {
     if (lstProducts != null || this.lstProducts.length > 0) {
@@ -187,8 +188,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
   createProduct() {
     const dialogRef = this.dialog.open(ProductCreationComponent, {
       width: '600px',
-      data: { destination: "destination" }
+      data: { destination: "destination" },
+      panelClass: 'dialog-scrollable' // Agrega una clase personalizada al diálogo
     });
+
 
   }
 
