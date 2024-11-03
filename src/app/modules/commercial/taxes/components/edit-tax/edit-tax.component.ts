@@ -54,6 +54,7 @@ export class EditTaxComponent {
       this.taxCode = params['id'];
       this.getTaxDetails();
     });
+    this.initializePercentage();
   }
   
 
@@ -76,7 +77,7 @@ export class EditTaxComponent {
       },
       error => {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Error obteniendo detalles del impuesto.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -93,7 +94,7 @@ export class EditTaxComponent {
           this.updateAccountInForm(account);  
         } else {
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Cuenta no encontrada.',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
@@ -102,7 +103,7 @@ export class EditTaxComponent {
       },
       error => {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Error al buscar la cuenta por código.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -137,7 +138,7 @@ export class EditTaxComponent {
       },
       error => {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error obteniendo cuentas de depósito.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -210,8 +211,8 @@ export class EditTaxComponent {
                 this.taxService.updateTax(updatedTax).subscribe(
                   () => {
                     Swal.fire({
-                      title: 'Edición exitosa!',
-                      text: 'Se ha editado el impuesto exitosamente!',
+                      title: 'Edición exitosa',
+                      text: 'Se ha editado el impuesto exitosamente.',
                       confirmButtonColor: buttonColors.confirmationColor,
                       icon: 'success',
                     });
@@ -219,7 +220,7 @@ export class EditTaxComponent {
                   },
                   error => {
                     Swal.fire({
-                      title: 'Error!',
+                      title: 'Error',
                       text: 'Ha ocurrido un error al editar el impuesto.',
                       confirmButtonColor: buttonColors.confirmationColor,
                       icon: 'error',
@@ -232,8 +233,8 @@ export class EditTaxComponent {
               this.taxService.updateTax(updatedTax).subscribe(
                 () => {
                   Swal.fire({
-                    title: 'Edición exitosa!',
-                    text: 'Se ha editado el impuesto exitosamente!',
+                    title: 'Edición exitosa',
+                    text: 'Se ha editado el impuesto exitosamente.',
                     confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'success',
                   });
@@ -241,7 +242,7 @@ export class EditTaxComponent {
                 },
                 updateError => {
                   Swal.fire({
-                    title: 'Error!',
+                    title: 'Error',
                     text: 'Ha ocurrido un error al editar el impuesto.',
                     confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'error',
@@ -266,5 +267,27 @@ export class EditTaxComponent {
   }
   goBack(): void {
     this.router.navigate(['/general/operations/taxes']);
+  }
+
+  formatPercentage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^0-9.]/g, '');
+  
+    if (value) {
+      this.editForm.get('interest')?.setValue(parseFloat(value), { emitEvent: false });
+      
+      input.value = value + '%';
+  
+      input.setSelectionRange(value.length, value.length);
+    } else {
+      this.editForm.get('interest')?.setValue(null, { emitEvent: false });
+    }
+  }
+
+  initializePercentage(): void {
+    const interestControl = this.editForm.get('interest');
+    if (interestControl?.value) {
+      interestControl.setValue(`${interestControl.value}%`, { emitEvent: false });
+    }
   }
 }

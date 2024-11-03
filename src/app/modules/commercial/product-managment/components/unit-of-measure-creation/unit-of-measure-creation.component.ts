@@ -40,7 +40,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
       this.unitOfMeasureService.createUnitOfMeasure(unitOfMeasureData).subscribe(
         () => {
           Swal.fire({
-            title: 'Creación exitosa!',
+            title: 'Creación exitosa',
             text: 'Se ha creado la Unidad de medida con éxito!',
             icon: 'success',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -51,7 +51,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
         error => {
           console.error('Error al crear la Unidad de medida :', error);
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al crear la Unidad de medida .',
             icon: 'error',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -61,7 +61,7 @@ export class UnitOfMeasureCreationComponent implements OnInit{
       );
     } else {
       Swal.fire({
-        title: 'Error!',
+        title: 'Error',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
         confirmButtonColor: buttonColors.confirmationColor,

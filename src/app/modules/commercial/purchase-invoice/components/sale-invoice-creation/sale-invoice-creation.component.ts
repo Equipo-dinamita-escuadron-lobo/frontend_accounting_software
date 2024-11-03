@@ -315,7 +315,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         link.parentNode?.removeChild(link);
         this.isSavingPdf = false;
         Swal.fire({
-          title: 'Creación exitosa!',
+          title: 'Creación exitosa',
           text: 'Se ha creado la factura con éxito!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
@@ -324,7 +324,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       (error) => {
         this.isSavingPdf = false;
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al crear la factura.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -464,7 +464,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     if (!previewFacture) {
       Swal.fire({
-        title: 'Error!',
+        title: 'Error',
         text: 'No hay factura disponible para mostrar.',
         icon: 'error',
         confirmButtonColor: buttonColors.confirmationColor,
@@ -478,7 +478,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
         window.open(url);
         this.isLoadingPdfPreview = false;
         Swal.fire({
-          title: 'Visualización exitosa!',
+          title: 'Visualización exitosa',
           text: 'Se ha generado la vista previa de la factura.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
@@ -487,7 +487,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       (error) => {
         this.isLoadingPdfPreview = false;
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al generar la vista previa de la factura.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

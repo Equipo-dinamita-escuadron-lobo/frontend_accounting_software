@@ -310,7 +310,7 @@ export class ThirdEditModalComponent implements OnInit {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Identifiacion Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -327,7 +327,7 @@ export class ThirdEditModalComponent implements OnInit {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -466,7 +466,7 @@ export class ThirdEditModalComponent implements OnInit {
       error: (error) => {
         console.log(error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Identificación Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -636,8 +636,8 @@ console.log("Se actualizara")
     this.thirdService.UpdateThird(TerceroDefecto).subscribe(
       (response: Third) => {
         Swal.fire({
-          title: 'Edición exitosa!',
-          text: 'Se ha editado el tercero exitosamente!',
+          title: 'Edición exitosa',
+          text: 'Se ha editado el tercero exitosamente.',
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,
         });
@@ -647,7 +647,7 @@ console.log("Se actualizara")
         console.log("Detalles del error:", error.message || "No se especificaron detalles adicionales.");
         console.log("Respuesta del servidor completa:", error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al editar el tercero.',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,

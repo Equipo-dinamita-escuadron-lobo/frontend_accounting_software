@@ -151,7 +151,7 @@ export class CreateTaxComponent {
               (response: Tax) => {
                 Swal.fire({
                   title: '¡Impuesto agregado!',
-                  text: 'Se agregó el impuesto exitosamente!',
+                  text: 'Se agregó el impuesto exitosamente.',
                   confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'success',
                 });
@@ -183,4 +183,18 @@ export class CreateTaxComponent {
     this.router.navigate(['/general/operations/taxes']);
   }
 
+
+  formatPercentage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^0-9.]/g, ''); 
+  
+    if (value) {
+      this.addForm.get('interest')?.setValue(parseFloat(value), { emitEvent: false });
+      input.value = value + '%';
+      input.setSelectionRange(value.length, value.length);
+    } else {
+      this.addForm.get('interest')?.setValue(null, { emitEvent: false });
+    }
+  }
+  
 }

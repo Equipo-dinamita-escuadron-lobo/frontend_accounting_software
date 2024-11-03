@@ -160,7 +160,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
         this.categoryService.updateCategory( categoryData).subscribe(
         (category: Category) => {
           Swal.fire({
-            title: 'Edición exitosa!',
+            title: 'Edición exitosa',
             text: 'Se ha editado la categoría con éxito!',
             icon: 'success',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -170,7 +170,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
         error => {
           console.error('Error al editar la categoría:', error);
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al editar la categoría.',
             icon: 'error',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -179,7 +179,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
       );
     } else {
       Swal.fire({
-        title: 'Error!',
+        title: 'Error',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
         confirmButtonColor: buttonColors.confirmationColor,

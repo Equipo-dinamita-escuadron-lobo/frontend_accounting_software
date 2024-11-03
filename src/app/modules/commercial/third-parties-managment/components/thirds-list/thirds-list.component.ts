@@ -86,7 +86,7 @@ export class ThirdsListComponent{
         error: (error) => {
           console.log(error)
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'No se han encontrado terceros para esta empresa!',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
@@ -137,7 +137,7 @@ export class ThirdsListComponent{
           }
           Swal.fire({
             title: 'Exito',
-            text: 'Se cambió exitosamente el estado del tercero',
+            text: 'Se cambió exitosamente. el estado del tercero',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'success',
           });
@@ -146,7 +146,7 @@ export class ThirdsListComponent{
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se pudo cambiar el estado del tercero',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

@@ -44,7 +44,7 @@ export class InvoiceSelectSupplierComponent {
         error: (error) => {
           console.log(error);
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'No se han encontrado terceros para esta empresa!',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',

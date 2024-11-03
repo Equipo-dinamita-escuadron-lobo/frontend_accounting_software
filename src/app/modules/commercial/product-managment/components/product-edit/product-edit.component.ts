@@ -175,8 +175,8 @@ export class ProductEditComponent implements OnInit {
         (response: Product) => {
           // Mostrar mensaje de éxito
           Swal.fire({
-            title: 'Edición exitosa!',
-            text: 'Se ha editado el producto exitosamente!',
+            title: 'Edición exitosa',
+            text: 'Se ha editado el producto exitosamente.',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'success',
           });
@@ -186,7 +186,7 @@ export class ProductEditComponent implements OnInit {
           //console.error('Error al editar el producto:', error);
           // Mostrar mensaje de error
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al editar el producto.',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
