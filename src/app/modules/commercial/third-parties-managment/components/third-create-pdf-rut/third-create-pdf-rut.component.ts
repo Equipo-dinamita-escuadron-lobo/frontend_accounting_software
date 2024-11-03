@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
   selector: 'app-third-create-pdf-rut',
@@ -47,7 +48,8 @@ export class ThirdCreatePdfRUTComponent {
           Swal.fire({
             icon: 'success',
             title: 'Éxito',
-            text: 'Archivo cargado correctamente.'
+            text: 'Archivo cargado correctamente.',
+            confirmButtonColor: buttonColors.confirmationColor
           });
           this.redirectToCreateThird(pdfContent);
         },
@@ -55,7 +57,8 @@ export class ThirdCreatePdfRUTComponent {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error al cargar el archivo: ' + (err.message || 'Error desconocido.')
+            text: 'Error al cargar el archivo: ' + (err.message || 'Error desconocido.'),
+            confirmButtonColor: buttonColors.confirmationColor
           });
         }
       });
@@ -63,7 +66,8 @@ export class ThirdCreatePdfRUTComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'No hay archivo seleccionado.'
+        text: 'No hay archivo seleccionado.',
+        confirmButtonColor: buttonColors.confirmationColor
       });
     }
   }

@@ -1,5 +1,5 @@
 <label>
-<div [ngClass]="{'border-blue-950 bg-blue-950 text-white': isChecked, 'border-grayP1 bg-grayP2 text-grayP1': !isChecked }"  class="border-solid border-2 border-grayP1 bg-grayP2 text-grayP1 rounded-lg {{tailConfig}} flex flex-row justify-center items-center font-projectFont font-bold">
+<div [ngClass]="{'border-blue-950 bg-blue-950 text-white': isChecked, 'border-grayP1 bg-grayP2 text-grayP1': !isChecked }"  class="border-solid border-2 border-grayP1 bg-grayP2 text-grayP1 rounded-lg {{tailConfig}} flex flex-row justify-center items-center font-titillium font-bold">
     <input type="checkbox" class="hidden" id="miCheckbox" [value]="value"  #input (change)="toggleChecked()"   (input)="onChange($any($event.target).value)" (blur)="onTouched(); blur.emit()" [disabled]="disabled" [checked]="isChecked" [class.checked]="isChecked">
     {{texto}}
     <div *ngIf="isChecked">

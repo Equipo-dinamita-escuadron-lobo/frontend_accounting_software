@@ -96,7 +96,8 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Éxito!',
           text: 'Tipo de identificación agregado con éxito',
-          icon: "success"
+          icon: "success",
+          confirmButtonColor: buttonColors.confirmationColor
         });
       },
       error: (error) => {
@@ -104,7 +105,8 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Hubo un error al agregar el Tipo de Identifiacion',
-          icon: 'error'
+          icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor
         });
       },
     });
@@ -128,10 +130,10 @@ export class ThirdConfigModalComponent {
         this.newThirdTypeName = '';
         this.showInputThirdType = false;
         Swal.fire({
-          
           title: 'Éxito!',
           text: 'Tipo de tercero agregado con exito',
-          icon: "success"
+          icon: "success",
+          confirmButtonColor: buttonColors.confirmationColor
         });
       },
       error: (error) => {
@@ -139,7 +141,8 @@ export class ThirdConfigModalComponent {
         Swal.fire({
           title: 'Error!',
           text: 'Hubo un error al agregar el Tipo de Tercero',
-          icon: 'error'
+          icon: 'error',
+          confirmButtonColor: buttonColors.confirmationColor
         });
       },
     });
@@ -199,8 +202,8 @@ export class ThirdConfigModalComponent {
       text: text,
       icon: icono,
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: buttonColors.confirmationColor,
+      cancelButtonColor: buttonColors.cancelButtonColor,
       confirmButtonText: confirmed ? confirmButtonText : undefined,
       showConfirmButton: confirmed
     }).then((result) => {

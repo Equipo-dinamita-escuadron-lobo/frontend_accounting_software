@@ -1,38 +1,38 @@
-<div class="flex w-full h-full font-projectFont">
+<div class="flex w-full h-full font-titillium">
     <div class="m-10 w-full h-full font-medium bg-white rounded-3xl p-10">
         <app-account-export></app-account-export>
 
 
         <div class="grid sm:grid-cols-2 sm:justify-between">
-            <div class="items-center">
-                <h1 class="text-3xl text-blue-950">Catálogo de cuentas</h1>
-                <p class="font-normal text-gray-600">Guía detallada del manejo financiero y transacciones económicas
-                </p>
+            <div class="items-center mb-6">
+                <h1 class="text-3xl text-blueP1 font-bold">Catálogo de cuentas</h1>
+                <p class="mt-2 text-blackP1">Guía detallada del manejo financiero y transacciones económicas.</p>
             </div>
+            
 
             <div class="sm:grid-cols-1 flex sm:justify-end sm:mt-0 mt-3 justify-between">
-
                 <button type="button" (click)="showFormAddNewClass()"
-                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                    Crear
+                    class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
+                    <i class="fas fa-plus mr-2"></i> Crear
                 </button>
                 <div class="flex">
                     <button type="button" (click)="exportAccountsToExcel()"
-                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                        Exportar
+                        class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
+                        <i class="fas fa-file-export mr-2"></i> Exportar
                     </button>
                     <label for="fileInput"
-                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full  text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden">
+                        class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
                         <input type="file" accept=".xlsx" id="fileInput" (change)="ReadExcel($event)"
                             class="absolute opacity-0 top-0 left-0 w-full h-full cursor-pointer">
-                        Importar
+                        <i class="fas fa-upload mr-2"></i> Importar
                     </label>
                     <button (click)="openModalDetails()"
-                        class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-full text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white">
-                        Plantilla
+                        class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300">
+                        <i class="fas fa-file-alt mr-2"></i> Plantilla
                     </button>
                 </div>
             </div>
+            
         </div>
 
         <form class="flex justify-center sm:justify-start sm:ml-8 mt-8 ">
@@ -51,7 +51,7 @@
         <div *ngIf="importedAccounts"
         class="bg-blue-100 border border-blue-300 mb-5 px-6 py-4 rounded-lg shadow-lg sm:grid sm:grid-cols-2 sm:items-center">
     
-        <div class="flex items-start text-blue-800">
+        <div class="flex items-start text-blue-800 font-titillium"> <!-- Añadida la clase de fuente aquí -->
             <svg class="h-8 w-8 sm:h-10 sm:w-10 mr-3 sm:mr-4 text-blue-800" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path
@@ -66,7 +66,7 @@
                 <p class="mt-1 text-sm sm:text-base">
                     Presione <strong>"Guardar"</strong> si desea guardar los cambios, o <strong>"Restablecer"</strong> para descartar.
                 </p>
-    
+        
                 <div class="flex items-start mt-2 text-yellow-700">
                     <svg class="h-8 w-8 sm:h-10 sm:w-10 mr-3 sm:mr-4 text-yellow-700" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -79,14 +79,17 @@
                 </div>
             </div>
         </div>
+        
     
         <div class="flex justify-center sm:justify-end mt-4 sm:mt-0">
             <button (click)="saveImportAccounts()"
                 class="text-xs sm:text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-300 rounded-lg px-4 py-2 mx-2 transition duration-200 ease-in-out">
+                <i class="fas fa-save mr-2"></i>
                 Guardar
             </button>
             <button (click)="cancelImportAccounts()"
                 class="text-xs sm:text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-300 rounded-lg px-4 py-2 mx-2 transition duration-200 ease-in-out">
+                <i class="fas fa-undo mr-2"></i>
                 Restablecer
             </button>
         </div>
@@ -603,16 +606,18 @@
                         <div *ngIf="showButton" class="flex flex-wrap justify-center mt-4">
                             <div class="mb-2 md:mb-2 md:mr-2">
                                 <button type="button"
-                                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center me-2 mb-2 max-h-10 text-white"
+                                    class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300"
                                     [disabled]="!showUpdateButton" [class.cursor-not-allowed]="!showUpdateButton"
                                     title="Modifique algún campo" (click)="updateAccount()">
+                                    <i class="fas fa-save mr-3"></i>
                                     Actualizar
                                 </button>
                             </div>
                             <div *ngIf="!accountForm.get('auxiliaryName')" class="mb-2 md:mb-0 md:ml-2">
                                 <button type="button"
-                                    class="bg-gradient-to-r from-blue-950 to-blue-700 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-6 py-2.5 text-center text-white"
+                                    class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300"
                                     (click)="addNewChild()">
+                                    <i class="fas fa-plus mr-3"></i>
                                     Agregar {{currentLevelAccount}}
                                 </button>
                             </div>
