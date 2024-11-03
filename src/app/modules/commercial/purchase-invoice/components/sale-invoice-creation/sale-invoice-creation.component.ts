@@ -55,6 +55,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   // Variables for purchase invoice
   subTotal: number = 0;
   taxTotal: number = 0;
+  uvt: number = 47065;
   retention: number = 0;
   descuentoPorc: number = 0;
   descuentoVal: number = 0;
@@ -215,8 +216,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
     }else{
       this.taxTotal = 0;
     }
-    
-    if(this.retencionCheck){
+    console.log("uvt*27: ", this.uvt*27)
+    if(this.retencionCheck && (this.uvt*27)>this.subTotal){
       this.retention = this.subTotal * 0.025;
     }else{
       this.retention = 0;

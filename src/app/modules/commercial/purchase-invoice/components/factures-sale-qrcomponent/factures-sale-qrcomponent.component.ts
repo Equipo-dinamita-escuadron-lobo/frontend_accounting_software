@@ -22,64 +22,61 @@ export class FacturesSaleQRComponentComponent implements OnInit {
     private factureService: InvoiceServiceService,
     private authService: AuthService,
     private sanitizer: DomSanitizer
-  ) {
-    this.verifiedStatusUser()
-  }
-  
-  loginForm ={
+  ) {}
+
+  loginForm = {
     //! Valores por defecto servidor en desarrollo cambiar a '' en produccion
     username: 'contables_admin',
     password: '12345',
-}
-  verifiedStatusUser(){
-    if(this.authService.verifiedStatusLogin()){
-      this.router.navigate(['/general/enterprises/list']);
-    }
   }
+  
   ngOnInit(): void {
     // Obtener el ID de los parámetros de la ruta
     this.onLoginUser();
-    
+
   }
 
-  fetchAndSaveQR(id: number): void {
-    this.factureService.generateInvoiceQR(id).subscribe((blob: Blob | MediaSource) => {
-      // Crear una URL segura para la imagen QR
-      const qrUrl = URL.createObjectURL(blob);
-      this.qrImageUrl = this.sanitizer.bypassSecurityTrustUrl(qrUrl);
-
-      // Descargar la imagen automáticamente
-      const a = document.createElement('a');
-      a.href = qrUrl;
-      a.download = `facture_${id}_QR.jpeg`;
-      a.click();
-
-      // Limpiar el objeto URL después de usarlo
-      URL.revokeObjectURL(qrUrl);
+  
+  fetchAndSaveQR(id: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.factureService.generateInvoiceQR(id).subscribe((blob: Blob | MediaSource) => {
+        // Crear una URL segura para la imagen QR
+        const qrUrl = URL.createObjectURL(blob);
+        // Descargar la imagen automáticamente
+        const a = document.createElement('a');
+        a.href = qrUrl;
+        a.download = `facture_${id}_QR.jpeg`;
+        a.click();
+  
+        // Limpiar el objeto URL después de usarlo
+        URL.revokeObjectURL(qrUrl);
+  
+        // Resuelve la promesa para indicar que la descarga ha comenzado
+        resolve();
+      });
     });
   }
   
   async onLoginUser() {
-    
-
     this.authService.login(this.loginForm).subscribe({
       next: (data: any) => {
         this.authService.setToken(data.access_token);
         this.authService.getCurrentUser().subscribe({
-          //llega el usuario
           next: (data: any) => {
             this.authService.setUserData(data);
-            //vericicamos el rol del usuario
-            console.log('roles')
             let roles = data.roles;
             if (roles.includes('admin_realm') || roles.includes('super_realm')) {
-              console.log(roles)
+              console.log(roles);
               this.authService.loginStatus.next(true);
-              this.route.params.subscribe(params => {
+              this.route.params.subscribe(async params => {
                 this.id = +params['id'];
+                console.log(this.id);
                 if (this.id) {
-                  this.fetchAndSaveQR(this.id);
-                  this.router.navigate(['']);
+                  await this.fetchAndSaveQR(this.id); // Espera a que la descarga inicie
+                  // Redirigir después de un pequeño retraso
+                  setTimeout(() => {
+                    this.router.navigate(['/general/enterprises/list']);
+                  }, 1000); // Espera 1 segundo antes de redirigir
                 }
               });
             }
@@ -94,4 +91,6 @@ export class FacturesSaleQRComponentComponent implements OnInit {
       },
     });
   }
+  
+  
 }

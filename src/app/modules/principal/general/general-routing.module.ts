@@ -90,7 +90,7 @@ const routes: Routes = [
       {
         //crear tercero pdf rut 
         path: 'third-parties/create-pdf-RUT',
-        component:ThirdCreatePdfRUTComponent
+        component: ThirdCreatePdfRUTComponent
       },
       //Edicion de tercero
       {
@@ -108,7 +108,7 @@ const routes: Routes = [
       },
       {
         path: 'taxes/create',
-        component:CreateTaxComponent
+        component: CreateTaxComponent
       },
       {
         path: 'taxes/edit/:id',
@@ -170,21 +170,23 @@ const routes: Routes = [
       {
         path: 'home/edit',
         component: EnterpriseEditComponent
-      },{
+      }, {
         path: 'invoice',
         component: InvoiceCreationComponent
       },
       {
         path: 'invoice/sale',
         component: SaleInvoiceCreationComponent
-      },
-      {
-        path: 'invoice/facturaQR/:id',
-        component: FacturesSaleQRComponentComponent
       }
     ],
     canActivate: [permissionsGuard],
+  },
+
+  {
+    path: 'facturaQR/:id',
+    component: FacturesSaleQRComponentComponent,
   }
+
 ];
 
 @NgModule({
