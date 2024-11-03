@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./factures-sale-qrcomponent.component.css']
 })
 export class FacturesSaleQRComponentComponent implements OnInit {
+  isLoading = true;
   private id: number | undefined;
   public qrImageUrl: SafeUrl | undefined;
 
@@ -58,39 +59,39 @@ export class FacturesSaleQRComponentComponent implements OnInit {
   }
   
   async onLoginUser() {
+    this.isLoading = true; // Activa el spinner
     this.authService.login(this.loginForm).subscribe({
       next: (data: any) => {
         this.authService.setToken(data.access_token);
         this.authService.getCurrentUser().subscribe({
-          next: (data: any) => {
+          next: async (data: any) => {
             this.authService.setUserData(data);
             let roles = data.roles;
             if (roles.includes('admin_realm') || roles.includes('super_realm')) {
-              console.log(roles);
               this.authService.loginStatus.next(true);
               this.route.params.subscribe(async params => {
                 this.id = +params['id'];
-                console.log(this.id);
                 if (this.id) {
-                  await this.fetchAndSaveQR(this.id); // Espera a que la descarga inicie
-                  // Redirigir después de un pequeño retraso
+                  await this.fetchAndSaveQR(this.id);
+                  this.isLoading = false; // Desactiva el spinner al finalizar
                   setTimeout(() => {
                     this.router.navigate(['/general/enterprises/list']);
-                  }, 1000); // Espera 1 segundo antes de redirigir
+                  }, 1000);
                 }
               });
             }
           },
           error: (error) => {
             console.error(error);
+            this.isLoading = false; // Desactiva el spinner si ocurre un error
           },
         });
       },
       error: (error) => {
         console.error(error);
+        this.isLoading = false; // Desactiva el spinner si ocurre un error
       },
     });
   }
-  
   
 }
