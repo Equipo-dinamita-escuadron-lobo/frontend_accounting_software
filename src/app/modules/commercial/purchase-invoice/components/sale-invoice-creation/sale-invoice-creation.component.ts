@@ -23,6 +23,8 @@ import { SaleInvoiceSelectedSupplierComponent } from '../sale-invoice-selected-s
 import { SaleInvoiceSelectedProductsComponent } from '../sale-invoice-selected-products/sale-invoice-selected-products.component';
 import { FactureV } from '../../models/factureV';
 import { ThirdCreationComponent } from '../../../third-parties-managment/components/third-creation/third-creation.component';
+import { UnitOfMeasureService } from '../../../product-managment/services/unit-of-measure.service';
+import { get } from 'jquery';
 @Component({
 
   selector: 'app-sale-invoice-creation',
@@ -74,7 +76,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     { title: 'Codigo', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
     { title: 'Cantidad' },
-    { title: 'U/M'},
+    { title: 'U/M' },
     { title: 'Precio Unitario', data: 'price' },
     { title: 'Descuento' },
     { title: 'IVA' },
@@ -85,6 +87,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   constructor(private enterpriseService: EnterpriseService,
     private location: Location,
+    private UnitMeasureService: UnitOfMeasureService,
     private dialog: MatDialog,
     private thirdService: ThirdServiceService,
     private invoiceService: InvoiceServiceService,
@@ -142,7 +145,22 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   }
 
+  getUnitOfMeasureForId(lstProducts: ProductI[]): ProductI[] {
+    if (lstProducts != null || this.lstProducts.length > 0) {
 
+      lstProducts.forEach((prod) => {
+        console.log(prod.unitOfMeasureId);
+        this.UnitMeasureService.getUnitOfMeasuresId("" + prod.unitOfMeasureId).subscribe({
+          next: (response) => {
+            prod.unitOfMeasure = response.abbreviation;
+          }
+        });
+      });
+    }
+
+    return lstProducts;
+
+  }
 
 
   showSectionThridM() {
@@ -186,7 +204,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   // Paara calcular total de cada producto
   calculateTotal(prod: ProductI): void {
     prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
-    prod.IvaValor= prod.totalValue * prod.IVA / 100;
+    prod.IvaValor = prod.totalValue * prod.IVA / 100;
     this.calculateInvoiceTotals(prod); //Llama para que se vaya actualizando los labels de abajo
   }
 
@@ -205,21 +223,30 @@ export class SaleInvoiceCreationComponent implements OnInit {
     const subtotalProduct = prod.amount * prod.price;
     return subtotalProduct;
   }
+  calculateRetention(uvt: number): boolean {
+    this.uvt = uvt;
+    if ((this.uvt * 27) < this.subTotal) {
+      this.retention = this.subTotal * 0.025;
+      return true
+    } else {
+      this.retention = 0;
+      return false
+    }
 
+  }
   //para calcular los datos como impuesto, subtotal y total de la factura
   calculateInvoiceTotals(prod?: ProductI): void {
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
-    console.log("Subtotal: ", this.subTotal)
 
-    if(this.impuestoCheck){
+
+    if (this.impuestoCheck) {
       this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
-    }else{
+    } else {
       this.taxTotal = 0;
     }
-    console.log("uvt*27: ", this.uvt*27)
-    if(this.retencionCheck && (this.uvt*27)>this.subTotal){
+    if (this.retencionCheck && (this.uvt * 27) > this.subTotal) {
       this.retention = this.subTotal * 0.025;
-    }else{
+    } else {
       this.retention = 0;
     }
 
@@ -387,8 +414,9 @@ export class SaleInvoiceCreationComponent implements OnInit {
             description: prod.description,
             price: prod.cost,
             taxPercentage: prod.taxPercentage,
+            unitOfMeasureId: prod.unitOfMeasureId,
             IVA: 0,
-            IvaValor:0,
+            IvaValor: 0,
             amount: 0,
             totalValue: 0,
             descuentos: [0, 0]
@@ -396,12 +424,15 @@ export class SaleInvoiceCreationComponent implements OnInit {
         });
         this.lstProducts = products;
 
+
         this.lstProducts.forEach(prod => {
           prod.IVA = prod.taxPercentage;
           prod.IvaValor = prod.price * prod.IVA / 100;
           prod.amount = 1;
           prod.totalValue = 0;
         });
+        this.lstProducts = this.getUnitOfMeasureForId(this.lstProducts);
+        console.log(this.lstProducts);
         this.showInfoProducts = true;
         this.calculateInvoiceTotals();
       } else {

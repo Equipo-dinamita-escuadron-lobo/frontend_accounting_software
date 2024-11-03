@@ -8,6 +8,7 @@ export interface ProductI {
     taxPercentage: number;
     creationDate: Date;
     unitOfMeasureId: number;
+    unitOfMeasure: string;
     supplierId:  number;
     categoryId: number;
     enterpriseId: string;

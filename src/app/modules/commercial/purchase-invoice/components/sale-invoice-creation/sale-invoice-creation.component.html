@@ -194,47 +194,57 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr *ngFor="let prod of lstProducts; let i = index"  class="hover:bg-gray-100">
+                            <tr *ngFor="let prod of lstProducts; let i = index" class="hover:bg-gray-100">
                                 <td class="px-4 py-1 whitespace-nowrap">{{ i+1 }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">{{ prod.itemType }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">{{ prod.description }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">
+                                   
                                     <div class="flex">
-                                    <input class="text-center max-w-10" type="number" min="0"
-                                        max="{{ prod.maxQuantity }}" [(ngModel)]="prod.amount"
-                                        (input)="calculateTotal(prod)">
-                                    <svg class="h-4 w-4 mt-1" width="24" height="24" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                    </svg>
+                                        <input class="text-center max-w-10" type="number" min="0"
+                                            max="{{ prod.maxQuantity }}" [(ngModel)]="prod.amount"
+                                            (input)="calculateTotal(prod)">
+                                        <svg class="h-4 w-4 mt-1" width="24" height="24" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                        </svg>
                                     </div>
                                 </td>
                                 <td class="px-4 py-1 whitespace-nowrap">
-                                    -/-
+                                    {{prod.unitOfMeasure}}
                                 </td>
                                 <td class="px-4 py-1 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" min="0"[(ngModel)]="prod.price" (input)="calculateTotal(prod)">
+                                        <input class="text-center max-w-15 border border-gray-300 rounded-md"
+                                            type="number" min="0" [(ngModel)]="prod.price"
+                                            (input)="calculateTotal(prod)">
                                         <span>$</span>
-                                      </div>
+                                    </div>
                                 </td>
-                                
+
                                 <td class="px-4 py-1 whitespace-nowrap flex items-center space-x-2">
                                     <div class="flex items-center">
-                                      <input class="text-center max-w-11 border border-gray-300 rounded-md" type="number" min="0" max="99"[(ngModel)]="prod.descuentos[0]" (input)="switchDescuento('porc',prod)">
-                                      <span>%</span>
+                                        <input class="text-center max-w-11 border border-gray-300 rounded-md"
+                                            type="number" min="0" max="99" [(ngModel)]="prod.descuentos[0]"
+                                            (input)="switchDescuento('porc',prod)">
+                                        <span>%</span>
                                     </div>
                                     <div class="flex items-center">
-                                      <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" min="0"  [(ngModel)]="prod.descuentos[1]" (input)="switchDescuento('val',prod)">
-                                      <span>$</span>
+                                        <input class="text-center max-w-15 border border-gray-300 rounded-md"
+                                            type="number" min="0" [(ngModel)]="prod.descuentos[1]"
+                                            (input)="switchDescuento('val',prod)">
+                                        <span>$</span>
                                     </div>
-                                  </td>
-                                  <td class="px-4 py-1 whitespace-nowrap">
-                                    <div class="flex items-center space-x-2"> <!-- Contenedor principal con `flex` y `space-x-2` para el espacio entre elementos -->
-                                        <select class="text-center border border-gray-300 rounded-md" [(ngModel)]="prod.IVA" (ngModelChange)="calculateTotal(prod)">
-                                            <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%</option>
+                                </td>
+                                <td class="px-4 py-1 whitespace-nowrap">
+                                    <div class="flex items-center space-x-2">
+                                        <!-- Contenedor principal con `flex` y `space-x-2` para el espacio entre elementos -->
+                                        <select class="text-center border border-gray-300 rounded-md"
+                                            [(ngModel)]="prod.IVA" (ngModelChange)="calculateTotal(prod)">
+                                            <option [value]="prod.taxPercentage" selected>{{ prod.taxPercentage }}%
+                                            </option>
                                             <option value="0">0%</option>
                                             <option value="5">5%</option>
                                             <option value="19">19%</option>
@@ -243,7 +253,7 @@
                                             {{prod.IvaValor}}
                                             <span>$</span>
                                         </div>
-                                        
+
                                     </div>
                                 </td>
                                 <td class="px-4 py-1 whitespace-nowrap">
@@ -266,54 +276,65 @@
                     <div class="flex items-baseline">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
                         <p class="w-40 ps-1 pt-1">{{ formatPrice(taxTotal) }}</p>
-                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="impuestoCheck" (ngModelChange)="calculateInvoiceTotals()">
+                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="impuestoCheck"
+                            (ngModelChange)="calculateInvoiceTotals()">
                     </div>
+                    @if (calculateRetention(uvt)) {
                     <div class="flex items-baseline">
+
                         <div class="bg-gray-200 w-1/4 pb-2">
                             <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Retención:</p>
-                            <label class="text-gray-700 font-medium" [(ngModel)]="uvt">UVT : </label>
-                            <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number" >
+                            <label class="text-gray-700 font-medium">UVT : </label>
+                            <input class="text-center max-w-15 border border-gray-300 rounded-md" type="number"
+                                [(ngModel)]="uvt" (ngModelChange)="calculateRetention(uvt)">
                         </div>
-                        <p class="w-40 ps-1 pt-1">{{ formatPrice(retention) }}</p>
-                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="retencionCheck" (ngModelChange)="calculateInvoiceTotals()">
+
+
+                        <p class="w-40 ps-1 pt-1" (ngModelChange)="calculateRetention(uvt)">{{ formatPrice(retention) }}
+                        </p>
+                        <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="retencionCheck"
+                            (ngModelChange)="calculateInvoiceTotals()">
                     </div>
+                    }
                     <div class="flex marg mt-3">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
                         <p class="w-40 ps-1 pt-1">{{ formatPrice(total) }}</p>
                     </div>
+
                 </div>
                 <hr>
 
                 <!-- Seccion de notas -->
                 <div class="mt-10">
                     <button (click)="showSectionNotas()"
-                    class="w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
-                    <div class="flex">
-                        @if(SectionNotas){
+                        class="w-full text-center text-xl font-bold text-blue-950 mb-3 border-solid border-b-2 border-blue-950">
+                        <div class="flex">
+                            @if(SectionNotas){
                             <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                             </svg>
                             }
-        
+
                             @if(!SectionNotas){
                             <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
                             </svg>
                             }
-                        Seccion de Notas
-                    </div>
+                            Seccion de Notas
+                        </div>
                     </button>
 
                     @if (SectionNotas) {
-                        <textarea [(ngModel)]="nota"
+                    <textarea [(ngModel)]="nota"
                         class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Ej: Venta de productos XY, incluye un (1) Producto Z modelo XXXX. Garantía de N meses a partir de la fecha.">
                         </textarea>
                     }
-                    
+
                 </div>
-                
+
                 <div class="mt-3">
                     <div class="button-add sm:grid-cols-1 flex justify-center sm:justify-center">
                         <button type="button" (click)="generatePdfPreview()"
