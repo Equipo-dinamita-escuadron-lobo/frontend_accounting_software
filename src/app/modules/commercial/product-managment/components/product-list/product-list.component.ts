@@ -29,7 +29,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   categories: Category[] = [];
   types: ProductType[] = [];
 
-  displayedColumns: string[] = ['id', 'code', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
+  displayedColumns: string[] = ['id', 'code', 'itemType', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -259,8 +259,8 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   }
 
   //Método para formatear el precio
-  formatCost(cost: number): string {
+ /* formatCost(cost: number): string {
     // Formatear el precio con separador de miles
     return cost.toLocaleString('es-ES');
-  }
+  }*/
 }
