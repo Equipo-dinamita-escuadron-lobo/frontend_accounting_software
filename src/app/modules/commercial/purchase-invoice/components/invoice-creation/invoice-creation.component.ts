@@ -201,7 +201,7 @@ export class InvoiceCreationComponent implements OnInit {
         link.parentNode?.removeChild(link);
 
         Swal.fire({
-          title: 'Creación exitosa!',
+          title: 'Creación exitosa',
           text: 'Se ha creado la factura con éxito!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
@@ -209,7 +209,7 @@ export class InvoiceCreationComponent implements OnInit {
       },
       (error) => {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al crear la factura.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

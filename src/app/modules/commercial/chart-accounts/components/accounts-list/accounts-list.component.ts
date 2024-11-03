@@ -393,14 +393,14 @@ export class AccountsListComponent implements OnInit {
     this.accountExportComponent.getAccounts().then((success) => {
       if (success) {
         Swal.fire({
-          title: 'Éxito!',
+          title: 'Éxito',
           text: 'Se ha generado el archivo correctamente.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success'
         });
       } else {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se encontraron cuentas para exportar.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -844,7 +844,7 @@ export class AccountsListComponent implements OnInit {
     this.saveAccountHierarchy(this.listAccounts).subscribe((result) => {
       if (result) {
         Swal.fire({
-          title: '¡Importación exitosa!',
+          title: '¡Importación exitosa',
           text: 'Las cuentas han sido guardadas correctamente.',
           icon: 'success',
           showConfirmButton: false,
@@ -972,7 +972,7 @@ export class AccountsListComponent implements OnInit {
       if (!accountExist) {
         if (this.name === 'subAccountName' && this.accountSelected && this.accountSelected.children && this.accountSelected.children.length >= 2) {
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Solo se permiten dos cuentas auxiliares para esta subcuenta!',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
@@ -990,7 +990,7 @@ export class AccountsListComponent implements OnInit {
                   this.noShowFormAddNewClass();
                   this.noAddNewChild();
                   Swal.fire({
-                    title: 'Creación exitosa!',
+                    title: 'Creación exitosa',
                     showConfirmButton: false,
                     icon: 'success',
                     timer: 1000
@@ -999,7 +999,7 @@ export class AccountsListComponent implements OnInit {
             },
             (error) => {
               Swal.fire({
-                title: 'Error!',
+                title: 'Error',
                 text: 'Ha ocurrido un error al crear la cuenta!.',
                 confirmButtonColor: buttonColors.confirmationColor,
                 icon: 'error',
@@ -1010,7 +1010,7 @@ export class AccountsListComponent implements OnInit {
         }
       } else {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ya existe una cuenta con el código ingresado!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -1030,7 +1030,7 @@ export class AccountsListComponent implements OnInit {
       const isLinked = this.searchIfAccountIsLinked(this.accountSelected.code);
       if (isLinked) {        
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se puede eliminar debido a que tiene asociado un impuesto!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -1051,7 +1051,7 @@ export class AccountsListComponent implements OnInit {
             this._accountService.deleteAccount(this.accountSelected.id.toString()).subscribe(
               (response) => {
                 Swal.fire({
-                  title: 'Eliminación exitosa!',
+                  title: 'Eliminación exitosa',
                   showConfirmButton: false,
                   confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'success',
@@ -1075,7 +1075,7 @@ export class AccountsListComponent implements OnInit {
               },
               (error) => {
                 Swal.fire({
-                  title: 'Error!',
+                  title: 'Error',
                   text: 'Ha ocurrido un error al eliminar la cuenta!.',
                   confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
@@ -1099,7 +1099,7 @@ export class AccountsListComponent implements OnInit {
       if (this.accountSelected) {
         if (this.accountSelected && this.accountSelected.children && this.accountSelected.children.length > 0 && this.accountSelected.code != this.parentId + this.accountForm.get(this.code)?.value) {
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'No se puede actualizar el código de una cuenta que tenga subcuentas!',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
@@ -1123,14 +1123,14 @@ export class AccountsListComponent implements OnInit {
             } else {
               if (this.accountSelected.code === account.code && this.accountSelected.description == account.description) {
                 Swal.fire({
-                  title: 'Error!',
+                  title: 'Error',
                   text: 'La cuenta tiene la misma información!',
                   confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
                 });
               } else {
                 Swal.fire({
-                  title: 'Error!',
+                  title: 'Error',
                   text: 'Ya existe una cuenta con el código ingresado!',
                   confirmButtonColor: buttonColors.confirmationColor,
                   icon: 'error',
@@ -1160,7 +1160,7 @@ export class AccountsListComponent implements OnInit {
             this.noShowFormAddNewClass();
             this.noAddNewChild();
             Swal.fire({
-              title: 'Actualización exitosa!',
+              title: 'Actualización exitosa',
               showConfirmButton: false,
               icon: 'success',
               confirmButtonColor: buttonColors.confirmationColor,
@@ -1170,7 +1170,7 @@ export class AccountsListComponent implements OnInit {
       },
       (error) => {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al actualizar la cuenta!.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

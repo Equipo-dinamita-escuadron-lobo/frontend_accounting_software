@@ -184,7 +184,7 @@ getUnitOfMeasures(): void {
       (response: any) => {
         // Mensaje de éxito con alerta
         Swal.fire({
-          title: 'Creación exitosa!',
+          title: 'Creación exitosa',
           text: 'Se ha creado el producto con éxito!',
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -204,7 +204,7 @@ getUnitOfMeasures(): void {
       (error) => {
         // Mensaje de error con alert
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al crear el producto.',
           
           confirmButtonColor: buttonColors.confirmationColor,

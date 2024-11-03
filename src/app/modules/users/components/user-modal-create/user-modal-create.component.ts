@@ -88,7 +88,7 @@ export class UserModalCreateComponent {
         // Handle the successful response here
         console.log('Success:', response);
         Swal.fire({
-          title: 'Creación exitosa!',
+          title: 'Creación exitosa',
           text: 'Se ha creado el usuario con éxito!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
@@ -100,7 +100,7 @@ export class UserModalCreateComponent {
         console.error('Error:', error);
         // Mensaje de éxito con alert
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha ocurrido un error al crear el Usuario!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

@@ -40,7 +40,7 @@ export class ProductTypeCreationComponent implements OnInit {
       this.productTypeService.createProductType(productTypeData).subscribe(
         () => {
           Swal.fire({
-            title: 'Creación exitosa!',
+            title: 'Creación exitosa',
             text: 'Se ha creado el tipo de producto con éxito!',
             icon: 'success',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -51,7 +51,7 @@ export class ProductTypeCreationComponent implements OnInit {
         error => {
           console.error('Error al crear el tipo de producto:', error);
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al crear el tipo de producto.',
             icon: 'error',
             confirmButtonColor: buttonColors.confirmationColor,
@@ -61,7 +61,7 @@ export class ProductTypeCreationComponent implements OnInit {
       );
     } else {
       Swal.fire({
-        title: 'Error!',
+        title: 'Error',
         text: 'Por favor, complete todos los campos.',
         icon: 'error',
         confirmButtonText: 'Aceptar'

@@ -225,7 +225,7 @@ export class ThirdCreationComponent implements OnInit {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Identifiacion Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -242,7 +242,7 @@ export class ThirdCreationComponent implements OnInit {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -394,7 +394,7 @@ export class ThirdCreationComponent implements OnInit {
       error: (error) => {
         console.log(error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Identificación Para esta Empresa',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor,
@@ -529,7 +529,7 @@ export class ThirdCreationComponent implements OnInit {
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
         Swal.fire({
-          title: 'Creación exitosa!',
+          title: 'Creación exitosa',
           text: 'Se ha creado el Tercero con Exito!',
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,

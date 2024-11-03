@@ -282,7 +282,7 @@ export class EnterpriseCreationComponent {
       const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB en bytes
       if (this.file.size > MAX_FILE_SIZE) {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'El tamaño del archivo excede el límite de 5 MB.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -294,7 +294,7 @@ export class EnterpriseCreationComponent {
       const ALLOWED_TYPES = ['image/jpeg', 'image/png'];
       if (!ALLOWED_TYPES.includes(this.file.type)) {
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Solo se permiten archivos de tipo JPEG o PNG.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -315,7 +315,7 @@ export class EnterpriseCreationComponent {
         },
         (error) => {
           Swal.fire({
-            title: 'Error!',
+            title: 'Error',
             text: 'Ha ocurrido un error al subir el logo.',
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
@@ -427,7 +427,7 @@ export class EnterpriseCreationComponent {
           (data) => {
             // Caso de éxito (código de respuesta 200 OK)
             Swal.fire({
-              title: 'Creación exitosa!',
+              title: 'Creación exitosa',
               text: 'Se ha creado la empresa con éxito!',
               confirmButtonColor: buttonColors.confirmationColor,
               icon: 'success',
@@ -440,7 +440,7 @@ export class EnterpriseCreationComponent {
           (error) => {
             // Caso de error
             Swal.fire({
-              title: 'Error!',
+              title: 'Error',
               text: 'Ha ocurrido un error al crear la empresa.',
               confirmButtonColor: buttonColors.confirmationColor,
               icon: 'error',

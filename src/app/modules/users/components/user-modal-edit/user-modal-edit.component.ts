@@ -149,7 +149,7 @@ export class UserModalEditComponent {
         // Handle the successful response here
         console.log('Success:', response);
         Swal.fire({
-          title: 'Edicion exitosa!',
+          title: 'Edicion exitosa',
           text: 'Se ha editado el usuario con éxito!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'success',
@@ -161,7 +161,7 @@ export class UserModalEditComponent {
         console.error('Error:', error);
         // Mensaje de éxito con alert
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Ha Ocurrido Un Erro Al Editar El Usuario!',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',

@@ -54,7 +54,7 @@ export class ThirdConfigModalComponent {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -70,7 +70,7 @@ export class ThirdConfigModalComponent {
       error: (error) => {
         console.log(error)
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se han encontrado Tipos De Tercero Para esta Empresa',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
@@ -94,7 +94,7 @@ export class ThirdConfigModalComponent {
         this.newIdentificatioName = '';
         this.showInputTypeId = false;
         Swal.fire({
-          title: 'Éxito!',
+          title: 'Éxito',
           text: 'Tipo de identificación agregado con éxito',
           icon: "success",
           confirmButtonColor: buttonColors.confirmationColor
@@ -103,7 +103,7 @@ export class ThirdConfigModalComponent {
       error: (error) => {
         console.error('Error:', error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Hubo un error al agregar el Tipo de Identifiacion',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor
@@ -130,7 +130,7 @@ export class ThirdConfigModalComponent {
         this.newThirdTypeName = '';
         this.showInputThirdType = false;
         Swal.fire({
-          title: 'Éxito!',
+          title: 'Éxito',
           text: 'Tipo de tercero agregado con exito',
           icon: "success",
           confirmButtonColor: buttonColors.confirmationColor
@@ -139,7 +139,7 @@ export class ThirdConfigModalComponent {
       error: (error) => {
         console.error('Error:', error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'Hubo un error al agregar el Tipo de Tercero',
           icon: 'error',
           confirmButtonColor: buttonColors.confirmationColor

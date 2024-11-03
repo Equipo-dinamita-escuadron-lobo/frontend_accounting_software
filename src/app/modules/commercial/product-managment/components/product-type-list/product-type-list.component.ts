@@ -42,7 +42,7 @@ export class ProductTypeListComponent implements OnInit {
       error => {
         console.error('Error al cargar los tipos de producto:', error);
         Swal.fire({
-          title: 'Error!',
+          title: 'Error',
           text: 'No se pudieron cargar los tipos de producto.',
           icon: 'error',
           confirmButtonText: 'Aceptar'
@@ -77,7 +77,7 @@ export class ProductTypeListComponent implements OnInit {
           },
           error => {
             console.error('Error al eliminar el tipo de producto:', error);
-            Swal.fire('Error!', 'No se pudo eliminar el tipo de producto.', 'error');
+            Swal.fire('Error', 'No se pudo eliminar el tipo de producto.', 'error');
           }
         );
       }

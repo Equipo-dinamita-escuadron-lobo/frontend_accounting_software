@@ -41,12 +41,12 @@ export class ProductTypeEditComponent implements OnInit {
     if (this.productTypeId) {
       this.productTypeService.updateProductType(this.productTypeId, this.productTypeForm.value).subscribe(
         () => {
-          Swal.fire('Actualización exitosa!',  'El tipo de producto ha sido actualizado.', 'success');
+          Swal.fire('Actualización exitosa',  'El tipo de producto ha sido actualizado.', 'success');
           this.router.navigate(['/general/operations/product-types']);
         },
         error => {
           console.error('Error al actualizar el tipo de producto:', error);
-          Swal.fire('Error!', 'Ha ocurrido un error al actualizar el tipo de producto.', 'error');
+          Swal.fire('Error', 'Ha ocurrido un error al actualizar el tipo de producto.', 'error');
         }
       );
     }
@@ -56,12 +56,12 @@ export class ProductTypeEditComponent implements OnInit {
     if (this.productTypeId) {
       this.productTypeService.deleteProductType(this.productTypeId).subscribe(
         () => {
-          Swal.fire('Eliminación exitosa!', 'El tipo de producto ha sido eliminado.', 'success');
+          Swal.fire('Eliminación exitosa', 'El tipo de producto ha sido eliminado.', 'success');
           this.router.navigate(['/general/operations/product-types']);
         },
         error => {
           console.error('Error al eliminar el tipo de producto:', error);
-          Swal.fire('Error!', 'Ha ocurrido un error al eliminar el tipo de producto.', 'error');
+          Swal.fire('Error', 'Ha ocurrido un error al eliminar el tipo de producto.', 'error');
         }
       );
     }
