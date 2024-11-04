@@ -188,6 +188,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   createProduct() {
     const dialogRef = this.dialog.open(ProductCreationComponent, {
       width: '600px',
+      height: '80vh',
       data: { destination: "destination" },
       panelClass: 'dialog-scrollable' // Agrega una clase personalizada al diálogo
     });
