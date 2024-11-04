@@ -284,23 +284,24 @@
                 <p class="font-semibold">País *</p>
                 <select (change)="onCountryChange($event)" formControlName="country"
                   class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="" disabled selected>Seleccione un país</option>
-                  <option *ngFor="let country of countries" [value]="country | json">{{country.name}}</option>
+                  <option value="" disabled>Seleccione un país</option>
+                  <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
                 </select>
                 <div class="text-red-600"
                   *ngIf="(submitted || createdThirdForm.get('country')?.touched) && createdThirdForm.get('country')?.invalid">
                   <ng-container *ngIf="createdThirdForm.get('country')?.errors?.['required']">
-                    Seleccione un Pais
+                    Seleccione un País
                   </ng-container>
                 </div>
               </div>
+              
 
               <div class="space-y-2">
                 <p class="font-semibold">Departamento *</p>
                 <select (change)="onStateChange($event)" formControlName="province"
                   class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="" disabled selected>Seleccione un departamento</option>
-                  <option *ngFor="let state of states" [value]="state | json">{{ state.name }}</option>
+                  <option value="" disabled>Seleccione un departamento</option>
+                  <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
                 </select>
                 <div class="text-red-600"
                   *ngIf="(submitted || createdThirdForm.get('province')?.touched) && createdThirdForm.get('province')?.invalid">
@@ -314,7 +315,7 @@
                 <p class="font-semibold">Ciudad *</p>
                 <select formControlName="city"
                   class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option value="" disabled selected>Seleccione una ciudad</option>
+                  <option value="" disabled>Seleccione una ciudad</option>
                   <option *ngFor="let city of cities" [value]="city.name">{{ city.name }}</option>
                 </select>
                 <div class="text-red-600"
@@ -324,6 +325,7 @@
                   </ng-container>
                 </div>
               </div>
+              
             </div>
 
             <div class="space-y-4">

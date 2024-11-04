@@ -104,6 +104,7 @@ export class ThirdCreationComponent implements OnInit {
   countryCode!: string;
   selectedCountry: any;
   selectedState: any;
+  selectedCity:any;
   //Digito de verificacion
   verificationNumber: number | null = null;
   //vector para manejar los mensajes de error 
@@ -204,12 +205,20 @@ export class ThirdCreationComponent implements OnInit {
       idNumber:this.infoThird?.[2] ?? '',
       email:this.infoThird?.[10] ?? '',
       phoneNumber:this.infoThird?.[11] ?? '',
-      country:'',
+      country:'s',
       province:'',
       city:''
     });
-    this.onTypeIdChange2(this.infoThird?.[1] ?? '');
     
+    this.selectedCountry = this.countries.find(country => country.name.toLowerCase() === this.infoThird?.[6]?.toLowerCase());
+    this.createdThirdForm.patchValue({country: this.selectedCountry.id});
+    this.countryCode = this.selectedCountry.id;
+    this.getDepartments();
+    this.selectedState = this.states.find(state => state.name.toLowerCase() === this.infoThird?.[7].toLowerCase());
+    this.createdThirdForm.patchValue({province: this.selectedState.id});
+    this.getCities(this.selectedState.id);
+    this.createdThirdForm.patchValue({city: this.infoThird?.[8] ?? ''});
+    this.onTypeIdChange2(this.infoThird?.[1] ?? '');
   }
 
   private getCountries(): void {
@@ -295,8 +304,9 @@ export class ThirdCreationComponent implements OnInit {
   }
 
   onStateChange(event: any) {
-    this.selectedState = JSON.parse(event.target.value)
-    this.getCities(this.selectedState.id);
+    this.selectedState = JSON.parse(event.target.value);
+    console.log("nombreee"+this.selectedState);
+    this.getCities(this.selectedState);
   }
 
   getCities(id: number) {
@@ -510,8 +520,8 @@ export class ThirdCreationComponent implements OnInit {
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
     third.city = this.createdThirdForm.get('city')?.value;
-    third.country = this.selectedCountry.name;
-    third.province = this.selectedState.name;
+    third.country = this.countries[this.selectedCountry - 1].name;
+    third.province = this.states[this.selectedState - 1].name;
     third.entId = this.entData;
     third.thirdTypes = this.selectedThirdTypes;
     third.state = this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
@@ -526,6 +536,7 @@ export class ThirdCreationComponent implements OnInit {
       third.verificationNumber = this.verificationNumber?.valueOf();
       console.log('Digito de Verificacion', third.verificationNumber);
     }
+    console.log("Dtaos tercero a crear", third);
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
         Swal.fire({
