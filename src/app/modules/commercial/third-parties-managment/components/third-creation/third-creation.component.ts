@@ -298,15 +298,18 @@ export class ThirdCreationComponent implements OnInit {
 
 
   onCountryChange(event: any) {
-    this.selectedCountry = JSON.parse(event.target.value);
+    const id_country = JSON.parse(event.target.value);
+    this.selectedCountry = this.countries.find(country => country.id === id_country);
+    console.log(this.selectedCountry);
     this.countryCode = this.selectedCountry.id;
     this.getDepartments();
   }
 
   onStateChange(event: any) {
-    this.selectedState = JSON.parse(event.target.value);
-    console.log("nombreee"+this.selectedState);
-    this.getCities(this.selectedState);
+    const id_state = JSON.parse(event.target.value);
+    this.selectedState = this.states.find(state => state.id == id_state);
+    console.log(this.selectedState);
+    this.getCities(this.selectedState.id);
   }
 
   getCities(id: number) {
@@ -520,8 +523,8 @@ export class ThirdCreationComponent implements OnInit {
     const currentDate = new Date();
     var third: Third = this.createdThirdForm.value;
     third.city = this.createdThirdForm.get('city')?.value;
-    third.country = this.countries[this.selectedCountry - 1].name;
-    third.province = this.states[this.selectedState - 1].name;
+    third.country = this.selectedCountry.name;
+    third.province = this.selectedState.name;
     third.entId = this.entData;
     third.thirdTypes = this.selectedThirdTypes;
     third.state = this.createdThirdForm.get('state')?.value === 'Activo' ? true : false;
