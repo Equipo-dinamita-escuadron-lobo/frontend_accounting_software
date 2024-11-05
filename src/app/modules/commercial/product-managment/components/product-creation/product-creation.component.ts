@@ -101,13 +101,20 @@ export class ProductCreationComponent implements OnInit {
 getUnitOfMeasures(): void {
   this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
     (unitOfMeasures: any[]) => {
-      this.unitOfMeasures = unitOfMeasures;
+      // Aplicar la conversión de caracteres especiales
+      this.unitOfMeasures = unitOfMeasures.map(unit => ({
+        ...unit,
+        name: unit.name ? decodeURIComponent(escape(unit.name)) : '',
+        abbreviation: unit.abbreviation ? decodeURIComponent(escape(unit.abbreviation)) : '',
+        description: unit.description ? decodeURIComponent(escape(unit.description)) : ''
+      }));
     },
     error => {
       console.error('Error al obtener las unidades de medida:', error);
     }
   );
 }
+
 
   //Metodo Complementario
   initForm(): void {
@@ -222,7 +229,7 @@ getUnitOfMeasures(): void {
     let formattedcost = '';
     if (costInput !== '') {
       // Convertir el precio a número
-      const cost = parseInt(costInput);
+      const cost = parseFloat(costInput);
       // Formatear el precio con separador de miles y decimales
       formattedcost = this.formatNumberWithCommas(cost);
     }

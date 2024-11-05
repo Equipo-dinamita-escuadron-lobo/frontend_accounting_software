@@ -26,7 +26,7 @@ export class UnitOfMeasureListComponent implements OnInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
-  // Método para filtrar los productos
+  // Método para filtrar los unidades
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -57,17 +57,28 @@ export class UnitOfMeasureListComponent implements OnInit {
   }
 
   getUnitOfMeasures(): void {
-    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
-      (data: UnitOfMeasure[]) => {
-        this.unitOfMeasures = data;
-        this.dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
-        this.dataSource.paginator = this.paginator;
-      },
-      error => {
-        console.log('Erro al obtener las unidades de medida:', error);
-      }
-    );
-  }
+  this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
+    (data: UnitOfMeasure[]) => {
+      // Aplicar la conversión de caracteres especiales como tildes y potencias
+      this.unitOfMeasures = data.map(unit => ({
+        ...unit,
+        name: decodeURIComponent(escape(unit.name)),
+        abbreviation: decodeURIComponent(escape(unit.abbreviation)),
+        description: decodeURIComponent(escape(unit.description))
+      }));
+
+      
+      this.dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.data.forEach(unit => {
+        console.log(unit.enterpriseId === 'standart')
+      });
+    },
+    error => {
+      console.log('Error al obtener las unidades de medida:', error);
+    }
+  );
+}
 
     // Método para redirigir a una ruta específica
     redirectTo(route: string): void {

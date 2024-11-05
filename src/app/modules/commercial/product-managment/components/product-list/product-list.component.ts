@@ -29,7 +29,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
   categories: Category[] = [];
   types: ProductType[] = [];
 
-  displayedColumns: string[] = ['id', 'code', 'itemType', 'description', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
+  displayedColumns: string[] = ['id', 'code', 'itemType', 'cost', 'quantity', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
   dataSource = new MatTableDataSource<Product>(this.products);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
