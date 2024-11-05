@@ -67,6 +67,7 @@
           <td mat-cell *matCellDef="let prod"> {{prod.itemType}} </td>
         </ng-container>
 
+<<<<<<< HEAD
         <ng-container matColumnDef="cost">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Costo </th>
           <td mat-cell *matCellDef="let prod"> {{formatCost(prod.cost)}}</td>
@@ -77,6 +78,8 @@
           <td mat-cell *matCellDef="let prod"> {{prod.quantity}} </td>
         </ng-container>
 
+=======
+>>>>>>> b9c2fd97c1fa7b059e02a67ce333d4792339bf79
         <ng-container matColumnDef="unitOfMeasure">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Unidad </th>
           <td mat-cell *matCellDef="let prod"> {{getUnitOfMeasureName(prod.unitOfMeasureId)}} </td>
