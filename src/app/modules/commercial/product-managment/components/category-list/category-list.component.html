@@ -12,21 +12,14 @@
   <mat-card-content>
 <div class="flex flex-col justify-start items-center">
 
-<div
- class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
->
-
- <mat-form-field appearance="outline">
+  <div class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center  mx-4 py-2">
+ 
+<mat-form-field appearance="outline">
   <mat-label>Buscar</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Ej cm" #input>
+  <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
 </mat-form-field>
 
- <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
-    <button mat-flat-button color="primary" class="custom-button" (click)="goBack()">
-      <span class="custom-icon">
-        <i class="fas fa-arrow-left"></i>
-      </span>
-    </button>    
+ <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">   
     <button
         mat-flat-button color="primary"
         class="h-16 p-1 min-w-18 block w-28 rounded-xl bg-blue-950 text-white"
@@ -38,7 +31,7 @@
 </div>
 
 <div class="lg:text-md mx-auto w-full">
-  <div >
+  <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef class="bold-text"> ID </th>
@@ -97,15 +90,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10]"
-      showFirstLastButtons
-      aria-label="Select page of categories">
-    </mat-paginator>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
 
 <!-- Manejar caso de lista vacía -->
-<ng-template #noProducts>
+<ng-template #noCategories>
  <p class="text-gray-700">No hay Categorías disponibles.</p>
 </ng-template>
 </div>

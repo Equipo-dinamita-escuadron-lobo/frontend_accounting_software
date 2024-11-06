@@ -169,7 +169,7 @@ getUnitOfMeasures(): void {
 
     formData.categoryId = parseInt(formData.categoryId, 10);
     formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.cost = parseInt(formData.cost, 10);
+    formData.cost = parseFloat(formData.cost.toString().replace(/\./g, '').replace(',', '.'));
     formData.productTypeId = parseInt(formData.productTypeId, 10);
     formData.enterpriseId = this.entData;
     
@@ -223,38 +223,30 @@ getUnitOfMeasures(): void {
     console.log('Fecha actual:', formattedDate);
   }
 
-  //Método para formatear el precio
-  formatcost(event: any) {
-    let costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
-    let formattedcost = '';
-    if (costInput !== '') {
-      // Convertir el precio a número
-      const cost = parseFloat(costInput);
-      // Formatear el precio con separador de miles y decimales
-      formattedcost = this.formatNumberWithCommas(cost);
-    }
-    // Establecer el valor formateado en el campo de precio del formulario
-    this.productForm.get('cost')?.setValue(formattedcost);
+    //Metodo para formatear el costo
+formatcost(event: any) {
+  const inputValue = event.target.value;
+  let formattedcost = '';
+
+  if (inputValue !== '') {
+      // Convertir el precio a número entero (asumiendo que no hay decimales)
+      const cost = parseFloat(inputValue.replace(',', ''));
   }
 
-  // Función para formatear un número con separadores de miles
-  formatNumberWithCommas(number: number): string {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
+  //this.productForm.get('cost')?.setValue(formattedcost);
+}
 
-
-
-  goBack(): void {
+goBack(): void {
     this.router.navigate(['/general/operations/products']);
-  }
+}
 
 }
 
-  // Funcion para validar que el maximo y minimo tengan valores coherentes
-  function quantityValidator(group: FormGroup): { [key: string]: any } | null {
-    const quantity = group.controls['quantity'].value;
-    return quantity !== null ? null : { 'quantityInvalid': true };
-  }
+// Funcion para validar que el maximo y minimo tengan valores coherentes
+function quantityValidator(group: FormGroup): { [key: string]: any } | null {
+  const quantity = group.controls['quantity'].value;
+  return quantity !== null ? null : { 'quantityInvalid': true };
+}
 
 
 

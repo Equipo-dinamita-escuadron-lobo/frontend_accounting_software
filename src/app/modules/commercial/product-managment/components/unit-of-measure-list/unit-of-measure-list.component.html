@@ -33,7 +33,7 @@
 </div>
 
 <div class="lg:text-md mx-auto w-full px-4">
-  <div>
+  <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" class="flex-col">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef class="bold-text"> ID </th>
@@ -79,10 +79,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10]"
-          showFirstLastButtons
-          aria-label="Select page of measures">
-    </mat-paginator>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
 <!-- Manejar caso de lista vacía -->
