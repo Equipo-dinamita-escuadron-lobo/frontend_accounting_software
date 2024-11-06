@@ -202,6 +202,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   formatPrice(price: number): string {
+    price=parseFloat(price.toFixed(2))
     return price.toString();
   }
 
@@ -457,8 +458,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
       thId: this.supplierS?.thId,
       factCode: 0,
       factureType: "Venta",
-      descounts: this.descuentoTotal, //Modificar cuando se agregue campo en la vista
-      factObservations: this.nota, //Modificar cuando se agregue campo en la vista
+      descounts: this.descuentoTotal, 
+      factObservations: this.nota, 
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,

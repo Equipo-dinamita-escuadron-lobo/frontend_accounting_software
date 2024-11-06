@@ -274,11 +274,12 @@
                 <div class="">
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Subtotales:</p>
-                        <p class="w-40 ps-1 pt-1">{{ formatPrice(subTotal) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(subTotal)| number:'1.2-2'  }} $</p>
+                        
                     </div>
                     <div class="flex items-baseline">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
-                        <p class="w-40 ps-1 pt-1">{{ formatPrice(taxTotal) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(taxTotal) | number:'1.2-2'  }} $</p>
                         <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="impuestoCheck"
                             (ngModelChange)="calculateInvoiceTotals()">
                     </div>
@@ -293,7 +294,7 @@
                         </div>
 
 
-                        <p class="w-40 ps-1 pt-1" (ngModelChange)="calculateRetention(uvt)">{{ formatPrice(retention) }}
+                        <p class="w-40 ps-1 pt-1" (ngModelChange)="calculateRetention(uvt)">{{ formatPrice(retention) | number:'1.2-2' }} $
                         </p>
                         <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="retencionCheck"
                             (ngModelChange)="calculateInvoiceTotals()">
@@ -301,9 +302,8 @@
                     }
                     <div class="flex marg mt-3">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Total a pagar:</p>
-                        <p class="w-40 ps-1 pt-1">{{ formatPrice(total) }}</p>
+                        <p class="w-40 ps-1 pt-1">{{ formatPrice(total) | number:'1.2-2' }} $</p>
                     </div>
-
                 </div>
                 <hr>
 
