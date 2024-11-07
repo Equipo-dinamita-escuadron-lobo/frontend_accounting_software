@@ -274,26 +274,34 @@ export class ThirdCreationComponent implements OnInit {
     const idNumberStr = idNumber.toString();
     const duplicatedStr = idNumberStr + idNumberStr;
     const duplicatedNumber = parseInt(duplicatedStr, 10);
-    const verificationNumber = this.calculateVerificationNumber(idNumberStr);
+    const verificationNumber = this.calcularDigitoVerificador(idNumberStr);
     this.verificationNumber = verificationNumber;
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
-  // Función para calcular el numero de verificación
-  private calculateVerificationNumber(input: string): number {
-    const numero = input.padStart(15, '0');
-    let suma = 0;
-    const pesos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
-    for (let i = 0; i < 15; i++) {
-      const digito = parseInt(numero[14 - i]);
-      suma += digito * pesos[i];
-    }
-    if (suma == 0) {
+  // Funcion para calcular el numero de verificacion
+  private calcularDigitoVerificador(rut: string): number {
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+    if (rut.length < 7) {
       return 0;
-    } else if (suma == 1) {
-      return 1;
     }
-    return 11 - suma % 11;
+    const rutNumeros = rut.split('').map(Number);
+    const multiplicadores = [2, 3, 4, 5, 6, 7, 2, 3, 4, 5];
+    let suma = 0;
+    let j = 0;
+    for (let i = rutNumeros.length - 1; i >= 0; i--) {
+      suma += rutNumeros[i] * multiplicadores[j];
+      j = (j + 1) % multiplicadores.length; 
+    }
+    const residuo = suma % 11;
+    const digitoVerificador = 11 - residuo;
+    if (digitoVerificador === 10) {
+      return 10;
+    } else if (digitoVerificador === 11) {
+      return 0;
+    } else {
+      return digitoVerificador;
+    }
   }
 
 
