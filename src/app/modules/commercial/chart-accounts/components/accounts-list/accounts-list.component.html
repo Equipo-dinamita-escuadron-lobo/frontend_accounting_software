@@ -265,14 +265,14 @@
                                 <div class="w-full sm:w-auto">
                                     <input type="text" id="classCode" formControlName="classCode" placeholder="Código"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
-                                        [readOnly]="inputAccess.class || searchIfAccountIsLinked(accountForm.get('classCode')?.value ?? '') " 
-                                        [class.cursor-not-allowed]="inputAccess.class || searchIfAccountIsLinked(accountForm.get('classCode')?.value ?? '')" readonly>
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]=" inputAccess.class || searchIfAccountIsLinked(accountSelected!.code)">                                
                                 </div>
                                 <div class="w-full sm:w-auto">
                                     <input type="text" id="className" formControlName="className" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
-                                        [class.cursor-not-allowed]="inputAccess.class || searchIfAccountIsLinked(accountForm.get('classCode')?.value ?? '')" 
-                                        [readOnly]="inputAccess.class || searchIfAccountIsLinked(accountForm.get('classCode')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.class || searchIfAccountIsLinked(accountSelected!.code)">      
                                 </div>
                                 <div>
                                     <div *ngIf="(accountForm.get('classCode')?.hasError('required') || accountForm.get('classCode')?.value === '') && (accountForm.get('classCode')?.dirty || accountForm.get('classCode')?.touched)"
@@ -319,14 +319,14 @@
 
                                     <input type="text" formControlName="codeGroup" placeholder="Código"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
-                                        [readOnly]="inputAccess.group ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')" 
-                                        [class.cursor-not-allowed]="inputAccess.group ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.group || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div class="w-full sm:w-auto">
                                     <input type="text" formControlName="groupName" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
-                                        [readOnly]="inputAccess.group ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')" 
-                                        [class.cursor-not-allowed]="inputAccess.group ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.group || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div>
                                     <div *ngIf="(accountForm.get('codeGroup')?.hasError('required') || accountForm.get('codeGroup')?.value === '') && (accountForm.get('codeGroup')?.dirty || accountForm.get('codeGroup')?.touched)"
@@ -372,14 +372,14 @@
                                         class="col-span-1 mr-4 mt-1">{{accountForm.get('accountCode')?.value}}</label>
                                     <input type="text" formControlName="codeAccount" placeholder="Código"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
-                                        [readOnly]="inputAccess.account || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                        [class.cursor-not-allowed]="inputAccess.account || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.account || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div class="w-full sm:w-auto">
                                     <input type="text" formControlName="accountName" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
-                                        [readOnly]="inputAccess.account || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                        [class.cursor-not-allowed]="inputAccess.account || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.account || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div>
                                     <div *ngIf="(accountForm.get('codeAccount')?.hasError('required') || accountForm.get('codeAccount')?.value === '') && (accountForm.get('codeAccount')?.dirty || accountForm.get('codeAccount')?.touched)"
@@ -425,14 +425,14 @@
                                         class="col-span-1 mr-4 mt-1">{{accountForm.get('subAccountCode')?.value}}</label>
                                     <input type="text" formControlName="codeSubAccount" placeholder="Código"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0"
-                                        [readOnly]="inputAccess.subAccount ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                        [class.cursor-not-allowed]="inputAccess.subAccount || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.subAccount || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div class="w-full sm:w-auto">
                                     <input type="text" formControlName="subAccountName" placeholder="Nombre"
                                         class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
-                                        [readOnly]="inputAccess.subAccount || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                        [class.cursor-not-allowed]="inputAccess.subAccount || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                        [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                        [class.cursor-not-allowed]="inputAccess.subAccount || searchIfAccountIsLinked(accountSelected!.code)">
                                 </div>
                                 <div>
                                     <div *ngIf="(accountForm.get('codeSubAccount')?.hasError('required') || accountForm.get('codeSubAccount')?.value === '') && (accountForm.get('codeSubAccount')?.dirty || accountForm.get('codeSubAccount')?.touched)"
@@ -479,14 +479,14 @@
                                             class="col-span-1 mr-4 mt-1">{{accountForm.get('auxiliaryCode')?.value}}</label>
                                         <input type="text" formControlName="codeAuxiliary" placeholder="Código"
                                             class="w-full px-3 py-1 border border-gray-400 rounded-md mb-2 sm:mb-0 "
-                                            [readOnly]="inputAccess.auxiliary || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                            [class.cursor-not-allowed]="inputAccess.auxiliary || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                            [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                            [class.cursor-not-allowed]="inputAccess.auxiliary || searchIfAccountIsLinked(accountSelected!.code)">
                                     </div>
                                     <div class="w-full sm:w-auto">
                                         <input type="text" formControlName="auxiliaryName" placeholder="Nombre"
                                             class="w-full px-3 py-1 border border-gray-400 rounded-md sm:ml-1"
-                                            [readOnly]="inputAccess.auxiliary ||  searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')"
-                                            [class.cursor-not-allowed]="inputAccess.auxiliary || searchIfAccountIsLinked(accountForm.get('codeGroup')?.value ?? '')">
+                                            [readOnly]="searchIfAccountIsLinked(accountSelected!.code)" 
+                                            [class.cursor-not-allowed]="inputAccess.auxiliary || searchIfAccountIsLinked(accountSelected!.code)">
                                     </div>
                                     <div>
                                         <div *ngIf="(accountForm.get('codeAuxiliary')?.hasError('required') || accountForm.get('codeAuxiliary')?.value === '') && (accountForm.get('codeAuxiliary')?.dirty || accountForm.get('codeAuxiliary')?.touched)"

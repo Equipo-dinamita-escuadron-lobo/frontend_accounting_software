@@ -212,6 +212,8 @@ export class AccountsListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAccounts();
+    console.log(this.listDepositAccount);
+    console.log(this.listRefundAccount);
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getTaxesByCodes();
     this.getNatureType();
@@ -1030,8 +1032,8 @@ export class AccountsListComponent implements OnInit {
       const isLinked = this.searchIfAccountIsLinked(this.accountSelected.code);
       if (isLinked) {        
         Swal.fire({
-          title: 'Error',
-          text: 'No se puede eliminar debido a que tiene asociado un impuesto!',
+          title: 'Error al eliminar',
+          text: 'No es posible eliminar porque está asociado a un impuesto.',
           confirmButtonColor: buttonColors.confirmationColor,
           icon: 'error',
         });
@@ -1039,7 +1041,7 @@ export class AccountsListComponent implements OnInit {
       }
       try {
         Swal.fire({
-          title: '¿Estás seguro?',
+          title: '¿Desea Eliminar?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: buttonColors.confirmationColor,
