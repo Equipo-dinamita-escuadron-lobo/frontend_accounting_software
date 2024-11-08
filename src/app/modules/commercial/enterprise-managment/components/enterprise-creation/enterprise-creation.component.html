@@ -275,62 +275,88 @@
                                         class="border border-gray-400 rounded-md px-3 mt-1 py-1 w-full max-h-9"
                                         value="Colombia" disabled>
                                 </div>
-
-
-                                <div class="col-1-department w-full grid mb-3">
+                                <div class="col-1-department w-full grid gap-2 mb-3">
                                     <label>Departamento *</label>
-                                    <div class="icon flex">
-                                        <ng-select [items]="departmenList" bindLabel="name"
+                                    <div class="icon flex flex-col">
+                                        <ng-select 
+                                            [items]="departmenList" 
+                                            bindLabel="name"
                                             (clear)="onSelectionDepartmentClear()"
-                                            formControlName="selectedItemDepartment" [searchable]="true"
+                                            formControlName="selectedItemDepartment" 
+                                            [searchable]="true"
                                             [clearable]="false"
-                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full max-h-9"
-                                            (change)="onDepartmentSelect($event)" name="department"
-                                            [placeholder]="placeDepartment">
+                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full"
+                                            (change)="onDepartmentSelect($event)" 
+                                            name="department"
+                                            [placeholder]="placeDepartment"
+                                        >
                                             <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
                                                     {{ item.name }}
                                                 </div>
                                             </ng-template>
                                         </ng-select>
-                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                            stroke-linejoin="round">
+                                        <svg 
+                                            class="h-8 w-8 text-black -ml-10 mt-1 self-end" 
+                                            viewBox="0 0 24 24" 
+                                            fill="none"
+                                            stroke="currentColor" 
+                                            stroke-width="1" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round"
+                                        >
                                             <polyline points="6 9 12 15 18 9" />
                                         </svg>
-
                                     </div>
-                                    <div *ngIf="form.get('selectedItemDepartment')?.touched && form.get('selectedItemDepartment')?.errors?.['noValueSelected']"
-                                        class="text-red-500 text-sm font-medium -mt-1">
+                                    <div 
+                                        *ngIf="form.get('selectedItemDepartment')?.touched && form.get('selectedItemDepartment')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1"
+                                    >
                                         Por favor, seleccione un departamento.
                                     </div>
                                 </div>
 
+                                
 
-                                <div class="col-1-city w-full grid mb-3">
+                                <div class="col-1-city w-full grid gap-2 mb-3">
                                     <label *ngIf="enabledSelectCity" for="municipio">Ciudad *</label>
-                                    <div class="icon flex">
-                                        <ng-select name="city" *ngIf="enabledSelectCity" [items]="cityList"
-                                            bindLabel="name" (clear)="onSelectionCityClear()" [searchable]="true"
+                                    <div class="icon flex flex-col">
+                                        <ng-select 
+                                            name="city" 
+                                            *ngIf="enabledSelectCity" 
+                                            [items]="cityList"
+                                            bindLabel="name" 
+                                            (clear)="onSelectionCityClear()" 
+                                            [searchable]="true"
                                             formControlName="selectedItemCity"
-                                            class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-full max-h-9"
-                                            (change)="onCitySelect($event)" [clearable]="false"
-                                            [placeholder]="placeCity">
+                                            class="border border-gray-400 rounded-md px-3 py-1 mb-1 mt-1 w-full"
+                                            (change)="onCitySelect($event)" 
+                                            [clearable]="false"
+                                            [placeholder]="placeCity"
+                                        >
                                             <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}</div>
+                                                <div class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                    {{ item.name }}
+                                                </div>
                                             </ng-template>
                                         </ng-select>
-                                        <svg *ngIf="enabledSelectCity" class="h-8 w-8 text-black -ml-10 mt-1"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg 
+                                            *ngIf="enabledSelectCity" 
+                                            class="h-8 w-8 text-black -ml-10 mt-1 self-end" 
+                                            viewBox="0 0 24 24" 
+                                            fill="none" 
+                                            stroke="currentColor" 
+                                            stroke-width="1" 
+                                            stroke-linecap="round" 
+                                            stroke-linejoin="round"
+                                        >
                                             <polyline points="6 9 12 15 18 9" />
                                         </svg>
                                     </div>
-                                    <div *ngIf="form.get('selectedItemCity')?.touched && form.get('selectedItemCity')?.errors?.['noValueSelected']"
-                                        class="text-red-500 text-sm font-medium -mt-1">
+                                    <div 
+                                        *ngIf="form.get('selectedItemCity')?.touched && form.get('selectedItemCity')?.errors?.['noValueSelected']"
+                                        class="text-red-500 text-sm font-medium -mt-1"
+                                    >
                                         Por favor, seleccione una ciudad.
                                     </div>
                                 </div>
