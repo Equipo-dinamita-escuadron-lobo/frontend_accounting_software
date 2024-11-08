@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { Third } from '../../models/Third';
 import { ThirdServiceService } from '../../services/third-service.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,36 +26,14 @@ export class ThirdsListComponent{
   timer: any;
 
   data: Third[] = [];
-  columnsBrief: any[] = [
-    { title: 'Tipo Persona', data: 'personType'},
-    { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
-    { title: 'Nombre/Razón Social', data: 'socialReason' },
-    { title: 'Tipo Id', data: 'typeId' },
-    { title: 'Número de Documento'},
-    { title: 'Digito de verificación'},
-    { title: 'Correo', data: 'email' },
-    { title: 'Estado', data: 'state' },
-    { title: 'Acciones'}
-  ];
-
-  columnsComplete: any[] = [
-    { title: 'Tipo Persona', data: 'personType'},
-    { title: 'Tipo(s) Tercero', data: 'thirdTypes'},
-    { title: 'Nombre/Razón Social', data: 'socialReason' },
-    { title: 'Tipo Id', data: 'typeId' },
-    { title: 'Número de Documento'},
-    { title: 'Digito de verificación', data: 'verificationNumber' },
-    { title: 'Correo', data: 'email' },
-    { title: 'País', data: 'country' },
-    { title: 'Departamento', data: 'province' },
-    { title: 'Ciudad', data: 'city' },
-    { title: 'Direccion', data: 'address' },
-    { title: 'Celular', data: 'phoneNumber' },
-    { title: 'Estado', data: 'state' },
-    { title: 'Acciones'}
-  ];
+  //columnas para las tablas de vista resumida y completa
+  displayedColumnsBrief: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'email', 'state', 'actions'];
+  displayedColumnsComplete: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'verificationNumber', 'email', 'country', 'province', 'city', 'address', 'phoneNumber', 'state', 'actions'];
+  dataSource = new MatTableDataSource<Third>(this.data);
 
   showDetailTable = false;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
@@ -82,6 +62,8 @@ export class ThirdsListComponent{
         next: (response: Third[])=>{
           this.data = response;
           console.log(response);
+          this.dataSource = new MatTableDataSource<Third>(this.data);
+          this.dataSource.paginator = this.paginator;
         },
         error: (error) => {
           console.log(error)
@@ -175,5 +157,19 @@ export class ThirdsListComponent{
     this.router.navigateByUrl(route);
   }
 
-  
+  //metodo para filtrar los datos
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    // Obtener las columnas por las que se desea filtrar
+    const columns = ['socialReason', 'names', 'idNumber',];
+
+    // Crear un nuevo filtro que solo aplique a las columnas seleccionadas
+    this.dataSource.filterPredicate = (data:any, filter) => {
+      return columns.some(column =>
+        data[column].toString().toLowerCase().includes(filter));
+      };
+    // Aplicar el nuevo filtro
+    this.dataSource.filter = filterValue;
+  }
 }
+
