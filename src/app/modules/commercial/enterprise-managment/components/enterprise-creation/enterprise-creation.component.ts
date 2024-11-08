@@ -152,6 +152,22 @@ export class EnterpriseCreationComponent {
         [Validators.maxLength(50)],
       ],
 
+      mainActivity:[
+        '',
+        [
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+$/),
+        ],
+      ],
+      secondaryActivity: [
+        '',
+        [
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+$/),
+        ],
+
+      ],
+
       dv: ['', [Validators.maxLength(10)]],
       selectedItemDepartment: [null, [this.selectedValueValidator]],
       selectedItemEnterpriseType: [null, [this.selectedValueValidator]],
@@ -413,6 +429,8 @@ export class EnterpriseCreationComponent {
           branch: '' + branchResponse,
           email: this.form.value.email,
           logo: logoUrl,
+          mainActivity: this.form.value.mainActivity,
+          secondaryActivity: this.form.value.secondaryActivity,
           taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
             (item: TaxLiability) => item.id
           ),
