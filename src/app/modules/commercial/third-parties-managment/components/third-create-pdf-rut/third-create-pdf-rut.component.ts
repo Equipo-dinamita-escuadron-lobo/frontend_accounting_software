@@ -51,7 +51,18 @@ export class ThirdCreatePdfRUTComponent {
             text: 'Archivo cargado correctamente.',
             confirmButtonColor: buttonColors.confirmationColor
           });
-          this.redirectToCreateThird(pdfContent);
+
+          if (pdfContent === ";;0;;;;;;;;;0") {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se encontro informacion para crear un tercero',
+              confirmButtonColor: buttonColors.confirmationColor
+            });
+          } else {
+            this.redirectToCreateThird(pdfContent);
+          }
+  
         },
         error: (err) => {
           Swal.fire({
