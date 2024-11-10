@@ -203,7 +203,7 @@ export class ThirdEditModalComponent implements OnInit {
           this.button2Checked = false
         }
         
-        //console.log("los tipos de terceros unicos cargados son" ,this.selectedThirdTypes);
+        console.log("los tipos de terceros unicos cargados son" ,this.thirdTypes);
         this.selectedCountry = this.countries.find(country => country.name === third.country);
         const currentDate = new Date();
         
@@ -220,6 +220,17 @@ export class ThirdEditModalComponent implements OnInit {
         }
         this.selectedState = this.states.find(state => state.name === third.province);
         this.getCities(this.selectedState.id)
+        third.thirdTypes = third.thirdTypes.map(dbType => {
+          if (!dbType.entId) {
+            const matchedType = this.thirdTypes.find(
+              type => type.thirdTypeName === dbType.thirdTypeName
+            );
+            if (matchedType) {
+              dbType.entId = matchedType.entId;
+            }
+          }
+          return dbType;
+        });
         this.createdThirdForm.patchValue({
           thId:third.thId,
           typeId: third.typeId.typeId,
@@ -241,6 +252,7 @@ export class ThirdEditModalComponent implements OnInit {
           creationDate: third.creationDate,
           updateDate: this.datePipe.transform(currentDate, 'yyyy-MM-dd')!
         });          
+        
         if(this.createdThirdForm.get('typeId')?.value === 'NIT'){
           this.createdThirdForm.get('verificationNumber')?.enable();  // Habilitar
         }else{
@@ -612,7 +624,7 @@ console.log("Se actualizara")
       creationDate: third.creationDate,
       updateDate: third.updateDate
     };
-    
+    //TerceroDefecto.t
 
     console.log("Datos JSON enviados:", JSON.stringify(third, null, 2));
     console.log("Datos JSON enviados por defecto:", JSON.stringify(TerceroDefecto, null, 2));
