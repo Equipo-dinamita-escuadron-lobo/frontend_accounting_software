@@ -600,12 +600,25 @@ console.log("Se actualizara")
         console.log("Todos los campos requeridos están presentes.");
     }
 
-     //Guardado pr defecto
-     const TerceroDefecto = {
+    let thirdTypes = this.createdThirdForm.get("thirdTypes")?.value;
+
+  // Verificar y asignar "standart" si `entId` es null
+  let thirdTypesUpdate = this.createdThirdForm.get("thirdTypes")?.value;
+
+  thirdTypesUpdate = thirdTypesUpdate.map((type: any) => {
+  if (type.entId === null || type.entId === '') {
+    type.entId = 'standart';
+  }
+    return type;
+  });
+
+
+    //Guardado pr defecto
+    const TerceroDefecto = {
       thId: third.thId,
       entId: this.entData,
       typeId: third.typeId,
-      thirdTypes: this.createdThirdForm.get("thirdTypes")?.value,
+      thirdTypes: thirdTypesUpdate,
       rutPath: "",
       personType: third.personType,
       names: third.names,
