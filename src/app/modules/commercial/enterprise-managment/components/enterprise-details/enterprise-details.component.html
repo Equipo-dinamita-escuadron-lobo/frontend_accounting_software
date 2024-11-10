@@ -63,20 +63,34 @@
                                     <p class="text-lg">{{enterpriseSelected?.name}}</p>
                                 </div>
 
-                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
-                                    <p class="text-gray-500 mb-2">Nombre del propietario</p>
-                                    <p class="text-lg">{{enterpriseSelected?.personType?.name}}</p>
-                                </div>
-
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tipo de empresa</p>
                                     <p class="text-lg"> {{enterpriseSelected?.enterpriseType?.name}}</p>
                                 </div>
-
                                 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tipo de persona</p>
                                     <p class="text-lg"> {{typePerson}}</p>
+                                </div>
+
+                                <div class="detail mb-4">
+                                    <p class="text-gray-500 mb-2">Actividad económica principal</p>
+                                    <p class="text-lg"> {{enterpriseSelected?.mainActivity}}</p>
+                                </div>
+                                
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'LEGAL_PERSON'">
+                                    <p class="text-gray-500 mb-2">Razon social</p>
+                                    <p class="text-lg"> {{enterpriseSelected?.personType?.bussinessName}}</p>
+                                </div>
+                                
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
+                                    <p class="text-gray-500 mb-2">Nombre del propietario</p>
+                                    <p class="text-lg">{{enterpriseSelected?.personType?.name}}</p>
+                                </div>
+                                
+                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
+                                    <p class="text-gray-500 mb-2" >Apellido del propietario</p>
+                                    <p class="text-lg">{{enterpriseSelected?.personType?.surname}}</p>
                                 </div>
                             </div>
 
@@ -86,9 +100,9 @@
                                     <p class="text-lg"> {{enterpriseSelected?.nit}}</p>
                                 </div>
 
-                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'NATURAL_PERSON'">
-                                    <p class="text-gray-500 mb-2" >Apellido del propietario</p>
-                                    <p class="text-lg">{{enterpriseSelected?.personType?.surname}}</p>
+                                <div class="detail mb-4">
+                                    <p class="text-gray-500 mb-2">Digito de verificación</p>
+                                    <p class="text-lg">{{enterpriseSelected?.dv}}</p>
                                 </div>
 
                                 <div class="detail mb-4">
@@ -96,12 +110,16 @@
                                     <p class="text-lg"> {{enterpriseSelected?.taxPayerType?.name}}</p>
                                 </div>
 
-                                <div class="detail mb-4" *ngIf="enterpriseSelected?.personType?.type === 'LEGAL_PERSON'">
-                                    <p class="text-gray-500 mb-2">Razon social</p>
-                                    <p class="text-lg"> {{enterpriseSelected?.personType?.bussinessName}}</p>
+                                <div class="detail mb-4">
+                                    <p class="text-gray-500 mb-2">Responsabilidades tributarias</p>
+                                    <p class="text-lg" *ngFor="let item of enterpriseSelected?.taxLiabilities"> {{item.name}}</p>
+                                </div>
+
+                                <div class="detail mb-4">
+                                    <p class="text-gray-500 mb-2">Actividad económica secundaria</p>
+                                    <p class="text-lg"> {{enterpriseSelected?.secondaryActivity}}</p>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
 
@@ -112,10 +130,6 @@
 
                         <div class="content grid grid-cols-1 sg:grid-cols-2 sg:gap-16 ">
                             <div class="column-1 col-span-1">
-                                <div class="detail mb-4">
-                                    <p class="text-gray-500 mb-2">Responsabilidades tributarias</p>
-                                    <p class="text-lg" *ngFor="let item of enterpriseSelected?.taxLiabilities"> {{item.name}}</p>
-                                </div>
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">País</p>
@@ -134,7 +148,7 @@
 
                                 <div class="detail mb-4">
                                     <p class="text-gray-500 mb-2">Tiene sucursales</p>
-                                    <p class="text-lg">No</p>
+                                    <p class="text-lg">{{enterpriseSelected?.branch === '1' ? 'Sí' : 'No' }}</p>
                                 </div>
                             </div>
 
@@ -153,13 +167,7 @@
                                     <p class="text-gray-500 mb-2">Email</p>
                                     <p class="text-lg">{{enterpriseSelected?.email}}</p>
                                 </div>
-
-                                <div class="detail mb-4">
-                                    <p class="text-gray-500 mb-2">Digito de verificación</p>
-                                    <p class="text-lg">{{enterpriseSelected?.dv}}</p>
-                                </div>
                             </div>
-                            
                         </div>
 
                     </div>
