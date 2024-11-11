@@ -8,7 +8,7 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { buttonColors } from '../../../../../shared/buttonColors';
-import { cuentasDiferentesValidator } from '../../customValidators/validateTaxInputs';
+import { collectLeaves, cuentasDiferentesValidator } from '../../customValidators/validateTaxInputs';
 import { map } from 'rxjs';
 @Component({
   selector: 'app-create-tax',
@@ -50,26 +50,13 @@ export class CreateTaxComponent {
     this.getCuentas();
   }
 
-    // Función recursiva para obtener el último hijo o el padre si no tiene hijos
-    collectLeaves(item: Account, leaves: Account[]): Account[] {
-      if (item.children && item.children.length > 0) {
-        // Recorrer todos los hijos
-        item.children.forEach(child => this.collectLeaves(child, leaves));
-      } else {
-        // Si no hay hijos, agregar el nodo actual a la lista de hojas
-        leaves.push(item);
-      }
-      return leaves;
-    }
-
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).pipe(
-
       map(dataArray => {
         this.accounts = this.mapAccountToList(dataArray);
         const allLeaves:Account[] = [];
         // Aplicar la función a cada elemento del array
-        dataArray.forEach((item:Account) => this.collectLeaves(item, allLeaves));
+        dataArray.forEach((item:Account) => collectLeaves(item, allLeaves));
         return allLeaves; // Regresar el nuevo arreglo con los últimos hijos
       })
     ).subscribe(
@@ -186,8 +173,8 @@ export class CreateTaxComponent {
 
   formatPercentage(event: Event): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/[^0-9.]/g, ''); 
-  
+    let value = input.value.replace(/[^0-9.]/g, '');
+
     if (value) {
       this.addForm.get('interest')?.setValue(parseFloat(value), { emitEvent: false });
       input.value = value + '%';
@@ -196,5 +183,5 @@ export class CreateTaxComponent {
       this.addForm.get('interest')?.setValue(null, { emitEvent: false });
     }
   }
-  
+
 }
