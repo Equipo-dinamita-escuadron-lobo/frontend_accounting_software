@@ -7,12 +7,13 @@ export const cuentasDiferentesValidator: ValidatorFn = (
 ): ValidationErrors | null => {
   const depositAccount = control.get('depositAccount')?.value;
   const refundAccount = control.get('refundAccount')?.value;
+  // Solo ejecutar la validación si ambos campos tienen valor
+  if (depositAccount && refundAccount) {
+    return depositAccount === refundAccount ? { cuentasIguales: true } : null;
+  }
 
-  return depositAccount === refundAccount
-    ? { cuentasIguales: true }
-    : null;
+  return null; // No hay error si cualquiera de los campos es null o está vacío
 };
-
 
   // Función recursiva para obtener el último hijo o el padre si no tiene hijos
   export const collectLeaves=(item: Account, leaves: Account[]): Account[] => {
