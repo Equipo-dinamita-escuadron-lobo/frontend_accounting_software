@@ -8,6 +8,8 @@ import { ChartAccountService } from '../../../chart-accounts/services/chart-acco
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { collectLeaves, cuentasDiferentesValidator } from '../../customValidators/validateTaxInputs';
+import { map } from 'rxjs';
 
 
 
@@ -22,8 +24,10 @@ export class EditTaxComponent {
   taxCode: string = "";
   tax: Tax = {} as Tax
   editForm: FormGroup;
-  depositAccounts: any[] | undefined;
-  refundAccounts: any[] | undefined;
+  depositAccounts: Account[] | undefined;
+  refundAccounts: Account[] | undefined;
+  selectedAccount: Account | null = null;
+  selectedRefundAccount: Account | null = null;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -44,7 +48,7 @@ export class EditTaxComponent {
       interest: [null, [Validators.required, Validators.min(0)]],
       depositAccount: [null, Validators.required],
       refundAccount: [null, Validators.required]
-    });
+    },{validators : cuentasDiferentesValidator});
   }
 
   ngOnInit(): void {
@@ -56,7 +60,6 @@ export class EditTaxComponent {
     });
     this.initializePercentage();
   }
-  
 
   getTaxDetails(): void {
     this.taxService.getTaxById(this.taxCode, this.entData).subscribe(
@@ -85,13 +88,13 @@ export class EditTaxComponent {
       }
     );
   }
-  
+
 
   getCuentabycode(code: string): void {
     this.chartAccountService.getAccountByCode(code, this.entData).subscribe(
       account => {
         if (account) {
-          this.updateAccountInForm(account);  
+          this.updateAccountInForm(account);
         } else {
           Swal.fire({
             title: 'Error',
@@ -111,7 +114,7 @@ export class EditTaxComponent {
       }
     );
   }
-  
+
 
   updateAccountInForm(account: Account): void {
     if (account) {
@@ -127,14 +130,21 @@ export class EditTaxComponent {
       }
     }
   }
-  
-  
+
+
   getCuentas(): void {
-    this.chartAccountService.getListAccounts(this.entData).subscribe(
+    this.chartAccountService.getListAccounts(this.entData).pipe(
+      map(dataArray => {
+        this.accounts = this.mapAccountToList(dataArray);
+        const allLeaves:Account[] = [];
+        // Aplicar la función a cada elemento del array
+        dataArray.forEach((item:Account) => collectLeaves(item, allLeaves));
+        return allLeaves; // Regresar el nuevo arreglo con los últimos hijos
+      })
+    ).subscribe(
       (data: any[]) => {
-        this.accounts =  this.mapAccountToList(data);
-        this.depositAccounts =  this.accounts;
-        this.refundAccounts =  this.accounts;
+        this.depositAccounts = data;
+        this.refundAccounts = data;
       },
       error => {
         Swal.fire({
@@ -216,7 +226,7 @@ export class EditTaxComponent {
                       confirmButtonColor: buttonColors.confirmationColor,
                       icon: 'success',
                     });
-                    this.router.navigate(['/general/operations/taxes']); 
+                    this.router.navigate(['/general/operations/taxes']);
                   },
                   error => {
                     Swal.fire({
@@ -238,7 +248,7 @@ export class EditTaxComponent {
                     confirmButtonColor: buttonColors.confirmationColor,
                     icon: 'success',
                   });
-                  this.router.navigate(['/general/operations/taxes']); 
+                  this.router.navigate(['/general/operations/taxes']);
                 },
                 updateError => {
                   Swal.fire({
@@ -260,7 +270,7 @@ export class EditTaxComponent {
           });
         }
       }
-      
+
 
   redirectToDetails(): void {
     this.router.navigate(['/tax/details', this.taxId]);
@@ -272,12 +282,12 @@ export class EditTaxComponent {
   formatPercentage(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/[^0-9.]/g, '');
-  
+
     if (value) {
       this.editForm.get('interest')?.setValue(parseFloat(value), { emitEvent: false });
-      
+
       input.value = value + '%';
-  
+
       input.setSelectionRange(value.length, value.length);
     } else {
       this.editForm.get('interest')?.setValue(null, { emitEvent: false });
