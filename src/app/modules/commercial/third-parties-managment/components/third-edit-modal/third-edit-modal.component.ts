@@ -21,7 +21,6 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs'; // Asegúrate de que esta línea esté incluida
-import { state } from '@angular/animations';
 import { buttonColors } from '../../../../../shared/buttonColors';
 @Injectable({
   providedIn: 'root'
@@ -35,7 +34,7 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 
 export class ThirdEditModalComponent implements OnInit {
   
-  private apiUrl = 'http://http://localhost//api/thirds/update';
+  //private apiUrl = 'http://http://localhost//api/thirds/update';
   //private apiUrl = 'http://contables.unicauca.edu.co/api/thirds/update';
   thirdId: number = 0;
   //aaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -61,7 +60,7 @@ export class ThirdEditModalComponent implements OnInit {
     gender: undefined,
     idNumber: 0,
     verificationNumber: 0,
-    state: false,
+    state: true,
     photoPath: undefined,
     country: 0,
     province: 0,
@@ -131,22 +130,6 @@ export class ThirdEditModalComponent implements OnInit {
     return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-
   selectedThirdTypes: ThirdType[] = [];
   createdThirdForm!: FormGroup;
   submitted = false;
@@ -185,9 +168,11 @@ export class ThirdEditModalComponent implements OnInit {
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.initializeForm();
+    
     this.getCountries();
     this.getTypesID();
     this.getThirdTypes();
+    
     
     // Cargar textos de ayuda del almacenamiento local al iniciar
     const savedHelpTexts = localStorage.getItem('helpTexts');
@@ -198,7 +183,9 @@ export class ThirdEditModalComponent implements OnInit {
       this.thirdId = params['id']; // Obtener el ID del producto de los parámetros de ruta
       this.getthirdDetails(); // Llamar a la función para obtener los detalles del producto
     });
-    //this.inputData = this.data;
+
+    
+    //this.inputData = this.data;    
   }
 
   getthirdDetails(): void {
@@ -215,33 +202,43 @@ export class ThirdEditModalComponent implements OnInit {
           this.button1Checked = true
           this.button2Checked = false
         }
-        // Puedes asignar los valores del producto al formulario de edición aquí
-        this.selectedThirdTypes = [
-          ...new Map(
-            third.thirdTypes.map((t) => [t.thirdTypeName, t]) // Filtra valores únicos usando thirdTypeName como clave
-          ).values(),
-        ];        
         
-        console.log("los tipos de terceros unicos cargados son" ,this.selectedThirdTypes);
+        console.log("los tipos de terceros unicos cargados son" ,this.thirdTypes);
         this.selectedCountry = this.countries.find(country => country.name === third.country);
         const currentDate = new Date();
-        
-        console.log("el pais seleccionado es" ,this.selectedCountry);
         
         if(this.selectedCountry.id){
           this.getDepartments()
         }
+        let EstadoGuardado = ''
+        if(third.state){
+          EstadoGuardado = 'Activo'
+          console.log("Se cargar estado Activo")
+        }else{
+          EstadoGuardado = 'Inactivo'
+          console.log("Se cargar estado Inactivo")
+        }
         this.selectedState = this.states.find(state => state.name === third.province);
-        console.log("el departamento seleccionado es" ,this.selectedState);
         this.getCities(this.selectedState.id)
+        third.thirdTypes = third.thirdTypes.map(dbType => {
+          if (!dbType.entId) {
+            const matchedType = this.thirdTypes.find(
+              type => type.thirdTypeName === dbType.thirdTypeName
+            );
+            if (matchedType) {
+              dbType.entId = matchedType.entId;
+            }
+          }
+          return dbType;
+        });
         this.createdThirdForm.patchValue({
           thId:third.thId,
           typeId: third.typeId.typeId,
           address:third.address,
-          state:true,
-          verificationNumber:10,
+          state:EstadoGuardado,
+          verificationNumber:third.verificationNumber,
           personType:third.personType, 
-          thirdTypes:this.selectedThirdTypes,
+          thirdTypes:third.thirdTypes,
           idNumber:third.idNumber,
           names:third.names,
           lastNames:third.lastNames,
@@ -249,13 +246,18 @@ export class ThirdEditModalComponent implements OnInit {
           email:third.email,
           phoneNumber:third.phoneNumber,
           country:third.country,
-          province:third.province,
+          province:this.selectedState.id,
           city:third.city,
           socialReason:third.socialReason,
           creationDate: third.creationDate,
           updateDate: this.datePipe.transform(currentDate, 'yyyy-MM-dd')!
         });          
         
+        if(this.createdThirdForm.get('typeId')?.value === 'NIT'){
+          this.createdThirdForm.get('verificationNumber')?.enable();  // Habilitar
+        }else{
+          this.createdThirdForm.get('verificationNumber')?.disable();  // Deshabilitar
+        }
       },
       error => {
         console.error('Error obteniendo detalles del producto:', error);
@@ -287,7 +289,7 @@ export class ThirdEditModalComponent implements OnInit {
       creationDate: [''],
       updateDate: ['']      
     });
-
+    console.log("el valor del estado es ",this.createdThirdForm.get('state')?.value);
     this.createdThirdForm.get('idNumber')?.valueChanges.subscribe(value => {
       if (value) {
         this.updateVerificationNumber(value);
@@ -350,26 +352,35 @@ export class ThirdEditModalComponent implements OnInit {
     const idNumberStr = idNumber.toString();
     const duplicatedStr = idNumberStr + idNumberStr;
     const duplicatedNumber = parseInt(duplicatedStr, 10);
-    const verificationNumber = this.calculateVerificationNumber(idNumberStr);
+    const verificationNumber = this.calcularDigitoVerificador(idNumberStr);
     this.verificationNumber = verificationNumber;
+    console.log("El numero es", verificationNumber)
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
   // Función para calcular el numero de verificación
-  private calculateVerificationNumber(input: string): number {
-    const numero = input.padStart(15, '0');
-    let suma = 0;
-    const pesos = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
-    for (let i = 0; i < 15; i++) {
-      const digito = parseInt(numero[14 - i]);
-      suma += digito * pesos[i];
-    }
-    if (suma == 0) {
+  private calcularDigitoVerificador(rut: string): number {
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+    if (rut.length < 7) {
       return 0;
-    } else if (suma == 1) {
-      return 1;
     }
-    return 11 - suma % 11;
+    const rutNumeros = rut.split('').map(Number);
+    const multiplicadores = [2, 3, 4, 5, 6, 7, 2, 3, 4, 5];
+    let suma = 0;
+    let j = 0;
+    for (let i = rutNumeros.length - 1; i >= 0; i--) {
+      suma += rutNumeros[i] * multiplicadores[j];
+      j = (j + 1) % multiplicadores.length; 
+    }
+    const residuo = suma % 11;
+    const digitoVerificador = 11 - residuo;
+    if (digitoVerificador === 10) {
+      return 10;
+    } else if (digitoVerificador === 11) {
+      return 0;
+    } else {
+      return digitoVerificador;
+    }
   }
 
 
@@ -380,14 +391,15 @@ export class ThirdEditModalComponent implements OnInit {
   }
 
   onStateChange(event: any) {
-    this.selectedState = JSON.parse(event.target.value)
+    const id_state = JSON.parse(event.target.value);
+    this.selectedState = this.states.find(state => state.id == id_state);
+    console.log(this.selectedState);
     this.getCities(this.selectedState.id);
   }
 
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
       this.cities = data.cities;
-      console.log("la ciudades cargadas son" ,this.cities);
     });
   }
   getDepartments() {
@@ -443,7 +455,6 @@ export class ThirdEditModalComponent implements OnInit {
       this.button1Checked = false;
       this.createdThirdForm.get('socialReason')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
-
     }
     this.updateValidator();
     this.updateTypeIds();
@@ -567,30 +578,14 @@ console.log("Se actualizara")
   OnSubmit() {
     const currentDate = new Date();
     let third: Third = this.createdThirdForm.value;
-    console.log("tercero terminado de editar",this.createdThirdForm.value)
-
     third.thId = this.thirdData.thId;
     third.entId = this.entData;
-    const selectedThirdTypes = this.createdThirdForm.get("thirdTypes")?.value;
-    selectedThirdTypes.forEach((selectedType: { thirdTypeId: number }) => {
-      let thirdTypeId = this.thirdTypes.find(
-        thirdType => thirdType.thirdTypeId === selectedType.thirdTypeId
-      );
-    
-      if (thirdTypeId) {
-        console.log("Tipo de tercero encontrado en el for es:", thirdTypeId);
-        third.thirdTypes = [thirdTypeId];
-      } else {
-        console.log("Tipo de tercero no encontrado para el ID:", selectedType.thirdTypeId);
-      }
-    });
+    const selectThirdTypes = this.createdThirdForm.get("thirdTypes")?.value;
 
     let typeIdValue = this.typeIds.find(typeId => typeId.typeId === this.createdThirdForm.get('typeId')?.value);
     if (typeIdValue) {
       third.typeId = typeIdValue;
     }
-
-    //const updatedthird: Third = { ...third, thId: this.thirdData.thId, state: this.thirdData.state };
     
     // Depuración para validar campos faltantes
     const missingFields = [];
@@ -605,12 +600,25 @@ console.log("Se actualizara")
         console.log("Todos los campos requeridos están presentes.");
     }
 
-     //Guardado pr defecto
-     const TerceroDefecto = {
+    let thirdTypes = this.createdThirdForm.get("thirdTypes")?.value;
+
+  // Verificar y asignar "standart" si `entId` es null
+  let thirdTypesUpdate = this.createdThirdForm.get("thirdTypes")?.value;
+
+  thirdTypesUpdate = thirdTypesUpdate.map((type: any) => {
+  if (type.entId === null || type.entId === '') {
+    type.entId = 'standart';
+  }
+    return type;
+  });
+
+
+    //Guardado pr defecto
+    const TerceroDefecto = {
       thId: third.thId,
       entId: this.entData,
       typeId: third.typeId,
-      thirdTypes: third.thirdTypes,
+      thirdTypes: thirdTypesUpdate,
       rutPath: "",
       personType: third.personType,
       names: third.names,
@@ -618,10 +626,10 @@ console.log("Se actualizara")
       socialReason: third.socialReason,
       gender: third.gender?.toString,
       idNumber: third.idNumber,
-      state: third.state,
+      state: this.createdThirdForm.get('state')?.value === 'Activo' ? true : false,
       photoPath: "",
       country: third.country,
-      province: third.province,
+      province: this.selectedState.name,
       city: third.city,
       address: third.address,
       phoneNumber: third.phoneNumber,
@@ -629,7 +637,7 @@ console.log("Se actualizara")
       creationDate: third.creationDate,
       updateDate: third.updateDate
     };
-    
+    //TerceroDefecto.t
 
     console.log("Datos JSON enviados:", JSON.stringify(third, null, 2));
     console.log("Datos JSON enviados por defecto:", JSON.stringify(TerceroDefecto, null, 2));

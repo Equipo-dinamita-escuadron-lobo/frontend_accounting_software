@@ -18,16 +18,12 @@
 
     <div class="content-wrapper">
       <div class="container-buttons-search">
-        <div class="search-bar">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <form [formGroup]="form" class="form-group">
-            <input type="text" id="stringSearch" class="search-input" placeholder="Buscar" name="stringSearch"
-              formControlName="stringSearch" />
-          </form>
+        <!--buscar-->
+        <div>
+          <mat-form-field>
+            <mat-label>Buscar</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar por nombre/razon social, numero de documento" #input>
+          </mat-form-field>
         </div>
 
         <div class="buttons">
@@ -44,41 +40,76 @@
         </div>
       </div>
 
-      <!-- Tabla para Vista Completa -->
-      <div class="relative overflow-x-auto" *ngIf="showDetailTable">
-        <table class="table">
-          <thead>
-            <tr>
-              <th *ngFor="let col of columnsComplete">{{ col.title }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let third of data | filterList : form.value.stringSearch">
-              <td>{{ third.personType }}</td>
-              <td><span *ngFor="let type of third.thirdTypes">{{ type.thirdTypeName }}<br></span></td>
-              <td>{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
-              <td>{{ third.typeId.typeId }}</td>
-              <td>{{ third.idNumber }}</td>
-              <td>
+      <div>
+        <!-- Tabla para Vista Completa -->
+        <div class="relative overflow-x-auto" *ngIf="showDetailTable">
+          <table mat-table [dataSource]="dataSource" class="table">
+            <ng-container matColumnDef="personType">
+              <th mat-header-cell *matHeaderCellDef class="bold-text"> Tipo Persona </th>
+              <td mat-cell *matCellDef="let third"> {{  third.personType }} </td>
+            </ng-container>
+            <ng-container matColumnDef="thirdTypes">
+              <th mat-header-cell *matHeaderCellDef> Tipo(s) Tercero </th>
+              <td mat-cell *matCellDef="let third"> 
+                <span *ngFor="let type of third.thirdTypes">{{ type.thirdTypeName }}<br></span>  
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="socialReason">
+              <th mat-header-cell *matHeaderCellDef> Nombre/Razón Social </th>
+              <td mat-cell *matCellDef="let third"> {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }} </td>
+            </ng-container>
+            <ng-container matColumnDef="typeId">
+              <th mat-header-cell *matHeaderCellDef> Tipo Id </th>
+              <td mat-cell *matCellDef="let third"> {{ third.typeId.typeId }} </td>
+            </ng-container>
+            <ng-container matColumnDef="idNumber">
+              <th mat-header-cell *matHeaderCellDef> Número de Documento </th>
+              <td mat-cell *matCellDef="let third"> {{third.idNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="verificationNumber">
+              <th mat-header-cell *matHeaderCellDef> Digito de Verificación </th>
+              <td mat-cell *matCellDef="let third"> 
                 <div [ngSwitch]="third.verificationNumber">
                   <span *ngSwitchCase="null">NO APLICA</span>
                   <span *ngSwitchDefault>{{ third.verificationNumber }}</span>
-                </div>
+                </div>  
               </td>
-              <td>{{ third.email }}</td>
-              <td>{{ third.country }}</td>
-              <td>{{ third.province }}</td>
-              <td>{{ third.city }}</td>
-              <td>{{ third.address }}</td>
-              <td>{{ third.phoneNumber }}</td>
-              <td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef> Correo </th>
+              <td mat-cell *matCellDef="let third"> {{ third.email }} </td>
+            </ng-container>
+            <ng-container matColumnDef="country">
+              <th mat-header-cell *matHeaderCellDef> País </th>
+              <td mat-cell *matCellDef="let third"> {{ third.country }} </td>
+            </ng-container>
+            <ng-container matColumnDef="province">
+              <th mat-header-cell *matHeaderCellDef> Departamento </th>
+              <td mat-cell *matCellDef="let third"> {{ third.province }} </td>
+            </ng-container>
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef> Ciudad </th>
+              <td mat-cell *matCellDef="let third"> {{ third.city }} </td>
+            </ng-container>
+            <ng-container matColumnDef="address">
+              <th mat-header-cell *matHeaderCellDef> Dirección </th>
+              <td mat-cell *matCellDef="let third"> {{ third.address }} </td>
+            </ng-container>
+            <ng-container matColumnDef="phoneNumber">
+              <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+              <td mat-cell *matCellDef="let third"> {{ third.phoneNumber }} </td>
+            </ng-container>
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let third"> 
                 <p *ngIf="third.state" class="state-active">Activo</p>
-                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>
+                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>  
               </td>
-              <td class="actions">
-                <button class="edit-button" (click)="openModalEdit(third.thId)">
-                  <span class="material-icons">edit</span>
-                </button>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let third"> 
+                <button class="edit-button" (click)="redirectToEdit(third.thId)"><span class="material-icons">edit</span></button>
                 <button *ngIf="third.state === true" class="toggle-off-button"
                   (click)="changeThirdPartieState(third.thId)">
                   <span class="material-icons">toggle_off</span>
@@ -86,58 +117,84 @@
                 <button *ngIf="third.state === false" class="toggle-on-button"
                   (click)="changeThirdPartieState(third.thId)">
                   <span class="material-icons">toggle_on</span>
-                </button>
+                </button>  
               </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsComplete"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsComplete;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" [colSpan]="displayedColumnsBrief.length">No se encontro el tercero "{{input.value}}"</td>
             </tr>
-          </tbody>
-        </table>
+          </table>
+        </div>
+
+        <!-- Tabla para Vista Resumida -->
+        <div class="relative overflow-x-auto" *ngIf="!showDetailTable">
+          <table mat-table [dataSource]="dataSource" class="table">
+            <ng-container matColumnDef="personType">
+              <th mat-header-cell *matHeaderCellDef class="bold-text"> Tipo Persona </th>
+              <td mat-cell *matCellDef="let third"> {{  third.personType }} </td>
+            </ng-container>
+            <ng-container matColumnDef="thirdTypes">
+              <th mat-header-cell *matHeaderCellDef> Tipo(s) Tercero </th>
+              <td mat-cell *matCellDef="let third"> {{ third.thirdTypes[0]?.thirdTypeName }} </td>
+            </ng-container>
+            <ng-container matColumnDef="socialReason">
+              <th mat-header-cell *matHeaderCellDef> Nombre/Razón Social </th>
+              <td mat-cell *matCellDef="let third"> {{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }} </td>
+            </ng-container>
+            <ng-container matColumnDef="typeId">
+              <th mat-header-cell *matHeaderCellDef> Tipo Id </th>
+              <td mat-cell *matCellDef="let third"> {{ third.typeId.typeId }} </td>
+            </ng-container>
+            <ng-container matColumnDef="idNumber">
+              <th mat-header-cell *matHeaderCellDef> Número de Documento </th>
+              <td mat-cell *matCellDef="let third"> {{third.idNumber}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef> Correo </th>
+              <td mat-cell *matCellDef="let third"> {{ third.email }} </td>
+            </ng-container>
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let third"> 
+                <p *ngIf="third.state" class="state-active">Activo</p>
+                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>  
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Acciones </th>
+              <td mat-cell *matCellDef="let third"> 
+                <button (click)="openModalDetails(+third.thId)"> <span class="material-icons">visibility</span> </button>
+                <button class="edit-button" (click)="redirectToEdit(third.thId)"><span class="material-icons">edit</span></button>
+                <button *ngIf="third.state === true" class="toggle-off-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_off</span>
+                </button>
+                <button *ngIf="third.state === false" class="toggle-on-button"
+                  (click)="changeThirdPartieState(third.thId)">
+                  <span class="material-icons">toggle_on</span>
+                </button>  
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsBrief"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsBrief;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" [colSpan]="displayedColumnsBrief.length">No se encontro el tercero "{{input.value}}"</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[10]"
+                      aria-label="Select page of thirds">
+        </mat-paginator>
       </div>
 
-      <!-- Tabla para Vista Resumida -->
-      <div class="relative overflow-x-auto" *ngIf="!showDetailTable">
-        <table class="table">
-          <thead>
-            <tr>
-              <th *ngFor="let col of columnsBrief">{{ col.title }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let third of data | filterList : form.value.stringSearch">
-              <td>{{ third.personType }}</td>
-              <td>{{ third.thirdTypes[0]?.thirdTypeName }}</td>
-              <td>{{ third.names ? third.names + ' ' + third.lastNames : third.socialReason }}</td>
-              <td>{{ third.typeId.typeId }}</td>
-              <td>{{ third.idNumber }}</td>
-              <td>
-                <div [ngSwitch]="third.verificationNumber">
-                  <span *ngSwitchCase="null">NO APLICA</span>
-                  <span *ngSwitchDefault>{{ third.verificationNumber }}</span>
-                </div>
-              </td>
-              <td>{{ third.email }}</td>
-              <td>
-                <p *ngIf="third.state" class="state-active">Activo</p>
-                <p *ngIf="!third.state" class="state-inactive">Inactivo</p>
-              </td>
-              <td class="actions">
-                <button (click)="openModalDetails(third.thId)"> <span class="material-icons">visibility</span> </button>
-                <button class="edit-button" (click)="redirectToEdit(third.thId)"><span class="material-icons">edit</span></button>
-                <button (click)="deleteThirdPartie(third.thId)">
-                  <span class="material-icons">delete</span>
-                </button>
-                <button *ngIf="third.state === true" class="toggle-off-button"
-                  (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons">toggle_off</span>
-                </button>
-                <button *ngIf="third.state === false" class="toggle-on-button"
-                  (click)="changeThirdPartieState(third.thId)">
-                  <span class="material-icons">toggle_on</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
 </div>

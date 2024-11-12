@@ -17,7 +17,9 @@ export interface Enterprise{
     personType: PersonType;
     location: Location;
     dv: String;
-    state?: string
+    state?: string;
+    mainActivity?:number;
+    secondaryActivity?: number;
 }
 
 export interface EnterpriseDetails{
@@ -34,4 +36,6 @@ export interface EnterpriseDetails{
     personType: PersonType;
     location: LocationDetails;
     dv: String;
+    mainActivity?:number;
+    secondaryActivity?: number;
 }

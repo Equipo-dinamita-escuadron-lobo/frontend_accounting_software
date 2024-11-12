@@ -136,7 +136,7 @@ export class ThirdCreationComponent implements OnInit {
     this.contendPDFRUT = this.thirdService.getInfoThirdRUT(); 
     if (this.contendPDFRUT) {
       this.infoThird = this.contendPDFRUT.split(";");
-      console.log("eppaaaaaaaaaaaa Información recibida:", this.infoThird);
+      console.log("Informacion recibida:", this.infoThird);
       this.thirdService.clearInfoThirdRUT();
       this.initializeFormPDFRUT();
     } else {

@@ -69,6 +69,7 @@
                                     class="grid grid-cols-1 md:grid-cols-2 gap-9">
                                     <div class="">
 
+                                        <!-- Nombre de empresa -->
                                         <div class="col-1-name grid mb-3">
                                             <label for="nombre_empresa" class="block">Nombre de Empresa *</label>
                                             <input type="text" id="nombre_empresa" name="nombre_empresa"
@@ -85,45 +86,7 @@
                                             </div>
                                         </div>
 
-
-                                        <form [formGroup]="form_natural" class="col-1-owner grid mb-3"
-                                            *ngIf="showNaturalForm">
-                                            <label for="nombre_propietario" class="block">Nombre de
-                                                Propietario *</label>
-                                            <input type="text" id="nombre_propietario" name="nombre_propietario"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Julian" formControlName="nameOwner" required>
-                                            <div *ngIf="form_natural.get('nameOwner')?.invalid && form_natural.get('nameOwner')?.touched"
-                                                class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('maxlength')">Supera limite
-                                                    caracteres</div>
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('required')">El nombre es
-                                                    requerido.</div>
-                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('pattern')">El nombre sólo
-                                                    puede contener letras.</div>
-                                            </div>
-                                        </form>
-
-                                        <form [formGroup]="form_legal" class="col-1-business grid mb-3"
-                                            *ngIf="showLegalForm">
-                                            <label for="businessName" class="block">Razón social *</label>
-
-                                            <input type="text" id="businessName" name="businessName"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L."
-                                                formControlName="businessName">
-                                            <div *ngIf="form_legal.get('businessName')?.invalid && form_legal.get('businessName')?.touched"
-                                                class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">
-                                                    Supera
-                                                    limite caracteres</div>
-                                                <div *ngIf="form_legal.get('businessName')?.hasError('required')">El
-                                                    campo es
-                                                    requerido.</div>
-                                            </div>
-                                        </form>
-
-
+                                        <!-- Tipo de Empresa -->
                                         <div class="col-1-type grid mb-3 ">
                                             <label for="tipo_empresa" class="block">Tipo de Empresa *</label>
 
@@ -154,9 +117,81 @@
                                             </div>
                                         </div>
 
+                                        <!-- Responsabilidades tributarias -->
+                                        <div class="col-1-type tax-liabilities w-full grid mb-3">
+                                            <label>Responsabilidades tributarias *</label>
+                                            <div class="icon flex">
+                                                <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
+                                                    [searchable]="true" formControlName="selectedItemTaxLiabilities"
+                                                    (change)="onTaxLiabilitySelect($event)"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
+                                                    [maxSelectedItems]="7" [multiple]="true"
+                                                    formControlName="selectedItemTaxLiabilities" [clearable]="false"
+                                                    [placeholder]="placeTaxLiaabilities">
+                                                    <ng-template ng-option-tmp let-item="item">
+                                                        <div
+                                                            class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
+                                                            {{ item.name }}</div>
+                                                    </ng-template>
+                                                </ng-select>
+                                                <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="1" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <polyline points="6 9 12 15 18 9" />
+                                                </svg>
+                                            </div>
+                                            <div *ngIf="form.get('selectedItemTaxLiabilities')?.touched && form.get('selectedItemTaxLiabilities')?.errors?.['noValueSelected']"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                Por favor, seleccione al menos un ítem.
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Nombre Propietario -->
+                                        <form [formGroup]="form_natural" class="col-1-owner grid mb-3"
+                                            *ngIf="showNaturalForm">
+                                            <label for="nombre_propietario" class="block">Nombre de
+                                                Propietario *</label>
+                                            <input type="text" id="nombre_propietario" name="nombre_propietario"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ej: Julian" formControlName="nameOwner" required>
+                                            <div *ngIf="form_natural.get('nameOwner')?.invalid && form_natural.get('nameOwner')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('maxlength')">Supera limite
+                                                    caracteres</div>
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('required')">El nombre es
+                                                    requerido.</div>
+                                                <div *ngIf="form_natural.get('nameOwner')?.hasError('pattern')">El nombre sólo
+                                                    puede contener letras.</div>
+                                            </div>
+                                        </form>
+
+                                        <!-- Razon Social -->
+                                        <form [formGroup]="form_legal" class="col-1-business grid mb-3"
+                                            *ngIf="showLegalForm">
+                                            <label for="businessName" class="block">Razón social *</label>
+
+                                            <input type="text" id="businessName" name="businessName"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                placeholder="Ej: Pepsico Iberia Servicios Centrales, S.L."
+                                                formControlName="businessName">
+                                            <div *ngIf="form_legal.get('businessName')?.invalid && form_legal.get('businessName')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form_legal.get('businessName')?.hasError('maxlength')">
+                                                    Supera
+                                                    limite caracteres</div>
+                                                <div *ngIf="form_legal.get('businessName')?.hasError('required')">El
+                                                    campo es
+                                                    requerido.</div>
+                                            </div>
+                                        </form>
+
+                                        
+
                                     </div>
 
                                     <div class="">
+                                        <!-- Numero de identificacion tributaria -->
                                         <div class="col-2-nit grid mb-3 ">
                                             <label for="nit" class="block">NIT(Número de identificación
                                                 tributaria) *</label>
@@ -174,24 +209,7 @@
                                             </div>
                                         </div>
 
-                                        <form [formGroup]="form_natural" class="col-2-surname grid mb-3"
-                                            *ngIf="showNaturalForm">
-                                            <label for="surnameOwner" class="block">Apellidos *</label>
-
-                                            <input type="text" id="surnameOwner" name="surnameOwner"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: Ruano" formControlName="surnameOwner" required>
-                                            <div *ngIf="form_natural.get('surnameOwner')?.invalid && form_natural.get('surnameOwner')?.touched"
-                                                class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('maxlength')">Supera
-                                                    limite caracteres</div>
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('required')">El apellido
-                                                    es obligatorio.</div>
-                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('pattern')">El apellido
-                                                    solo puede contener letras.</div>
-                                            </div>
-                                        </form>
-
+                                        <!-- Tipo de Contribuytente -->
                                         <div class="col-2-payer grid mb-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de
                                                 Contribuyente *</label>
@@ -214,13 +232,60 @@
                                                     <polyline points="6 9 12 15 18 9" />
                                                 </svg>
                                             </div>
-
                                             <div *ngIf="form.get('selectedItemTaxPayer')?.touched && form.get('selectedItemTaxPayer')?.errors?.['noValueSelected']"
                                                 class="text-red-500 text-sm font-medium -mt-1">
                                                 Por favor, seleccione un tipo de contribuyente.
                                             </div>
-
                                         </div>
+
+                                        <!-- Actividades Economicas -->
+                                        <div class="grid grid-cols-2 gap-4 mb-3 mt-7">
+                                            <!-- Campo de Actividad Economica Principal -->
+                                            <div class="col-span-1">
+                                              <label for="mainActivity">Actividad Economica Principal</label>
+                                              <input type="number" id="mainActivity" name="mainActivity"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                formControlName="mainActivity" placeholder="Ej: 123456">
+                                          
+                                              <div *ngIf="form.get('mainActivity')?.invalid && form.get('mainActivity')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('mainActivity')?.hasError('pattern')">La actividad principal debe ser un numero.</div>
+                                              </div>
+                                            </div>
+                                          
+                                            <!-- Campo de Actividad Economica Secundaria -->
+                                            <div class="col-span-1">
+                                              <label for="secondaryActivity">Actividad Economica Secundaria</label>
+                                              <input type="number" id="secondaryActivity" name="secondaryActivity"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                formControlName="secondaryActivity" placeholder="Ej: 654321">
+                                          
+                                              <div *ngIf="form.get('secondaryActivity')?.invalid && form.get('secondaryActivity')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form.get('secondaryActivity')?.hasError('pattern')">La actividad secundaria debe ser un numero.</div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                          
+                                        <!-- Apellidos -->
+                                        <form [formGroup]="form_natural" class="col-2-surname grid mb-3 mt-6"
+                                            *ngIf="showNaturalForm">
+                                            <label for="surnameOwner" class="block">Apellidos *</label>
+
+                                            <input type="text" id="surnameOwner" name="surnameOwner"
+                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                placeholder="Ej: Ruano" formControlName="surnameOwner" required>
+                                            <div *ngIf="form_natural.get('surnameOwner')?.invalid && form_natural.get('surnameOwner')?.touched"
+                                                class="text-red-500 text-sm font-medium -mt-1">
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('maxlength')">Supera
+                                                    limite caracteres</div>
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('required')">El apellido
+                                                    es obligatorio.</div>
+                                                <div *ngIf="form_natural.get('surnameOwner')?.hasError('pattern')">El apellido
+                                                    solo puede contener letras.</div>
+                                            </div>
+                                        </form>
+
                                     </div>
                                 </form>
                             </div>
@@ -240,34 +305,7 @@
                             class="form__enterprise__additional grid grid-cols-1 md:grid-cols-2 sm:gap-20  w-full">
                             <div class="form__enterprise__column-1 0">
 
-                                <div class="tax-liabilities w-full grid mb-3">
-                                    <label>Responsabilidades tributarias *</label>
-                                    <div class="icon flex">
-                                        <ng-select name="tax-liabilities" [items]="taxLiabilitiesList" bindLabel="name"
-                                            [searchable]="true" formControlName="selectedItemTaxLiabilities"
-                                            (change)="onTaxLiabilitySelect($event)"
-                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 w-full min-h-9"
-                                            [maxSelectedItems]="7" [multiple]="true"
-                                            formControlName="selectedItemTaxLiabilities" [clearable]="false"
-                                            [placeholder]="placeTaxLiaabilities">
-                                            <ng-template ng-option-tmp let-item="item">
-                                                <div
-                                                    class="py-2 px-4 cursor-pointer hover:bg-blue-950 hover:text-white bg-white">
-                                                    {{ item.name }}</div>
-                                            </ng-template>
-                                        </ng-select>
-                                        <svg class="h-8 w-8 text-black -ml-10 mt-1" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="1" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <polyline points="6 9 12 15 18 9" />
-                                        </svg>
-                                    </div>
-                                    <div *ngIf="form.get('selectedItemTaxLiabilities')?.touched && form.get('selectedItemTaxLiabilities')?.errors?.['noValueSelected']"
-                                        class="text-red-500 text-sm font-medium -mt-1">
-                                        Por favor, seleccione al menos un ítem.
-                                    </div>
-
-                                </div>
+                                
 
                                 <div class="col-1 country w-full grid mb-3">
                                     <label for="country1">País</label>

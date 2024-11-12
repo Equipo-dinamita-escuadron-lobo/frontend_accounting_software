@@ -141,16 +141,15 @@
             <div class="space-y-2">
               <div class="flex items-center"> <!-- Flex container to align the label and the help icon -->
                 <label class="block font-semibold mb-2 mr-2" for="personType">Tipo Identificación *</label>
-    
                 <span class="help-icon" (click)="toggleHelp('TipoIdentificación', $event)" (mouseenter)="showHelp('TipoIdentificación')"
                   (mouseleave)="hideHelp('TipoIdentificación')">?</span>
               </div>
-              <div>
-                <div class="help-text" *ngIf="isHelpVisible('TipoIdentificación')">
-                  <span *ngIf="!isEditing('TipoIdentificación')">{{ helpTexts['TipoIdentificación'] || 'Este es un texto de ayuda por defecto.'
-                    }}</span>
-                </div>
+
+              <div class="help-text" *ngIf="isHelpVisible('TipoIdentificación')">
+                <span *ngIf="!isEditing('TipoIdentificación')">{{ helpTexts['TipoIdentificación'] || 'Este es un texto de ayuda por defecto.'
+                }}</span>
               </div>
+    
               <select formControlName="typeId"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 (change)="onTypeIdChange($event)">
@@ -165,7 +164,7 @@
               </div>
             </div>
 
-            <div class="space-y-2">
+            <div class="space-y-2 mt-1">
               <p class="font-semibold">Número Identificación *</p>
               <div class="flex items-center">
                 <input formControlName="idNumber" type="number"

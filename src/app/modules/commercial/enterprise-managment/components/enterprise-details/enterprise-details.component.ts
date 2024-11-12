@@ -37,6 +37,8 @@ export class EnterpriseDetailsComponent {
       this.enterpriseService.getEnterpriseById(id).subscribe({
         next: (enterpriseData) => {
           this.enterpriseSelected = enterpriseData;
+          this.getTypePerson(this.enterpriseSelected.personType.type);
+          console.log(this.enterpriseSelected);
         },
       });
     }
