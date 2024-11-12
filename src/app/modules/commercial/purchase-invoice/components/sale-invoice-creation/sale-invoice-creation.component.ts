@@ -203,30 +203,77 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
   formatPrice(price: number): string {
     price=parseFloat(price.toFixed(2))
+    
     return price.toString();
+  }
+  onKeyDown(event: KeyboardEvent) {
+    // Permitir solo números y teclas especiales como Backspace, Tab, etc.
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight'];
+    if (!/\d/.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+  
+  formatValue(displayValue: string, value:number,formatValue:string):[number,string] {
+
+    if (displayValue === '') {
+      value = 0;
+      formatValue = '0';
+      return [0, '0'];
+    }
+    // Elimina caracteres no numéricos
+    const numericValue = String(displayValue).replace(/\D/g, '') ;
+
+    // Almacena el valor sin formato en `value` para cálculos
+    value = parseFloat(numericValue);
+
+    // Agrega puntos de miles para el displayValue
+    formatValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    console.log(formatValue);
+
+    return [value, formatValue];
+
   }
 
   // Paara calcular total de cada producto
-  calculateTotal(prod: ProductI): void {
+  calculateTotal(index: number,prod: ProductI): void {
+    this.lstProducts[index].price=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[0];
+    this.lstProducts[index].displayPrice=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[1];
+
+    
+
     prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
     prod.IvaValor = prod.totalValue * prod.IVA / 100;
-    this.calculateInvoiceTotals(prod); //Llama para que se vaya actualizando los labels de abajo
+    this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
   switchDescuento(type: 'porc' | 'val', prod: ProductI): void {
-    this.descuentoTotal = 0;
+    
+    prod.descuentos[1]=this.formatValue(prod.displayDescuentos,prod.descuentos[1],prod.displayDescuentos)[0];
+    prod.displayDescuentos=this.formatValue(prod.displayDescuentos,prod.descuentos[1],prod.displayDescuentos)[1];
+
     if (type === 'porc') {
       prod.descuentos[1] = 0; // Vacía el descuento en valor si se escribe en porcentaje
+      prod.displayDescuentos = '0';
     } else if (type === 'val') {
       prod.descuentos[0] = 0; // Vacía el descuento en porcentaje si se escribe en valor
+
+
     }
-    this.calculateInvoiceTotals(prod);
+    this.calculateInvoiceTotals();
   }
 
   // para calcular valor total del producto incluyendo IVA
-  calculateTotalValue(prod: ProductI): number {
-    const subtotalProduct = prod.amount * prod.price;
-    return subtotalProduct;
+  calculateTotalValue(prod?: ProductI): any {
+    if (prod) {
+      if(prod.amount==0){
+        return 0;
+      }
+      const totalValue = prod.price * prod.amount;
+      
+      return totalValue-(totalValue * prod.descuentos[0] / 100)-prod.descuentos[1];
+    }
+    
   }
   calculateRetention(uvt: number): boolean {
     this.uvt = uvt;
@@ -235,35 +282,58 @@ export class SaleInvoiceCreationComponent implements OnInit {
       return true
     } else {
       this.retention = 0;
+      
       return false
     }
-
+    
   }
   //para calcular los datos como impuesto, subtotal y total de la factura
-  calculateInvoiceTotals(prod?: ProductI): void {
-    this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount)), 0);
+  calculateInvoiceTotals(): void {
 
+    
+    this.subTotal = 0;
+    this.lstProducts.forEach(prod => {
+    // Calcular subtotal para cada producto aplicando los descuentos
+    let subtotalProducto = 0
 
-    if (this.impuestoCheck) {
-      this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
-    } else {
-      this.taxTotal = 0;
+    if(prod.amount!=0){
+      subtotalProducto=(prod.price * prod.amount)
+      - ((prod.price * prod.amount) * prod.descuentos[0] / 100)
+      - prod.descuentos[1];
     }
-    if (this.retencionCheck && (this.uvt * 27) > this.subTotal) {
+    
+    // Agregar al subtotal total
+    this.subTotal += subtotalProducto;
+
+   
+});
+
+    
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    
+
+    if ((this.uvt * 27) < this.subTotal && this.retencionCheck) {
       this.retention = this.subTotal * 0.025;
     } else {
       this.retention = 0;
     }
 
-    if (prod) {
-      if (prod.descuentos[1] == 0 || prod.descuentos[1] == null)
-        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.descuentos[0] / 100), 0);
-      else if (prod.descuentos[0] == 0 || prod.descuentos[0] == null)
-        this.descuentoTotal = this.lstProducts.reduce((acc, prod) => acc + (prod.descuentos[1]), 0);
-      else
-        this.descuentoTotal = 0;
-    }
-    this.total = this.subTotal + this.taxTotal - this.retention - this.descuentoTotal;
+    this.descuentoTotal = 0;
+    this.lstProducts.forEach(prod => {
+        // Calcular descuento para cada producto
+        let descuentoCalculado = 0;
+        if(prod.amount!=0){
+          descuentoCalculado=((prod.price * prod.amount) * prod.descuentos[0] / 100) + prod.descuentos[1];
+        }
+        
+        // Agregar el descuento al total
+        this.descuentoTotal += descuentoCalculado;
+
+        
+    });
+
+    
+    this.total = this.subTotal + this.taxTotal - this.retention;
   }
 
   saveFacture() {
@@ -418,13 +488,15 @@ export class SaleInvoiceCreationComponent implements OnInit {
             itemType: prod.itemType,
             description: prod.description,
             price: prod.cost,
+            displayPrice: String(prod.cost),
             taxPercentage: prod.taxPercentage,
             unitOfMeasureId: prod.unitOfMeasureId,
             IVA: 0,
             IvaValor: 0,
             amount: 0,
             totalValue: 0,
-            descuentos: [0, 0]
+            descuentos: [0, 0],
+            displayDescuentos: '0'
           };
         });
         this.lstProducts = products;

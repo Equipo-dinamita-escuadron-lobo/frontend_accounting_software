@@ -13,10 +13,13 @@ export interface ProductI {
     categoryId: number;
     enterpriseId: string;
     price: number;
+    displayPrice: string;
     state: string;
     amount: number;
     IVA: number;
     IvaValor: number;
     totalValue: number;
+    //porcentaje, valor
     descuentos: [number, number];
+    displayDescuentos: string;
   }
