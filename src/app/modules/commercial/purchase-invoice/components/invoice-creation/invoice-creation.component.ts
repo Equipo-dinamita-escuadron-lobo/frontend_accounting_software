@@ -12,6 +12,10 @@ import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
 import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoice-select-supplier.component';
+import { InvoicePreviewDialogComponent } from './invoice-preview/invoice-preview-dialog.component';
+import { PreviewFacture } from '../../models/previewFacture';
+
+
 
 @Component({
   selector: 'app-invoice-creation',
@@ -163,10 +167,38 @@ export class InvoiceCreationComponent implements OnInit {
       facWithholdingSource: this.retention
     };
 
-    this.saveInvoice(factureS);
+    const previewFacture: PreviewFacture = {
+      entId: this.enterpriseSelected?.id,
+      thId: this.supplierS?.thId,
+      supplier: this.supplierS?.names + ' ' + this.supplierS?.lastNames,
+      factCode: "123",
+      factureType: "Compra",
+      factProducts: this.lstProductsSend,
+      factSubtotals: this.subTotal,
+      facSalesTax: this.taxTotal,
+      facWithholdingSource: this.retention,
+      total: this.subTotal - this.taxTotal -this.retention
+    }
+
+    const dialogRef = this.dialog.open(InvoicePreviewDialogComponent, {
+      width: '400px',
+      data: previewFacture
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.saveInvoice(factureS); 
+      } else {
+        console.log('Se canceló el guardado de la factura.');
+      }
+    });
+
   }
 
+
   async saveInvoice(facture: any) {
+  
+
     this.invoiceService.saveInvoice(facture).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -298,3 +330,4 @@ export class InvoiceCreationComponent implements OnInit {
     });
   }
 }
+

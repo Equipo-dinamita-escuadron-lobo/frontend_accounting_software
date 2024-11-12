@@ -1,0 +1,53 @@
+<h2 mat-dialog-title class="text-xl font-semibold text-center py-4 bg-gray-100 rounded-t-md">
+  Vista Previa de Factura
+</h2>
+
+<mat-dialog-content class="px-6 py-4">
+  <div *ngIf="data" class="space-y-4">
+    <div>
+      <p class="font-medium text-gray-700"><strong>Proveedor:</strong> {{ data.supplier }}</p>
+      <p class="font-medium text-gray-700"><strong>Subtotal:</strong> {{ data.factSubtotals }}</p>
+      <p class="font-medium text-gray-700"><strong>IVA:</strong> {{ data.facSalesTax }}</p>
+      <p class="font-medium text-gray-700"><strong>Retención:</strong> {{ data.facWithholdingSource }}</p>
+      <p class="font-medium text-gray-700"><strong>Total:</strong> {{ data.total }}</p>
+    </div>
+
+    <mat-divider class="my-4"></mat-divider>
+
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800">Productos</h3>
+      <table class="min-w-full table-auto border-separate border-spacing-2">
+        <thead>
+          <tr class="text-left text-sm font-medium text-gray-600">
+            <th class="p-2">Descripción</th>
+            <th class="p-2">Cantidad</th>
+            <th class="p-2">Precio Unitario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of data.factProducts" class="border-b">
+            <td class="p-2">{{ product.description }}</td>
+            <td class="p-2">{{ product.amount }}</td>
+            <td class="p-2">{{ product.unitPrice }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-6">
+      <h4 class="text-lg font-medium text-gray-800">Código QR</h4>
+      <div class="flex justify-center mt-4">
+        <qrcode [qrdata]="generateQRData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="px-6 py-4 bg-gray-100 rounded-b-md">
+  <button mat-flat-button (click)="cancel()" class="px-4 py-2rounded-md">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" (click)="confirm()" class="ml-4 px-4 py-2">
+    Confirmar y Guardar
+  </button>
+</mat-dialog-actions>

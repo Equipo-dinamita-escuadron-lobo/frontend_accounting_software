@@ -56,29 +56,36 @@ export class UnitOfMeasureListComponent implements OnInit {
     }
   }
 
-  getUnitOfMeasures(): void {
-  this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
-    (data: UnitOfMeasure[]) => {
-      // Aplicar la conversión de caracteres especiales como tildes y potencias
-      this.unitOfMeasures = data.map(unit => ({
-        ...unit,
-        name: decodeURIComponent(escape(unit.name)),
-        abbreviation: decodeURIComponent(escape(unit.abbreviation)),
-        description: decodeURIComponent(escape(unit.description))
-      }));
-
-      
-      this.dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.data.forEach(unit => {
-        console.log(unit.enterpriseId === 'standart')
-      });
-    },
-    error => {
-      console.log('Error al obtener las unidades de medida:', error);
+  decodeIfNeeded(value: string): string {
+    try {
+      return decodeURIComponent(escape(value));
+    } catch {
+      return value;
     }
-  );
-}
+  }
+
+  getUnitOfMeasures(): void {
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
+      (data: UnitOfMeasure[]) => {
+        this.unitOfMeasures = data.map(unit => ({
+          ...unit,
+          name: this.decodeIfNeeded(unit.name),
+          abbreviation: this.decodeIfNeeded(unit.abbreviation),
+          description: this.decodeIfNeeded(unit.description)
+        }));
+
+        this.dataSource = new MatTableDataSource<UnitOfMeasure>(this.unitOfMeasures);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.data.forEach(unit => {
+          console.log(unit.enterpriseId === 'standart');
+        });
+      },
+      error => {
+        console.log('Error al obtener las unidades de medida:', error);
+      }
+    );
+  }
+
 
     // Método para redirigir a una ruta específica
     redirectTo(route: string): void {

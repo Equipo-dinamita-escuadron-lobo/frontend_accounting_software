@@ -96,24 +96,30 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }
-
-// Método para obtener la lista de unidades de medida
-getUnitOfMeasures(): void {
-  this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
-    (unitOfMeasures: any[]) => {
-      // Aplicar la conversión de caracteres especiales
-      this.unitOfMeasures = unitOfMeasures.map(unit => ({
-        ...unit,
-        name: unit.name ? decodeURIComponent(escape(unit.name)) : '',
-        abbreviation: unit.abbreviation ? decodeURIComponent(escape(unit.abbreviation)) : '',
-        description: unit.description ? decodeURIComponent(escape(unit.description)) : ''
-      }));
-    },
-    error => {
-      console.error('Error al obtener las unidades de medida:', error);
+  decodeIfNeeded(value: string): string {
+    try {
+      return decodeURIComponent(escape(value));
+    } catch {
+      return value;
     }
-  );
-}
+  }
+
+  getUnitOfMeasures(): void {
+    this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
+      (data: any[]) => {
+        this.unitOfMeasures = data.map(unit => ({
+          ...unit,
+          name: this.decodeIfNeeded(unit.name),
+          abbreviation: this.decodeIfNeeded(unit.abbreviation),
+          description: this.decodeIfNeeded(unit.description)
+        }));
+
+      },
+      error => {
+        console.log('Error al obtener las unidades de medida:', error);
+      }
+    );
+  }
 
 
   //Metodo Complementario

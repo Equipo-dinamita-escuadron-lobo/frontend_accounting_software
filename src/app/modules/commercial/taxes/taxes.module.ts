@@ -12,7 +12,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   declarations: [
     CreateTaxComponent,
     ListTaxComponent,
-    EditTaxComponent
+    EditTaxComponent,
   ],
   imports: [
     CommonModule,
