@@ -55,6 +55,10 @@ export class DepartmentService {
     { id: 32, name: 'Vichada' }
   ];
 
+  extranjeroDepartments: Department[] = [
+    { id: 33, name: 'Extranjero' },
+  ];
+
   //Production
   private apiUrl = API_URL + 'address/departments';
   //Local
@@ -69,6 +73,13 @@ export class DepartmentService {
   }
 
 
+  getDepartmentById(id: number) {
+    if (id == 2) {
+      return this.extranjeroDepartments;
+    }else{
+      return this.colombianDepartments;
+    }
+  }
 
   getListDepartments(){
     return this.colombianDepartments;

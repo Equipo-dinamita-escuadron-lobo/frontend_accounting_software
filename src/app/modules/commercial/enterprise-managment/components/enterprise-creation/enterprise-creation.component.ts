@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../../../environments/enviorment.development';
@@ -22,20 +17,27 @@ import { EnterpriseService } from '../../services/enterprise.service';
 import { TaxLiabilityService } from '../../services/tax-liability.service';
 import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { get } from 'jquery';
+import { InvoiceSelectSupplierComponent } from '../../../purchase-invoice/components/invoice-select-supplier/invoice-select-supplier.component';
 
 @Component({
   selector: 'app-enterprise-creation',
   templateUrl: './enterprise-creation.component.html',
   styleUrl: './enterprise-creation.component.css',
 })
-export class EnterpriseCreationComponent {
+export class EnterpriseCreationComponent implements OnInit {
   /**
    * Declaration of variables to create enterprise
    */
 
+  isForeign: boolean = false;
+
   form: FormGroup;
   form_legal: FormGroup;
   form_natural: FormGroup;
+  
+  verificationNumber: number | null = null;
+  submitted = false;
   
 
   title:string = 'Creacion de Empresa'
@@ -99,13 +101,42 @@ export class EnterpriseCreationComponent {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
+
+   /* this.form = this.fb.group({
+      nit: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      dv: [{ value: '', disabled: true }]
+    });*/
   }
 
   ngOnInit(): void {
-    this.getDepartments();
+    this.getDepartments(1);
     this.getTypesEnterprise();
     this.getAllTaxPayeres();
     this.getAllTaxLiabilities();
+
+    this.form.get('nit')?.valueChanges.subscribe(value => {
+      this.calculateVerificationNumber();
+    });
+  }
+  
+  calculateVerificationNumber(): void {
+    const nit = this.form.get('nit')?.value;
+    if (nit) {
+      this.verificationNumber = this.calculateDV(nit);
+      this.form.get('dv')?.setValue(this.verificationNumber);
+    }
+  }
+
+  calculateDV(nit: string): number {
+    let vpri = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+    let x = 0;
+  
+    for (let i = 0; i < nit.length; i++) {
+      x += parseInt(nit[nit.length - 1 - i], 10) * vpri[i];
+    }
+  
+    let y = x % 11;
+    return (y > 1) ? 11 - y : y;
   }
 
   /**
@@ -148,7 +179,7 @@ export class EnterpriseCreationComponent {
         ],
       ],
       country: [
-        { value: 'Colombia', disabled: true },
+        { value: 'country', disabled: true },
         [Validators.maxLength(50)],
       ],
 
@@ -350,6 +381,30 @@ export class EnterpriseCreationComponent {
     this.enabledSelectCity = true;
   }
 
+  //seleccion entre colombia o extranjero aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  onCountryChange(event: any) {
+    this.isForeign = event.target.value === 'Extranjero';
+    if (this.isForeign) {
+        this.getDepartments(2);        
+        //this.enableSelectCity();
+        this.form.get('selectedItemDepartment')!.reset();
+        this.form.get('selectedItemCity')!.reset();
+    } else {
+        this.getDepartments(1);
+        //this.enableSelectCity();
+        this.form.get('selectedItemDepartment')!.reset();
+        this.form.get('selectedItemCity')!.reset();
+    }
+  }
+
+  actSelectioCountry(){ 
+    if (this.isForeign) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
   onDepartmentSelect(event: any) {
     this.form.value.selectedItemDepartment = event;
     this.enableSelectCity();
@@ -397,10 +452,15 @@ export class EnterpriseCreationComponent {
     this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
     this.placeTypeEnterprise = 'Seleccione el tipo de empresa';
   }
+
+  
   /**
    * @description Save enterprise using Enterprise service
    */
   async saveEnterprise() {
+
+    
+
     if(!this.validationsForm()){
       try {
         const personTypeForm: PersonType = {
@@ -412,7 +472,8 @@ export class EnterpriseCreationComponent {
   
         const locationForm: Location = {
           address: this.form.value.address,
-          country: 1,
+          
+          country: this.actSelectioCountry(),
           department: this.form.value.selectedItemDepartment.id,
           city: this.form.value.selectedItemCity.id,
         };
@@ -510,8 +571,8 @@ export class EnterpriseCreationComponent {
   /**
    * Use the Department service to list in the select interface.
    */
-  getDepartments() {
-    this.departmenList = this.departmentService.getListDepartments();
+  getDepartments(n: number) {
+    this.departmenList = this.departmentService.getListDepartments2(n);
   }
 
   /**
