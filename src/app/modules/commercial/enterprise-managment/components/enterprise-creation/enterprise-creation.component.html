@@ -314,8 +314,8 @@
                                         value="Colombia" disabled>
                                 </div>
                                 <div class="col-1-department w-full grid gap-2 mb-3">
-                                    <label>Departamento *</label>
-                                    <div class="icon flex flex-col">
+                                    <label for="department" class="font-medium">Departamento *</label>
+                                    <div class="icon relative">
                                         <ng-select 
                                             [items]="departmenList" 
                                             bindLabel="name"
@@ -335,7 +335,7 @@
                                             </ng-template>
                                         </ng-select>
                                         <svg 
-                                            class="h-8 w-8 text-black -ml-10 mt-1 self-end" 
+                                            class="h-8 w-8 text-black absolute right-2 top-1/2 transform -translate-y-1/2"
                                             viewBox="0 0 24 24" 
                                             fill="none"
                                             stroke="currentColor" 
@@ -348,17 +348,16 @@
                                     </div>
                                     <div 
                                         *ngIf="form.get('selectedItemDepartment')?.touched && form.get('selectedItemDepartment')?.errors?.['noValueSelected']"
-                                        class="text-red-500 text-sm font-medium -mt-1"
+                                        class="text-red-500 text-sm font-medium mt-1"
                                     >
                                         Por favor, seleccione un departamento.
                                     </div>
                                 </div>
-
                                 
 
                                 <div class="col-1-city w-full grid gap-2 mb-3">
-                                    <label *ngIf="enabledSelectCity" for="municipio">Ciudad *</label>
-                                    <div class="icon flex flex-col">
+                                    <label *ngIf="enabledSelectCity" for="municipio" class="font-medium">Ciudad *</label>
+                                    <div class="icon relative">
                                         <ng-select 
                                             name="city" 
                                             *ngIf="enabledSelectCity" 
@@ -378,9 +377,10 @@
                                                 </div>
                                             </ng-template>
                                         </ng-select>
+                                        
                                         <svg 
                                             *ngIf="enabledSelectCity" 
-                                            class="h-8 w-8 text-black -ml-10 mt-1 self-end" 
+                                            class="h-8 w-8 text-black absolute right-2 top-1/2 transform -translate-y-1/2"
                                             viewBox="0 0 24 24" 
                                             fill="none" 
                                             stroke="currentColor" 
@@ -393,11 +393,13 @@
                                     </div>
                                     <div 
                                         *ngIf="form.get('selectedItemCity')?.touched && form.get('selectedItemCity')?.errors?.['noValueSelected']"
-                                        class="text-red-500 text-sm font-medium -mt-1"
+                                        class="text-red-500 text-sm font-medium mt-1"
                                     >
                                         Por favor, seleccione una ciudad.
                                     </div>
                                 </div>
+                                
+
                             </div>
 
                             <div class="form__enterprise__column-2 ">
