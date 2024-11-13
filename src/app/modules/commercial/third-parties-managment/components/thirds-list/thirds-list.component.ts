@@ -27,7 +27,7 @@ export class ThirdsListComponent{
 
   data: Third[] = [];
   //columnas para las tablas de vista resumida y completa
-  displayedColumnsBrief: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'email', 'state', 'actions'];
+  displayedColumnsBrief: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'email', /*'state',*/ 'actions'];
   displayedColumnsComplete: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'verificationNumber', 'email', 'country', 'province', 'city', 'address', 'phoneNumber', 'state', 'actions'];
   dataSource = new MatTableDataSource<Third>(this.data);
 
@@ -65,7 +65,7 @@ export class ThirdsListComponent{
           this.dataSource = new MatTableDataSource<Third>(this.data);
           this.dataSource.paginator = this.paginator;
         },
-        error: (error) => {
+        /*error: (error) => {
           console.log(error)
           Swal.fire({
             title: 'Error',
@@ -73,7 +73,7 @@ export class ThirdsListComponent{
             confirmButtonColor: buttonColors.confirmationColor,
             icon: 'error',
           });
-        }
+        }*/
       });
     }
   }

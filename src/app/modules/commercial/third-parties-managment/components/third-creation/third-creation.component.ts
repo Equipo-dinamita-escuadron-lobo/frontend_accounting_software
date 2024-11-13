@@ -27,7 +27,7 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 })
 
 export class ThirdCreationComponent implements OnInit {
-  
+
   //aaaaaaaaaaaaaaaaaaaaaaaaaaa
   mousePosition = { x: 0, y: 0 }; // Posición del mouse
   positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
@@ -61,14 +61,14 @@ export class ThirdCreationComponent implements OnInit {
   setEditing(helpId: string, event: MouseEvent): void {
     this.editingHelp = helpId; // Establece el cuadro actual en edición
     this.visibleHelp = helpId; // Mantiene el cuadro visible mientras se edita
-    this.mousePosition = { x: event.clientX +10, y: event.clientY +10 }; 
+    this.mousePosition = { x: event.clientX + 10, y: event.clientY + 10 };
     /*if (this.mousePosition.x === this.positionInicial.x) { // Captura la posición del mouse
       this.mousePosition = {
         x: event.clientX + 10,
         y: event.clientY + 10
       };
     }*/
-    
+
   }
 
   stopEditing(): void {
@@ -104,7 +104,7 @@ export class ThirdCreationComponent implements OnInit {
   countryCode!: string;
   selectedCountry: any;
   selectedState: any;
-  selectedCity:any;
+  selectedCity: any;
   //Digito de verificacion
   verificationNumber: number | null = null;
   //vector para manejar los mensajes de error 
@@ -133,7 +133,7 @@ export class ThirdCreationComponent implements OnInit {
     this.getTypesID();
     this.getThirdTypes();
     //verificar si se esta creando apartir del PDF del RUT 
-    this.contendPDFRUT = this.thirdService.getInfoThirdRUT(); 
+    this.contendPDFRUT = this.thirdService.getInfoThirdRUT();
     if (this.contendPDFRUT) {
       this.infoThird = this.contendPDFRUT.split(";");
       console.log("Informacion recibida:", this.infoThird);
@@ -161,7 +161,7 @@ export class ThirdCreationComponent implements OnInit {
       lastNames: [''],
       socialReason: [''],
       gender: [null],
-      idNumber: ['', {validators: [Validators.required], asyncValidators:[this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur'}],
+      idNumber: ['', { validators: [Validators.required], asyncValidators: [this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur' }],
       verificationNumber: [{ value: '', disabled: true }],
       state: ['Activo', Validators.required],
       photoPath: [''],
@@ -172,7 +172,7 @@ export class ThirdCreationComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], //Validacion requerida para que tenga el formato correcto de correo electronico
       creationDate: [''],
-      updateDate: ['']      
+      updateDate: ['']
     });
 
     this.createdThirdForm.get('idNumber')?.valueChanges.subscribe(value => {
@@ -186,44 +186,44 @@ export class ThirdCreationComponent implements OnInit {
 
   //Cargar datos apartir del PDF del RUT
   private initializeFormPDFRUT(): void {
-    if(this.infoThird?.[0].includes("Persona jurídica")){
+    if (this.infoThird?.[0].includes("Persona jurídica")) {
       this.button1Checked = true;
       this.button2Checked = false;
-      this.createdThirdForm.patchValue({personType: 'Juridica'});
-      this.createdThirdForm.patchValue({socialReason:this.infoThird?.[3] ?? ''});
-    }else{
+      this.createdThirdForm.patchValue({ personType: 'Juridica' });
+      this.createdThirdForm.patchValue({ socialReason: this.infoThird?.[3] ?? '' });
+    } else {
       this.button1Checked = false;
       this.button2Checked = true;
-      this.createdThirdForm.patchValue({personType: 'Natural'});
-      this.createdThirdForm.patchValue({names:this.infoThird?.[5] ?? '',lastNames:this.infoThird?.[4] ?? '',});
+      this.createdThirdForm.patchValue({ personType: 'Natural' });
+      this.createdThirdForm.patchValue({ names: this.infoThird?.[5] ?? '', lastNames: this.infoThird?.[4] ?? '', });
     }
     this.updateValidator();
     this.createdThirdForm.patchValue({
-      typeId:this.infoThird?.[1] ?? '',
-      address:this.infoThird?.[9] ?? '',
-      thirdTypes:'',
-      idNumber:this.infoThird?.[2] ?? '',
-      email:this.infoThird?.[10] ?? '',
-      phoneNumber:this.infoThird?.[11] ?? '',
-      country:'s',
-      province:'',
-      city:''
+      typeId: this.infoThird?.[1] ?? '',
+      address: this.infoThird?.[9] ?? '',
+      thirdTypes: '',
+      idNumber: this.infoThird?.[2] ?? '',
+      email: this.infoThird?.[10] ?? '',
+      phoneNumber: this.infoThird?.[11] ?? '',
+      country: 's',
+      province: '',
+      city: ''
     });
-    
+
     this.selectedCountry = this.countries.find(country => country.name.toLowerCase() === this.infoThird?.[6]?.toLowerCase());
-    this.createdThirdForm.patchValue({country: this.selectedCountry.id});
+    this.createdThirdForm.patchValue({ country: this.selectedCountry.id });
     this.countryCode = this.selectedCountry.id;
-    this.getDepartments();
+    this.getDepartments(1);
     this.selectedState = this.states.find(state => state.name.toLowerCase() === this.infoThird?.[7].toLowerCase());
-    this.createdThirdForm.patchValue({province: this.selectedState.id});
+    this.createdThirdForm.patchValue({ province: this.selectedState.id });
     this.getCities(this.selectedState.id);
-    this.createdThirdForm.patchValue({city: this.infoThird?.[8] ?? ''});
+    this.createdThirdForm.patchValue({ city: this.infoThird?.[8] ?? '' });
     this.onTypeIdChange2(this.infoThird?.[1] ?? '');
   }
 
   private getCountries(): void {
-    //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
-    this.countries = [{ name: 'Colombia', id: 1 }];
+    this.countries = [{ name: 'Colombia', id: 1 }, { name: 'Extranjero', id: 2 }];
+    //this.countries = [{ name: 'Colombia', id: 1 }];
   }
 
   private getTypesID(): void {
@@ -284,27 +284,34 @@ export class ThirdCreationComponent implements OnInit {
     const numeroFormateado = numero.padStart(15, '0');
     let suma = 0;
     for (let i = 0; i < 15; i++) {
-        suma += parseInt(numeroFormateado.charAt(i)) * pesos[i];
+      suma += parseInt(numeroFormateado.charAt(i)) * pesos[i];
     }
     const residuo = suma % 11;
     let digitoVerificacion;
     if (residuo === 0) {
-        digitoVerificacion = 0;
+      digitoVerificacion = 0;
     } else if (residuo === 1) {
-        digitoVerificacion = 1;
+      digitoVerificacion = 1;
     } else {
-        digitoVerificacion = 11 - residuo;
+      digitoVerificacion = 11 - residuo;
     }
     return digitoVerificacion;
   }
 
-  
+  //seleccion entre colombia o extranjero aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   onCountryChange(event: any) {
+
     const id_country = JSON.parse(event.target.value);
     this.selectedCountry = this.countries.find(country => country.id === id_country);
     console.log(this.selectedCountry);
     this.countryCode = this.selectedCountry.id;
-    this.getDepartments();
+    if (this.countries.find(country => country.id === id_country).name === 'Colombia') {
+      this.getDepartments(1);
+      this.getCities(this.selectedState.id);
+    } else {
+      this.getDepartments(2);
+      this.getCities(33);
+    }
   }
 
   onStateChange(event: any) {
@@ -320,8 +327,8 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  getDepartments() {
-    this.states = this.departmentService.getListDepartments();
+  getDepartments(id: number) {
+    this.states = this.departmentService.getDepartmentById(id);
   }
 
   onTypeIdChange(event: Event): void {
@@ -337,19 +344,19 @@ export class ThirdCreationComponent implements OnInit {
 
   onTypeIdChange2(value: string): void {
     if (value.includes('NIT')) {
-        console.log("tipo ID", value, " Se genera digito de verificacion");
-        this.createdThirdForm.get('verificationNumber')?.enable();
+      console.log("tipo ID", value, " Se genera digito de verificacion");
+      this.createdThirdForm.get('verificationNumber')?.enable();
     } else {
-        console.log("No se genera digito de verificacion");
-        this.createdThirdForm.get('verificationNumber')?.disable();
+      console.log("No se genera digito de verificacion");
+      this.createdThirdForm.get('verificationNumber')?.disable();
     }
   }
 
-  goToListThirds(): void {  
+  goToListThirds(): void {
     if (this.data && this.data.destination === 'destination') {
       this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
     } else {
-    this.router.navigateByUrl('/general/operations/third-parties');
+      this.router.navigateByUrl('/general/operations/third-parties');
     }
   }
 
@@ -497,7 +504,7 @@ export class ThirdCreationComponent implements OnInit {
 
     return errors;
   }
-  
+
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return thirdService.existThird(control.value).pipe(
@@ -553,7 +560,7 @@ export class ThirdCreationComponent implements OnInit {
         if (this.data && this.data.destination === 'destination') {
           this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
         } else {
-        this.goToListThirds();
+          this.goToListThirds();
         }
       },
       error: (error) => {

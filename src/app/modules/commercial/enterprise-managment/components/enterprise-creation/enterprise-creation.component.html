@@ -207,6 +207,17 @@
                                                 <div *ngIf="form.get('nit')?.hasError('pattern')">El NIT solo debe
                                                     contener numeros</div>
                                             </div>
+
+                                            <!-- 
+                                            <div class="dv col-span-3">
+                                                <label for="dv">Digito de verificación</label>
+                                                <input type="number" id="dv" name="dv"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                    formControlName="dv">
+                                            </div> 
+                                            -->
+
+
                                         </div>
 
                                         <!-- Tipo de Contribuytente -->
@@ -245,7 +256,7 @@
                                               <label for="mainActivity">Actividad Economica Principal</label>
                                               <input type="number" id="mainActivity" name="mainActivity"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                formControlName="mainActivity" placeholder="Ej: 123456">
+                                                formControlName="mainActivity" placeholder="Ej: 1234">
                                           
                                               <div *ngIf="form.get('mainActivity')?.invalid && form.get('mainActivity')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
@@ -258,7 +269,7 @@
                                               <label for="secondaryActivity">Actividad Economica Secundaria</label>
                                               <input type="number" id="secondaryActivity" name="secondaryActivity"
                                                 class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                formControlName="secondaryActivity" placeholder="Ej: 654321">
+                                                formControlName="secondaryActivity" placeholder="Ej: 4321">
                                           
                                               <div *ngIf="form.get('secondaryActivity')?.invalid && form.get('secondaryActivity')?.touched"
                                                 class="text-red-500 text-sm font-medium -mt-1">
@@ -308,10 +319,11 @@
                                 
 
                                 <div class="col-1 country w-full grid mb-3">
-                                    <label for="country1">País</label>
-                                    <input type="text" id="country1" name="country1"
-                                        class="border border-gray-400 rounded-md px-3 mt-1 py-1 w-full max-h-9"
-                                        value="Colombia" disabled>
+                                    <label for="country2">País</label>
+                                    <select id="country" name="country" class="border border-gray-400 rounded-md px-3 mt-1 py-1 w-full max-h-9" (change)="onCountryChange($event)">
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Extranjero">Extranjero</option>
+                                    </select>
                                 </div>
                                 <div class="col-1-department w-full grid gap-2 mb-3">
                                     <label for="department" class="font-medium">Departamento *</label>
@@ -456,12 +468,7 @@
                                             formControlName="branchSelected" />
                                     </div>
 
-                                    <div class="dv col-span-3">
-                                        <label for="dv">Digito de verificación</label>
-                                        <input type="number" id="dv" name="dv"
-                                            class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                            formControlName="dv">
-                                    </div>
+                                    
                                 </div>
 
                             </div>
