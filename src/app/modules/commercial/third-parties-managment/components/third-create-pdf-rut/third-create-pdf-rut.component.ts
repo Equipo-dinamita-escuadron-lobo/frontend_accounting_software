@@ -14,9 +14,10 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 export class ThirdCreatePdfRUTComponent {
   @Output() close = new EventEmitter<void>();
   
-  inputData = { title: 'Crear Tercero A partir del RUT' };
+  inputData = { title: 'Crear Tercero apartir del RUT' };
   pdfUrl: SafeResourceUrl | null = null;
   selectedFile: File | null = null;
+  isFileLoaded = false;
 
   constructor(
     private sanitizer: DomSanitizer, 
@@ -32,6 +33,7 @@ export class ThirdCreatePdfRUTComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(reader.result as string);
+        this.isFileLoaded = true;
       };
       reader.readAsDataURL(file);
     } else {
@@ -87,6 +89,7 @@ export class ThirdCreatePdfRUTComponent {
     this.close.emit();
     this.pdfUrl = null;
     this.selectedFile = null;
+    this.isFileLoaded = false;
   }
 
   redirectToCreateThird(infoThird: string): void {
