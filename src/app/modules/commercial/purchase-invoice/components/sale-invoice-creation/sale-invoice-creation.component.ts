@@ -218,8 +218,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     if (displayValue === '') {
       value = 0;
-      formatValue = '0';
-      return [0, '0'];
+      formatValue = '';
+      return [0, ''];
     }
     // Elimina caracteres no numéricos
     const numericValue = String(displayValue).replace(/\D/g, '') ;
@@ -236,15 +236,24 @@ export class SaleInvoiceCreationComponent implements OnInit {
   }
 
   // Paara calcular total de cada producto
-  calculateTotal(index: number,prod: ProductI): void {
-    this.lstProducts[index].price=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[0];
-    this.lstProducts[index].displayPrice=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[1];
+  calculateTotal(index?: number,prod?: ProductI): void {
+    if (index === undefined || prod === undefined) {
+      if(prod!=undefined){
+        prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+        prod.IvaValor = prod.totalValue * prod.IVA / 100;
+        this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
+      }
 
+      return;
+    }else{
+      this.lstProducts[index].price=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[0];
+      this.lstProducts[index].displayPrice=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[1];
     
+      prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+      prod.IvaValor = prod.totalValue * prod.IVA / 100;
+      this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
+    }
 
-    prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
-    prod.IvaValor = prod.totalValue * prod.IVA / 100;
-    this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
   switchDescuento(type: 'porc' | 'val', prod: ProductI): void {
@@ -260,10 +269,11 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
 
     }
+    this.calculateTotal(undefined,prod);
     this.calculateInvoiceTotals();
   }
 
-  // para calcular valor total del producto incluyendo IVA
+  // para calcular valor total del producto 
   calculateTotalValue(prod?: ProductI): any {
     if (prod) {
       if(prod.amount==0){
@@ -305,11 +315,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
     // Agregar al subtotal total
     this.subTotal += subtotalProducto;
 
-   
 });
 
     
-    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + (this.calculateTotalValue(prod) * prod.IVA / 100), 0);
     
 
     if ((this.uvt * 27) < this.subTotal && this.retencionCheck) {
