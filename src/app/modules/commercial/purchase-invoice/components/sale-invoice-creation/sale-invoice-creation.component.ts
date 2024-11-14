@@ -25,11 +25,13 @@ import { FactureV } from '../../models/factureV';
 import { ThirdCreationComponent } from '../../../third-parties-managment/components/third-creation/third-creation.component';
 import { UnitOfMeasureService } from '../../../product-managment/services/unit-of-measure.service';
 import { get } from 'jquery';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @Component({
 
   selector: 'app-sale-invoice-creation',
   templateUrl: './sale-invoice-creation.component.html',
-  styleUrls: ['./sale-invoice-creation.component.css']
+  styleUrls: ['./sale-invoice-creation.component.css'],
+
 })
 
 
@@ -81,6 +83,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     { title: 'Descuento' },
     { title: 'IVA' },
     { title: 'Subtotal' },
+    { title: 'Eliminar' }
   ];
 
   nota: string = "";
@@ -344,10 +347,15 @@ export class SaleInvoiceCreationComponent implements OnInit {
     
     this.total = this.subTotal + this.taxTotal - this.retention;
   }
+  deleteProduct(index: number): void {
+    this.lstProducts.splice(index, 1);
+    this.calculateInvoiceTotals();
+}
+
 
   saveFacture() {
     this.loadFactureInfo();
-
+    //console.log("Productos a enviar" + this.lstProductsSend.forEach(prod => { console.log(prod) }));
     const factureS: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
@@ -582,7 +590,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     );
   }
 
-  calculateDescountTotal(product: ProductI): number {
+  calculateDescountTotal(product: ProductI): Number {
     if (product.descuentos[1] != 0) {
       const priceTotal = product.price * product.amount;
       const discount = 100 * product.descuentos[1] / priceTotal;

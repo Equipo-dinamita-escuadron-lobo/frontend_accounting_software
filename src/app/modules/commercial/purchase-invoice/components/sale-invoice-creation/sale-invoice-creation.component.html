@@ -82,7 +82,7 @@
                         <i class="fas fa-plus ml-2"></i>
                     </button>
                 </div>
-                
+
 
                 @if (showInfoThird) {
                 <div class="grid sm:grid-cols-2 grid-cols-1 gap-4">
@@ -202,7 +202,7 @@
                                 <td class="px-4 py-1 whitespace-nowrap">{{ prod.itemType }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">{{ prod.description }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">
-                                   
+
                                     <div class="flex">
                                         <input class="text-center max-w-10" type="number" min="0"
                                             max="{{ prod.maxQuantity }}" [(ngModel)]="prod.amount"
@@ -222,25 +222,23 @@
                                     <div class="flex items-center">
                                         <span>$</span>
                                         <input class="text-center max-w-13 w-23 border border-gray-300 rounded-md"
-                                            type="text"  [(ngModel)]="prod.displayPrice"
-                                            (input)="calculateTotal(i,prod)"
+                                            type="text" [(ngModel)]="prod.displayPrice" (input)="calculateTotal(i,prod)"
                                             (keydown)="onKeyDown($event)">
                                     </div>
                                 </td>
 
                                 <td class="px-4 py-1 whitespace-nowrap flex items-center space-x-2">
-                                    <div class="flex items-center">                                        
+                                    <div class="flex items-center">
                                         <input class="text-center max-w-11 border border-gray-300 rounded-md"
                                             type="number" min="0" max="99" [(ngModel)]="prod.descuentos[0]"
                                             (input)="switchDescuento('porc',prod)">
-                                            <span>%</span>
+                                        <span>%</span>
                                     </div>
                                     <div class="flex items-center">
                                         <span>$</span>
                                         <input class="text-center max-w-13 w-20 border border-gray-300 rounded-md"
                                             type="text" [(ngModel)]="prod.displayDescuentos"
-                                            (input)="switchDescuento('val',prod)"
-                                            (keydown)="onKeyDown($event)">                                        
+                                            (input)="switchDescuento('val',prod)" (keydown)="onKeyDown($event)">
                                     </div>
                                 </td>
                                 <td class="px-4 py-1 whitespace-nowrap">
@@ -256,15 +254,29 @@
                                         </select>
                                         <div class="flex items-center space-x-2">
                                             <span>$</span>
-                                            {{prod.IvaValor| number:'1.2-2'}}          
+                                            {{prod.IvaValor| number:'1.2-2'}}
                                         </div>
 
                                     </div>
                                 </td>
                                 <td class="px-4 py-1 whitespace-nowrap">
                                     <span>$</span>
-                                    {{ formatPrice(calculateTotalValue(prod))| number:'1.2-2' }}                                    
+                                    {{ formatPrice(calculateTotalValue(prod))| number:'1.2-2' }}
                                 </td>
+                                <td class="px-4 py-1 whitespace-nowrap text-center">
+                                    <button (click)="deleteProduct(i)"
+                                        class="flex items-center justify-center text-red-500 hover:text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 6h18M9 6v12m6-12v12M5 6h14l-1 16H6L5 6zm5-3h4v2h-4V3z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                                
+
+
+
                             </tr>
                         </tbody>
                     </table>
@@ -276,18 +288,18 @@
                 <div class="">
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Subtotales:</p>
-                        <p class="w-40 ps-1 pt-1">${{ formatPrice(subTotal)| number:'1.2-2'  }}</p>
-                        
+                        <p class="w-40 ps-1 pt-1">${{ formatPrice(subTotal)| number:'1.2-2' }}</p>
+
                     </div>
                     <div class="flex">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Descuento:</p>
-                        <p class="w-40 ps-1 pt-1">${{ formatPrice(descuentoTotal)| number:'1.2-2'  }}</p>
-                        
+                        <p class="w-40 ps-1 pt-1">${{ formatPrice(descuentoTotal)| number:'1.2-2' }}</p>
+
                     </div>
                     <div class="flex items-baseline">
                         <p class="text-blue-950 bg-gray-200 text-lg font-bold mr-2 w-1/4">Impuestos:</p>
-                        <p class="w-40 ps-1 pt-1">${{ formatPrice(taxTotal) | number:'1.2-2'  }}</p>
-                        
+                        <p class="w-40 ps-1 pt-1">${{ formatPrice(taxTotal) | number:'1.2-2' }}</p>
+
                     </div>
                     @if (calculateRetention(uvt)) {
                     <div class="flex items-baseline">
@@ -300,7 +312,8 @@
                         </div>
 
 
-                        <p class="w-40 ps-1 pt-1" (ngModelChange)="calculateRetention(uvt)">${{ formatPrice(retention) | number:'1.2-2' }}
+                        <p class="w-40 ps-1 pt-1" (ngModelChange)="calculateRetention(uvt)">${{ formatPrice(retention) |
+                            number:'1.2-2' }}
                         </p>
                         <input class="w-4 h-4 ps-1 pt-1" type="checkbox" [(ngModel)]="retencionCheck"
                             (ngModelChange)="calculateInvoiceTotals()">
