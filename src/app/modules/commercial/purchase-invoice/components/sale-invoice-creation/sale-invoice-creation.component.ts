@@ -573,13 +573,24 @@ export class SaleInvoiceCreationComponent implements OnInit {
     );
   }
 
+  calculateDescountTotal(product: ProductI): number {
+    if (product.descuentos[1] != 0) {
+      const priceTotal = product.price * product.amount;
+      const discount = 100 * product.descuentos[1] / priceTotal;
+      return Math.floor(discount * 100) / 100; // Trunca a dos decimales
+    }
+    return Math.floor(product.descuentos[0] * 100) / 100; // Trunca a dos decimales
+  }
+  
   loadFactureInfo() {
+    const descuento = 0;
     this.lstProductsSend = this.lstProducts.map(prod => ({
+      
       productId: parseInt(prod.id),
       amount: prod.amount,
       description: prod.description,
       vat: prod.IVA / 100,
-      descount: prod.descuentos[0],
+      descount: this.calculateDescountTotal(prod),
       code: prod.itemType,
       unitPrice: prod.price,
       subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))
