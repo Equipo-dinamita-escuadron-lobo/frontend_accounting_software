@@ -19,7 +19,7 @@ else{
 })
 export class TaxLiabilityService {
 
-  private apiURL = API_URL + 'enterprise/'
+  private apiURL = API_URL + 'enterprises/'
 
   /**
    * PRUEBAS

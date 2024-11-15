@@ -74,8 +74,8 @@ export class ThirdsListComponent {
 
     if (this.entData) {
 
-      this.thirdService.getThirdParties(this.entData, 0).subscribe({
-        next: (response: Third[]) => {
+      this.thirdService.getThirdList(this.entData).subscribe({
+        next: (response: Third[])=>{
           this.data = response;
           console.log(response);
           this.dataSource = new MatTableDataSource<Third>(this.data);
