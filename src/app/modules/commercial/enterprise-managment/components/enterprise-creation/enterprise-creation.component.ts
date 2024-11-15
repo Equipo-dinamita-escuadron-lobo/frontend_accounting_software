@@ -557,7 +557,14 @@ export class EnterpriseCreationComponent implements OnInit {
    * Use the Taxlibility service to list in the select interface.
    */
   getAllTaxLiabilities() {
-    this.taxLiabilitiesList = this.taxLiabilityService.getTaxLiabilities();
+    this.taxLiabilityService.getTaxLiabilitiesBackend().subscribe(
+      (taxLiabilities: TaxLiability[]) => {
+        this.taxLiabilitiesList = taxLiabilities;
+      },
+      (error) => {
+        console.error('Error al obtener las obligaciones fiscales', error); 
+      }
+    );
   }
 
   /**
