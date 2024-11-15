@@ -200,8 +200,7 @@
                                 <td class="px-4 py-1 whitespace-nowrap">{{ formatPrice(prod.cost) }}</td>
                                 <td class="px-4 py-1 whitespace-nowrap">
                                     <div class="flex">
-                                        <input class="text-center max-w-10" type="number" min="0"
-                                            max="{{ prod.quantity }}" [(ngModel)]="prod.amount"
+                                        <input class="text-center max-w-10" type="number" min="0" [(ngModel)]="prod.amount"
                                             (input)="calculateTotal(prod)">
 
                                         <svg class="h-4 w-4 mt-1" width="24" height="24" viewBox="0 0 24 24"

@@ -1,6 +1,6 @@
 <mat-card class="mx-8 my-8 p-4 shadow-lg rounded-lg">
   <mat-card-header class="flex items-center mb-2 gap-2">
-    <button mat-icon-button (click)="goBack()">
+    <button mat-icon-button *ngIf="!isDialog"  (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <section>

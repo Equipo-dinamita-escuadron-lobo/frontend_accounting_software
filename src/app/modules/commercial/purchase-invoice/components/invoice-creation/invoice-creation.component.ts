@@ -10,18 +10,13 @@ import { Facture } from '../../models/facture';
 import { ProductI } from '../../models/productInvoice';
 import { ProductS } from '../../models/productSend';
 import { InvoiceServiceService } from '../../services/invoice-service.service';
-<<<<<<< HEAD
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
-import { buttonColors } from '../../../../../shared/buttonColors';
-=======
 import { InvoiceSelectProductsComponent } from '../invoice-select-products/invoice-select-products.component';
 import { InvoiceSelectSupplierComponent } from '../invoice-select-supplier/invoice-select-supplier.component';
 import { InvoicePreviewDialogComponent } from './invoice-preview/invoice-preview-dialog.component';
 import { PreviewFacture } from '../../models/previewFacture';
+import { buttonColors } from '../../../../../shared/buttonColors';
+import { FactureV } from '../../models/factureV';
 
-
->>>>>>> products
 
 @Component({
   selector: 'app-invoice-creation',
@@ -334,7 +329,7 @@ export class InvoiceCreationComponent implements OnInit {
 
     this.loadFactureInfo();
 
-    const previewFacture: Facture = {
+    const previewFacture: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: 0,
@@ -343,7 +338,8 @@ export class InvoiceCreationComponent implements OnInit {
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
-      facWithholdingSource: this.retention
+      facWithholdingSource: this.retention,
+      descounts: 0,
     };
 
 
@@ -410,9 +406,5 @@ export class InvoiceCreationComponent implements OnInit {
       }
     });
   }
-<<<<<<< HEAD
-}
-=======
 }
 
->>>>>>> products

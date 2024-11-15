@@ -63,6 +63,11 @@
         <td mat-cell *matCellDef="let cat"> {{ getCategoryName(cat.saleId) }} </td>
       </ng-container>
 
+      <ng-container matColumnDef="tax">
+        <th mat-header-cell *matHeaderCellDef class="bold-text"> Impuesto </th>
+        <td mat-cell *matCellDef="let cat"> {{ getTax(cat.taxId) }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="return">
         <th mat-header-cell *matHeaderCellDef class="bold-text"> Devolución </th>
         <td mat-cell *matCellDef="let cat"> {{ getCategoryName(cat.returnId) }} </td>

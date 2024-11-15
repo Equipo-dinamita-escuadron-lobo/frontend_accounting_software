@@ -8,6 +8,9 @@ import Swal from 'sweetalert2';
 import { ChartAccountService } from '../../../chart-accounts/services/chart-account.service';
 import { Account } from '../../../chart-accounts/models/ChartAccount';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { FormControl } from '@angular/forms';
+import { TaxService } from '../../../taxes/services/tax.service';
+import { Tax } from '../../../taxes/models/Tax';
 
 
 @Component({
@@ -16,6 +19,13 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrl: './category-edit.component.css'
 })
 export class CategoryEditComponent implements OnInit{
+
+
+inventoryFilterCtrl: FormControl = new FormControl();
+costFilterCtrl: FormControl = new FormControl();
+saleFilterCtrl: FormControl = new FormControl();
+taxFilterCtrl: FormControl = new FormControl();
+returnFilterCtrl: FormControl = new FormControl();
 
 categoryId: string = '';
 category: Category = {} as Category;
@@ -29,13 +39,14 @@ inventory: any[] = [];
 cost: any[] = [];
 sale: any[] = [];
 return: any[] = [];
-
+taxes: any [] = [];
 
 constructor(
   private route: ActivatedRoute,
   private categoryService: CategoryService,
   private formBuilder: FormBuilder,
   private router: Router,
+  private taxServices: TaxService,
   private chartAccountService: ChartAccountService,
 
 
@@ -46,7 +57,8 @@ constructor(
     inventory: ['', Validators.required],
     cost: ['', Validators.required],
     sale: ['', Validators.required],
-    return: ['', Validators.required]
+    return: ['', Validators.required],
+    tax: ['', Validators.required],
   });
 }
   ngOnInit(): void {
@@ -59,7 +71,63 @@ constructor(
     });
     //cuentas
     this.getCuentas();
+    this.getTaxes();
+    }
+
+    this.inventoryFilterCtrl.valueChanges.subscribe(() => {
+      this.filterInventory();
+    });
+    this.costFilterCtrl.valueChanges.subscribe(() => {
+      this.filterCost();
+    });
+    this.saleFilterCtrl.valueChanges.subscribe(() => {
+      this.filterSale();
+    });
+    this.returnFilterCtrl.valueChanges.subscribe(() => {
+      this.filterReturn();
+    });
+
+    this.taxFilterCtrl.valueChanges.subscribe(() => {
+      this.filterTax();
+    });
+
+  
   }
+
+  filterInventory() {
+    const searchTerm = this.inventoryFilterCtrl.value?.toLowerCase() || '';
+    this.inventory = this.accounts?.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(searchTerm)
+    ) || [];
+  }
+  
+  filterCost() {
+    const searchTerm = this.costFilterCtrl.value?.toLowerCase() || '';
+    this.cost = this.accounts?.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(searchTerm)
+    ) || [];
+  }
+  
+  filterSale() {
+    const searchTerm = this.saleFilterCtrl.value?.toLowerCase() || '';
+    this.sale = this.accounts?.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(searchTerm)
+    ) || [];
+  }
+  
+  filterReturn() {
+    const searchTerm = this.returnFilterCtrl.value?.toLowerCase() || '';
+    this.return = this.accounts?.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(searchTerm)
+    ) || [];
+  }
+
+
+  filterTax() {
+    const searchTerm = this.taxFilterCtrl.value?.toLowerCase() || '';
+    this.taxes = this.accounts?.filter(account =>
+      `${account.code} - ${account.description}`.toLowerCase().includes(searchTerm)
+    ) || [];
   }
 
   getCategoryDetails(): void {
@@ -77,6 +145,7 @@ constructor(
           inventory: category.inventoryId,
           cost: category.costId,
           sale: category.saleId,
+          tax: category.taxId,
           return: category.returnId
         });
 
@@ -88,8 +157,6 @@ constructor(
     );
   }
 
-    //cuentas
- //cuentas
  getCuentas(): void {
   this.chartAccountService.getListAccounts(this.entData).subscribe(
     (data: any[]) => {
@@ -105,36 +172,47 @@ constructor(
   );
 }
 
-mapAccountToList(data: Account[]): Account[] {
-  let result: Account[] = [];
+getTaxes() {
+  this.entData = this.localStorageMethods.loadEnterpriseData();
+  this.taxServices.getTaxes(this.entData).subscribe(
+    (data: Tax[]) => {
+      this.taxes = data  
+      
+    },
 
-  function traverse(account: Account) {
-      // Clonamos el objeto cuenta sin los hijos
-      let { children, ...accountWithoutChildren } = account;
-      result.push(accountWithoutChildren as Account);
-
-      // Llamamos recursivamente para cada hijo
-      if (children && children.length > 0) {
-          children.forEach(child => traverse(child));
-      }
-  }
-
-  data.forEach(account => traverse(account));
-  return result;
-}
-get filteredAccounts() {
-if (this.accounts) {
-  return this.accounts.filter(account =>
-    `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
   );
 }
-return [];
-}
 
-customSearchFn(term: string, item: any) {
-term = term.toLowerCase();
-return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
-}
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
+    }
+
+    data.forEach(account => traverse(account));
+    return result;
+  }
+  get filteredAccounts() {
+    if (this.accounts) {
+      return this.accounts.filter(account =>
+        `${account.code} - ${account.description}`.toLowerCase().includes(this.filterAccount.toLowerCase())
+      );
+    }
+    return [];
+  }
+
+  customSearchFn(term: string, item: any) {
+    term = term.toLowerCase();
+    return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
+  }
 
 
     validationsAll() {
@@ -153,6 +231,7 @@ return item.code.toLowerCase().includes(term) || item.description.toLowerCase().
       categoryData.costId = parseInt(categoryData.cost, 10);
       categoryData.saleId = parseInt(categoryData.sale, 10);
       categoryData.returnId = parseInt(categoryData.return, 10);
+      categoryData.taxId =  parseInt(categoryData.tax, 10);
       categoryData.enterpriseId = this.entData;
       categoryData.id=this.category.id;
       categoryData.state=this.category.state;

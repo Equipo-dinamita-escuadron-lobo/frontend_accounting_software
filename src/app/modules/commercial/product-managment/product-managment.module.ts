@@ -33,6 +33,8 @@ import { FilterCategoryPipe } from './pipes/filter-category.pipe';
 import { FilterUnitOfMeasurePipe } from './pipes/filter-unit-of-measure.pipe';
 import { FilterList } from './pipes/filter.pipe';
 import { ProductManagmentRoutingModule } from './product-managment-routing.module';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+
 
 
 @NgModule({
@@ -54,7 +56,8 @@ import { ProductManagmentRoutingModule } from './product-managment-routing.modul
         ProductTypeCreationComponent,
         ProductTypeEditComponent,
         ProductTypeListComponent,
-        FilterAccountPipe
+        FilterAccountPipe,
+        
     ],
     exports: [
         ProductCreationComponent,
@@ -87,6 +90,7 @@ import { ProductManagmentRoutingModule } from './product-managment-routing.modul
         MatDividerModule,
         MatPaginatorModule,
         MatPaginator,
+        NgxMatSelectSearchModule
     ]
 })
 export class ProductManagmentModule { }

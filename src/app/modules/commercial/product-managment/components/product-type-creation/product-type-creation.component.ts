@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Router } from '@angular/router';
@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CategoryCreationComponent } from '../category-creation/category-creation.component';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrls: ['./product-type-creation.component.css']
 })
 export class ProductTypeCreationComponent implements OnInit {
+  @Input() isDialog: boolean = false; 
   productTypeForm: FormGroup = this.formBuilder.group({});
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
@@ -22,7 +25,13 @@ export class ProductTypeCreationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productTypeService: ProductTypeService,
     private router: Router,
-  ) {}
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any, // Inyectar los datos solo cuando es un diálogo
+    @Optional() public dialogRef: MatDialogRef<CategoryCreationComponent> 
+  ) {
+    if (data && data.isDialog !== undefined) {
+      this.isDialog = data.isDialog;
+    }
+  }
 
   ngOnInit(): void {
     this.productTypeForm = this.formBuilder.group({
@@ -46,7 +55,11 @@ export class ProductTypeCreationComponent implements OnInit {
             confirmButtonColor: buttonColors.confirmationColor,
             confirmButtonText: 'Aceptar'
           });
-          this.resetForm();
+          if (this.dialogRef) {
+            this.dialogRef.close();
+          } else {
+            this.resetForm(); 
+          }
         },
         error => {
           console.error('Error al crear el tipo de producto:', error);

@@ -11,6 +11,8 @@ import { Category } from '../../models/Category';
 import { CategoryService } from '../../services/category.service';
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { TaxService } from '../../../taxes/services/tax.service';
+import { Tax } from '../../../taxes/models/Tax';
 
 
 @Component({
@@ -21,11 +23,12 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
   accounts: any[] = [];
+  taxes: Tax[] = [];
 
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
-  displayedColumns: string[] = ['id', 'name', 'description', 'inventory', 'cost', 'sale', 'return', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'inventory', 'cost', 'sale', 'return', 'tax', 'actions'];
   dataSource = new MatTableDataSource<Category>(this.categories);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -50,6 +53,7 @@ export class CategoryListComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private chartAccountService: ChartAccountService,
+    private taxService: TaxService,
 
     private fb: FormBuilder  ) {
     this.form = this.fb.group(this.validationsAll());
@@ -62,13 +66,27 @@ export class CategoryListComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if (this.entData) {
       this.getCategories();
       this.getCuentas();
+      await this.getTaxes();
+      
 
     }
+  }
+  async getTaxes() {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.taxService.getTaxes(this.entData).subscribe(
+      (data: Tax[]) => {
+        this.taxes = data  
+        console.log(this.categories);
+      },
+
+      
+      
+    );
   }
     //cuentas
     getCuentas(): void {
@@ -103,6 +121,11 @@ export class CategoryListComponent implements OnInit {
     getCategoryName(id: number): string {
       const account = this.accounts.find(cuenta => cuenta.id === id);
       return account ? account.description : 'No encontrado';
+    }
+
+    getTax(id: number){
+      const tax = this.taxes.find(tax => tax.id === id);
+      return tax?.code;
     }
 
 

@@ -42,10 +42,36 @@
           </mat-error>
         </mat-form-field>
 
+        
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Impuesto</mat-label>
+          <mat-select formControlName="tax">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar Impuesto..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="taxFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of taxes" [value]="item.id">
+              {{item.id}}- {{ item.code }} - {{ item.description }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="editForm.get('tax')?.hasError('required')">
+            El campo Impuesto es requerido.
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Inventario</mat-label>
           <mat-select formControlName="inventory">
-            <mat-option value="">Selecciona una opción</mat-option>
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar inventario..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="inventoryFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
             <mat-option *ngFor="let item of inventory" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
@@ -54,11 +80,18 @@
             El campo Inventario es requerido.
           </mat-error>
         </mat-form-field>
-
+        
+        <!-- Costo -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Costo</mat-label>
           <mat-select formControlName="cost">
-            <mat-option value="">Selecciona una opción</mat-option>
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar costo..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="costFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
             <mat-option *ngFor="let item of cost" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
@@ -67,11 +100,18 @@
             El campo Costo es requerido.
           </mat-error>
         </mat-form-field>
-
+        
+        <!-- Venta -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Venta</mat-label>
           <mat-select formControlName="sale">
-            <mat-option value="">Selecciona una opción</mat-option>
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar venta..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="saleFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
             <mat-option *ngFor="let item of sale" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
@@ -80,11 +120,18 @@
             El campo Venta es requerido.
           </mat-error>
         </mat-form-field>
-
+        
+        <!-- Devolución -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Devolución</mat-label>
           <mat-select formControlName="return">
-            <mat-option value="">Selecciona una opción</mat-option>
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar devolución..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="returnFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
             <mat-option *ngFor="let item of return" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>

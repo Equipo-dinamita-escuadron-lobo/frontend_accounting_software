@@ -38,13 +38,6 @@
       <h3 class="text-lg font-semibold text-gray-800">Observaciones</h3>
       <p class="font-medium text-gray-700"><strong></strong> {{ data.factObservations }}</p>
     </div>  
-
-    <div class="mt-6">
-      <h4 class="text-lg font-medium text-gray-800">Código QR</h4>
-      <div class="flex justify-center mt-4">
-        <qrcode [qrdata]="generateQRData()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-      </div>
-    </div>
   </div>
 </mat-dialog-content>
 

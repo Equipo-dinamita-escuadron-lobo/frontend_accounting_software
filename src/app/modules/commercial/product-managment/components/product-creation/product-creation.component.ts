@@ -7,15 +7,13 @@ import { CategoryService } from '../../services/category.service';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
-<<<<<<< HEAD
-import { ProductTypeService } from '../../services/product-type-service.service';
-import { ProductType } from '../../models/ProductType';
 import { buttonColors } from '../../../../../shared/buttonColors';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatDialogRef } from '@angular/material/dialog';
-=======
->>>>>>> products
-
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CategoryCreationComponent } from '../category-creation/category-creation.component';
+import { ProductTypeCreationComponent } from '../product-type-creation/product-type-creation.component';
+import { UnitOfMeasureCreationComponent } from '../unit-of-measure-creation/unit-of-measure-creation.component';
+import { TaxService } from '../../../taxes/services/tax.service';
+import { Tax } from '../../../taxes/models/Tax';
 @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -24,10 +22,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 
 export class ProductCreationComponent implements OnInit {
+
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   productTypes: any[] = [];
+  taxes: any[] = [];
 
   formSubmitAttempt: boolean = false;
   submitSuccess: boolean = false;
@@ -46,6 +46,8 @@ export class ProductCreationComponent implements OnInit {
     private categoryService: CategoryService,
     private productTypeService: ProductTypeService,
     private router: Router,
+    private dialog: MatDialog,
+    private taxService: TaxService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
 
   ) {}
@@ -79,7 +81,7 @@ export class ProductCreationComponent implements OnInit {
       this.getUnitOfMeasures();
       this.getCategories();
       this.loadProductTypes();
-
+      this.getTaxes();
     }
 
 
@@ -116,6 +118,7 @@ export class ProductCreationComponent implements OnInit {
       return value;
     }
   }
+  
 
   getUnitOfMeasures(): void {
     this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
@@ -134,6 +137,30 @@ export class ProductCreationComponent implements OnInit {
     );
   }
 
+  getTaxes() {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.taxService.getTaxes(this.entData).subscribe(
+      (data: Tax[]) => {
+        this.taxes = data  
+      },
+
+    );
+  }
+
+  onCategoryChange(categoryId: any) {
+    const selectedCategory = this.categories.find(category => category.id === categoryId);
+    console.log(selectedCategory)
+    if (selectedCategory) {
+      const tax = this.taxes.find(tax => tax.id ==  selectedCategory.taxId)
+      console.log(tax)
+      this.productForm.get('taxPercentage')?.setValue(tax.interest);
+    } else {
+      this.productForm.get('taxPercentage')?.setValue(null); // Resetea si no hay categoría seleccionada
+    }
+  
+  }
+
+
 
   //Metodo Complementario
   initForm(): void {
@@ -148,7 +175,7 @@ export class ProductCreationComponent implements OnInit {
       unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, [Validators.required, Validators.min(0)]],
-      reference: [null, [Validators.pattern(/^\d+$/)]],// Asigna el próximo ID al campo 'id'
+      reference: [null, ],// Asigna el próximo ID al campo 'id'
       productTypeId: [null, [ Validators.pattern(/^\d+$/)]], // Nuevo campo para el tipo de producto
     });
   }
@@ -201,14 +228,10 @@ export class ProductCreationComponent implements OnInit {
           icon: 'success',
           confirmButtonColor: buttonColors.confirmationColor,
         });
-<<<<<<< HEAD
         if(this.dialogRef){
           this.dialogRef.close('created');
         }
 
-=======
-        console.info(response);
->>>>>>> products
         // Restablece el formulario con la fecha actual
         this.resetFormWithCurrentDate();
         this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
@@ -265,6 +288,8 @@ formatcost(event: any) {
   //this.productForm.get('cost')?.setValue(formattedcost);
 }
 
+
+
   goBack(): void { 
     if (this.data && this.data.destination === 'destination') {
       this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
@@ -272,6 +297,35 @@ formatcost(event: any) {
       this.router.navigate(['/general/operations/products']);
     }
   }
+
+
+  openCategoryDialog(): void {
+    const dialogRef = this.dialog.open(CategoryCreationComponent, {
+      data: { isDialog: true }
+    });
+  
+    dialogRef.afterClosed().subscribe(_ => {
+      this.getCategories();
+    });
+  }
+
+openProductTypeDialog(): void {
+  const dialogRef = this.dialog.open(ProductTypeCreationComponent , {
+    data: { isDialog: true }
+  });
+  dialogRef.afterClosed().subscribe(_ => {
+    this.loadProductTypes();
+  });
+}
+
+openUnitOfMeasureDialog(): void {
+  const dialogRef = this.dialog.open(UnitOfMeasureCreationComponent, {
+    data: { isDialog: true }
+  });
+  dialogRef.afterClosed().subscribe(_ => {
+    this.getUnitOfMeasures();
+  });
+}
   
 }
 

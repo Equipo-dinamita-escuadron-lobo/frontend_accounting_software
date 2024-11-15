@@ -1,6 +1,6 @@
 <mat-card class="mx-8 my-8 p-4 shadow-lg rounded-lg">
   <mat-card-header class="flex items-center mb-2 gap-2">
-    <button mat-icon-button (click)="goBack()">
+    <button mat-icon-button *ngIf="!isDialog" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
     </button>
     <section>
@@ -43,10 +43,35 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Impuesto</mat-label>
+          <mat-select formControlName="tax">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar Impuesto..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="inventoryFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of filteredTaxes | async" [value]="item.id">
+              {{item.id}}- {{ item.code }} - {{ item.description }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="categoryForm.get('tax')?.hasError('required')">
+            El campo Impuesto es requerido.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Inventario</mat-label>
           <mat-select formControlName="inventory">
-            <mat-option value="">Selecciona una opción</mat-option>
-            <mat-option *ngFor="let item of inventory" [value]="item.id">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar inventario..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="inventoryFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of filteredInventory | async" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
           </mat-select>
@@ -55,11 +80,18 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Costo -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Costo</mat-label>
           <mat-select formControlName="cost">
-            <mat-option value="">Selecciona una opción</mat-option>
-            <mat-option *ngFor="let item of cost" [value]="item.id">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar costo..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="costFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of filteredCost | async" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
           </mat-select>
@@ -68,11 +100,18 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Venta -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Venta</mat-label>
           <mat-select formControlName="sale">
-            <mat-option value="">Selecciona una opción</mat-option>
-            <mat-option *ngFor="let item of sale" [value]="item.id">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar venta..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="saleFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of filteredSale | async" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
           </mat-select>
@@ -81,11 +120,18 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Devolución -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>Devolución</mat-label>
           <mat-select formControlName="return">
-            <mat-option value="">Selecciona una opción</mat-option>
-            <mat-option *ngFor="let item of return" [value]="item.id">
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="Buscar devolución..."
+                noEntriesFoundLabel="No encontrado"
+                [formControl]="returnFilterCtrl">
+              </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let item of filteredReturn | async" [value]="item.id">
               {{ item.code }} - {{ item.description }}
             </mat-option>
           </mat-select>
@@ -93,6 +139,7 @@
             El campo Devolución es requerido.
           </mat-error>
         </mat-form-field>
+
       </div>
 
       <!-- Botón de envío -->

@@ -17,20 +17,17 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-<<<<<<< HEAD
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { SaleInvoiceCreationComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-creation/sale-invoice-creation.component';
-import { SaleInvoiceSelectedProductsComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-selected-products/sale-invoice-selected-products.component';
-import { SaleInvoiceSelectedSupplierComponent } from './modules/commercial/purchase-invoice/components/sale-invoice-selected-supplier/sale-invoice-selected-supplier.component';
-=======
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { QRCodeModule } from 'angularx-qrcode';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatCardModule } from '@angular/material/card';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
->>>>>>> products
+
 
 @NgModule({
   declarations: [
@@ -51,18 +48,16 @@ import { QRCodeModule } from 'angularx-qrcode';
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
-<<<<<<< HEAD
-    MatTooltipModule
-=======
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
     MatProgressSpinnerModule,
     MatTableModule,
     MatDividerModule,
-    QRCodeModule
+    QRCodeModule,
+    MatTooltipModule,
+    NgxMatSelectSearchModule
 
->>>>>>> products
   ],
   providers: [
     {

@@ -52,6 +52,11 @@ export class ProductTypeListComponent implements OnInit {
     );
   }
 
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   editProductType(id: string): void {
     this.router.navigate([`/general/operations/product-types/edit/${id}`]);
   }

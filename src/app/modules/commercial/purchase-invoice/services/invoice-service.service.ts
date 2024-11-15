@@ -5,13 +5,8 @@ import { environment } from '../../../../../environments/environment';
 import { Facture } from '../models/facture';
 
 let API_URL = '';
-<<<<<<< HEAD
-if(environment.microservice == 'factureManagment'){
-  API_URL = environment.API_LOCAL_URL;
-=======
 if(environment.microservice == 'enterprise'){
   API_URL = environment.API_FEATURES_URL;
->>>>>>> products
 }
 else{
   API_URL = environment.API_URL;
@@ -49,11 +44,6 @@ export class InvoiceServiceService {
         headers: headers,
         responseType: 'blob'
     });
-<<<<<<< HEAD
-}
-
-=======
->>>>>>> products
 }
 
 }

@@ -37,15 +37,12 @@
     "frontend": "file:",
     "jquery": "^3.7.1",
     "ngx-dropzone": "^3.1.0",
+    "ngx-mat-select-search": "^7.0.8",
     "pdf-lib": "^1.17.1",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.6.13",
     "tslib": "^2.6.2",
-<<<<<<< HEAD
     "xlsx": "^0.18.5",
-=======
-    "xlsx": "^0.18.0",
->>>>>>> products
     "zone.js": "~0.14.2"
   },
   "devDependencies": {

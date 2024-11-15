@@ -10,11 +10,24 @@
       </mat-card-title>
     </section>
   </mat-card-header>
-  <mat-card-actions class="flex justify-end mt-4">
-    <button mat-raised-button color="primary" routerLink="/general/operations/product-types/create">
-      Agregar Tipo de Producto
-    </button>
-  </mat-card-actions>
+
+
+
+  <div
+ class="container-buttons-search grid grid-cols-2 py-4 px-4 w-full items-center justify-center"
+>
+<mat-form-field appearance="outline">
+  <mat-label>Buscar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Ej cm" #input>
+</mat-form-field>
+
+ <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
+  <button mat-raised-button color="primary" routerLink="/general/operations/product-types/create">
+    Agregar
+  </button>
+ </div>
+</div>
+
   <mat-card-content>
     <div class="lg:text-md mx-auto w-full">
       <div class="mat-elevation-z8">

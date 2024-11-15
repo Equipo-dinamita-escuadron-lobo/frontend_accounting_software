@@ -59,22 +59,19 @@
           </mat-form-field>
         </div>
 
+
         <div>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Cantidad:</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="quantity"
-              min="0"
-              placeholder="Ej: 1"
-            />
-            <mat-error *ngIf="editForm.get('quantity')?.touched && editForm.get('quantity')?.errors">
-              <span *ngIf="editForm.get('quantity')?.errors?.['required']">
-                El campo Cantidad es requerido.
-              </span>
-              <span *ngIf="editForm.get('quantity')?.errors?.['min']">
-                La Cantidad no puede ser negativa.
+            <mat-label>Categoría:</mat-label>
+            <mat-select formControlName="categoryId">
+              <mat-option value="">Selecciona una categoría</mat-option>
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('categoryId')?.touched && editForm.get('categoryId')?.invalid">
+              <span *ngIf="editForm.get('categoryId')?.errors?.['required']">
+                El campo Categoría es requerido.
               </span>
             </mat-error>
           </mat-form-field>
@@ -124,20 +121,16 @@
 
         <div>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Categoría:</mat-label>
-            <mat-select formControlName="categoryId">
-              <mat-option value="">Selecciona una categoría</mat-option>
-              <mat-option *ngFor="let category of categories" [value]="category.id">
-                {{ category.name }}
+            <mat-label>Tipo de Producto:</mat-label>
+            <mat-select formControlName="productTypeId" id="productTypeId">
+              <mat-option value="">Selecciona un tipo de producto</mat-option>
+              <mat-option *ngFor="let productType of productTypes" [value]="productType.id">
+                {{ productType.name }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="editForm.get('categoryId')?.touched && editForm.get('categoryId')?.invalid">
-              <span *ngIf="editForm.get('categoryId')?.errors?.['required']">
-                El campo Categoría es requerido.
-              </span>
-            </mat-error>
           </mat-form-field>
         </div>
+        
 
         <div>
           <mat-form-field appearance="outline" class="w-full">
@@ -163,16 +156,24 @@
 
         <div>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Tipo de Producto:</mat-label>
-            <mat-select formControlName="productTypeId" id="productTypeId">
-              <mat-option value="">Selecciona un tipo de producto</mat-option>
-              <mat-option *ngFor="let productType of productTypes" [value]="productType.id">
-                {{ productType.name }}
-              </mat-option>
-            </mat-select>
+            <mat-label>Cantidad:</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="quantity"
+              min="0"
+              placeholder="Ej: 1"
+            />
+            <mat-error *ngIf="editForm.get('quantity')?.touched && editForm.get('quantity')?.errors">
+              <span *ngIf="editForm.get('quantity')?.errors?.['required']">
+                El campo Cantidad es requerido.
+              </span>
+              <span *ngIf="editForm.get('quantity')?.errors?.['min']">
+                La Cantidad no puede ser negativa.
+              </span>
+            </mat-error>
           </mat-form-field>
         </div>
-        
 
         <div>
           <button mat-raised-button color="primary" type="submit" class="h-10 w-auto">

@@ -75,6 +75,7 @@ constructor(private http: HttpClient) { }
 
   // Método para crear una nueva categoría
   createCategory(category: Category): Observable<Category> {
+    console.log(category);
     const url = `${environment.API_PRODUCTS_URL}categories/create`;
     return this.http.post<Category>(url, category);
   }
