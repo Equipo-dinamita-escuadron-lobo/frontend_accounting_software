@@ -507,7 +507,7 @@ export class ThirdCreationComponent implements OnInit {
 
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return thirdService.existThird(control.value).pipe(
+      return thirdService.existThird(control.value, this.entData).pipe(
         map((isDuplicated: any) => (isDuplicated ? { idDuplicado: true } : null)),
         catchError(() => of(null)) // Manejar errores del servicio
       );

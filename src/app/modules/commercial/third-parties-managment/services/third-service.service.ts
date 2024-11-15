@@ -22,9 +22,9 @@ export class ThirdServiceService {
     this.infoThirdRUT = null;
   }
 
-  private thirdApiUrl = environment.API_URL + 'thirds/'
+  //private thirdApiUrl = environment.API_URL + 'thirds/'
   //Cambiar para desarrollo local
-  //private thirdApiUrl = 'http://localhost:8081/api/thirds/'
+  private thirdApiUrl = 'http://localhost:8081/api/thirds/'
 
   constructor(private http: HttpClient){
   }
@@ -79,8 +79,8 @@ export class ThirdServiceService {
   getThirdPartie(thId:number): Observable<Third>{
     return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
   }
-  existThird(thId:number): Observable<boolean>{
-    return this.http.get<boolean>(this.thirdApiUrl+`existBy?thId=${thId}`)
+  existThird(thId:number, entId:String): Observable<boolean>{
+    return this.http.get<boolean>(`${this.thirdApiUrl}existBy?idNumber=${thId}&entId=${entId}`);
   }
 
   changeThirdPartieState(thId:number): Observable<Boolean>{
