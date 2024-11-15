@@ -73,6 +73,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
   paymentMethod: string = 'debito';
   lstProductsSend: ProductS[] = [];
 
+  factureType: string = 'Venta';
+
   columnsProducts: any[] = [
     { title: '#' },
     { title: 'Codigo', data: 'itemType' },
@@ -153,7 +155,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     if (lstProducts != null || this.lstProducts.length > 0) {
 
       lstProducts.forEach((prod) => {
-        console.log(prod.unitOfMeasureId);
+        //console.log(prod.unitOfMeasureId);
         this.UnitMeasureService.getUnitOfMeasuresId("" + prod.unitOfMeasureId).subscribe({
           next: (response) => {
             prod.unitOfMeasure = response.abbreviation;
@@ -232,7 +234,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     // Agrega puntos de miles para el displayValue
     formatValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    console.log(formatValue);
+    //console.log(formatValue);
 
     return [value, formatValue];
 
@@ -362,7 +364,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       factCode: 0,
       factObservations: this.nota, //Modificar cuando se agregue campo en la vista
       descounts: this.descuentoTotal, //Modificar cuando se agregue campo en la vista
-      factureType: "Venta",
+      factureType: this.factureType,
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
@@ -448,7 +450,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     _popUp.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Información recibida del modal:', result);
+        //console.log('Información recibida del modal:', result);
         this.selectedSupplier = result;
         this.showInfoThird = true;
         this.showSectionProducts = true;
@@ -498,7 +500,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
-        console.log('Información recibida del modal:', result);
+        //console.log('Información recibida del modal:', result);
         let products = result.map((prod: any) => {
           return {
             id: prod.id,
@@ -526,11 +528,11 @@ export class SaleInvoiceCreationComponent implements OnInit {
           prod.totalValue = 0;
         });
         this.lstProducts = this.getUnitOfMeasureForId(this.lstProducts);
-        console.log(this.lstProducts);
+        //console.log(this.lstProducts);
         this.showInfoProducts = true;
         this.calculateInvoiceTotals();
       } else {
-        console.log('No seleccionó ningún producto');
+        //console.log('No seleccionó ningún producto');
         this.showInfoProducts = false;
       }
     });
@@ -546,7 +548,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: 0,
-      factureType: "Venta",
+      factureType: this.factureType,
       descounts: this.descuentoTotal, 
       factObservations: this.nota, 
       factProducts: this.lstProductsSend,

@@ -42,10 +42,10 @@ export class SaleInvoiceSelectedSupplierComponent {
         next: (response: any[]) => {
           // Filtrar los terceros que tienen thirdTypes con thirdTypeName igual a "Proveedor"
           this.lstThirds = response
-          console.log('Terceros:', this.lstThirds);
+          //console.log('Terceros:', this.lstThirds);
         },
         error: (error) => {
-          console.log(error);
+          //console.log(error);
           Swal.fire({
             title: 'Error',
             text: 'No se han encontrado terceros para esta empresa!',
@@ -60,7 +60,7 @@ export class SaleInvoiceSelectedSupplierComponent {
 
   selectItem(selectedValue: string): void {
     this.selectedItem = selectedValue;
-    console.log('Item seleccionado:', this.selectedItem);
+    //console.log('Item seleccionado:', this.selectedItem);
     this.ref.close(this.selectedItem);
   }
 
