@@ -246,7 +246,7 @@ export class ThirdsListComponent {
           title: 'Error al crear los terceros',
           text: 'Hubo un error al procesar el archivo, por favor intente nuevamente.',
           icon: 'error',
-          confirmButtonText: 'Aceptar'
+          confirmButtonColor: buttonColors.confirmationColor
         });
       }
     });
