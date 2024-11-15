@@ -11,8 +11,8 @@ import { NatureType } from '../models/NatureType';
 let API_URL = '';
 
 // If the microservice is for account catalogue, set the API URL to local URL
-if(environment.microservice == 'accountCatalogue'){
-    API_URL = environment.API_LOCAL_URL;
+if(environment.microservice == 'enterprise'){
+    API_URL = environment.API_ACCOUNT_CATALOGE_URL;
 }
 else{
     API_URL = environment.API_URL;

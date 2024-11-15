@@ -5,10 +5,10 @@ import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { Product } from '../../models/Product';
 import { CategoryService } from '../../services/category.service';
+import { ProductTypeService } from '../../services/product-type-service.service';
 import { ProductService } from '../../services/product.service';
 import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ProductType } from '../../models/ProductType';
-import { ProductTypeService } from '../../services/product-type-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
 
@@ -27,7 +27,7 @@ export class ProductEditComponent implements OnInit {
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-  productTypes: ProductType[] = [];
+  productTypes: any[] = [];
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   entData: any | null = null;
 
@@ -52,7 +52,7 @@ export class ProductEditComponent implements OnInit {
       categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
       cost: [null, Validators.required],
       reference: [''],
-      productTypeId: ['']
+      productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
     }, { validators: quantityValidator });
   }
 
@@ -75,7 +75,7 @@ export class ProductEditComponent implements OnInit {
 
   loadProductTypes(): void {
     this.productTypeService.getAllProductTypes().subscribe(
-      (data: ProductType[]) => {
+      (data: any[]) => {
         this.productTypes = data;
       },
       error => {
@@ -123,7 +123,7 @@ export class ProductEditComponent implements OnInit {
         categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
         cost: [null, [Validators.required, Validators.min(0)]],
         reference: [''],
-        productTypeId: ['']
+        productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
       });
     }
 
@@ -146,7 +146,7 @@ export class ProductEditComponent implements OnInit {
           categoryId: product.categoryId,
           cost: product.cost,
           reference: product.reference,
-          productTypeId: product.productType.id,
+          productTypeId: product.productTypeId,
         });
       },
       error => {
@@ -203,24 +203,16 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
-  //Metodo para formatear el precio
-  formatcost(event: any) {
-    const costInput = event.target.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+  //Metodo para formatear el costo
+formatcost(event: any) {
+    const inputValue = event.target.value;
     let formattedcost = '';
-    if (costInput !== '') {
-      // Convertir el precio a número
-      const cost = parseInt(costInput, 10);
-      // Formatear el precio con separador de miles y decimales
-      formattedcost = this.formatNumberWithCommas(cost);
+
+    if (inputValue !== '') {
+        // Convertir el precio a número entero (asumiendo que no hay decimales)
+        const cost = parseFloat(inputValue.replace(',', ''));
     }
-    this.editForm.get('cost')?.setValue(formattedcost);
-  }
-
-  // Función para formatear un número con separadores de miles
-  formatNumberWithCommas(number: number): string {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
+}
 
   goBack(): void {
     this.router.navigate(['/general/operations/products']);

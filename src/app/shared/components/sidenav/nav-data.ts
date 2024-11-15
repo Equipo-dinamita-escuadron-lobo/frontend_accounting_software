@@ -27,20 +27,20 @@ export const navbarData: INavbarData[] = [
     label: 'Inventario',
     items: [
       {
-        routeLink: '/general/operations/products',
-        label: 'Productos',
+        routeLink: '/general/operations/categories',
+        label: 'Categorías',
       },
       {
         routeLink: '/general/operations/product-types',
         label: 'Tipo de Productos',
       },
       {
-        routeLink: '/general/operations/categories',
-        label: 'Categorías',
-      },
-      {
         routeLink: '/general/operations/unities',
         label: 'Unidades de Medida',
+      },
+      {
+        routeLink: '/general/operations/products',
+        label: 'Productos',
       }
     ]
   },

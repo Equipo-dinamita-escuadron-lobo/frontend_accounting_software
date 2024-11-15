@@ -1,39 +1,27 @@
-<div class="flex flex-col justify-start items-center m-10">
-<div class="mb-6 self-start">
-  <span class="text-4xl text-blue-950 self-start">Productos</span>
-</div>
+<!-- Botones para agregar producto, categoría y unidad -->
+<mat-card class="mx-8 my-8 p-2 shadow-lg rounded-lg">
+  <mat-card-header class="flex items-center gap-2">
+    <section>
+      <mat-card-title class="text-4xl text-blue-950">
+        Productos
+      </mat-card-title>
+    </section>
+  </mat-card-header>
+  <mat-card-content>
+<div class="flex flex-col justify-start items-center">
+
 
 <div class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center  mx-4 py-2">
-  <div class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex">
-      <svg
-        class="h-6 w-6 text-blue-500 mr-2"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-      <form [formGroup]="form" class="flex justify-start items-start">
-        <input
-          type="text"
-          class="mb-2 w-full outline-none bg-transparent"
-          id="stringSearch"
-          placeholder="Buscar"
-          name="stringSearch"
-          formControlName= "stringSearch"
-        />
-      </form>
-    </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+      </mat-form-field>
 
     <div class="gap-2 col-span-1 w-full flex items-end justify-end text-lg">
 
       <button
         mat-flat-button color="primary"
-        class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
+        class="w-[190px] block rounded-xl bg-blue-950 text-white"
         (click)="redirectTo('/general/operations/product-types')"
       >
         Tipo de Productos
@@ -50,7 +38,7 @@
         class="h-10 p-1 min-w-14 block rounded-xl bg-blue-950 text-white"
         (click)="redirectTo('/general/operations/unities')"
       >
-        Unidades
+        Unidades de medida
       </button>
       <button
         mat-flat-button color="primary"
@@ -78,22 +66,6 @@
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Nombre </th>
           <td mat-cell *matCellDef="let prod"> {{prod.itemType}} </td>
         </ng-container>
-
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef class="bold-text"> Descripción </th>
-          <td mat-cell *matCellDef="let prod"> {{prod.description}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="cost">
-          <th mat-header-cell *matHeaderCellDef class="bold-text"> Costo x Unidad </th>
-          <td mat-cell *matCellDef="let prod"> {{formatCost(prod.cost)}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="quantity">
-          <th mat-header-cell *matHeaderCellDef class="bold-text"> Cantidad </th>
-          <td mat-cell *matCellDef="let prod"> {{prod.quantity}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="unitOfMeasure">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Unidad </th>
           <td mat-cell *matCellDef="let prod"> {{getUnitOfMeasureName(prod.unitOfMeasureId)}} </td>
@@ -104,15 +76,16 @@
           <td mat-cell *matCellDef="let prod"> {{getCategoryName(prod.categoryId)}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="productType">
-          <th mat-header-cell *matHeaderCellDef class="bold-text"> Tipo de producto </th>
-          <td mat-cell *matCellDef="let prod"> {{prod.productType.name}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="reference">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Referencia </th>
           <td mat-cell *matCellDef="let prod"> {{prod.reference}} </td>
         </ng-container>
+
+        <ng-container matColumnDef="productType">
+          <th mat-header-cell *matHeaderCellDef class="bold-text"> Tipo de producto </th>
+          <td mat-cell *matCellDef="let prod"> {{getProductTypeName(prod.productTypeId)}} </td>
+        </ng-container>
+        
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="bold-text"> Acciones </th>
           <td mat-cell *matCellDef="let prod">
@@ -142,10 +115,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     
-      <mat-paginator [pageSizeOptions]="[10]"
-            showFirstLastButtons
-            aria-label="Select page of products">
-      </mat-paginator>
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
   <!-- Manejar caso de lista vacía -->
@@ -153,3 +123,5 @@
     <p class="text-gray-700">No hay productos disponibles.</p>
   </ng-template>
 </div>
+</mat-card-content>
+</mat-card>

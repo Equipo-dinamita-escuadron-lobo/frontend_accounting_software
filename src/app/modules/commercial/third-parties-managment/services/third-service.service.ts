@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { Third } from '../models/Third';
 import { environment } from '../../../../../environments/environment';
+import { Third } from '../models/Third';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +22,8 @@ export class ThirdServiceService {
     this.infoThirdRUT = null;
   }
 
-  private thirdApiUrl = environment.API_URL + 'thirds/'
-  //Cambiar para desarrollo local
-  //private thirdApiUrl = 'http://localhost:8081/api/thirds/'
+  private thirdApiUrl = environment.API_THIRS_URL + 'thirds/'
+  //private thirdApiUrl = 'http://localhost:8080/api/thirds/'
 
   constructor(private http: HttpClient){
   }

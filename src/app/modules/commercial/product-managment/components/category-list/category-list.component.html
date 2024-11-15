@@ -1,45 +1,25 @@
-<div class="px-16 py-3 font-titillium">
-<div class="flex flex-col justify-start items-center m-10">
-  <div class="mb-6 self-start">
-    <span class="text-4xl text-blue-950 self-start">Categoria</span>
- </div>
+<mat-card class="mx-8 my-8 p-2 shadow-lg rounded-lg">
+  <mat-card-header class="flex items-center gap-2">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <section>
+      <mat-card-title class="text-4xl text-blue-950">
+        Categoría
+      </mat-card-title>
+    </section>
+  </mat-card-header>
+  <mat-card-content>
+<div class="flex flex-col justify-start items-center">
 
-<div
- class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center mr-5"
->
- <div
-   class="border-b-2 border-blue-800 rounded-md w-4/5 col-span-1 flex "
- >
-   <svg
-     class="h-6 w-6 text-blue-500 mr-2"
-     viewBox="0 0 24 24"
-     fill="none"
-     stroke="currentColor"
-     stroke-width="2"
-     stroke-linecap="round"
-     stroke-linejoin="round"
-   >
-     <circle cx="11" cy="11" r="8" />
-     <line x1="21" y1="21" x2="16.65" y2="16.65" />
-   </svg>
-   <form [formGroup]="form" class="flex justify-start items-start">
-     <input
-       type="text"
-       class="mb-2 w-full outline-none bg-transparent"
-       id="stringSearchCategory"
-       placeholder="Buscar"
-       name="stringSearchCategory"
-       formControlName= "stringSearchCategory"
-     />
-   </form>
- </div>
+  <div class="container-buttons-search grid grid-cols-2 w-full mb-4 items-center justify-center  mx-4 py-2">
+ 
+<mat-form-field appearance="outline">
+  <mat-label>Buscar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+</mat-form-field>
 
- <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">
-    <button mat-flat-button color="primary" class="custom-button" (click)="goBack()">
-      <span class="custom-icon">
-        <i class="fas fa-arrow-left"></i>
-      </span>
-    </button>    
+ <div class="p-4 gap-2 col-span-1 w-full flex items-end justify-end text-lg">   
     <button
         mat-flat-button color="primary"
         class="h-16 p-1 min-w-18 block w-28 rounded-xl bg-blue-950 text-white"
@@ -110,16 +90,14 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10]"
-      showFirstLastButtons
-      aria-label="Select page of categories">
-    </mat-paginator>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
   </div>
 </div>
 
 <!-- Manejar caso de lista vacía -->
-<ng-template #noProducts>
+<ng-template #noCategories>
  <p class="text-gray-700">No hay Categorías disponibles.</p>
 </ng-template>
 </div>
-</div>
+</mat-card-content>
+</mat-card>

@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import Swal from 'sweetalert2';
 import { ThirdType } from '../../../third-parties-managment/models/ThirdType';
+import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
-
 @Component({
   selector: 'app-invoice-select-supplier',
   templateUrl: './invoice-select-supplier.component.html',
@@ -38,7 +37,7 @@ export class InvoiceSelectSupplierComponent {
         next: (response: any[]) => {
           // Filtrar los terceros que tienen thirdTypes con thirdTypeName igual a "Proveedor"
           this.lstThirds = response.filter(third =>
-            third.thirdTypes.some((type: ThirdType) => type.thirdTypeName === 'Proveedor')
+            third.thirdTypes.some((type: ThirdType) => type.thirdTypeName === 'Proveedor'  || type.thirdTypeName === 'proveedor')
           );
         },
         error: (error) => {

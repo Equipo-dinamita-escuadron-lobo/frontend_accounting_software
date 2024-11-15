@@ -19,7 +19,7 @@ export class InvoiceSelectProductsComponent {
     { title: 'Codigo', data: 'code' },
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
-    { title: 'Precio', data: 'price' },
+    { title: 'Costo', data: 'cost' },
     { title: 'Seleccionar' }
   ];
 
@@ -33,8 +33,8 @@ export class InvoiceSelectProductsComponent {
   getProducts(): void {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
-        console.log('recibe el id de producto num:', this.inputData.thId)
-        this.products = data.filter(product => product.id === this.inputData.thId);
+        console.log('recibe el id de producto num:', this.inputData.entId);
+        this.products = data.filter(product => product.enterpriseId === this.inputData.entId);
       },
       (error) => {
         console.log('Error al obtener los productos:', error);
@@ -51,8 +51,8 @@ export class InvoiceSelectProductsComponent {
     }
   }
 
-  formatPrice(price: number): string {
-    return price.toLocaleString('es-ES');
+  formatPrice(cost: number): string {
+    return cost.toLocaleString('es-ES');
   }
 
   confirmSelection() {
