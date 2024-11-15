@@ -12,6 +12,7 @@ export const environment = {
   API_PRODUCTS_URL: 'http://localhost:8081/api/',
   API_THIRS_URL: 'http://localhost:8082/api/',
   API_FEATURES_URL: 'http://localhost:8083/api/',
+  API_ACCOUNT_CATALOGE_URL: 'http://localhost:8084/api/',
   API_LOCAL_URL: 'http://localhost:8080/api/',
   microservice: 'enterprise' // accountCatalogue, enterprise
 };

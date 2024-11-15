@@ -9,6 +9,7 @@ export const environment = {
     API_PRODUCTS_URL: 'http://contables.unicauca.edu.co/api/',
     API_FEATURES_URL: 'http://contables.unicauca.edu.co/api/',
     API_THIRS_URL: 'http://contables.unicauca.edu.co/api/',
+    API_ACCOUNT_CATALOGE_URL: 'http://contables.unicauca.edu.co/api/',
     API_LOCAL_URL: '',
     microservice: ''
   };
