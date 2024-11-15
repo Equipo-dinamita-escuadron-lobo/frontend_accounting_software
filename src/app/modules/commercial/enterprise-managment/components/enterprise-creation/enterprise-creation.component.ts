@@ -111,7 +111,7 @@ export class EnterpriseCreationComponent implements OnInit {
   ngOnInit(): void {
     this.getDepartments(1);
     this.getTypesEnterprise();
-    this.getAllTaxPayeres();
+    this.getAllTaxPayer();
     this.getAllTaxLiabilities();
 
     this.form.get('nit')?.valueChanges.subscribe(value => {
@@ -571,8 +571,17 @@ export class EnterpriseCreationComponent implements OnInit {
    * Use the TaxPayer service to list in the select interface.
    */
 
-  getAllTaxPayeres() {
-    this.taxPayersList = this.taxPayerService.getTaxPayerTypes();
+  getAllTaxPayer() {
+    console.log('entrando a gettaxp');
+    this.taxPayerService.getTaxPayerTypesBack().subscribe({
+      next: (response: TaxPayerType[]) => {
+        this.taxPayersList = response;
+        console.log('Tipos de contribuyente obtenidos:', this.taxPayersList);
+      },
+      error: (error) => {
+        console.log('Error al obtener tipos de contribuyente:', error);
+      }
+    });
   }
 
   /**
