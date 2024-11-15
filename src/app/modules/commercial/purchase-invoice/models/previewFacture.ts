@@ -4,11 +4,12 @@ export interface PreviewFacture{
     entId?: string;
     thId?: number;
     supplier: string;
-    factCode: string;
+    factCode: number;
     factureType: string;
     factProducts: ProductS[];
     factSubtotals: number;
     facSalesTax: number;
     facWithholdingSource: number;
     total: number;
+    factObservations: string;
 }

@@ -28,11 +28,14 @@ export class InvoiceCreationComponent implements OnInit {
   // Variables for third parties
   showSectionThrid: boolean = true;
   showInfoThird: boolean = false;
+  SectionNotas: boolean = false;
   selectedSupplier: any;
   selectedSupplierS?: number;
   supplierS?: Third;
   supplierSCopy?: Third;
   changeSupplierS: boolean = false;
+  isLoadingPdfPreview: boolean = false;
+  isSavingPdf: boolean = false;
 
   // Variables for products
   showSectionProducts: boolean = true;
@@ -51,6 +54,7 @@ export class InvoiceCreationComponent implements OnInit {
   paymentMethod: string = 'debito';
   lstProductsSend: ProductS[] = [];
 
+
   columnsProducts: any[] = [
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
@@ -60,6 +64,7 @@ export class InvoiceCreationComponent implements OnInit {
     { title: 'Subtotal' },
   ];
 
+  nota: string = "";
   constructor(private enterpriseService: EnterpriseService,
     private dialog: MatDialog,
     private thirdService: ThirdServiceService,
@@ -159,8 +164,9 @@ export class InvoiceCreationComponent implements OnInit {
     const factureS: Facture = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
-      factCode: "123",
+      factCode: 0,
       factureType: "Compra",
+      factObservations: this.nota,
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
@@ -171,7 +177,8 @@ export class InvoiceCreationComponent implements OnInit {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       supplier: this.supplierS?.names + ' ' + this.supplierS?.lastNames,
-      factCode: "123",
+      factCode: 0,
+      factObservations: this.nota,
       factureType: "Compra",
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
@@ -195,10 +202,13 @@ export class InvoiceCreationComponent implements OnInit {
 
   }
 
+  showSectionNotas() {
+    this.SectionNotas = !this.SectionNotas;
+  }
 
   async saveInvoice(facture: any) {
   
-
+    this.isSavingPdf = true;
     this.invoiceService.saveInvoice(facture).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -228,7 +238,7 @@ export class InvoiceCreationComponent implements OnInit {
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
-
+        this.isSavingPdf = false;
         Swal.fire({
           title: 'Creación exitosa!',
           text: 'Se ha creado la factura con éxito!',
@@ -236,6 +246,7 @@ export class InvoiceCreationComponent implements OnInit {
         });
       },
       (error) => {
+        this.isSavingPdf = false;
         Swal.fire({
           title: 'Error!',
           text: 'Ha ocurrido un error al crear la factura.',
@@ -299,6 +310,65 @@ export class InvoiceCreationComponent implements OnInit {
       }
     });
   }
+  loadFactureInfo() {
+    this.lstProductsSend = this.lstProducts.map(prod => ({
+      productId: parseInt(prod.id),
+      amount: prod.amount,
+      description: prod.description,
+      vat: prod.IVA / 100,
+      code: prod.itemType,
+      unitPrice: prod.cost,
+      subtotal: (prod.cost * prod.amount * (1 + prod.IVA / 100))
+    }));
+  }
+  async generatePdfPreview() {
+
+    this.loadFactureInfo();
+
+    const previewFacture: Facture = {
+      entId: this.enterpriseSelected?.id,
+      thId: this.supplierS?.thId,
+      factCode: 0,
+      factureType: "Compra",
+      factObservations: this.nota, 
+      factProducts: this.lstProductsSend,
+      factSubtotals: this.subTotal,
+      facSalesTax: this.taxTotal,
+      facWithholdingSource: this.retention
+    };
+
+
+    if (!previewFacture) {
+      Swal.fire({
+        title: 'Error',
+        text: 'No hay factura disponible para mostrar.',
+        icon: 'error',
+      });
+      return;
+    }
+    this.isLoadingPdfPreview = true;
+    this.invoiceService.generateInvoicePreview(previewFacture).subscribe(
+      (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+        this.isLoadingPdfPreview = false;
+        Swal.fire({
+          title: 'Visualización exitosa',
+          text: 'Se ha generado la vista previa de la factura.',
+          icon: 'success',
+        });
+      },
+      (error) => {
+        this.isLoadingPdfPreview = false;
+        Swal.fire({
+          title: 'Error',
+          text: 'Ha ocurrido un error al generar la vista previa de la factura.',
+          icon: 'error',
+        });
+      }
+    );
+  }
+
 
   OpenListProducts(title: any, entId: any, component: any) {
     const _popUp = this.dialog.open(component, {
@@ -311,6 +381,8 @@ export class InvoiceCreationComponent implements OnInit {
         entId: entId
       }
     });
+
+
 
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {

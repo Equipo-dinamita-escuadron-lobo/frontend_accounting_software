@@ -2,13 +2,22 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { Facture } from '../models/facture';
+
+let API_URL = '';
+if(environment.microservice == 'enterprise'){
+  API_URL = environment.API_FEATURES_URL;
+}
+else{
+  API_URL = environment.API_URL;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceServiceService {
 
-  private apiUrl = environment.API_FEATURES_URL + 'factures/';
+  private apiUrl = API_URL + 'factures/';
 
   constructor(private http: HttpClient) { }
 
@@ -19,4 +28,22 @@ export class InvoiceServiceService {
 
     return this.http.post(this.apiUrl, facture, { headers: headers, responseType: 'blob' });
   }
+
+  generateInvoicePreview(facture: any): Observable<Blob> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(`${this.apiUrl}generatePreview`, facture, { headers: headers, responseType: 'blob' });
+  
+  }
+  generateInvoiceQR(factId: number): Observable<Blob> {
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+    });
+    return this.http.get(`${this.apiUrl}facture/?factId=${factId}`, {
+        headers: headers,
+        responseType: 'blob'
+    });
+}
+
 }
