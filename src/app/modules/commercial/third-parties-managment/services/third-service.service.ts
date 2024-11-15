@@ -76,6 +76,12 @@ export class ThirdServiceService {
     );
   }
 
+  getThirdList(entId: String): Observable<Third[]> {
+    let params = new HttpParams()
+    .set('entId', entId.toString());
+    return this.http.get<any>(this.thirdApiUrl+"list", {params})
+  }
+
   getThirdPartie(thId:number): Observable<Third>{
     return this.http.get<any>(this.thirdApiUrl+`third?thId=${thId}`)
   }
