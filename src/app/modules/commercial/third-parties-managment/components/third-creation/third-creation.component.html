@@ -1,56 +1,35 @@
 <div class="flex w-full h-5.5/6">
+  <!-- se estableces cuadros de ayuda para el componente de editar-->
+
+  <div class="help-icon " (click)="toggleHelp('TipoPersona', $event)"></div>
+  <div class="help-text" *ngIf="noisHelpVisible('TipoPersona')"
+    [ngStyle]="{'top.px': mousePosition.y, 'left.px': mousePosition.x}">
+
+    <input [(ngModel)]="helpTexts['TipoPersona']" (blur)="stopEditing()" (keydown.enter)="stopEditing()" class="edit-input" />
+  </div>
+
+  <div class="help-icon " (click)="toggleHelp('TipoTerceros', $event)"></div>
+  <div class="help-text" *ngIf="noisHelpVisible('TipoTerceros')"
+    [ngStyle]="{'top.px': mousePosition.y, 'left.px': mousePosition.x}">
+
+    <input [(ngModel)]="helpTexts['TipoTerceros']" (blur)="stopEditing()" (keydown.enter)="stopEditing()" class="edit-input" />
+  </div> 
+
+  <div class="help-icon " (click)="toggleHelp('TipoIdentificación', $event)"></div>
+  <div class="help-text" *ngIf="noisHelpVisible('TipoIdentificación')"
+    [ngStyle]="{'top.px': mousePosition.y, 'left.px': mousePosition.x}">
+
+    <input [(ngModel)]="helpTexts['TipoIdentificación']" (blur)="stopEditing()" (keydown.enter)="stopEditing()" class="edit-input" />
+  </div> 
+
+  <div class="help-icon " (click)="toggleHelp('razonSocial', $event)"></div>
+  <div class="help-text" *ngIf="noisHelpVisible('razonSocial')"
+    [ngStyle]="{'top.px': mousePosition.y, 'left.px': mousePosition.x}">
+
+    <input [(ngModel)]="helpTexts['razonSocial']" (blur)="stopEditing()" (keydown.enter)="stopEditing()" class="edit-input" />
+  </div> 
 
   <div class="m-10 w-full h-full font-titillium font-medium bg-white rounded-3xl p-10">
-
-
-    <!-- Guia de los Tooltips-->
-
-    <!-- Creación de Tooltips -->
-    <!--
-    <div class="tooltip-creation-form">
-      <h3>Crear Tooltip</h3>
-      <form [formGroup]="tooltipForm" (ngSubmit)="createTooltip()">
-        <div>
-          <label for="entId">ID de Entidad</label>
-          <input id="entId" formControlName="entId" type="text" placeholder="Ingrese ID de Entidad">
-        </div>
-        <div>
-          <label for="tip">Tip</label>
-          <input id="tip" formControlName="tip" type="text" placeholder="Ingrese el Tip">
-        </div>
-        <button type="submit" [disabled]="tooltipForm.invalid">Crear Tooltip</button>
-      </form>
-    </div> 
-    -->
-    <!-- Lista de Tooltips -->
-    <!--
-    <div class="tooltip-list">
-      <h3>Lista de Tooltips</h3>
-      <ul>
-        <li *ngFor="let tooltip of tooltips">
-          <strong>ID:</strong> {{ tooltip.entId }} - <strong>Tip:</strong> {{ tooltip.tip }}
-        </li>
-      </ul>
-    </div>
-    -->
-    <!-- Actualizar Tooltip -->
-    <!--
-    <div>
-      <h2>Actualizar Tooltip</h2>
-      <form (ngSubmit)="onSubmit()">
-        <div>
-          <label for="tooltipId">ID del Tooltip:</label>
-          <input type="text" id="tooltipId" [(ngModel)]="tooltipId" name="tooltipId" required>
-        </div>
-        <div>
-          <label for="tooltipText">Nuevo Tooltip:</label>
-          <input type="text" id="tooltipText" [(ngModel)]="tooltipText" name="tooltipText" required>
-        </div>
-        <button type="submit">Actualizar Tooltip</button>
-      </form>
-    </div>
-    -->
-
     <div class="flex flex-col items-center justify-start w-full h-full p-5">
       <div class="w-full px-8">
         <h1 class="text-3xl font-bold text-blue-900 mt-6 mb-4">Creación de Tercero</h1>
@@ -63,7 +42,6 @@
       <form (submit)="OnSubmit()" [formGroup]="createdThirdForm"
         class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
       -->
-
       <form (submit)="OnSubmit()" [formGroup]="createdThirdForm"
         class="w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-xl text-center font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">Informacion
@@ -74,33 +52,17 @@
           <div class="flex justify-between">
             <div class="mb-5 w-1/2">
               <!-- Tipo Persona -->
-
-
-
-              <div class="flex items-center"> <!-- Flex container to align the label and the help icon  -->
+              <div class="flex items-center"> <!-- Flex container to align the label and the help icon -->
                 <label class="block font-semibold mb-2 mr-2" for="personType">Tipo Persona *</label>
 
-                <span #tooltipTrigger class="help-icon" (mouseover)="showTooltip('1', $event)"
-                  (mouseout)="hideTooltip()" (click)="editTooltip('1', $event)">?</span>
-                <div *ngIf="isTooltipVisible" class="tooltip-box" [style.top.px]="tooltipPosition.top"
-                  [style.left.px]="tooltipPosition.left">
-                  {{ currentTooltip?.tip }}
+                <span class="help-icon" (click)="toggleHelp('TipoPersona', $event)" (mouseenter)="showHelp('TipoPersona')"
+                  (mouseleave)="hideHelp('TipoPersona')">?</span>
+              </div>
+              <div>
+                <div class="help-text" *ngIf="isHelpVisible('TipoPersona')">
+                  <span *ngIf="!isEditing('TipoPersona')">{{ helpTexts['TipoPersona'] || 'Este es un texto de ayuda por defecto.'
+                    }}</span>
                 </div>
-
-                <div *ngIf="isEditingTooltip" class="modal" [style.top.px]="tooltipPosition.top"
-                  [style.left.px]="tooltipPosition.left">
-                  <div class="modal-content">
-                    <span class="close" (click)="closeEditTooltip()">&times;</span>
-                    <h2>Editar Tooltip</h2>
-                    <form (ngSubmit)="onSubmitEditTooltip()">
-                      <div>
-                        <input type="text" id="tooltipText" [(ngModel)]="editTooltipText" name="tooltipText" required>
-                      </div>
-                      <button type="submit">Guardar</button>
-                    </form>
-                  </div>
-                </div>
-
               </div>
 
               <div class="flex space-x-4">
@@ -144,31 +106,16 @@
           <div class="mb-5">
             <div class="flex items-center"> <!-- Flex container to align the label and the help icon -->
               <label class="block font-semibold mb-2 mr-2" for="personType">Tipo Terceros *</label>
-
-              <span #tooltipTrigger class="help-icon" (mouseover)="showTooltip('2', $event)" (mouseout)="hideTooltip()"
-                (click)="editTooltip('2', $event)">?</span>
-              <div *ngIf="isTooltipVisible" class="tooltip-box" [style.top.px]="tooltipPosition.top"
-                [style.left.px]="tooltipPosition.left">
-                {{ currentTooltip?.tip }}
-              </div>
-
-              <div *ngIf="isEditingTooltip" class="modal" [style.top.px]="tooltipPosition.top"
-                [style.left.px]="tooltipPosition.left">
-                <div class="modal-content">
-                  <span class="close" (click)="closeEditTooltip()">&times;</span>
-                  <h2>Editar Tooltip</h2>
-                  <form (ngSubmit)="onSubmitEditTooltip()">
-                    <div>
-                      <input type="text" id="tooltipText" [(ngModel)]="editTooltipText" name="tooltipText" required>
-                    </div>
-                    <button type="submit">Guardar</button>
-                  </form>
-                </div>
-              </div>
-
+  
+              <span class="help-icon" (click)="toggleHelp('TipoTerceros', $event)" (mouseenter)="showHelp('TipoTerceros')"
+                (mouseleave)="hideHelp('TipoTerceros')">?</span>
             </div>
-
-
+            <div>
+              <div class="help-text" *ngIf="isHelpVisible('TipoTerceros')">
+                <span *ngIf="!isEditing('TipoTerceros')">{{ helpTexts['TipoTerceros'] || 'Este es un texto de ayuda por defecto.'
+                  }}</span>
+              </div>
+            </div>
             <div>
               <ng-select [items]="thirdTypes" bindLabel="thirdTypeName" [multiple]="true" [clearable]="false"
                 [placeholder]="'Seleccione tipos de terceros'" formControlName="thirdTypes"
@@ -194,30 +141,15 @@
             <div class="space-y-2">
               <div class="flex items-center"> <!-- Flex container to align the label and the help icon -->
                 <label class="block font-semibold mb-2 mr-2" for="personType">Tipo Identificación *</label>
-
-                <span #tooltipTrigger class="help-icon" (mouseover)="showTooltip('3', $event)"
-                  (mouseout)="hideTooltip()" (click)="editTooltip('3', $event)">?</span>
-                <div *ngIf="isTooltipVisible" class="tooltip-box" [style.top.px]="tooltipPosition.top"
-                  [style.left.px]="tooltipPosition.left">
-                  {{ currentTooltip?.tip }}
-                </div>
-
-                <div *ngIf="isEditingTooltip" class="modal" [style.top.px]="tooltipPosition.top"
-                  [style.left.px]="tooltipPosition.left">
-                  <div class="modal-content">
-                    <span class="close" (click)="closeEditTooltip()">&times;</span>
-                    <h2>Editar Tooltip</h2>
-                    <form (ngSubmit)="onSubmitEditTooltip()">
-                      <div>
-                        <input type="text" id="tooltipText" [(ngModel)]="editTooltipText" name="tooltipText" required>
-                      </div>
-                      <button type="submit">Guardar</button>
-                    </form>
-                  </div>
-                </div>
+                <span class="help-icon" (click)="toggleHelp('TipoIdentificación', $event)" (mouseenter)="showHelp('TipoIdentificación')"
+                  (mouseleave)="hideHelp('TipoIdentificación')">?</span>
               </div>
 
-
+              <div class="help-text" *ngIf="isHelpVisible('TipoIdentificación')">
+                <span *ngIf="!isEditing('TipoIdentificación')">{{ helpTexts['TipoIdentificación'] || 'Este es un texto de ayuda por defecto.'
+                }}</span>
+              </div>
+    
               <select formControlName="typeId"
                 class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 (change)="onTypeIdChange($event)">
@@ -233,7 +165,6 @@
             </div>
 
             <div class="space-y-2 mt-1">
-
               <p class="font-semibold">Número Identificación *</p>
               <div class="flex items-center">
                 <input formControlName="idNumber" type="number"
@@ -298,28 +229,15 @@
               <div class="space-y-2">
                 <div class="flex items-center"> <!-- Flex container to align the label and the help icon -->
                   <label class="block font-semibold mb-2 mr-2" for="personType">Razón Social *</label>
-
-                  <span #tooltipTrigger class="help-icon" (mouseover)="showTooltip('4', $event)"
-                    (mouseout)="hideTooltip()" (click)="editTooltip('4', $event)">?</span>
-                  <div *ngIf="isTooltipVisible" class="tooltip-box" [style.top.px]="tooltipPosition.top"
-                    [style.left.px]="tooltipPosition.left">
-                    {{ currentTooltip?.tip }}
+      
+                  <span class="help-icon" (click)="toggleHelp('razonSocial', $event)" (mouseenter)="showHelp('razonSocial')"
+                    (mouseleave)="hideHelp('razonSocial')">?</span>
+                </div>
+                <div>
+                  <div class="help-text" *ngIf="isHelpVisible('razonSocial')">
+                    <span *ngIf="!isEditing('razonSocial')">{{ helpTexts['razonSocial'] || 'Este es un texto de ayuda por defecto.'
+                      }}</span>
                   </div>
-
-                  <div *ngIf="isEditingTooltip" class="modal" [style.top.px]="tooltipPosition.top"
-                    [style.left.px]="tooltipPosition.left">
-                    <div class="modal-content">
-                      <span class="close" (click)="closeEditTooltip()">&times;</span>
-                      <h2>Editar Tooltip</h2>
-                      <form (ngSubmit)="onSubmitEditTooltip()">
-                        <div>
-                          <input type="text" id="tooltipText" [(ngModel)]="editTooltipText" name="tooltipText" required>
-                        </div>
-                        <button type="submit">Guardar</button>
-                      </form>
-                    </div>
-                  </div>
-
                 </div>
 
                 <input formControlName="socialReason" type="text"
@@ -375,7 +293,7 @@
                   </ng-container>
                 </div>
               </div>
-
+              
 
               <div class="space-y-2">
                 <p class="font-semibold">Departamento *</p>
@@ -406,7 +324,7 @@
                   </ng-container>
                 </div>
               </div>
-
+              
             </div>
 
             <div class="space-y-4">
