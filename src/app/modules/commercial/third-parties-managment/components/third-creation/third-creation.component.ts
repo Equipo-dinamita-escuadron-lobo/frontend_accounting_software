@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { get } from 'jquery';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
+import { TooltipService } from '../../services/tooltip.service';
+import { Tooltip } from '../../models/Tooltip';
 import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
@@ -28,70 +30,21 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 
 export class ThirdCreationComponent implements OnInit {
 
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
-  mousePosition = { x: 0, y: 0 }; // Posición del mouse
-  positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
-  helpTexts: { [key: string]: string } = {}; // Almacena los textos de ayuda
-  editingHelp: string | null = null; // Para rastrear qué cuadro está en edición
-  visibleHelp: string | null = null; // Para rastrear cuál cuadro es visible
-
-  updateHelpText(helpId: string, value: string): void {
-    this.helpTexts[helpId] = value; // Actualiza el texto de ayuda
-  }
-
-  showHelp(helpId: string): void {
-    this.visibleHelp = helpId; // Muestra el cuadro de ayuda
-  }
-
-  hideHelp(helpId: string): void {
-    if (this.editingHelp !== helpId) {
-      this.visibleHelp = null; // Oculta el cuadro de ayuda
-      this.stopEditing(); // Cierra la edición si no se está editando
-    }
-  }
-
-  toggleHelp(helpId: string, event: MouseEvent): void {
-    if (this.editingHelp === helpId) {
-      this.stopEditing(); // Cierra el cuadro si ya está editando
-    } else {
-      this.setEditing(helpId, event); // Abre el cuadro para edición
-    }
-  }
-
-  setEditing(helpId: string, event: MouseEvent): void {
-    this.editingHelp = helpId; // Establece el cuadro actual en edición
-    this.visibleHelp = helpId; // Mantiene el cuadro visible mientras se edita
-    this.mousePosition = { x: event.clientX + 10, y: event.clientY + 10 };
-    /*if (this.mousePosition.x === this.positionInicial.x) { // Captura la posición del mouse
-      this.mousePosition = {
-        x: event.clientX + 10,
-        y: event.clientY + 10
-      };
-    }*/
-
-  }
-
-  stopEditing(): void {
-    this.editingHelp = null; // Salir del modo de edición
-    this.visibleHelp = null;
-    localStorage.setItem('helpTexts', JSON.stringify(this.helpTexts)); // Guarda los textos de ayuda en el almacenamiento local
-  }
-
-  isEditing(helpId: string): boolean {
-    return this.editingHelp === helpId; // Retorna si el cuadro está en edición
-  }
-
-  isHelpVisible(helpId: string): boolean {
-    return this.visibleHelp === helpId || this.isEditing(helpId); // Muestra el cuadro si está visible o en edición
-  }
-  noisHelpVisible(helpId: string): boolean {
-    return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
-  }
-
+  tooltipId: string = '';
+  tooltipText: string = '';
+  tooltips: Tooltip[] = [];
+  createdThirdForm!: FormGroup;
+  currentTooltip: Tooltip | undefined;
+  isTooltipVisible: boolean = false;
+  isEditingTooltip: boolean = false;
+  editTooltipText: string = ''; // Propiedad temporal para la edición del tooltip
+  tooltipPosition = { top: 0, left: 0 }; // Posición del tooltip
+  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>; // Referencia a los elementos del tooltip
+  tooltipForm: FormGroup;
+  
   contendPDFRUT: string | null = null;
   infoThird: string[] | null = null;
   selectedThirdTypes: ThirdType[] = [];
-  createdThirdForm!: FormGroup;
   submitted = false;
   button1Checked = false;
   button2Checked = false;
@@ -116,18 +69,28 @@ export class ThirdCreationComponent implements OnInit {
 
   constructor(
     @Optional() private dialogRef: MatDialogRef<ThirdCreationComponent>,
+    private tooltipService: TooltipService,
+    private fb: FormBuilder,
+
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
     private thirdServiceConfiguration: ThirdServiceConfigurationService,
+    private Tooltip: TooltipService,
     private cityService: CityService,
     private departmentService: DepartmentService,
     private router: Router,
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
-  ) { }
+  ) {
+    this.initializeForm();
+    this.tooltipForm = this.fb.group({
+      entId: ['', Validators.required],
+      tip: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
-    this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.loadTooltips(); // Cargar los tooltips al inicializar el componente
     this.initializeForm();
     this.getCountries();
     this.getTypesID();
@@ -143,12 +106,100 @@ export class ThirdCreationComponent implements OnInit {
       console.log("No se recibe ninguna info PDF RUT");
     }
 
-    // Cargar textos de ayuda del almacenamiento local al iniciar
-    const savedHelpTexts = localStorage.getItem('helpTexts');
-    if (savedHelpTexts) {
-      this.helpTexts = JSON.parse(savedHelpTexts);
+  }
+  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  showTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        const target = event.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isTooltipVisible = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  hideTooltip(): void {
+    this.isTooltipVisible = false;
+  }
+  editTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        this.editTooltipText = tooltip.tip; // Asignar el texto del tooltip a la propiedad temporal
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isEditingTooltip = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  closeEditTooltip(): void {
+    this.isEditingTooltip = false;
+  }
+  onSubmitEditTooltip(): void {
+    if (this.currentTooltip) {
+      this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
+      this.tooltipService.updateTooltip(this.currentTooltip.entId, this.currentTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip actualizado:', response);
+          this.isEditingTooltip = false;
+          this.loadTooltips(); // Actualizar la lista de tooltips
+        },
+        (error) => {
+          console.error('Error al actualizar el tooltip:', error);
+        }
+      );
     }
   }
+
+  createTooltip(): void {
+    if (this.tooltipForm.valid) {
+      const newTooltip: Tooltip = this.tooltipForm.value;
+      this.tooltipService.createTooltip2(newTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip creado:', response);
+          // Aquí puedes agregar lógica adicional, como mostrar una notificación
+        },
+        (error) => {
+          console.error('Error al crear el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  onSubmit(): void {
+    const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
+    this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
+      (response) => {
+        console.log('Tooltip actualizado:', response);
+        this.loadTooltips(); // Actualizar la lista de tooltips
+      },
+      (error) => {
+        console.error('Error al actualizar el tooltip:', error);
+      }
+    );
+  }
+  loadTooltips(): void {
+    this.tooltipService.getAllTooltips().subscribe(
+      (response) => {
+        this.tooltips = response;
+        console.log('Tooltips cargados:', this.tooltips);
+      },
+      (error) => {
+        console.error('Error al cargar los tooltips:', error);
+      }
+    );
+  }
+
+
+  // ************************************************************
+
 
   private initializeForm(): void {
     this.createdThirdForm = this.formBuilder.group({
@@ -298,7 +349,7 @@ export class ThirdCreationComponent implements OnInit {
     return digitoVerificacion;
   }
 
-  //seleccion entre colombia o extranjero aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  //seleccion entre colombia o extranjero 
   onCountryChange(event: any) {
 
     const id_country = JSON.parse(event.target.value);

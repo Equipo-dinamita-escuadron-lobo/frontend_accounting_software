@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -19,6 +19,8 @@ import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
 import { get } from 'jquery';
 import { InvoiceSelectSupplierComponent } from '../../../purchase-invoice/components/invoice-select-supplier/invoice-select-supplier.component';
+import { Tooltip } from '../../../third-parties-managment/models/Tooltip';
+import { TooltipService } from '../../../third-parties-managment/services/tooltip.service';
 
 @Component({
   selector: 'app-enterprise-creation',
@@ -29,6 +31,18 @@ export class EnterpriseCreationComponent implements OnInit {
   /**
    * Declaration of variables to create enterprise
    */
+
+  tooltipId: string = '';
+  tooltipText: string = '';
+  tooltips: Tooltip[] = [];
+  createdThirdForm!: FormGroup;
+  currentTooltip: Tooltip | undefined;
+  isTooltipVisible: boolean = false;
+  isEditingTooltip: boolean = false;
+  editTooltipText: string = ''; // Propiedad temporal para la edición del tooltip
+  tooltipPosition = { top: 0, left: 0 }; // Posición del tooltip
+  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>; // Referencia a los elementos del tooltip
+  tooltipForm: FormGroup;
 
   isForeign: boolean = false;
 
@@ -89,6 +103,8 @@ export class EnterpriseCreationComponent implements OnInit {
    * @description constructor to initialice services
    */
   constructor(
+    private tooltipService: TooltipService,
+    
     private fb: FormBuilder,
     private enterpriseService: EnterpriseService,
     private taxLiabilityService: TaxLiabilityService,
@@ -101,6 +117,11 @@ export class EnterpriseCreationComponent implements OnInit {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
+    
+    this.tooltipForm = this.fb.group({
+      entId: ['', Validators.required],
+      tip: ['', Validators.required]
+    });
 
    /* this.form = this.fb.group({
       nit: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -109,6 +130,8 @@ export class EnterpriseCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadTooltips(); // Cargar los tooltips al inicializar el componente
+
     this.getDepartments(1);
     this.getTypesEnterprise();
     this.getAllTaxPayer();
@@ -118,6 +141,99 @@ export class EnterpriseCreationComponent implements OnInit {
       this.calculateVerificationNumber();
     });
   }
+
+  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  showTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        const target = event.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isTooltipVisible = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  hideTooltip(): void {
+    this.isTooltipVisible = false;
+  }
+  editTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        this.editTooltipText = tooltip.tip; // Asignar el texto del tooltip a la propiedad temporal
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isEditingTooltip = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  closeEditTooltip(): void {
+    this.isEditingTooltip = false;
+  }
+  onSubmitEditTooltip(): void {
+    if (this.currentTooltip) {
+      this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
+      this.tooltipService.updateTooltip(this.currentTooltip.entId, this.currentTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip actualizado:', response);
+          this.isEditingTooltip = false;
+          this.loadTooltips(); // Actualizar la lista de tooltips
+        },
+        (error) => {
+          console.error('Error al actualizar el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  createTooltip(): void {
+    if (this.tooltipForm.valid) {
+      const newTooltip: Tooltip = this.tooltipForm.value;
+      this.tooltipService.createTooltip2(newTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip creado:', response);
+          // Aquí puedes agregar lógica adicional, como mostrar una notificación
+        },
+        (error) => {
+          console.error('Error al crear el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  onSubmit(): void {
+    const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
+    this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
+      (response) => {
+        console.log('Tooltip actualizado:', response);
+        this.loadTooltips(); // Actualizar la lista de tooltips
+      },
+      (error) => {
+        console.error('Error al actualizar el tooltip:', error);
+      }
+    );
+  }
+  loadTooltips(): void {
+    this.tooltipService.getAllTooltips().subscribe(
+      (response) => {
+        this.tooltips = response;
+        console.log('Tooltips cargados:', this.tooltips);
+      },
+      (error) => {
+        console.error('Error al cargar los tooltips:', error);
+      }
+    );
+  }
+
+
+  // ************************************************************
   
   calculateVerificationNumber(): void {
     const nit = this.form.get('nit')?.value;
