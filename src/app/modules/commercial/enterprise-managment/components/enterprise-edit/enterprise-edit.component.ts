@@ -112,7 +112,7 @@ export class EnterpriseEditComponent {
   ngOnInit(): void {
     this.getDepartments();
     this.getTypesEnterprise();
-    this.getAllTaxPayeres();
+    this.getAllTaxPayer();
     this.getAllTaxLiabilities();
   }
 
@@ -494,8 +494,16 @@ export class EnterpriseEditComponent {
    * Use the TaxPayer service to list in the select interface.
    */
 
-  getAllTaxPayeres() {
-    this.taxPayersList = this.taxPayerService.getTaxPayerTypes();
+  getAllTaxPayer() {
+    this.taxPayerService.getTaxPayerTypesBack().subscribe({
+      next: (response: TaxPayerType[]) => {
+        this.taxPayersList = response;
+        console.log('Tipos de contribuyente obtenidos:', this.taxPayersList);
+      },
+      error: (error) => {
+        console.log('Error al obtener tipos de contribuyente:', error);
+      }
+    });
   }
 
   /**
