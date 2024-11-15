@@ -607,8 +607,10 @@
                             <div class="mb-2 md:mb-2 md:mr-2">
                                 <button type="button"
                                     class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300"
-                                    [disabled]="!showUpdateButton" [class.cursor-not-allowed]="!showUpdateButton"
-                                    title="Modifique algún campo" (click)="updateAccount()">
+                                    [disabled]="!showUpdateButton || searchIfAccountIsLinked(accountSelected!.code)" 
+                                    [class.cursor-not-allowed]="!showUpdateButton"
+                                    title="Modifique algún campo" (click)="updateAccount()"                                    
+                                    [style.cursor]="searchIfAccountIsLinked(accountSelected!.code) ? 'not-allowed' : 'pointer'">
                                     <i class="fas fa-save mr-3"></i>
                                     Actualizar
                                 </button>
@@ -616,7 +618,9 @@
                             <div *ngIf="!accountForm.get('auxiliaryName')" class="mb-2 md:mb-0 md:ml-2">
                                 <button type="button"
                                     class="rounded-full bg-button-default text-button-text-default hover:bg-button-hover focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium text-sm pr-3 py-2.5 pl-4 text-center me-2 max-h-10 text-white cursor-pointer relative overflow-hidden flex items-center justify-center transition duration-300"
-                                    (click)="addNewChild()">
+                                    (click)="addNewChild()"
+                                    [disabled]="searchIfAccountIsLinked(accountSelected!.code)"
+                                    [style.cursor]="searchIfAccountIsLinked(accountSelected!.code) ? 'not-allowed' : 'pointer'">
                                     <i class="fas fa-plus mr-3"></i>
                                     Agregar {{currentLevelAccount}}
                                 </button>
