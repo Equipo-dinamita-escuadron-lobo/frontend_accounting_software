@@ -126,8 +126,10 @@ export class ThirdCreationComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
   ) { }
 
+  
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.loadTooltips(); // Cargar los tooltips al inicializar el componente
     this.initializeForm();
     this.getCountries();
     this.getTypesID();
