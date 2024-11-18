@@ -9,10 +9,10 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 })
 export class TooltipService {
 
-  //private tooltipApiUrl = `${environment.API_URL}/tooltips/`;
-  private tooltipApiUrl = environment.API_URL + 'tooltip/'
+  //private tooltipApiUrl = `${environment.API_URL}/tooltip/`;
+  private tooltipApiUrl = environment.API_URL + 'thirds/tooltip'
   //Cambiar para desarrollo local
-  //private tooltipApiUrl = 'http://localhost:8081/api/tooltip'
+  //private tooltipApiUrl = 'http://localhost:8081/api/thirds/tooltip'
 
   // Inject HttpClient to make HTTP requests
   constructor(private http: HttpClient) { }

@@ -89,7 +89,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
+  
   ngOnInit(): void {
+    this.entData = this.localStorageMethods.loadEnterpriseData();
     this.loadTooltips(); // Cargar los tooltips al inicializar el componente
     this.initializeForm();
     this.getCountries();

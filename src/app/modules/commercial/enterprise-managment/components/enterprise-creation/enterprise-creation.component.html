@@ -280,60 +280,59 @@
 
                                     <div class="">
                                         <!-- Numero de identificacion tributaria -->
-                                        <div class="col-2-nit grid mb-3 ">
-                                            <label for="nit" class="block">NIT(Número de identificación tributaria) *
-                                                <span #tooltipTrigger class="help-icon"
-                                                    (mouseover)="showTooltip('8', $event)" (mouseout)="hideTooltip()"
-                                                    (click)="editTooltip('8', $event)">?</span>
-                                            </label>
+                                        <div class="flex-container">
+                                            <div class="col-span-3">
+                                                <label for="nit" class="block">NIT(Número de identificación tributaria)
+                                                    *
+                                                    <span #tooltipTrigger class="help-icon"
+                                                        (mouseover)="showTooltip('8', $event)"
+                                                        (mouseout)="hideTooltip()"
+                                                        (click)="editTooltip('8', $event)">?</span>
+                                                </label>
 
+                                                <div *ngIf="isTooltipVisible" class="tooltip-box"
+                                                    [style.top.px]="tooltipPosition.top"
+                                                    [style.left.px]="tooltipPosition.left">
+                                                    {{ currentTooltip?.tip }}
+                                                </div>
 
-                                            <div *ngIf="isTooltipVisible" class="tooltip-box"
-                                                [style.top.px]="tooltipPosition.top"
-                                                [style.left.px]="tooltipPosition.left">
-                                                {{ currentTooltip?.tip }}
-                                            </div>
+                                                <div *ngIf="isEditingTooltip" class="modal"
+                                                    [style.top.px]="tooltipPosition.top"
+                                                    [style.left.px]="tooltipPosition.left">
+                                                    <div class="modal-content">
+                                                        <span class="close" (click)="closeEditTooltip()">&times;</span>
+                                                        <h2>Editar Tooltip</h2>
+                                                        <form (ngSubmit)="onSubmitEditTooltip()">
+                                                            <div>
+                                                                <input type="text" id="tooltipText"
+                                                                    [(ngModel)]="editTooltipText" name="tooltipText"
+                                                                    required>
+                                                            </div>
+                                                            <button type="submit">Guardar</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
 
-                                            <div *ngIf="isEditingTooltip" class="modal"
-                                                [style.top.px]="tooltipPosition.top"
-                                                [style.left.px]="tooltipPosition.left">
-                                                <div class="modal-content">
-                                                    <span class="close" (click)="closeEditTooltip()">&times;</span>
-                                                    <h2>Editar Tooltip</h2>
-                                                    <form (ngSubmit)="onSubmitEditTooltip()">
-                                                        <div>
-                                                            <input type="text" id="tooltipText"
-                                                                [(ngModel)]="editTooltipText" name="tooltipText"
-                                                                required>
-                                                        </div>
-                                                        <button type="submit">Guardar</button>
-                                                    </form>
+                                                <input type="text" id="nit" name="nit"
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
+                                                    placeholder="Ej: 6004567890" formControlName="nit">
+
+                                                <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
+                                                    class="text-red-500 text-sm font-medium -mt-1">
+                                                    <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
+                                                        digitos</div>
+                                                    <div *ngIf="form.get('nit')?.hasError('required')">El NIT es
+                                                        requerido. </div>
+                                                    <div *ngIf="form.get('nit')?.hasError('pattern')">El NIT solo debe
+                                                        contener numeros</div>
                                                 </div>
                                             </div>
-
-                                            <input type="text" id="nit" name="nit"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full"
-                                                placeholder="Ej: 6004567890" formControlName="nit">
-                                            <div *ngIf="form.get('nit')?.invalid && form.get('nit')?.touched"
-                                                class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form.get('nit')?.hasError('maxlength')">Supera limite
-                                                    digitos</div>
-                                                <div *ngIf="form.get('nit')?.hasError('required')">El NIT es requerido.
-                                                </div>
-                                                <div *ngIf="form.get('nit')?.hasError('pattern')">El NIT solo debe
-                                                    contener numeros</div>
-                                            </div>
-
-                                            <!-- 
-                                            <div class="dv col-span-3">
-                                                <label for="dv">Digito de verificación</label>
+                                            <div class="col-span-1">
+                                                <label for="dv">Dígito de verificación</label>
                                                 <input type="number" id="dv" name="dv"
-                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                    formControlName="dv">
-                                            </div> 
-                                            -->
-
-
+                                                    class="border border-gray-400 rounded-md px-1 py-1 mt-1 mb-1 w-full max-h-9"
+                                                    formControlName="dv" readonly>
+                                            </div>
                                         </div>
 
                                         <!-- Tipo de Contribuytente -->

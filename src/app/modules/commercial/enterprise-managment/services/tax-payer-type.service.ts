@@ -26,7 +26,7 @@ export class TaxPayerTypeService {
     { id: 4, name: 'Entidad Sin Ánimo de Lucro' },
   ];
 
-  private apiUrl = API_URL + 'enterprises/'
+  private apiUrl = API_URL + 'enterprise/'
 
   constructor(private http: HttpClient) {}
 
@@ -35,9 +35,11 @@ export class TaxPayerTypeService {
    * @returns all tax payer types from the backend
    */
 
-  getTaxPayerTypesBack(): Observable<TaxPayerType[]> {
-    return this.http.get<TaxPayerType[]>(this.apiUrl + 'taxpayertype');
-  }
+  /*
+  getTaxPayerTypes(): Observable<TaxPayerType[]> {
+    return this.http.get<TaxPayerType[]>(this.apiUrl);
+  }*/
+
 
   getTaxPayerTypes(){
     return this.taxpayerTypes;

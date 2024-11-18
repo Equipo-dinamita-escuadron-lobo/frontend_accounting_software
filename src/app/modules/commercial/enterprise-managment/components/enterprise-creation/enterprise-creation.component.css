@@ -10,6 +10,25 @@
     color: white;
 }
 
+.col-span-3, .col-span-1 {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.flex-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+.col-span-3 {
+  flex: 3;
+  margin-right: 10px;
+}
+
+.col-span-1 {
+  flex: 1;
+}
+
   /*****************/
   
 
