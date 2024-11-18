@@ -37,6 +37,16 @@
             PDF RUT
           </button>
           <app-third-create-pdf-rut *ngIf="createPdfRUT" (close)="closeCreatePDFRunt()"></app-third-create-pdf-rut>
+          <button (click)="exportThirdsToExcel()" class="btn-full-view">
+            Exportar
+          </button>
+          <button (click)="fileInput.click()" class="btn-full-view">
+            Importar
+            <input type="file" accept=".xlsx" #fileInput (change)="ReadExcel($event)" class="hidden">
+          </button>
+          <button (click)="openModalDetailsImport()" class="btn-full-view">
+            Plantilla
+          </button>        
         </div>
       </div>
 
