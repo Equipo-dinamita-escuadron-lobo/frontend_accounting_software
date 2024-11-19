@@ -326,6 +326,7 @@ export class ThirdsListComponent {
         this.createThirdFromExcel(third);
       });
     }
+    window.location.reload();
   }
   // Función que convierte el valor de "Tipo persona" a un enum
   convertirTipoPersona(tipo: string): ePersonType {
