@@ -317,16 +317,25 @@
                                                         contener numeros</div>
                                                 </div>
                                             </div>
-                                            <div class="col-span-1">
-                                                <label for="dv">Dígito de verificación</label>
-                                                <input type="number" id="dv" name="dv"
-                                                    class="border border-gray-400 rounded-md px-1 py-1 mt-1 mb-1 w-full max-h-9"
-                                                    formControlName="dv" readonly>
+                                            <!-- Campo Digito de Verificación (DV) con Tooltip -->
+                                            <div class="relative ml-2">
+                                                <!-- Campo de Entrada para el DV -->
+                                                <input type="text" id="dv" name="dv" 
+                                                    class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-12 max-h-9 text-center"
+                                                    formControlName="dv" readonly
+                                                    onmouseover="this.nextElementSibling.style.display='block';"
+                                                    onmouseout="this.nextElementSibling.style.display='none';">
+
+                                                <!-- Tooltip -->
+                                                <div class="absolute text-center hidden bg-blue-600 text-white rounded-lg p-1 w-24 -translate-x-1/2 left-1/2"
+                                                    style="bottom: 120%;">
+                                                    Dígito de verificación
+                                                </div>
                                             </div>
                                         </div>
 
                                         <!-- Tipo de Contribuytente -->
-                                        <div class="col-2-payer grid mb-3">
+                                        <div class="col-2-payer grid mb-3 mt-3">
                                             <label for="tipo_contribuyente" class="block">Tipo de Contribuyente *
                                                 <span #tooltipTrigger class="help-icon"
                                                     (mouseover)="showTooltip('9', $event)" (mouseout)="hideTooltip()"
@@ -415,7 +424,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="grid grid-cols-2 gap-4 mb-3 mt-7">
+                                        <div class="grid grid-cols-2 gap-4 mb-3">
 
 
                                             <!-- Campo de Actividad Economica Principal -->
@@ -446,7 +455,7 @@
                                             </div>
                                         </div>
                                         <!-- Apellidos -->
-                                        <form [formGroup]="form_natural" class="col-2-surname grid mb-3 mt-6"
+                                        <form [formGroup]="form_natural" class="col-2-surname grid mb-3 mt-5"
                                             *ngIf="showNaturalForm">
                                             <label for="surnameOwner" class="block">Apellidos *</label>
 
