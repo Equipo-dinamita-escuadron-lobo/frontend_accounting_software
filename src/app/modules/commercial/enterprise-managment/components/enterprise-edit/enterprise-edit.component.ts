@@ -107,6 +107,9 @@ export class EnterpriseEditComponent {
     this.form_natural = this.fb.group(this.validationsNatural());
     this.getEnterpriseEdit();
 
+    this.form.get('nit')?.valueChanges.subscribe(value => {
+      this.updateDV(value);
+    });
   }
 
   ngOnInit(): void {
@@ -130,6 +133,7 @@ export class EnterpriseEditComponent {
    */
   validationsAll() {
     return {
+      
       name: [
         '',
         [
@@ -166,6 +170,21 @@ export class EnterpriseEditComponent {
       country: [
         { value: 'Colombia', disabled: true },
         [Validators.maxLength(50)],
+      ],
+
+      mainActivity:[
+        '',
+        [
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+$/),
+        ],
+      ],
+      secondaryActivity: [
+        '',
+        [
+          Validators.maxLength(15),
+          Validators.pattern(/^\d+$/),
+        ],
       ],
 
       dv: ['', [Validators.maxLength(10)]],
@@ -336,6 +355,42 @@ export class EnterpriseEditComponent {
     });
   }
 
+  // Funcion para calcular el digito de verficacion
+  updateDV(nit: string): void {
+    if (nit && nit.length > 0) {
+      const dv = this.calcularDigitoVerificacion(nit);
+      // Establecer el valor del DV en el formulario
+      this.form.get('dv')?.setValue(dv.toString());
+    }
+  }
+
+  // Función para calcular el dígito de verificación usando la fórmula proporcionada
+  private calcularDigitoVerificacion(numero: string): number {
+    const pesos = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3];
+    const numeroFormateado = numero.padStart(15, '0'); // Aseguramos que el número tenga 15 dígitos
+    let suma = 0;
+
+    // Sumar los productos de cada dígito por su peso correspondiente
+    for (let i = 0; i < 15; i++) {
+      suma += parseInt(numeroFormateado.charAt(i)) * pesos[i];
+    }
+
+    // Calcular el residuo de la suma dividida entre 11
+    const residuo = suma % 11;
+    let digitoVerificacion;
+
+    // Determinar el dígito de verificación en función del residuo
+    if (residuo === 0) {
+      digitoVerificacion = 0;
+    } else if (residuo === 1) {
+      digitoVerificacion = 1;
+    } else {
+      digitoVerificacion = 11 - residuo;
+    }
+
+    return digitoVerificacion;
+  }
+
   /**
    * @description Active select of city
    */
@@ -423,6 +478,8 @@ export class EnterpriseEditComponent {
           branch: '' + branchResponse,
           email: this.form.value.email,
           logo: logoUrl,
+          mainActivity: this.form.value.mainActivity.valueOf(),
+          secondaryActivity: this.form.value.secondaryActivity.valueOf(),
           state: 'ACTIVE',
           taxLiabilities: this.form.value.selectedItemTaxLiabilities.map(
             (item: TaxLiability) => item.id
@@ -433,6 +490,9 @@ export class EnterpriseEditComponent {
           dv: this.form.value.dv,
           enterpriseType: this.form.value.selectedItemEnterpriseType.id,
         };
+        
+        console.log("Datos que va a actualizar"+enterprise.mainActivity);
+        console.log("Datos que va a actualizar"+enterprise.secondaryActivity);
 
         this.enterpriseService
           .updateEnterprise(this.enterpriseEdit?.id, enterprise)
@@ -558,6 +618,8 @@ export class EnterpriseEditComponent {
       address: this.enterpriseEdit?.location.address,
       phone: this.enterpriseEdit?.phone,
       email: this.enterpriseEdit?.email,
+      mainActivity: this.enterpriseEdit?.mainActivity,
+      secondaryActivity:this.enterpriseEdit?.secondaryActivity,
       dv: this.enterpriseEdit?.dv,
       selectedItemDepartment: this.enterpriseEdit?.location.department,
       selectedItemEnterpriseType: this.enterpriseEdit?.enterpriseType,
