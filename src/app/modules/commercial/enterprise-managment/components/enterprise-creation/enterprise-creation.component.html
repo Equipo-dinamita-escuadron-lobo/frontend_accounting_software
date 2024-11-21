@@ -266,16 +266,17 @@
                                           
                                             <!-- Campo de Actividad Economica Secundaria -->
                                             <div class="col-span-1">
-                                              <label for="secondaryActivity">Actividad Economica Secundaria</label>
-                                              <input type="number" id="secondaryActivity" name="secondaryActivity"
-                                                class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
-                                                formControlName="secondaryActivity" placeholder="Ej: 4321">
-                                          
-                                              <div *ngIf="form.get('secondaryActivity')?.invalid && form.get('secondaryActivity')?.touched"
-                                                class="text-red-500 text-sm font-medium -mt-1">
-                                                <div *ngIf="form.get('secondaryActivity')?.hasError('pattern')">La actividad secundaria debe ser un numero.</div>
+                                                <label for="secondaryActivity">Actividad Económica Secundaria *</label>
+                                                <input type="number" id="secondaryActivity" name="secondaryActivity"
+                                                  class="border border-gray-400 rounded-md px-3 py-1 mt-1 mb-1 w-full max-h-9"
+                                                  formControlName="secondaryActivity" placeholder="Ej: 654321">
+                                                
+                                                <div *ngIf="form.get('secondaryActivity')?.invalid && form.get('secondaryActivity')?.touched"
+                                                  class="text-red-500 text-sm font-medium -mt-1">
+                                                  <div *ngIf="form.get('secondaryActivity')?.hasError('pattern')">La actividad secundaria debe ser un número.</div>
+                                                </div>
                                               </div>
-                                            </div>
+                                              
                                         </div>
                                           
                                         <!-- Apellidos -->

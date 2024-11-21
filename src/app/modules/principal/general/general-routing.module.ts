@@ -38,6 +38,7 @@ import { SaleInvoiceCreationComponent } from '../../commercial/purchase-invoice/
 //crear tercero pdf rut
 import { ThirdCreatePdfRUTComponent } from '../../commercial/third-parties-managment/components/third-create-pdf-rut/third-create-pdf-rut.component';
 import { FacturesSaleQRComponentComponent } from '../../commercial/purchase-invoice/components/factures-sale-qrcomponent/factures-sale-qrcomponent.component';
+import { EnterpriseCreateRUTComponent } from '../../commercial/enterprise-managment/components/enterprise-create-rut/enterprise-create-rut.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,11 @@ const routes: Routes = [
       {
         path: 'create',
         component: EnterpriseCreationComponent,
+      },
+      //Crear empresa apartir del pdf del RUT
+      {
+        path: 'create-PDF-RUT',
+        component: EnterpriseCreateRUTComponent,
       }
     ],
     canActivate: [permissionsGuard],

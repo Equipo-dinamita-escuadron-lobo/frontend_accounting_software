@@ -54,6 +54,10 @@ export class EnterpriseCreationComponent implements OnInit {
   cityList: { id: number; name: string }[] = [];
   enterpriseTypesList: EnterpriseType[] = [];
 
+  //Inforamcion para crear una empresa atravez del pdf del RUT
+  contendPDFRUT: string | null = null;
+  infoEnterprise: string[] | null = null;
+
   /**
    * variables for the logo
    */
@@ -117,6 +121,15 @@ export class EnterpriseCreationComponent implements OnInit {
     this.form.get('nit')?.valueChanges.subscribe(value => {
       this.calculateVerificationNumber();
     });
+
+    this.contendPDFRUT = this.enterpriseService.getinfoEnterpriseRUT();
+    if(this.contendPDFRUT){
+      this.infoEnterprise =  this.contendPDFRUT?.split(';');
+      console.log("Informacion recupera del PDF del RUT",this.infoEnterprise);
+      this.enterpriseService.clearInfoEnterpriseRUT();
+    }else{
+      console.log("No se recibio ninguna informacion departe del PDF del RUT");
+    }
   }
   
   calculateVerificationNumber(): void {

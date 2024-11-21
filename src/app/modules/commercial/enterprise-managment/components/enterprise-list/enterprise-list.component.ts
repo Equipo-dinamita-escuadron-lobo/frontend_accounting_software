@@ -30,7 +30,7 @@ export class EnterpriseListComponent {
 
   @ViewChild('buttonArchive') buttonArchive!: ElementRef;
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-
+  
   constructor(
     private enterpriseService: EnterpriseService,
     private router: Router,
@@ -66,6 +66,10 @@ export class EnterpriseListComponent {
 
   goToCreateEnterprise() {
     this.router.navigate(['general/enterprises/create']);
+  }
+
+  goToCreateEnterpisepdfRUT(){
+    this.router.navigate(['general/enterprises/create-PDF-RUT']);
   }
 
   updateEnterpriseSelected(id: string) {
