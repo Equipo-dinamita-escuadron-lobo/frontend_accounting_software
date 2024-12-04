@@ -12,13 +12,13 @@ import { LocalStorageMethods } from '../../../../shared/methods/local-storage.me
 let API_URL = '';
 
 //Si microservice es de enterprise se cambia la url de la api a local
-if(environment.microservice == 'enterprise'){
+if(environment.microservice =='enterprise'){
     API_URL = environment.API_LOCAL_URL;
 }
 else{
     API_URL = environment.API_URL;
 }
-
+console.log(API_URL);
 @Injectable({
   providedIn: 'root',
 })
@@ -32,12 +32,13 @@ export class EnterpriseService {
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   enterpriseSelected?: EnterpriseDetails;
 
-  enterpriseTypes: EnterpriseType[] = [
+  /*enterpriseTypes: EnterpriseType[] = [
     { id: 1, name: 'Privada' },
     { id: 2, name: 'Oficial' },
     { id: 3, name: 'Mixta' },
-  ];
+  ];*/
 
+enterpriseTypes: EnterpriseType[] = [];
   //Route API
   private apiUrl = API_URL + 'enterprises/';
 
@@ -57,6 +58,10 @@ export class EnterpriseService {
 
   getEnterprisesInactive(): Observable<EnterpriseList[]> {
     return this.http.get<EnterpriseList[]>(this.apiUrl + 'inactive');
+  }
+
+  getTypeEnterprises(): Observable<EnterpriseType[]> {
+    return this.http.get<EnterpriseType[]>(this.apiUrl + 'type-enterprise');
   }
 
   /**

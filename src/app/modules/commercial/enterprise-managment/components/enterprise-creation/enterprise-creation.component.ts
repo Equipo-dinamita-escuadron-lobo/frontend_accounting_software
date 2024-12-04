@@ -529,7 +529,10 @@ export class EnterpriseCreationComponent {
    */
 
   getTypesEnterprise() {
-    this.enterpriseTypesList = this.enterpriseService.getTypesEnterprise();
+    this.enterpriseService.getTypeEnterprises().subscribe((data) => {
+      console.log(data);
+      this.enterpriseTypesList = data;
+    });
   }
 
   goToListEnterprises(){

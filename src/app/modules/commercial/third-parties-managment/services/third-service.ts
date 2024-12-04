@@ -9,6 +9,7 @@ import { Third } from '../models/third-model'; // Importa el modelo que creaste
 export class ThirdService {
   // private apiUrl = 'http://tuapi.com/api/terceros'; // Reemplaza con la URL de tu API real
   private apiUrl = 'assets/data/thirds-parties/thirds-parties.json';
+  
   constructor(private http: HttpClient) {}
 
   getThirdParties(): Observable<Third[]> {
