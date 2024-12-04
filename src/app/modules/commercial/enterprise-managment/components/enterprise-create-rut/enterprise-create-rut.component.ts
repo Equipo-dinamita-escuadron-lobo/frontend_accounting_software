@@ -1,20 +1,20 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { ThirdServiceService } from '../../services/third-service.service';
+import { EnterpriseService } from '../../services/enterprise.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
 @Component({
-  selector: 'app-third-create-pdf-rut',
-  templateUrl: './third-create-pdf-rut.component.html',
-  styleUrls: ['./third-create-pdf-rut.component.css']
+  selector: 'app-enterprise-create-rut',
+  templateUrl: './enterprise-create-rut.component.html',
+  styleUrl: './enterprise-create-rut.component.css'
 })
-export class ThirdCreatePdfRUTComponent {
+export class EnterpriseCreateRUTComponent {
   @Output() close = new EventEmitter<void>();
   
-  inputData = { title: 'Crear Tercero apartir del RUT' };
+  inputData = { title: 'Crear una Empresa apartir del PDF del RUT' };
   pdfUrl: SafeResourceUrl | null = null;
   selectedFile: File | null = null;
   isFileLoaded = false;
@@ -22,8 +22,8 @@ export class ThirdCreatePdfRUTComponent {
   constructor(
     private sanitizer: DomSanitizer, 
     private http: HttpClient, 
-    private thirdService: ThirdServiceService, 
-    private router: Router
+    private router: Router, 
+    private enterpriseServie: EnterpriseService,
   ) {}
 
   onFileChange(event: any) {
@@ -41,9 +41,10 @@ export class ThirdCreatePdfRUTComponent {
     }
   }
 
+
   uploadFile() {
     if (this.selectedFile) {
-      this.thirdService.ExtractInfoPDFRUT(this.selectedFile).subscribe({
+      this.enterpriseServie.ExtractInfoPDFRUT(this.selectedFile).subscribe({
         next: (response) => {
           console.log('Respuesta del servicio:', response);
           const pdfContent = response.content;
@@ -62,7 +63,8 @@ export class ThirdCreatePdfRUTComponent {
               confirmButtonColor: buttonColors.confirmationColor
             });
           } else {
-            this.redirectToCreateThird(pdfContent);
+            console.log(pdfContent);
+            this.redirectToCreateEnterprise(pdfContent);
           }
   
         },
@@ -90,10 +92,15 @@ export class ThirdCreatePdfRUTComponent {
     this.pdfUrl = null;
     this.selectedFile = null;
     this.isFileLoaded = false;
+    this.router.navigate(['general/enterprises/list']);
   }
 
-  redirectToCreateThird(infoThird: string): void {
-    this.thirdService.setInfoThirdRUT(infoThird); 
-    this.router.navigate(['/general/operations/third-parties/create']);
+  goToListEnterprises(){
+    this.router.navigate(['general/enterprises/list']);
+  }
+
+  redirectToCreateEnterprise(infoEnterprise: string):void{
+    this.enterpriseServie.setInfoEnterpiseRUT(infoEnterprise);
+    this.router.navigate(['general/enterprises/create']);
   }
 }

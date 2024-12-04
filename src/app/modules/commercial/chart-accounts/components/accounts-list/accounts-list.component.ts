@@ -212,8 +212,8 @@ export class AccountsListComponent implements OnInit {
    */
   ngOnInit(): void {
     this.getAccounts();
-    console.log(this.listDepositAccount);
-    console.log(this.listRefundAccount);
+    //console.log(this.listDepositAccount);
+    //console.log(this.listRefundAccount);
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.getTaxesByCodes();
     this.getNatureType();
@@ -558,7 +558,7 @@ export class AccountsListComponent implements OnInit {
           confirmButtonColor: buttonColors.confirmationColor,
           footer: '<button (click)="openModalDetails()" class="text-purple-500">Obtener más información!</button>'
         });
-        console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
+        //console.error('Faltan los siguientes campos obligatorios:', missingFields.join(', '));
         return;
       }
       // Eliminamos la primera fila (índice 0)
@@ -1236,7 +1236,7 @@ export class AccountsListComponent implements OnInit {
       })
     ).subscribe(
       (data) => {
-        console.log(data);
+        //console.log(data);
         const { depositAccounts, refundAccounts } = data;
         this.listDepositAccount = depositAccounts;
         this.listRefundAccount = refundAccounts;

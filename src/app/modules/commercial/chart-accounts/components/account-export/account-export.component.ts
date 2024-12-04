@@ -111,12 +111,12 @@ export class AccountExportComponent {
             this.downloadExcel(); // Descargar el Excel automáticamente
             resolve(true); // Retorna true si se descargó el Excel
           } else {
-            console.error('No se encontraron cuentas válidas.');
+            //console.error('No se encontraron cuentas válidas.');
             resolve(false); // Retorna false si no se encontraron cuentas válidas
           }
         },
         error: (error) => {
-          console.error('Error al obtener cuentas', error);
+          //console.error('Error al obtener cuentas', error);
           resolve(false); // Retorna false en caso de error
         }
       });

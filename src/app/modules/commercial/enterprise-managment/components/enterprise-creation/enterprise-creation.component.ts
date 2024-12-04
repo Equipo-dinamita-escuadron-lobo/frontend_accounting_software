@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../../../environments/enviorment.development';
@@ -22,20 +17,40 @@ import { EnterpriseService } from '../../services/enterprise.service';
 import { TaxLiabilityService } from '../../services/tax-liability.service';
 import { TaxPayerTypeService } from '../../services/tax-payer-type.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
+import { get } from 'jquery';
+import { InvoiceSelectSupplierComponent } from '../../../purchase-invoice/components/invoice-select-supplier/invoice-select-supplier.component';
+import { Tooltip } from '../../../third-parties-managment/models/Tooltip';
+import { TooltipService } from '../../../third-parties-managment/services/tooltip.service';
 
 @Component({
   selector: 'app-enterprise-creation',
   templateUrl: './enterprise-creation.component.html',
   styleUrl: './enterprise-creation.component.css',
 })
-export class EnterpriseCreationComponent {
+export class EnterpriseCreationComponent implements OnInit {
   /**
    * Declaration of variables to create enterprise
    */
+  tooltipId: string = '';
+  tooltipText: string = '';
+  tooltips: Tooltip[] = [];
+  createdThirdForm!: FormGroup;
+  currentTooltip: Tooltip | undefined;
+  isTooltipVisible: boolean = false;
+  isEditingTooltip: boolean = false;
+  editTooltipText: string = ''; // Propiedad temporal para la edición del tooltip
+  tooltipPosition = { top: 0, left: 0 }; // Posición del tooltip
+  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>; // Referencia a los elementos del tooltip
+  tooltipForm: FormGroup;
+
+  isForeign: boolean = false;
 
   form: FormGroup;
   form_legal: FormGroup;
   form_natural: FormGroup;
+  
+  verificationNumber: number | null = null;
+  submitted = false;
   
 
   title:string = 'Creacion de Empresa'
@@ -51,6 +66,10 @@ export class EnterpriseCreationComponent {
   departmenList: Department[] = [];
   cityList: { id: number; name: string }[] = [];
   enterpriseTypesList: EnterpriseType[] = [];
+
+  //Inforamcion para crear una empresa atravez del pdf del RUT
+  contendPDFRUT: string | null = null;
+  infoEnterprise: string[] | null = null;
 
   /**
    * variables for the logo
@@ -87,6 +106,8 @@ export class EnterpriseCreationComponent {
    * @description constructor to initialice services
    */
   constructor(
+    private tooltipService: TooltipService,
+    
     private fb: FormBuilder,
     private enterpriseService: EnterpriseService,
     private taxLiabilityService: TaxLiabilityService,
@@ -99,13 +120,151 @@ export class EnterpriseCreationComponent {
     this.form = this.fb.group(this.validationsAll());
     this.form_legal = this.fb.group(this.validationsLegal());
     this.form_natural = this.fb.group(this.validationsNatural());
+
+    this.tooltipForm = this.fb.group({
+      entId: ['', Validators.required],
+      tip: ['', Validators.required]
+    });
+
+   /* this.form = this.fb.group({
+      nit: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      dv: [{ value: '', disabled: true }]
+    });*/
   }
 
   ngOnInit(): void {
-    this.getDepartments();
+    this.loadTooltips(); // Cargar los tooltips al inicializar el componente
+
+    this.getDepartments(1);
     this.getTypesEnterprise();
     this.getAllTaxPayeres();
     this.getAllTaxLiabilities();
+
+    this.form.get('nit')?.valueChanges.subscribe(value => {
+      this.calculateVerificationNumber();
+    });
+
+    this.contendPDFRUT = this.enterpriseService.getinfoEnterpriseRUT();
+    if(this.contendPDFRUT){
+      this.infoEnterprise =  this.contendPDFRUT?.split(';');
+      console.log("Informacion recupera del PDF del RUT",this.infoEnterprise);
+      this.enterpriseService.clearInfoEnterpriseRUT();
+    }else{
+      console.log("No se recibio ninguna informacion departe del PDF del RUT");
+    }
+  }
+
+  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  showTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        const target = event.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isTooltipVisible = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  hideTooltip(): void {
+    this.isTooltipVisible = false;
+  }
+  editTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        this.editTooltipText = tooltip.tip; // Asignar el texto del tooltip a la propiedad temporal
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isEditingTooltip = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  closeEditTooltip(): void {
+    this.isEditingTooltip = false;
+  }
+  onSubmitEditTooltip(): void {
+    if (this.currentTooltip) {
+      this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
+      this.tooltipService.updateTooltip(this.currentTooltip.entId, this.currentTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip actualizado:', response);
+          this.isEditingTooltip = false;
+          this.loadTooltips(); // Actualizar la lista de tooltips
+        },
+        (error) => {
+          console.error('Error al actualizar el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  createTooltip(): void {
+    if (this.tooltipForm.valid) {
+      const newTooltip: Tooltip = this.tooltipForm.value;
+      this.tooltipService.createTooltip2(newTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip creado:', response);
+          // Aquí puedes agregar lógica adicional, como mostrar una notificación
+        },
+        (error) => {
+          console.error('Error al crear el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  onSubmit(): void {
+    const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
+    this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
+      (response) => {
+        console.log('Tooltip actualizado:', response);
+        this.loadTooltips(); // Actualizar la lista de tooltips
+      },
+      (error) => {
+        console.error('Error al actualizar el tooltip:', error);
+      }
+    );
+  }
+  loadTooltips(): void {
+    this.tooltipService.getAllTooltips().subscribe(
+      (response) => {
+        this.tooltips = response;
+        console.log('Tooltips cargados:', this.tooltips);
+      },
+      (error) => {
+        console.error('Error al cargar los tooltips:', error);
+      }
+    );
+  }
+
+
+  // ************************************************************
+  
+  calculateVerificationNumber(): void {
+    const nit = this.form.get('nit')?.value;
+    if (nit) {
+      this.verificationNumber = this.calculateDV(nit);
+      this.form.get('dv')?.setValue(this.verificationNumber);
+    }
+  }
+
+  calculateDV(nit: string): number {
+    let vpri = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
+    let x = 0;
+  
+    for (let i = 0; i < nit.length; i++) {
+      x += parseInt(nit[nit.length - 1 - i], 10) * vpri[i];
+    }
+  
+    let y = x % 11;
+    return (y > 1) ? 11 - y : y;
   }
 
   /**
@@ -148,7 +307,7 @@ export class EnterpriseCreationComponent {
         ],
       ],
       country: [
-        { value: 'Colombia', disabled: true },
+        { value: 'country', disabled: true },
         [Validators.maxLength(50)],
       ],
 
@@ -350,6 +509,30 @@ export class EnterpriseCreationComponent {
     this.enabledSelectCity = true;
   }
 
+  //seleccion entre colombia o extranjero 
+  onCountryChange(event: any) {
+    this.isForeign = event.target.value === 'Extranjero';
+    if (this.isForeign) {
+        this.getDepartments(2);        
+        //this.enableSelectCity();
+        this.form.get('selectedItemDepartment')!.reset();
+        this.form.get('selectedItemCity')!.reset();
+    } else {
+        this.getDepartments(1);
+        //this.enableSelectCity();
+        this.form.get('selectedItemDepartment')!.reset();
+        this.form.get('selectedItemCity')!.reset();
+    }
+  }
+
+  actSelectioCountry(){ 
+    if (this.isForeign) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
+
   onDepartmentSelect(event: any) {
     this.form.value.selectedItemDepartment = event;
     this.enableSelectCity();
@@ -397,10 +580,15 @@ export class EnterpriseCreationComponent {
     this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
     this.placeTypeEnterprise = 'Seleccione el tipo de empresa';
   }
+
+  
   /**
    * @description Save enterprise using Enterprise service
    */
   async saveEnterprise() {
+
+    
+
     if(!this.validationsForm()){
       try {
         const personTypeForm: PersonType = {
@@ -412,7 +600,8 @@ export class EnterpriseCreationComponent {
   
         const locationForm: Location = {
           address: this.form.value.address,
-          country: 1,
+          
+          country: this.actSelectioCountry(),
           department: this.form.value.selectedItemDepartment.id,
           city: this.form.value.selectedItemCity.id,
         };
@@ -496,7 +685,14 @@ export class EnterpriseCreationComponent {
    * Use the Taxlibility service to list in the select interface.
    */
   getAllTaxLiabilities() {
-    this.taxLiabilitiesList = this.taxLiabilityService.getTaxLiabilities();
+    this.taxLiabilityService.getTaxLiabilitiesBackend().subscribe(
+      (taxLiabilities: TaxLiability[]) => {
+        this.taxLiabilitiesList = taxLiabilities;
+      },
+      (error) => {
+        console.error('Error al obtener las obligaciones fiscales', error); 
+      }
+    );
   }
 
   /**
@@ -510,8 +706,8 @@ export class EnterpriseCreationComponent {
   /**
    * Use the Department service to list in the select interface.
    */
-  getDepartments() {
-    this.departmenList = this.departmentService.getListDepartments();
+  getDepartments(n: number) {
+    this.departmenList = this.departmentService.getListDepartments2(n);
   }
 
   /**

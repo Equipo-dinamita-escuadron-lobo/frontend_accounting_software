@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
 import { Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { get } from 'jquery';
 import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { ThirdServiceConfigurationService } from '../../services/third-service-configuration.service';
+import { TooltipService } from '../../services/tooltip.service';
+import { Tooltip } from '../../models/Tooltip';
 import { ThirdType } from '../../models/ThirdType';
 import { TypeId } from '../../models/TypeId';
 import { CityService } from '../../services/city.service';
@@ -27,71 +29,22 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 })
 
 export class ThirdCreationComponent implements OnInit {
-  
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
-  mousePosition = { x: 0, y: 0 }; // Posición del mouse
-  positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
-  helpTexts: { [key: string]: string } = {}; // Almacena los textos de ayuda
-  editingHelp: string | null = null; // Para rastrear qué cuadro está en edición
-  visibleHelp: string | null = null; // Para rastrear cuál cuadro es visible
 
-  updateHelpText(helpId: string, value: string): void {
-    this.helpTexts[helpId] = value; // Actualiza el texto de ayuda
-  }
-
-  showHelp(helpId: string): void {
-    this.visibleHelp = helpId; // Muestra el cuadro de ayuda
-  }
-
-  hideHelp(helpId: string): void {
-    if (this.editingHelp !== helpId) {
-      this.visibleHelp = null; // Oculta el cuadro de ayuda
-      this.stopEditing(); // Cierra la edición si no se está editando
-    }
-  }
-
-  toggleHelp(helpId: string, event: MouseEvent): void {
-    if (this.editingHelp === helpId) {
-      this.stopEditing(); // Cierra el cuadro si ya está editando
-    } else {
-      this.setEditing(helpId, event); // Abre el cuadro para edición
-    }
-  }
-
-  setEditing(helpId: string, event: MouseEvent): void {
-    this.editingHelp = helpId; // Establece el cuadro actual en edición
-    this.visibleHelp = helpId; // Mantiene el cuadro visible mientras se edita
-    this.mousePosition = { x: event.clientX +10, y: event.clientY +10 }; 
-    /*if (this.mousePosition.x === this.positionInicial.x) { // Captura la posición del mouse
-      this.mousePosition = {
-        x: event.clientX + 10,
-        y: event.clientY + 10
-      };
-    }*/
-    
-  }
-
-  stopEditing(): void {
-    this.editingHelp = null; // Salir del modo de edición
-    this.visibleHelp = null;
-    localStorage.setItem('helpTexts', JSON.stringify(this.helpTexts)); // Guarda los textos de ayuda en el almacenamiento local
-  }
-
-  isEditing(helpId: string): boolean {
-    return this.editingHelp === helpId; // Retorna si el cuadro está en edición
-  }
-
-  isHelpVisible(helpId: string): boolean {
-    return this.visibleHelp === helpId || this.isEditing(helpId); // Muestra el cuadro si está visible o en edición
-  }
-  noisHelpVisible(helpId: string): boolean {
-    return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
-  }
+  tooltipId: string = '';
+  tooltipText: string = '';
+  tooltips: Tooltip[] = [];
+  createdThirdForm!: FormGroup;
+  currentTooltip: Tooltip | undefined;
+  isTooltipVisible: boolean = false;
+  isEditingTooltip: boolean = false;
+  editTooltipText: string = ''; // Propiedad temporal para la edición del tooltip
+  tooltipPosition = { top: 0, left: 0 }; // Posición del tooltip
+  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>; // Referencia a los elementos del tooltip
+  tooltipForm: FormGroup;
 
   contendPDFRUT: string | null = null;
   infoThird: string[] | null = null;
   selectedThirdTypes: ThirdType[] = [];
-  createdThirdForm!: FormGroup;
   submitted = false;
   button1Checked = false;
   button2Checked = false;
@@ -104,7 +57,7 @@ export class ThirdCreationComponent implements OnInit {
   countryCode!: string;
   selectedCountry: any;
   selectedState: any;
-  selectedCity:any;
+  selectedCity: any;
   //Digito de verificacion
   verificationNumber: number | null = null;
   //vector para manejar los mensajes de error 
@@ -116,6 +69,9 @@ export class ThirdCreationComponent implements OnInit {
 
   constructor(
     @Optional() private dialogRef: MatDialogRef<ThirdCreationComponent>,
+    private tooltipService: TooltipService,
+    private fb: FormBuilder,
+
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
@@ -124,16 +80,24 @@ export class ThirdCreationComponent implements OnInit {
     private departmentService: DepartmentService,
     private router: Router,
     @Optional() @Inject(MAT_DIALOG_DATA) public data?: { destination?: string },
-  ) { }
+  ) { 
+    this.initializeForm();
+    this.tooltipForm = this.fb.group({
+      entId: ['', Validators.required],
+      tip: ['', Validators.required]
+    });
+  }
 
+  
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
+    this.loadTooltips(); // Cargar los tooltips al inicializar el componente
     this.initializeForm();
     this.getCountries();
     this.getTypesID();
     this.getThirdTypes();
     //verificar si se esta creando apartir del PDF del RUT 
-    this.contendPDFRUT = this.thirdService.getInfoThirdRUT(); 
+    this.contendPDFRUT = this.thirdService.getInfoThirdRUT();
     if (this.contendPDFRUT) {
       this.infoThird = this.contendPDFRUT.split(";");
       console.log("Informacion recibida:", this.infoThird);
@@ -142,13 +106,100 @@ export class ThirdCreationComponent implements OnInit {
     } else {
       console.log("No se recibe ninguna info PDF RUT");
     }
+  }
 
-    // Cargar textos de ayuda del almacenamiento local al iniciar
-    const savedHelpTexts = localStorage.getItem('helpTexts');
-    if (savedHelpTexts) {
-      this.helpTexts = JSON.parse(savedHelpTexts);
+  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  showTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        const target = event.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isTooltipVisible = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  hideTooltip(): void {
+    this.isTooltipVisible = false;
+  }
+  editTooltip(id: string, event: MouseEvent): void {
+    this.tooltipService.getTooltipById(id).subscribe(
+      (tooltip) => {
+        this.currentTooltip = tooltip;
+        this.editTooltipText = tooltip.tip; // Asignar el texto del tooltip a la propiedad temporal
+        const rect = (event.target as HTMLElement).getBoundingClientRect();
+        this.tooltipPosition = { top: rect.top + window.scrollY + 20, left: rect.left + window.scrollX + 20 };
+        this.isEditingTooltip = true;
+      },
+      (error) => {
+        console.error('Error al cargar el tooltip:', error);
+      }
+    );
+  }
+  closeEditTooltip(): void {
+    this.isEditingTooltip = false;
+  }
+  onSubmitEditTooltip(): void {
+    if (this.currentTooltip) {
+      this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
+      this.tooltipService.updateTooltip(this.currentTooltip.entId, this.currentTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip actualizado:', response);
+          this.isEditingTooltip = false;
+          this.loadTooltips(); // Actualizar la lista de tooltips
+        },
+        (error) => {
+          console.error('Error al actualizar el tooltip:', error);
+        }
+      );
     }
   }
+
+  createTooltip(): void {
+    if (this.tooltipForm.valid) {
+      const newTooltip: Tooltip = this.tooltipForm.value;
+      this.tooltipService.createTooltip2(newTooltip).subscribe(
+        (response) => {
+          console.log('Tooltip creado:', response);
+          // Aquí puedes agregar lógica adicional, como mostrar una notificación
+        },
+        (error) => {
+          console.error('Error al crear el tooltip:', error);
+        }
+      );
+    }
+  }
+
+  onSubmit(): void {
+    const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
+    this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
+      (response) => {
+        console.log('Tooltip actualizado:', response);
+        this.loadTooltips(); // Actualizar la lista de tooltips
+      },
+      (error) => {
+        console.error('Error al actualizar el tooltip:', error);
+      }
+    );
+  }
+  loadTooltips(): void {
+    this.tooltipService.getAllTooltips().subscribe(
+      (response) => {
+        this.tooltips = response;
+        console.log('Tooltips cargados:', this.tooltips);
+      },
+      (error) => {
+        console.error('Error al cargar los tooltips:', error);
+      }
+    );
+  }
+
+
+  // ************************************************************
 
   private initializeForm(): void {
     this.createdThirdForm = this.formBuilder.group({
@@ -161,7 +212,7 @@ export class ThirdCreationComponent implements OnInit {
       lastNames: [''],
       socialReason: [''],
       gender: [null],
-      idNumber: ['', {validators: [Validators.required], asyncValidators:[this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur'}],
+      idNumber: ['', { validators: [Validators.required], asyncValidators: [this.idDuplicadoAsyncValidator(this.thirdService)], updateOn: 'blur' }],
       verificationNumber: [{ value: '', disabled: true }],
       state: ['Activo', Validators.required],
       photoPath: [''],
@@ -172,7 +223,7 @@ export class ThirdCreationComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], //Validacion requerida para que tenga el formato correcto de correo electronico
       creationDate: [''],
-      updateDate: ['']      
+      updateDate: ['']
     });
 
     this.createdThirdForm.get('idNumber')?.valueChanges.subscribe(value => {
@@ -186,44 +237,44 @@ export class ThirdCreationComponent implements OnInit {
 
   //Cargar datos apartir del PDF del RUT
   private initializeFormPDFRUT(): void {
-    if(this.infoThird?.[0].includes("Persona jurídica")){
+    if (this.infoThird?.[0].includes("Persona jurídica")) {
       this.button1Checked = true;
       this.button2Checked = false;
-      this.createdThirdForm.patchValue({personType: 'Juridica'});
-      this.createdThirdForm.patchValue({socialReason:this.infoThird?.[3] ?? ''});
-    }else{
+      this.createdThirdForm.patchValue({ personType: 'Juridica' });
+      this.createdThirdForm.patchValue({ socialReason: this.infoThird?.[3] ?? '' });
+    } else {
       this.button1Checked = false;
       this.button2Checked = true;
-      this.createdThirdForm.patchValue({personType: 'Natural'});
-      this.createdThirdForm.patchValue({names:this.infoThird?.[5] ?? '',lastNames:this.infoThird?.[4] ?? '',});
+      this.createdThirdForm.patchValue({ personType: 'Natural' });
+      this.createdThirdForm.patchValue({ names: this.infoThird?.[5] ?? '', lastNames: this.infoThird?.[4] ?? '', });
     }
     this.updateValidator();
     this.createdThirdForm.patchValue({
-      typeId:this.infoThird?.[1] ?? '',
-      address:this.infoThird?.[9] ?? '',
-      thirdTypes:'',
-      idNumber:this.infoThird?.[2] ?? '',
-      email:this.infoThird?.[10] ?? '',
-      phoneNumber:this.infoThird?.[11] ?? '',
-      country:'s',
-      province:'',
-      city:''
+      typeId: this.infoThird?.[1] ?? '',
+      address: this.infoThird?.[9] ?? '',
+      thirdTypes: '',
+      idNumber: this.infoThird?.[2] ?? '',
+      email: this.infoThird?.[10] ?? '',
+      phoneNumber: this.infoThird?.[11] ?? '',
+      country: 's',
+      province: '',
+      city: ''
     });
-    
+
     this.selectedCountry = this.countries.find(country => country.name.toLowerCase() === this.infoThird?.[6]?.toLowerCase());
-    this.createdThirdForm.patchValue({country: this.selectedCountry.id});
+    this.createdThirdForm.patchValue({ country: this.selectedCountry.id });
     this.countryCode = this.selectedCountry.id;
-    this.getDepartments();
+    this.getDepartments(1);
     this.selectedState = this.states.find(state => state.name.toLowerCase() === this.infoThird?.[7].toLowerCase());
-    this.createdThirdForm.patchValue({province: this.selectedState.id});
+    this.createdThirdForm.patchValue({ province: this.selectedState.id });
     this.getCities(this.selectedState.id);
-    this.createdThirdForm.patchValue({city: this.infoThird?.[8] ?? ''});
+    this.createdThirdForm.patchValue({ city: this.infoThird?.[8] ?? '' });
     this.onTypeIdChange2(this.infoThird?.[1] ?? '');
   }
 
   private getCountries(): void {
-    //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
-    this.countries = [{ name: 'Colombia', id: 1 }];
+    this.countries = [{ name: 'Colombia', id: 1 }, { name: 'Extranjero', id: 2 }];
+    //this.countries = [{ name: 'Colombia', id: 1 }];
   }
 
   private getTypesID(): void {
@@ -274,43 +325,44 @@ export class ThirdCreationComponent implements OnInit {
     const idNumberStr = idNumber.toString();
     const duplicatedStr = idNumberStr + idNumberStr;
     const duplicatedNumber = parseInt(duplicatedStr, 10);
-    const verificationNumber = this.calcularDigitoVerificador(idNumberStr);
+    const verificationNumber = this.calcularDigitoVerificacion(idNumberStr);
     this.verificationNumber = verificationNumber;
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
-  // Funcion para calcular el numero de verificacion
-  private calcularDigitoVerificador(rut: string): number {
-    rut = rut.replace(/\./g, '').replace(/-/g, '');
-    if (rut.length < 7) {
-      return 0;
-    }
-    const rutNumeros = rut.split('').map(Number);
-    const multiplicadores = [2, 3, 4, 5, 6, 7, 2, 3, 4, 5];
+  private calcularDigitoVerificacion(numero: string): number {
+    const pesos = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3];
+    const numeroFormateado = numero.padStart(15, '0');
     let suma = 0;
-    let j = 0;
-    for (let i = rutNumeros.length - 1; i >= 0; i--) {
-      suma += rutNumeros[i] * multiplicadores[j];
-      j = (j + 1) % multiplicadores.length; 
+    for (let i = 0; i < 15; i++) {
+      suma += parseInt(numeroFormateado.charAt(i)) * pesos[i];
     }
     const residuo = suma % 11;
-    const digitoVerificador = 11 - residuo;
-    if (digitoVerificador === 10) {
-      return 10;
-    } else if (digitoVerificador === 11) {
-      return 0;
+    let digitoVerificacion;
+    if (residuo === 0) {
+      digitoVerificacion = 0;
+    } else if (residuo === 1) {
+      digitoVerificacion = 1;
     } else {
-      return digitoVerificador;
+      digitoVerificacion = 11 - residuo;
     }
+    return digitoVerificacion;
   }
 
-
+  //seleccion entre colombia o extranjero 
   onCountryChange(event: any) {
+
     const id_country = JSON.parse(event.target.value);
     this.selectedCountry = this.countries.find(country => country.id === id_country);
     console.log(this.selectedCountry);
     this.countryCode = this.selectedCountry.id;
-    this.getDepartments();
+    if (this.countries.find(country => country.id === id_country).name === 'Colombia') {
+      this.getDepartments(1);
+      this.getCities(this.selectedState.id);
+    } else {
+      this.getDepartments(2);
+      this.getCities(33);
+    }
   }
 
   onStateChange(event: any) {
@@ -326,8 +378,8 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  getDepartments() {
-    this.states = this.departmentService.getListDepartments();
+  getDepartments(id: number) {
+    this.states = this.departmentService.getDepartmentById(id);
   }
 
   onTypeIdChange(event: Event): void {
@@ -343,19 +395,19 @@ export class ThirdCreationComponent implements OnInit {
 
   onTypeIdChange2(value: string): void {
     if (value.includes('NIT')) {
-        console.log("tipo ID", value, " Se genera digito de verificacion");
-        this.createdThirdForm.get('verificationNumber')?.enable();
+      console.log("tipo ID", value, " Se genera digito de verificacion");
+      this.createdThirdForm.get('verificationNumber')?.enable();
     } else {
-        console.log("No se genera digito de verificacion");
-        this.createdThirdForm.get('verificationNumber')?.disable();
+      console.log("No se genera digito de verificacion");
+      this.createdThirdForm.get('verificationNumber')?.disable();
     }
   }
 
-  goToListThirds(): void {  
+  goToListThirds(): void {
     if (this.data && this.data.destination === 'destination') {
       this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
     } else {
-    this.router.navigateByUrl('/general/operations/third-parties');
+      this.router.navigateByUrl('/general/operations/third-parties');
     }
   }
 
@@ -503,10 +555,10 @@ export class ThirdCreationComponent implements OnInit {
 
     return errors;
   }
-  
+
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return thirdService.existThird(control.value).pipe(
+      return thirdService.existThird(control.value, this.entData).pipe(
         map((isDuplicated: any) => (isDuplicated ? { idDuplicado: true } : null)),
         catchError(() => of(null)) // Manejar errores del servicio
       );
@@ -559,7 +611,7 @@ export class ThirdCreationComponent implements OnInit {
         if (this.data && this.data.destination === 'destination') {
           this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
         } else {
-        this.goToListThirds();
+          this.goToListThirds();
         }
       },
       error: (error) => {

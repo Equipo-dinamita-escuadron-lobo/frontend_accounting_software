@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Enterprise, EnterpriseDetails } from '../models/Enterprise';
 import { EnterpriseList } from '../models/EnterpriseList';
 import { EnterpriseType } from '../models/EnterpriseType';
 import { environment } from '../../../../../environments/environment';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { LocalStorageMethods } from '../../../../shared/methods/local-storage.method';
 //import { environment } from '../../../../../environments/enviorment.development';
 
@@ -28,7 +28,16 @@ export class EnterpriseService {
   /**
    * Test of service
    */
-
+  private infoEnterpriseRUT: string |null=null;
+  setInfoEnterpiseRUT(info: string): void {
+    this.infoEnterpriseRUT = info;
+  }
+  getinfoEnterpriseRUT(): string | null {
+    return this.infoEnterpriseRUT;
+  }
+  clearInfoEnterpriseRUT(): void {
+    this.infoEnterpriseRUT = null;
+  }
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
   enterpriseSelected?: EnterpriseDetails;
 
@@ -131,5 +140,19 @@ enterpriseTypes: EnterpriseType[] = [];
     }
 
     return this.enterpriseSelected;
+  }
+
+  //Extraer informacion del PDF del RUT para crear un tercero
+  ExtractInfoPDFRUT (file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    console.log('Request Body:', formData);
+    console.log(this.apiUrl+"content-PDF-RUT");
+    return this.http.post<string>(this.apiUrl+"content-PDF-RUT", formData).pipe(
+      catchError((error) => {
+        console.error('Pailaaaaaaaaaaaaaa ', error);
+        return throwError(() => new Error('Error occurred while uploading the file'));
+      })
+    );
   }
 }

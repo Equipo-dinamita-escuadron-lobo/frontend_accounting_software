@@ -36,6 +36,10 @@ export class ThirdEditModalComponent implements OnInit {
   
   //private apiUrl = 'http://http://localhost//api/thirds/update';
   //private apiUrl = 'http://contables.unicauca.edu.co/api/thirds/update';
+  PersonaCargadaNatural = false
+  PersonaCargadaJuridica = false
+  EstadoGuardado = ''
+  currentDate = new Date();
   thirdId: number = 0;
   //aaaaaaaaaaaaaaaaaaaaaaaaaaa
   CountryName = "";
@@ -198,24 +202,28 @@ export class ThirdEditModalComponent implements OnInit {
         if (third.personType === 'Natural'){
           this.button2Checked = true
           this.button1Checked = false
+          this.PersonaCargadaNatural = true
+          this.PersonaCargadaJuridica = false
         }else{
           this.button1Checked = true
           this.button2Checked = false
+          this.PersonaCargadaNatural = false
+          this.PersonaCargadaJuridica = true
         }
         
         console.log("los tipos de terceros unicos cargados son" ,this.thirdTypes);
         this.selectedCountry = this.countries.find(country => country.name === third.country);
-        const currentDate = new Date();
+        
         
         if(this.selectedCountry.id){
           this.getDepartments()
         }
-        let EstadoGuardado = ''
+        
         if(third.state){
-          EstadoGuardado = 'Activo'
+          this.EstadoGuardado = 'Activo'
           console.log("Se cargar estado Activo")
         }else{
-          EstadoGuardado = 'Inactivo'
+          this.EstadoGuardado = 'Inactivo'
           console.log("Se cargar estado Inactivo")
         }
         this.selectedState = this.states.find(state => state.name === third.province);
@@ -235,7 +243,7 @@ export class ThirdEditModalComponent implements OnInit {
           thId:third.thId,
           typeId: third.typeId.typeId,
           address:third.address,
-          state:EstadoGuardado,
+          state:this.EstadoGuardado,
           verificationNumber:third.verificationNumber,
           personType:third.personType, 
           thirdTypes:third.thirdTypes,
@@ -250,7 +258,7 @@ export class ThirdEditModalComponent implements OnInit {
           city:third.city,
           socialReason:third.socialReason,
           creationDate: third.creationDate,
-          updateDate: this.datePipe.transform(currentDate, 'yyyy-MM-dd')!
+          updateDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')!
         });          
         
         if(this.createdThirdForm.get('typeId')?.value === 'NIT'){
@@ -446,18 +454,56 @@ export class ThirdEditModalComponent implements OnInit {
   }
 
   onCheckChange(buttonId: number): void {
+    //this.updateTypeIds();
     if (buttonId === 1 && this.button1Checked) {
       this.button2Checked = false;
       this.createdThirdForm.get('names')?.setValue('');
       this.createdThirdForm.get('lastNames')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
+      if (this.PersonaCargadaJuridica && this.PersonaCargadaNatural === false){
+        console.log("Se cambia de tipo de persona a Juridica")
+        this.assigndata()
+      }
     } else if (buttonId === 2 && this.button2Checked) {
       this.button1Checked = false;
       this.createdThirdForm.get('socialReason')?.setValue('');
       this.createdThirdForm.get('verificationNumber')?.disable();
+      if (this.PersonaCargadaNatural && this.PersonaCargadaJuridica === false){
+        console.log("Se cambia de tipo de persona a natural")
+        this.assigndata()
+      }
     }
     this.updateValidator();
-    this.updateTypeIds();
+  }
+
+  assigndata(): void{
+    this.createdThirdForm.patchValue({
+      thId:this.thirdData.thId,
+      typeId: this.thirdData.typeId.typeId,
+      address:this.thirdData.address,
+      state:this.EstadoGuardado,
+      verificationNumber:this.thirdData.verificationNumber,
+      //personType:this.thirdData.personType, 
+      thirdTypes:this.thirdData.thirdTypes,
+      idNumber:this.thirdData.idNumber,
+      names:this.thirdData.names,
+      lastNames:this.thirdData.lastNames,
+      gender: this.thirdData.gender ?? "",
+      email:this.thirdData.email,
+      phoneNumber:this.thirdData.phoneNumber,
+      country:this.thirdData.country,
+      province:this.selectedState.id,
+      city:this.thirdData.city,
+      socialReason:this.thirdData.socialReason,
+      creationDate: this.thirdData.creationDate,
+      updateDate: this.datePipe.transform(this.currentDate, 'yyyy-MM-dd')!
+    });          
+    console.log("el valor de tipo de identificacion es ", this.thirdData.typeId.typeId)
+    if(this.createdThirdForm.get('typeId')?.value === 'NIT'){
+      this.createdThirdForm.get('verificationNumber')?.enable();  // Habilitar
+    }else{
+      this.createdThirdForm.get('verificationNumber')?.disable();  // Deshabilitar
+    }
   }
 
   updateTypeIds(): void {
@@ -568,7 +614,7 @@ console.log("Se actualizara")
   
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return thirdService.existThird(control.value).pipe(
+      return thirdService.existThird(control.value, this.entData).pipe(
         map((isDuplicated: any) => (isDuplicated ? { idDuplicado: true } : null)),
         catchError(() => of(null)) // Manejar errores del servicio
       );
@@ -576,7 +622,7 @@ console.log("Se actualizara")
   }
 
   OnSubmit() {
-    const currentDate = new Date();
+    
     let third: Third = this.createdThirdForm.value;
     third.thId = this.thirdData.thId;
     third.entId = this.entData;
@@ -612,6 +658,14 @@ console.log("Se actualizara")
     return type;
   });
 
+  console.log("El genero que se guardara es", third.gender ? third.gender.toString() : "");
+
+  console.log("El Nombre que se guardara es", third.names ? third.names.toString() : "");
+
+  console.log("El Apellido que se guardara es", third.lastNames ? third.lastNames.toString() : "");
+  if(third.gender === undefined){
+    //console.log("El genero es nulo", third.gender?toString)
+  }
 
     //Guardado pr defecto
     const TerceroDefecto = {
@@ -621,11 +675,14 @@ console.log("Se actualizara")
       thirdTypes: thirdTypesUpdate,
       rutPath: "",
       personType: third.personType,
-      names: third.names,
-      lastNames: third.lastNames,
+      names: third.names ? third.names.toString() : "",
+      lastNames: third.lastNames ? third.lastNames.toString() : "",
       socialReason: third.socialReason,
-      gender: third.gender?.toString,
+      gender: third.personType === ePersonType.juridica 
+        ? third.gender?.toString 
+        : (third.gender ? third.gender.toString() : ""),
       idNumber: third.idNumber,
+      verificationNumber:third.verificationNumber,
       state: this.createdThirdForm.get('state')?.value === 'Activo' ? true : false,
       photoPath: "",
       country: third.country,
@@ -637,8 +694,10 @@ console.log("Se actualizara")
       creationDate: third.creationDate,
       updateDate: third.updateDate
     };
-    //TerceroDefecto.t
 
+    
+    
+    
     console.log("Datos JSON enviados:", JSON.stringify(third, null, 2));
     console.log("Datos JSON enviados por defecto:", JSON.stringify(TerceroDefecto, null, 2));
     this.thirdService.UpdateThird(TerceroDefecto).subscribe(

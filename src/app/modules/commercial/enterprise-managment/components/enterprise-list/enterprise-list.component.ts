@@ -68,6 +68,10 @@ export class EnterpriseListComponent {
     this.router.navigate(['general/enterprises/create']);
   }
 
+  goToCreateEnterpisepdfRUT(){
+    this.router.navigate(['general/enterprises/create-PDF-RUT']);
+  }
+
   updateEnterpriseSelected(id: string) {
     this.localStorageMethods.saveEnterpriseData(id);
     this.logInEnterprise();

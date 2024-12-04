@@ -25,11 +25,13 @@ import { FactureV } from '../../models/factureV';
 import { ThirdCreationComponent } from '../../../third-parties-managment/components/third-creation/third-creation.component';
 import { UnitOfMeasureService } from '../../../product-managment/services/unit-of-measure.service';
 import { get } from 'jquery';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @Component({
 
   selector: 'app-sale-invoice-creation',
   templateUrl: './sale-invoice-creation.component.html',
-  styleUrls: ['./sale-invoice-creation.component.css']
+  styleUrls: ['./sale-invoice-creation.component.css'],
+
 })
 
 
@@ -71,6 +73,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
   paymentMethod: string = 'debito';
   lstProductsSend: ProductS[] = [];
 
+  factureType: string = 'Venta';
+
   columnsProducts: any[] = [
     { title: '#' },
     { title: 'Codigo', data: 'itemType' },
@@ -81,6 +85,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     { title: 'Descuento' },
     { title: 'IVA' },
     { title: 'Subtotal' },
+    { title: 'Eliminar' }
   ];
 
   nota: string = "";
@@ -150,7 +155,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
     if (lstProducts != null || this.lstProducts.length > 0) {
 
       lstProducts.forEach((prod) => {
-        console.log(prod.unitOfMeasureId);
+        //console.log(prod.unitOfMeasureId);
         this.UnitMeasureService.getUnitOfMeasuresId("" + prod.unitOfMeasureId).subscribe({
           next: (response) => {
             prod.unitOfMeasure = response.abbreviation;
@@ -218,8 +223,8 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     if (displayValue === '') {
       value = 0;
-      formatValue = '0';
-      return [0, '0'];
+      formatValue = '';
+      return [0, ''];
     }
     // Elimina caracteres no numéricos
     const numericValue = String(displayValue).replace(/\D/g, '') ;
@@ -229,22 +234,31 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     // Agrega puntos de miles para el displayValue
     formatValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    console.log(formatValue);
+    //console.log(formatValue);
 
     return [value, formatValue];
 
   }
 
   // Paara calcular total de cada producto
-  calculateTotal(index: number,prod: ProductI): void {
-    this.lstProducts[index].price=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[0];
-    this.lstProducts[index].displayPrice=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[1];
+  calculateTotal(index?: number,prod?: ProductI): void {
+    if (index === undefined || prod === undefined) {
+      if(prod!=undefined){
+        prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+        prod.IvaValor = prod.totalValue * prod.IVA / 100;
+        this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
+      }
 
+      return;
+    }else{
+      this.lstProducts[index].price=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[0];
+      this.lstProducts[index].displayPrice=this.formatValue(prod.displayPrice,prod.price,prod.displayPrice)[1];
     
+      prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
+      prod.IvaValor = prod.totalValue * prod.IVA / 100;
+      this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
+    }
 
-    prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
-    prod.IvaValor = prod.totalValue * prod.IVA / 100;
-    this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
   switchDescuento(type: 'porc' | 'val', prod: ProductI): void {
@@ -260,10 +274,11 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
 
     }
+    this.calculateTotal(undefined,prod);
     this.calculateInvoiceTotals();
   }
 
-  // para calcular valor total del producto incluyendo IVA
+  // para calcular valor total del producto 
   calculateTotalValue(prod?: ProductI): any {
     if (prod) {
       if(prod.amount==0){
@@ -305,11 +320,10 @@ export class SaleInvoiceCreationComponent implements OnInit {
     // Agregar al subtotal total
     this.subTotal += subtotalProducto;
 
-   
 });
 
     
-    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.price * prod.amount) * prod.IVA / 100), 0);
+    this.taxTotal = this.lstProducts.reduce((acc, prod) => acc + (this.calculateTotalValue(prod) * prod.IVA / 100), 0);
     
 
     if ((this.uvt * 27) < this.subTotal && this.retencionCheck) {
@@ -335,17 +349,22 @@ export class SaleInvoiceCreationComponent implements OnInit {
     
     this.total = this.subTotal + this.taxTotal - this.retention;
   }
+  deleteProduct(index: number): void {
+    this.lstProducts.splice(index, 1);
+    this.calculateInvoiceTotals();
+}
+
 
   saveFacture() {
     this.loadFactureInfo();
-
+    //console.log("Productos a enviar" + this.lstProductsSend.forEach(prod => { console.log(prod) }));
     const factureS: FactureV = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: 0,
       factObservations: this.nota, //Modificar cuando se agregue campo en la vista
       descounts: this.descuentoTotal, //Modificar cuando se agregue campo en la vista
-      factureType: "Venta",
+      factureType: this.factureType,
       factProducts: this.lstProductsSend,
       factSubtotals: this.subTotal,
       facSalesTax: this.taxTotal,
@@ -431,7 +450,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     _popUp.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Información recibida del modal:', result);
+        //console.log('Información recibida del modal:', result);
         this.selectedSupplier = result;
         this.showInfoThird = true;
         this.showSectionProducts = true;
@@ -481,7 +500,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
 
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
-        console.log('Información recibida del modal:', result);
+        //console.log('Información recibida del modal:', result);
         let products = result.map((prod: any) => {
           return {
             id: prod.id,
@@ -509,11 +528,11 @@ export class SaleInvoiceCreationComponent implements OnInit {
           prod.totalValue = 0;
         });
         this.lstProducts = this.getUnitOfMeasureForId(this.lstProducts);
-        console.log(this.lstProducts);
+        //console.log(this.lstProducts);
         this.showInfoProducts = true;
         this.calculateInvoiceTotals();
       } else {
-        console.log('No seleccionó ningún producto');
+        //console.log('No seleccionó ningún producto');
         this.showInfoProducts = false;
       }
     });
@@ -529,7 +548,7 @@ export class SaleInvoiceCreationComponent implements OnInit {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
       factCode: 0,
-      factureType: "Venta",
+      factureType: this.factureType,
       descounts: this.descuentoTotal, 
       factObservations: this.nota, 
       factProducts: this.lstProductsSend,
@@ -573,13 +592,24 @@ export class SaleInvoiceCreationComponent implements OnInit {
     );
   }
 
+  calculateDescountTotal(product: ProductI): Number {
+    if (product.descuentos[1] != 0) {
+      const priceTotal = product.price * product.amount;
+      const discount = 100 * product.descuentos[1] / priceTotal;
+      return Math.floor(discount * 100) / 100; // Trunca a dos decimales
+    }
+    return Math.floor(product.descuentos[0] * 100) / 100; // Trunca a dos decimales
+  }
+  
   loadFactureInfo() {
+    const descuento = 0;
     this.lstProductsSend = this.lstProducts.map(prod => ({
+      
       productId: parseInt(prod.id),
       amount: prod.amount,
       description: prod.description,
       vat: prod.IVA / 100,
-      descount: prod.descuentos[0],
+      descount: this.calculateDescountTotal(prod),
       code: prod.itemType,
       unitPrice: prod.price,
       subtotal: (prod.price * prod.amount * (1 + prod.IVA / 100))

@@ -52,7 +52,10 @@ export class DepartmentService {
     { id: 29, name: 'Tolima' },
     { id: 30, name: 'Valle del Cauca' },
     { id: 31, name: 'Vaupés' },
-    { id: 32, name: 'Vichada' }
+    { id: 32, name: 'Vichada' },
+  ];
+  extranjeroDepartments: Department[] = [ 
+    { id: 33, name: 'Extranjero' }
   ];
 
   //Production
@@ -68,9 +71,16 @@ export class DepartmentService {
     return this.http.get<Department[]>(this.apiUrl);
   }
 
-
-
   getListDepartments(){
     return this.colombianDepartments;
   }
+
+  getListDepartments2(n : number ){
+    if(n == 1){
+      return this.colombianDepartments;      
+    }else{
+      return this.extranjeroDepartments;
+      }
+  }
+ 
 }
