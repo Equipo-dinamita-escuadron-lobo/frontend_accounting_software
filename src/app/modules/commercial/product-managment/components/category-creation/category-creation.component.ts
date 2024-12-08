@@ -12,6 +12,10 @@ import { takeUntil } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TaxService } from '../../../taxes/services/tax.service';
 import { Tax } from '../../../taxes/models/Tax';
+
+/**
+ * Componente para la creación de una categoría
+ */
 @Component({
   selector: 'app-category-creation',
   templateUrl: './category-creation.component.html',
@@ -21,14 +25,15 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
   @Input() isDialog: boolean = false; // Determina si el componente es usado como dialog
   
 
-  categoryForm: FormGroup = this.formBuilder.group({});
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  categoryForm: FormGroup = this.formBuilder.group({}); // Formulario de la categoría
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Métodos para el manejo del local storage
+  entData: any | null = null; // Datos de la empresa
 
-  //cuentas
-  accounts: any[] | undefined;
+  // Cuentas para los filtros
+  accounts: any[] | undefined; 
+  // Filtros para cuentas
   filterAccount: string = '';
-
+  // Listas para cuentas
   inventory: any[] = [];
   cost: any[] = [];
   sale: any[] = [];
@@ -51,7 +56,16 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
 
   private _onDestroy = new Subject<void>();
 
-
+  /**
+   * Constructor del componente para la creación de una categoría
+   * @param formBuilder 
+   * @param categoryService 
+   * @param router 
+   * @param chartAccountService 
+   * @param taxServices 
+   * @param data 
+   * @param dialogRef 
+   */
   constructor(
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
@@ -67,7 +81,9 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     }
   }
 
-
+  /**
+   * Método que se ejecuta al iniciar el componente
+   */
   ngOnInit(): void {
 
     this.categoryForm = this.formBuilder.group({
@@ -87,7 +103,9 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
       this.getTaxes();
     }
 
-    // Configurar los filtros
+    /**
+     * Filtros para las cuentas
+     */
     this.inventoryFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy))
       .subscribe(() => this.filterOptions(this.inventory, this.inventoryFilterCtrl, this.filteredInventory));
     this.costFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy))
@@ -100,7 +118,12 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
       .subscribe(() => this.filterOptions(this.return, this.taxFilterCtrl, this.filteredTaxes));
   }
 
-   // Filtro para las opciones
+   /**
+    * Método para filtrar las opciones de las cuentas
+    * @param list 
+    * @param filterCtrl 
+    * @param filteredList 
+    */
    private filterOptions(list: any[], filterCtrl: FormControl, filteredList: ReplaySubject<any[]>) {
     const search = filterCtrl.value ? filterCtrl.value.toLowerCase() : '';
     filteredList.next(
@@ -108,15 +131,31 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Método que se ejecuta al destruir el componente
+   * @returns void
+   * @example ngOnDestroy()
+   */
   ngOnDestroy(): void {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
+
+  /**
+   * Método para validar los campos del formulario
+   * @returns 
+   */
   validationsAll() {
     return {
       stringSearchCategory: [''],
     };
   }
+
+  /**
+   * Método para crear una categoría
+   * @returns void
+   * @example onSubmit()
+   */
   onSubmit(): void {
     if (this.categoryForm.valid) {
       const categoryData = this.categoryForm.value;
@@ -166,16 +205,31 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Método para resetear el formulario
+   * @returns void
+   * @example resetForm()
+   */
   resetForm(): void {
     this.categoryForm.reset();
   }
 
+  /**
+   * Método para volver atrás
+   * @returns void
+   * @example goBack()
+   */
   goBack(): void {
     if (!this.isDialog) {
       this.router.navigate(['/general/operations/categories']);
     }
   }
-  //cuentas
+  
+  /**
+   * Método para obtener las cuentas
+   * @returns void
+   * @example getCuentas()
+   */
   getCuentas(): void {
     this.chartAccountService.getListAccounts(this.entData).subscribe(
       (data: any[]) => {
@@ -197,6 +251,11 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Método para obtener los impuestos
+   * @returns void
+   * @example getTaxes()
+   */
   getTaxes() {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.taxServices.getTaxes(this.entData).subscribe(
@@ -208,6 +267,11 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Método para mapear las cuentas a una lista
+   * @param data 
+   * @returns 
+   */
   mapAccountToList(data: Account[]): Account[] {
     let result: Account[] = [];
 
@@ -225,6 +289,12 @@ export class CategoryCreationComponent implements OnInit, OnDestroy {
     data.forEach(account => traverse(account));
     return result;
 }
+
+/**
+ * Método para obtener las cuentas filtradas
+ * @returns account[]
+ * @example get filteredAccounts()
+ */
 get filteredAccounts() {
   if (this.accounts) {
     return this.accounts.filter(account =>
@@ -234,6 +304,12 @@ get filteredAccounts() {
   return [];
 }
 
+/**
+ * Metodo para obtener las cuentas filtradas de inventario, atraves del buscador
+ * @param term 
+ * @param item 
+ * @returns 
+ */
 customSearchFn(term: string, item: any) {
   term = term.toLowerCase();
   return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);

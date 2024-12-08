@@ -7,19 +7,32 @@ import Swal from 'sweetalert2';
 import { LocalStorageMethods } from '../../../../../shared/methods/local-storage.method';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
+/**
+ * Componente para editar una unidad de medida
+ */
 @Component({
   selector: 'app-unit-of-measure-edit',
   templateUrl: './unit-of-measure-edit.component.html',
   styleUrl: './unit-of-measure-edit.component.css'
 })
 export class UnitOfMeasureEditComponent implements OnInit{
-  unitOfMeasureId: string = '';
-  unitOfMeasure: UnitOfMeasure = {} as UnitOfMeasure;
-  editForm: FormGroup;
-  unitOfMeasureForm: FormGroup = this.formBuilder.group({});
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  /**
+   * Variables del componente
+   */
+  unitOfMeasureId: string = ''; // Variable para almacenar el ID de la unidad de medida
+  unitOfMeasure: UnitOfMeasure = {} as UnitOfMeasure; // Variable para almacenar la unidad de medida
+  editForm: FormGroup;  // Variable para almacenar el formulario
+  unitOfMeasureForm: FormGroup = this.formBuilder.group({});  // Variable para almacenar el formulario
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Variable para almacenar los datos de la empresa
 
+  /**
+   * Constructor del componente
+   * @param route 
+   * @param unitOfMeasureService 
+   * @param formBuilder 
+   * @param router 
+   */
   constructor(
     private route: ActivatedRoute,
     private unitOfMeasureService: UnitOfMeasureService,
@@ -32,16 +45,22 @@ export class UnitOfMeasureEditComponent implements OnInit{
       abbreviation: ['', Validators.required]
     });
   }
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
 
     if (this.entData) {
-    this.route.params.subscribe(params => {
-      this.unitOfMeasureId = params['id'];
-      this.unitOfMeasureDetails();
-    });
+      this.route.params.subscribe(params => {
+        this.unitOfMeasureId = params['id'];
+        this.unitOfMeasureDetails();
+      });
+    }
   }
-  }
+  /**
+   * Método para obtener los detalles de la unidad de medida
+   */
   unitOfMeasureDetails(): void {
     this.unitOfMeasureService.getUnitOfMeasuresId(this.unitOfMeasureId).subscribe(
       (unitOfMeasure: UnitOfMeasure) => {
@@ -60,6 +79,9 @@ export class UnitOfMeasureEditComponent implements OnInit{
     console.log('unit Of Measure details: ', this.unitOfMeasure);
   }
 
+  /**
+   * Método para enviar el formulario
+   */
   onSubmit(): void {
     if (this.editForm.valid) {
       const formData = this.editForm.value;
@@ -100,10 +122,17 @@ export class UnitOfMeasureEditComponent implements OnInit{
       });
     }
   }
+
+  /**
+   * Método para redirigir a la lista de unidades de medida
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/unities']);
   }
 
+  /**
+   * Método para resetear el formulario
+   */
   resetForm(): void {
     this.unitOfMeasureForm.reset();  }
 }

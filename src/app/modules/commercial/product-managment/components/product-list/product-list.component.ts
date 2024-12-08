@@ -17,20 +17,26 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ProductDetailsModalComponent } from '../product-details/product-details.component';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
-
+/**
+ * Componente para listar los productos
+ */
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit, AfterViewInit {
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  /**
+   * Variables del componente
+   */
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Variable para almacenar los datos de la empresa
   products: Product[] = []; // Inicializa la lista de productos
-  unitOfMeasures: UnitOfMeasure[]= [];
-  categories: Category[] = [];
-  types: ProductType[] = [];
+  unitOfMeasures: UnitOfMeasure[]= [];  // Inicializa la lista de unidades de medida
+  categories: Category[] = [];  // Inicializa la lista de categorías
+  types: ProductType[] = [];  // Inicializa la lista de tipos de producto
 
+  // Variables para la tabla
   displayedColumns: string[] = ['id', 'code', 'itemType', 'unitOfMeasure', 'category', 'reference', 'productType', 'actions'];
   dataSource = new MatTableDataSource<Product>(this.products);
 

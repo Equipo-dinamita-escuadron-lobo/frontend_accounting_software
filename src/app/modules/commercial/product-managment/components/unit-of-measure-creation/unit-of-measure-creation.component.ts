@@ -8,17 +8,31 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryCreationComponent } from '../category-creation/category-creation.component';
 
+/**
+ * Componente para la creación de una unidad de medida
+ */
 @Component({
   selector: 'app-unit-of-measure-creation',
   templateUrl: './unit-of-measure-creation.component.html',
   styleUrl: './unit-of-measure-creation.component.css'
 })
 export class UnitOfMeasureCreationComponent implements OnInit{
-  @Input() isDialog: boolean = false; 
-  unitOfMeasureForm: FormGroup = this.formBuilder.group({});
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  /**
+   * Variables del componente
+   */
+  @Input() isDialog: boolean = false; // Variable para saber si es un diálogo
+  unitOfMeasureForm: FormGroup = this.formBuilder.group({});  // Variable para almacenar el formulario
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Variable para almacenar los datos de la empresa
 
+  /**
+   * Constructor del componente
+   * @param formBuilder 
+   * @param unitOfMeasureService 
+   * @param router 
+   * @param data 
+   * @param dialogRef 
+   */
   constructor(
     private formBuilder: FormBuilder,
     private unitOfMeasureService: UnitOfMeasureService,
@@ -31,6 +45,9 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     }
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.unitOfMeasureForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -41,6 +58,9 @@ export class UnitOfMeasureCreationComponent implements OnInit{
 
   }
 
+  /**
+   * Método para enviar el formulario
+   */
   onSubmit(): void {
     if (this.unitOfMeasureForm.valid) {
       const unitOfMeasureData = this.unitOfMeasureForm.value;
@@ -83,10 +103,16 @@ export class UnitOfMeasureCreationComponent implements OnInit{
     }
   }
 
+  /**
+   * Método para redirigir a la lista de unidades de medida
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/unities']);
   }
 
+  /**
+   * Método para resetear el formulario
+   */
   resetForm(): void {
     this.unitOfMeasureForm.reset();
   }

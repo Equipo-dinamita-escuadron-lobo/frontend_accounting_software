@@ -14,35 +14,65 @@ export class ProductTypeService {
 
   constructor(private http: HttpClient) { }
 
-  // GET: Obtener todos los tipos de producto
+  /**
+   * Método para obtener todos los tipos de producto
+   * @returns Observable<ProductType[]>
+   * @example getAllProductTypes()
+   */
   getAllProductTypes(): Observable<ProductType[]> {
     return this.http.get<ProductType[]>(this.apiUrl);
   }
 
-  // GET: Obtener todos los tipos de producto
+  /**
+   * Método para obtener todos los tipos de producto de una empresa
+   * @param enterpriseId 
+   * @returns Observable<ProductType[]>
+   * @example getAllProductTypesEnterprise('1')
+   */
   getAllProductTypesEnterprise(enterpriseId: string): Observable<ProductType[]> {
     const url = `${this.apiUrl}/enterprise/${enterpriseId}`;
     return this.http.get<ProductType[]>(url);
   }
 
-  // GET: Obtener un tipo de producto por ID
+  /**
+   * Método para obtener un tipo de producto por ID
+   * @param id 
+   * @returns Observable<ProductType>
+   * @example getProductTypeById('1')
+   */
   getProductTypeById(id: string): Observable<ProductType> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<ProductType>(url);
   }
 
-  // POST: Crear un nuevo tipo de producto
+  /**
+   * Método para crear un nuevo tipo de producto
+   * @param productType 
+   * @returns Observable<ProductType>
+   * @example createProductType({name: 'ProductType 1', description: 'ProductType 1 description'})
+   */
   createProductType(productType: ProductType): Observable<ProductType> {
     return this.http.post<ProductType>(this.apiUrl, productType);
   }
 
-  // PUT: Actualizar un tipo de producto existente por ID
+  /**
+   * Método para actualizar un tipo de producto
+   * @param id 
+   * @param productType 
+   * @returns Observable<ProductType>
+   * @example updateProductType('1', {name: 'ProductType 1', description: 'ProductType 1 description'})
+   */
   updateProductType(id: string, productType: ProductType): Observable<ProductType> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<ProductType>(url, productType);
   }
 
-  // DELETE: Eliminar un tipo de producto por ID
+  /**
+   * Método para eliminar un tipo de producto
+   * @param id 
+   * @returns Observable<void>
+   * @example deleteProductType('1')
+   */
   deleteProductType(id: string): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.delete<void>(url);

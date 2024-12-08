@@ -12,7 +12,9 @@ import { FormControl } from '@angular/forms';
 import { TaxService } from '../../../taxes/services/tax.service';
 import { Tax } from '../../../taxes/models/Tax';
 
-
+/**
+ * Componente para editar una categoría
+ */
 @Component({
   selector: 'app-category-edit',
   templateUrl: './category-edit.component.html',
@@ -20,27 +22,38 @@ import { Tax } from '../../../taxes/models/Tax';
 })
 export class CategoryEditComponent implements OnInit{
 
+/**
+ * Variables del componente
+ */
+inventoryFilterCtrl: FormControl = new FormControl(); // Filtro para la cuenta de inventario
+costFilterCtrl: FormControl = new FormControl();  // Filtro para la cuenta de costo
+saleFilterCtrl: FormControl = new FormControl();  // Filtro para la cuenta de venta
+taxFilterCtrl: FormControl = new FormControl(); // Filtro para el impuesto
+returnFilterCtrl: FormControl = new FormControl();  // Filtro para la cuenta de devolución
 
-inventoryFilterCtrl: FormControl = new FormControl();
-costFilterCtrl: FormControl = new FormControl();
-saleFilterCtrl: FormControl = new FormControl();
-taxFilterCtrl: FormControl = new FormControl();
-returnFilterCtrl: FormControl = new FormControl();
-
-categoryId: string = '';
-category: Category = {} as Category;
-editForm: FormGroup;
-localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-entData: any | null = null;
+categoryId: string = '';  // Id de la categoría
+category: Category = {} as Category;  // Categoría
+editForm: FormGroup;  // Formulario de edición
+localStorageMethods: LocalStorageMethods = new LocalStorageMethods();   // Métodos de almacenamiento local
+entData: any | null = null; // Datos de la empresa
   //cuentas
-  accounts: any[] | undefined;
-  filterAccount: string = '';
+accounts: any[] | undefined;  // Cuentas
+filterAccount: string = ''; // Filtro de cuentas
 inventory: any[] = [];
-cost: any[] = [];
+cost: any[] = []; 
 sale: any[] = [];
-return: any[] = [];
-taxes: any [] = [];
+return: any[] = []; 
+taxes: any [] = []; // Impuestos
 
+/**
+ * Constructor del componente
+ * @param route 
+ * @param categoryService 
+ * @param formBuilder 
+ * @param router 
+ * @param taxServices 
+ * @param chartAccountService 
+ */
 constructor(
   private route: ActivatedRoute,
   private categoryService: CategoryService,
@@ -61,6 +74,10 @@ constructor(
     tax: ['', Validators.required],
   });
 }
+
+  /**
+   * Método para inicializar el componente
+  */
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
 
@@ -94,6 +111,9 @@ constructor(
   
   }
 
+  /**
+   * Método para filtrar las cuentas
+   */
   filterInventory() {
     const searchTerm = this.inventoryFilterCtrl.value?.toLowerCase() || '';
     this.inventory = this.accounts?.filter(account =>
@@ -101,6 +121,9 @@ constructor(
     ) || [];
   }
   
+  /**
+   * Método para filtrar las cuentas
+   */
   filterCost() {
     const searchTerm = this.costFilterCtrl.value?.toLowerCase() || '';
     this.cost = this.accounts?.filter(account =>
@@ -130,6 +153,9 @@ constructor(
     ) || [];
   }
 
+  /**
+   * Método para obtener los detalles de la categoría
+   */
   getCategoryDetails(): void {
     console.log('Iniciando getCategoryDetails()...');
     console.log('Formulario sin editar:', this.editForm.value);
@@ -157,6 +183,11 @@ constructor(
     );
   }
 
+  /**
+   * Método para obtener las cuentas
+   * @returns void
+   * @example getCuentas()
+   */
  getCuentas(): void {
   this.chartAccountService.getListAccounts(this.entData).subscribe(
     (data: any[]) => {
@@ -172,6 +203,11 @@ constructor(
   );
 }
 
+/**
+ * Método para obtener los impuestos
+ * @returns void
+ * @example getTaxes()
+*/
 getTaxes() {
   this.entData = this.localStorageMethods.loadEnterpriseData();
   this.taxServices.getTaxes(this.entData).subscribe(
@@ -209,18 +245,32 @@ getTaxes() {
     return [];
   }
 
+  /**
+   * Método para buscar en el filtro
+   * @param term 
+   * @param item 
+   * @returns 
+   */
   customSearchFn(term: string, item: any) {
     term = term.toLowerCase();
     return item.code.toLowerCase().includes(term) || item.description.toLowerCase().includes(term);
   }
 
+  /**
+   * Método para validar los campos del formulario
+   * @returns
+   */
+  validationsAll() {
+    return {
+      stringSearchCategory: [''],
+    };
+  }
 
-    validationsAll() {
-      return {
-        stringSearchCategory: [''],
-      };
-    }
-
+  /**
+   * Método para editar una categoría
+   * @returns void
+   * @example onSubmit()
+   */
   onSubmit(): void {
     console.log('Formulario editado sub:', this.editForm.value);
 
@@ -235,7 +285,7 @@ getTaxes() {
       categoryData.enterpriseId = this.entData;
       categoryData.id=this.category.id;
       categoryData.state=this.category.state;
-  console.log('categoryData:', categoryData);
+    console.log('categoryData:', categoryData);
         this.categoryService.updateCategory( categoryData).subscribe(
         (category: Category) => {
           Swal.fire({
@@ -267,6 +317,11 @@ getTaxes() {
     }
   }
 
+  /**
+   * Método para regresar
+   * @returns void
+   * @example goBack()
+   */
   goBack(): void {
     //this.router.navigate(['../../'], { relativeTo: this.route });
     this.router.navigate(['/general/operations/categories']);

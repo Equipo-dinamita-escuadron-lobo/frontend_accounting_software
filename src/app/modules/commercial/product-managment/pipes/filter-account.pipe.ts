@@ -6,6 +6,12 @@ import { Account } from '../../chart-accounts/models/ChartAccount';
 })
 export class FilterAccountPipe implements PipeTransform {
 
+  /**
+   * Filter accounts by code or description recursively
+   * @param accounts 
+   * @param filterValue 
+   * @returns 
+   */
   transform(accounts: Account[], filterValue: string): Account[] {
     if (!accounts || !filterValue) {
       return accounts;
@@ -15,6 +21,12 @@ export class FilterAccountPipe implements PipeTransform {
     return this.filterAccountsRecursive(accounts, lowercaseFilter);
   }
 
+  /**
+   * Filter accounts by code or description recursively
+   * @param accounts 
+   * @param filterValue 
+   * @returns 
+   */
   filterAccountsRecursive(accounts: Account[], filterValue: string): Account[] {
     let filteredAccounts: Account[] = [];
 
@@ -42,6 +54,10 @@ export class FilterAccountPipe implements PipeTransform {
     return filteredAccounts;
   }
 
+  /**
+   * Expand parent accounts recursively to show the filtered account
+   * @param account 
+   */
   expandParentAccounts(account: Account): void {
     if (account.parentAccount) {
       account.parentAccount.showSubAccounts = true;

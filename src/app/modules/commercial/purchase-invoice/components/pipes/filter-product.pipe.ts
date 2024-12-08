@@ -1,10 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Filtro de productos por tipo, código o descripción
+ */
 @Pipe({
   name: 'filterProduct'
 })
 export class FilterProductPipe implements PipeTransform {
-
+  /**
+   * Filtra los productos por tipo, código o descripción
+   * @param items 
+   * @param filterList 
+   * @retuins any[]
+   */
   transform(items: any[], filterList: string): any[] {
     if ((!filterList || filterList.trim() === '')) {
       return items;

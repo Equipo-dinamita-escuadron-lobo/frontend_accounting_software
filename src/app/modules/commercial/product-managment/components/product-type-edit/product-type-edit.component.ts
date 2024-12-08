@@ -7,18 +7,30 @@ import { ProductType } from '../../models/ProductType';
 import { ProductTypeService } from '../../services/product-type-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
-
+/**
+ * Componente para editar un tipo de producto
+ */
 @Component({
   selector: 'app-product-type-edit',
   templateUrl: './product-type-edit.component.html',
   styleUrls: ['./product-type-edit.component.css']
 })
 export class ProductTypeEditComponent implements OnInit {
-  productTypeForm: FormGroup;
-  productTypeName: string | null = null;
-  productTypeId: string = '';
-  typeProduct: ProductType = {} as ProductType;
+  /**
+   * Variables del componente
+   */
+  productTypeForm: FormGroup; // Variable para almacenar el formulario
+  productTypeName: string | null = null;  // Variable para almacenar el nombre del tipo de producto
+  productTypeId: string = ''; // Variable para almacenar el ID del tipo de producto
+  typeProduct: ProductType = {} as ProductType; // Variable para almacenar el tipo de producto
 
+  /**
+   * Constructor del componente
+   * @param route 
+   * @param formBuilder 
+   * @param productTypeService 
+   * @param router 
+   */
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -31,6 +43,9 @@ export class ProductTypeEditComponent implements OnInit {
     });
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.productTypeId = params['id']; // Obtener el ID del producto de los parámetros de ruta
@@ -43,6 +58,9 @@ export class ProductTypeEditComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para enviar el formulario
+   */
   onSubmit(): void {
     if (this.productTypeName) {
       this.productTypeService.updateProductType(this.productTypeName, this.productTypeForm.value).subscribe(
@@ -58,6 +76,9 @@ export class ProductTypeEditComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para obtener los detalles del tipo de producto
+   */
   getTypeProduct(): void {
     this.productTypeService.getProductTypeById(this.productTypeId).subscribe(
       (Type: ProductType) => {
@@ -76,6 +97,9 @@ export class ProductTypeEditComponent implements OnInit {
     );
   }
 
+  /**
+   * Método para eliminar un tipo de producto
+   */
   deleteProductType(): void {
     if (this.productTypeName) {
       this.productTypeService.deleteProductType(this.productTypeName).subscribe(
@@ -91,6 +115,9 @@ export class ProductTypeEditComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para regresar
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/product-types']);
   }

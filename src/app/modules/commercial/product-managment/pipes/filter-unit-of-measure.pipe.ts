@@ -5,6 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterUnitOfMeasurePipe implements PipeTransform {
 
+  /**
+   * Filter unit of measure by id, name or description
+   * @param items 
+   * @param filterUnitOfMeasure 
+   * @returns 
+   */
   transform(items: any[], filterUnitOfMeasure: string): any[] {
     if (!filterUnitOfMeasure || filterUnitOfMeasure.trim() === '') {
       return items;

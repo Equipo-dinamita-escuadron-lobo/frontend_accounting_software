@@ -17,45 +17,50 @@ import { PreviewFacture } from '../../models/previewFacture';
 import { buttonColors } from '../../../../../shared/buttonColors';
 import { FactureV } from '../../models/factureV';
 
-
+/**
+ * Componente para la creación de una factura de compra
+ */
 @Component({
   selector: 'app-invoice-creation',
   templateUrl: './invoice-creation.component.html',
   styleUrls: ['./invoice-creation.component.css']
 })
 export class InvoiceCreationComponent implements OnInit {
-  enterpriseSelected?: EnterpriseDetails;
+  /**
+   * Variables del componente
+   */
+  enterpriseSelected?: EnterpriseDetails; // Variable para almacenar la empresa seleccionada
 
   // Variables for third parties
-  showSectionThrid: boolean = true;
-  showInfoThird: boolean = false;
-  SectionNotas: boolean = false;
-  selectedSupplier: any;
-  selectedSupplierS?: number;
-  supplierS?: Third;
-  supplierSCopy?: Third;
-  changeSupplierS: boolean = false;
-  isLoadingPdfPreview: boolean = false;
-  isSavingPdf: boolean = false;
+  showSectionThrid: boolean = true; // Variable para mostrar la sección de terceros
+  showInfoThird: boolean = false; // Variable para mostrar la información del tercero
+  SectionNotas: boolean = false;  // Variable para mostrar la sección de notas
+  selectedSupplier: any;  // Variable para almacenar el proveedor seleccionado
+  selectedSupplierS?: number; // Variable para almacenar el proveedor seleccionado
+  supplierS?: Third;  // Variable para almacenar la información del proveedor
+  supplierSCopy?: Third;  // Variable para almacenar la información del proveedor
+  changeSupplierS: boolean = false;  // Variable para saber si se cambió el proveedor
+  isLoadingPdfPreview: boolean = false;  // Variable para saber si se está cargando la vista previa del PDF
+  isSavingPdf: boolean = false;  // Variable para saber si se está guardando el PDF
 
   // Variables for products
-  showSectionProducts: boolean = true;
-  showInfoProducts: boolean = false;
-  lstProducts: ProductI[] = [];
-  lstProductsSecurity: ProductI[] = [];
+  showSectionProducts: boolean = true;    // Variable para mostrar la sección de productos
+  showInfoProducts: boolean = false;  // Variable para mostrar la información de los productos 
+  lstProducts: ProductI[] = [];   // Variable para almacenar la lista de productos
+  lstProductsSecurity: ProductI[] = [];   // Variable para almacenar la lista de productos
 
   // Variables for purchase invoice
-  subTotal: number = 0;
+  subTotal: number = 0; 
   taxTotal: number = 0;
   retention: number = 0;
   total: number = 0;
 
-  currentDate: Date = new Date();
-  dueDate?: string;
-  paymentMethod: string = 'debito';
-  lstProductsSend: ProductS[] = [];
+  currentDate: Date = new Date();   // Variable para almacenar la fecha actual
+  dueDate?: string;   // Variable para almacenar la fecha de vencimiento
+  paymentMethod: string = 'debito'; // Variable para almacenar el método de pago
+  lstProductsSend: ProductS[] = []; // Variable para almacenar la lista de productos a enviar
 
-
+  // Columns for products table
   columnsProducts: any[] = [
     { title: 'Nombres', data: 'itemType' },
     { title: 'Descripción', data: 'description' },
@@ -65,17 +70,32 @@ export class InvoiceCreationComponent implements OnInit {
     { title: 'Subtotal' },
   ];
 
-  nota: string = "";
+  nota: string = "";  // Variable para almacenar la nota de la factura
+  /**
+   * Constructor del componente
+   * @param enterpriseService 
+   * @param dialog 
+   * @param thirdService 
+   * @param invoiceService 
+   * @param router 
+   */
   constructor(private enterpriseService: EnterpriseService,
     private dialog: MatDialog,
     private thirdService: ThirdServiceService,
     private invoiceService: InvoiceServiceService,
     private router: Router) { }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit() {
     this.getEnterpriseSelectedInfo();
   }
 
+  /**
+   * Método para obtener la información de la empresa seleccionada
+   * @return Enterprise
+   */
   getEnterpriseSelectedInfo() {
     const id = this.enterpriseService.getSelectedEnterprise();
     if (id === null) {
@@ -90,6 +110,11 @@ export class InvoiceCreationComponent implements OnInit {
     return this.enterpriseSelected;
   }
 
+  /**
+   * Método para obtener la información del tercero
+   * @param thirdId 
+   * @return Third
+   */
   getSupplier(thirdId: any) {
     if (thirdId) {
       this.thirdService.getThirdPartie(thirdId).subscribe({
@@ -100,51 +125,82 @@ export class InvoiceCreationComponent implements OnInit {
     }
   }
 
-  // Método para ventana emergente de terceros
+  /**
+   * Método para seleccionar un proveedor
+   */
   selectSupplier() {
     this.OpenListThirds('Seleccion de proveedor', this.enterpriseSelected?.id, InvoiceSelectSupplierComponent);
   }
 
-  // Método para llevar al formulario de crear tercero
+  /**
+   * Método para crear un proveedor
+   */
   createSupplier() {
     this.router.navigate(['/general/operations/third-parties/create']);
   }
   
-
+  /**
+   * Método para mostrar la sección de terceros
+   */
   showSectionThridM() {
     this.showSectionThrid = !this.showSectionThrid;
   }
 
-  // Método para mostrar ventana emergente de productos
+  /**
+   * Método para seleccionar productos
+   * @return void
+   */
   selectProducts() {
     this.OpenListProducts('Seleccion de Productos', this.enterpriseSelected?.id, InvoiceSelectProductsComponent);
   }
 
+  /**
+   * Método para crear un producto
+   * @return void
+   */
   createProduct() {
     this.router.navigate(['/general/operations/products/create']);
   }
 
+  /**
+  * Método para mostrar la sección de productos
+  */
   showSectionProductsM() {
     this.showSectionProducts = !this.showSectionProducts;
   }
 
+  /**
+   * Método para dar formato a un precio
+   * @return void
+   */
   formatPrice(price: number): string {
     return price.toLocaleString('es-ES');
   }
 
-  // Paara calcular total de cada producto
+  /**
+   * Método para calcular el total de un producto
+   * @param prod 
+   * @return void
+   */
   calculateTotal(prod: ProductI): void {
     prod.totalValue = this.calculateTotalValue(prod); //Llamado para cada producto
     this.calculateInvoiceTotals(); //Llama para que se vaya actualizando los labels de abajo
   }
 
-  // para calcular valor total del producto incluyendo IVA
+  /**
+   * Método para calcular el valor total de un producto en la factura de compra incluyendo el IVA
+   * @param prod 
+   * @return number
+   */
   calculateTotalValue(prod: ProductI): number {
     const subtotalProduct = prod.amount * prod.cost;
     return subtotalProduct;
   }
 
-  //para calcular los datos como impuesto, subtotal y total de la factura
+  /**
+   * Método para calcular los totales de la factura de compra
+   * @return void
+   */
   calculateInvoiceTotals(): void {
     console.log(this.lstProducts)
     this.subTotal = this.lstProducts.reduce((acc, prod) => acc + ((prod.cost * prod.amount)), 0);
@@ -153,6 +209,11 @@ export class InvoiceCreationComponent implements OnInit {
     this.total = this.subTotal + this.taxTotal - this.retention;
   }
 
+  /**
+   * Método para guardar la factura de compra
+   * @return void
+   * @example saveFacture()
+   */
   saveFacture() {
     this.lstProductsSend = this.lstProducts.map(prod => ({
       productId: parseInt(prod.id),
@@ -162,7 +223,31 @@ export class InvoiceCreationComponent implements OnInit {
       unitPrice: prod.cost,
       subtotal: (prod.cost * prod.amount * (1 + prod.IVA / 100))
     }));
-
+    /**
+     * Objeto de factura de compra
+     * @type Facture
+     * @const factureS
+     * @example {
+     * entId: 1,
+     * thId: 1,
+     * factCode: 0,
+     * factureType: "Compra",
+     * factObservations: "Factura de compra",
+     * factProducts: [
+     * {
+     * productId: 1,
+     * amount: 1,
+     * description: "Producto 1",
+     * vat: 0.19,
+     * unitPrice: 1000,
+     * subtotal: 1190
+     * }
+     * ],
+     * factSubtotals: 1000,
+     * facSalesTax: 190,
+     * facWithholdingSource: 25
+     * }
+     */
     const factureS: Facture = {
       entId: this.enterpriseSelected?.id,
       thId: this.supplierS?.thId,
@@ -204,10 +289,18 @@ export class InvoiceCreationComponent implements OnInit {
 
   }
 
+  /**
+   * Método para mostrar la sección de notas
+   */
   showSectionNotas() {
     this.SectionNotas = !this.SectionNotas;
   }
 
+  /**
+   * Método para guardar la factura de compra
+   * @param facture 
+   * @return void
+   */
   async saveInvoice(facture: any) {
   
     this.isSavingPdf = true;
@@ -233,8 +326,6 @@ export class InvoiceCreationComponent implements OnInit {
         this.taxTotal = 0;
         this.retention = 0;
         this.total = 0;
-
-
 
         link.setAttribute('download', fileName || 'facture.pdf');
         document.body.appendChild(link);
@@ -269,6 +360,14 @@ export class InvoiceCreationComponent implements OnInit {
     return matches && matches[1] ? matches[1] : null;
   }
 
+  /**
+   * Método para abrir la lista de terceros
+   * @param title 
+   * @param entId 
+   * @param component
+   * @return void
+   * @example OpenListThirds('Seleccion de proveedor', 1, InvoiceSelectSupplierComponent)
+   */
   OpenListThirds(title: any, entId: any, component: any) {
     const _popUp = this.dialog.open(component, {
       width: '50%',
@@ -314,6 +413,10 @@ export class InvoiceCreationComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Método para cargar la información de la factura
+   */
   loadFactureInfo() {
     this.lstProductsSend = this.lstProducts.map(prod => ({
       productId: parseInt(prod.id),
@@ -325,8 +428,11 @@ export class InvoiceCreationComponent implements OnInit {
       subtotal: (prod.cost * prod.amount * (1 + prod.IVA / 100))
     }));
   }
-  async generatePdfPreview() {
 
+  /**
+   * Método para generar la vista previa de la factura
+   */
+  async generatePdfPreview() {
     this.loadFactureInfo();
 
     const previewFacture: FactureV = {
@@ -374,7 +480,12 @@ export class InvoiceCreationComponent implements OnInit {
     );
   }
 
-
+  /**
+   * Método para abrir la lista de productos
+   * @param title 
+   * @param entId 
+   * @param component 
+   */
   OpenListProducts(title: any, entId: any, component: any) {
     const _popUp = this.dialog.open(component, {
       width: '0%',
@@ -387,8 +498,9 @@ export class InvoiceCreationComponent implements OnInit {
       }
     });
 
-
-
+    /**
+     * Método para cerrar el modal y obtener la información de los productos seleccionados
+     */
     _popUp.afterClosed().subscribe(result => {
       if (result && result.length > 0) {
         console.log('Información recibida del modal:', result);

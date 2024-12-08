@@ -11,26 +11,41 @@ import { UnitOfMeasureService } from '../../services/unit-of-measure.service';
 import { ProductType } from '../../models/ProductType';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
-
+/**
+ * Componente para editar un producto
+ */
 @Component({
   selector: 'app-product-edit',
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
-  productId: string = '';
+  /**
+   * Variables del componente
+   */
+  productId: string = ''; // Inicializa la propiedad productId como una cadena vacía
 
-  product: Product = {} as Product;
-  editForm: FormGroup;
+  product: Product = {} as Product; // Inicializa la propiedad product como un objeto vacío
+  editForm: FormGroup; // Define un formulario reactivo para la edición de productos
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
   thirdParties: any[] = []; // Declarar la propiedad thirdParties como un arreglo vacío al principio
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-  productTypes: any[] = [];
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  productTypes: any[] = []; // Inicializa la propiedad productTypes como un arreglo vacío
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Instancia de la clase LocalStorageMethods
+  entData: any | null = null; // Inicializa la propiedad entData como un objeto nulo
 
+  /**
+   * Constructor del componente
+   * @param route 
+   * @param productService 
+   * @param formBuilder 
+   * @param unitOfMeasureService 
+   * @param categoryService 
+   * @param productTypeService 
+   * @param router 
+   */
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -56,6 +71,9 @@ export class ProductEditComponent implements OnInit {
     }, { validators: quantityValidator });
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.productId = params['id']; // Obtener el ID del producto de los parámetros de ruta
@@ -72,7 +90,9 @@ export class ProductEditComponent implements OnInit {
 
   }
   
-
+  /**
+   * Método para cargar los tipos de producto
+   */
   loadProductTypes(): void {
     this.productTypeService.getAllProductTypes().subscribe(
       (data: any[]) => {
@@ -84,19 +104,23 @@ export class ProductEditComponent implements OnInit {
     );
   }
 
-    // Método para obtener la lista de categorías
-    getCategories(): void {
-      this.categoryService.getCategories(this.entData).subscribe(
-        (categories: any[]) => {
-          this.categories = categories;
-        },
-        error => {
-          console.error('Error al obtener las categorías:', error);
-        }
-      );
-    }
+  /**
+   * Método para obtener las categorías
+   */
+  getCategories(): void {
+    this.categoryService.getCategories(this.entData).subscribe(
+      (categories: any[]) => {
+        this.categories = categories;
+      },
+      error => {
+        console.error('Error al obtener las categorías:', error);
+      }
+    );
+  }
 
-  // Método para obtener la lista de unidades de medida
+  /**
+   * Método para obtener las unidades de medida
+   */
   getUnitOfMeasures(): void {
     this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (unitOfMeasures: any[]) => {
@@ -108,26 +132,30 @@ export class ProductEditComponent implements OnInit {
     );
   }
 
-    //Metodo Complementario
-    initForm(): void {
-      // Definir el formulario reactivo con las validaciones
-      this.productForm = this.formBuilder.group({
-        id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
-        itemType: ['', [Validators.required]],
-        description: ['', [Validators.required]],
-        quantity: [null, [Validators.required, Validators.min(0)]],
-        taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
-        creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
-        unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
-       // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
-        categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
-        cost: [null, [Validators.required, Validators.min(0)]],
-        reference: [''],
-        productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
-      });
-    }
+  /**
+   * Método para inicializar el formulario
+   */
+  initForm(): void {
+    // Definir el formulario reactivo con las validaciones
+    this.productForm = this.formBuilder.group({
+      id: [this.nextProductId], // Asigna el próximo ID al campo 'id'
+      itemType: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      quantity: [null, [Validators.required, Validators.min(0)]],
+      taxPercentage: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
+      creationDate: [new Date().toISOString().split('T')[0], [Validators.required]],
+      unitOfMeasureId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'unitOfMeasureId' es un número
+      // supplierId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'supplierId' es un número
+      categoryId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'categoryId' es un número
+      cost: [null, [Validators.required, Validators.min(0)]],
+      reference: [''],
+      productTypeId: [null, [Validators.required, Validators.pattern(/^\d+$/)]], // 'productTypeId' es un número
+    });
+  }
 
-
+  /**
+   * Método para obtener los detalles del producto
+   */
   getProductDetails(): void {
     this.productService.getProductById(this.productId).subscribe(
       (product: Product) => {
@@ -155,6 +183,9 @@ export class ProductEditComponent implements OnInit {
     );
   }
 
+  /**
+   * Método para editar un producto
+   */
   onSubmit(): void {
     if (this.editForm.valid) {
       const formData = this.productForm.value;
@@ -203,17 +234,23 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
-  //Metodo para formatear el costo
-formatcost(event: any) {
-    const inputValue = event.target.value;
-    let formattedcost = '';
+  /**
+   * Método para dar formato al costo
+   * @param event 
+   */
+  formatcost(event: any) {
+      const inputValue = event.target.value;
+      let formattedcost = '';
 
-    if (inputValue !== '') {
-        // Convertir el precio a número entero (asumiendo que no hay decimales)
-        const cost = parseFloat(inputValue.replace(',', ''));
-    }
-}
+      if (inputValue !== '') {
+          // Convertir el precio a número entero (asumiendo que no hay decimales)
+          const cost = parseFloat(inputValue.replace(',', ''));
+      }
+  }
 
+  /**
+   * Método para regresar a la lista de productos
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
   }

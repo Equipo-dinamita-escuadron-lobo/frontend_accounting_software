@@ -5,6 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'filterList'
 })
 export class FilterList implements PipeTransform {
+  /**
+   * Filter items by itemType, code or description
+   * @param items 
+   * @param filterList 
+   * @returns 
+   */
   transform(items: any[], filterList: string): any[] {
     if ((!filterList || filterList.trim() === '')) {
       return items;

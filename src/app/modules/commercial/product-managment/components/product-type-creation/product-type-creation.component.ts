@@ -9,18 +9,31 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryCreationComponent } from '../category-creation/category-creation.component';
 
-
+/**
+ * Componente para la creación de un tipo de producto
+ */
 @Component({
   selector: 'app-product-type-creation',
   templateUrl: './product-type-creation.component.html',
   styleUrls: ['./product-type-creation.component.css']
 })
 export class ProductTypeCreationComponent implements OnInit {
-  @Input() isDialog: boolean = false; 
-  productTypeForm: FormGroup = this.formBuilder.group({});
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  /**
+   * Variables del componente
+   */
+  @Input() isDialog: boolean = false; // Variable para saber si es un diálogo
+  productTypeForm: FormGroup = this.formBuilder.group({});  // Variable para almacenar el formulario
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Variable para almacenar los datos de la empresa
 
+  /**
+   * Constructor del componente
+   * @param formBuilder 
+   * @param productTypeService 
+   * @param router 
+   * @param data 
+   * @param dialogRef
+   */
   constructor(
     private formBuilder: FormBuilder,
     private productTypeService: ProductTypeService,
@@ -33,6 +46,9 @@ export class ProductTypeCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.productTypeForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -41,6 +57,9 @@ export class ProductTypeCreationComponent implements OnInit {
     this.entData = this.localStorageMethods.loadEnterpriseData(); // Get enterprise data from local storage
   }
 
+  /**
+   * Método para enviar el formulario
+   */
   onSubmit(): void {
     if (this.productTypeForm.valid) {
       const productTypeData = this.productTypeForm.value;
@@ -82,10 +101,16 @@ export class ProductTypeCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para regresar a la lista de tipos de producto
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/product-types']); // Adjust the route as needed
   }
 
+  /**
+   * Método para resetear el formulario
+   */
   resetForm(): void {
     this.productTypeForm.reset();
   }

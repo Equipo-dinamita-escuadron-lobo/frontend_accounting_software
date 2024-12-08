@@ -4,7 +4,12 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'filterCategory'
 })
 export class FilterCategoryPipe implements PipeTransform {
-
+  /**
+   * Filter categories by id, name or description
+   * @param items 
+   * @param filterCategory 
+   * @returns 
+   */
   transform(items: any[], filterCategory: string): any[] {
     if (!filterCategory || filterCategory.trim() === '') {
       return items;

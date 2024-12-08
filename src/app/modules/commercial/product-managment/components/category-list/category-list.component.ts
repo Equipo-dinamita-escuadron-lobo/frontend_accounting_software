@@ -14,29 +14,38 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 import { TaxService } from '../../../taxes/services/tax.service';
 import { Tax } from '../../../taxes/models/Tax';
 
-
+/**
+ * Componente para listar las categorías
+ */
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
 })
 export class CategoryListComponent implements OnInit {
-  categories: Category[] = [];
-  accounts: any[] = [];
-  taxes: Tax[] = [];
+  /**
+   * Variables del componente
+   */
+  categories: Category[] = []; // Variable para almacenar las categorías
+  accounts: any[] = []; // Variable para almacenar las cuentas
+  taxes: Tax[] = [];  // Variable para almacenar los impuestos
 
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Variable para almacenar los datos de la empresa
 
+  // Variables para la tabla
   displayedColumns: string[] = ['id', 'name', 'description', 'inventory', 'cost', 'sale', 'return', 'tax', 'actions'];
   dataSource = new MatTableDataSource<Category>(this.categories);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
-  // Método para filtrar los productos
+  /**
+   * Método para aplicar un filtro en la tabla
+   * @param event 
+   */
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -66,6 +75,9 @@ export class CategoryListComponent implements OnInit {
     };
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   async ngOnInit(): Promise<void> {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     if (this.entData) {
@@ -76,6 +88,10 @@ export class CategoryListComponent implements OnInit {
 
     }
   }
+
+  /**
+   * Método para obtener los impuestos
+   */
   async getTaxes() {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.taxService.getTaxes(this.entData).subscribe(
@@ -83,52 +99,73 @@ export class CategoryListComponent implements OnInit {
         this.taxes = data  
         console.log(this.categories);
       },
-
-      
-      
     );
   }
-    //cuentas
-    getCuentas(): void {
-      this.chartAccountService.getListAccounts(this.entData).subscribe(
-        (data: any[]) => {
-          this.accounts = this.mapAccountToList(data);
-        },
-        error => {
-          console.log('Error al obtener las cuentas:', error);
-        }
-      );
-    }
-
-    mapAccountToList(data: Account[]): Account[] {
-      let result: Account[] = [];
-
-      function traverse(account: Account) {
-          // Clonamos el objeto cuenta sin los hijos
-          let { children, ...accountWithoutChildren } = account;
-          result.push(accountWithoutChildren as Account);
-
-          // Llamamos recursivamente para cada hijo
-          if (children && children.length > 0) {
-              children.forEach(child => traverse(child));
-          }
+  
+  /**
+   * Método para obtener las cuentas
+   * @returns void
+   * @example getCuentas()
+   */
+  getCuentas(): void {
+    this.chartAccountService.getListAccounts(this.entData).subscribe(
+      (data: any[]) => {
+        this.accounts = this.mapAccountToList(data);
+      },
+      error => {
+        console.log('Error al obtener las cuentas:', error);
       }
-
-      data.forEach(account => traverse(account));
-      return result;
+    );
   }
 
-    getCategoryName(id: number): string {
-      const account = this.accounts.find(cuenta => cuenta.id === id);
-      return account ? account.description : 'No encontrado';
+  /**
+   * Método para mapear las cuentas a una lista
+   * @param data 
+   * @returns Account[]
+   */
+  mapAccountToList(data: Account[]): Account[] {
+    let result: Account[] = [];
+
+    function traverse(account: Account) {
+        // Clonamos el objeto cuenta sin los hijos
+        let { children, ...accountWithoutChildren } = account;
+        result.push(accountWithoutChildren as Account);
+
+        // Llamamos recursivamente para cada hijo
+        if (children && children.length > 0) {
+            children.forEach(child => traverse(child));
+        }
     }
 
-    getTax(id: number){
-      const tax = this.taxes.find(tax => tax.id === id);
-      return tax?.code;
-    }
+    data.forEach(account => traverse(account));
+    return result;
+  }
 
+  /**
+   * Método para obtener el nombre de una cuenta
+   * @param id 
+   * @returns string
+   * @example getCategoryName(1)
+   */
+  getCategoryName(id: number): string {
+    const account = this.accounts.find(cuenta => cuenta.id === id);
+    return account ? account.description : 'No encontrado';
+  }
 
+  /**
+   * Método para obtener el nombre de un impuesto
+   * @param id 
+   * @returns
+   * @example getTax(1)
+   */
+  getTax(id: number){
+    const tax = this.taxes.find(tax => tax.id === id);
+    return tax?.code;
+  }
+
+  /**
+   * Método para obtener todas las categorías
+   */
   getCategories(): void {
     this.categoryService.getCategories(this.entData).subscribe(
       (data: Category[]) => {
@@ -142,13 +179,18 @@ export class CategoryListComponent implements OnInit {
     );
   }
 
-
-  // Método para redirigir a una ruta específica
+  /**
+   * Método para redirigir a una ruta
+   * @param route 
+   */
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
 
-  // Método para redirigir a la página de edición de un producto
+  /**
+   * Método para redirigir a la página de edición
+   * @param categoryId 
+   */
   redirectToEdit(categoryId: string): void {
     if (this.selectedCategoryId === categoryId) {
       // Doble clic, navegar a la página de edición
@@ -170,10 +212,17 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
+  /**
+   * Método para regresar
+   */
   goBack(): void {
     this.router.navigate(['/general/operations/products']);
   }
 
+  /**
+   * Método para eliminar una categoría
+   * @param categoryId 
+   */
   deleteCategory(categoryId: string): void {
     // Utilizando SweetAlert para mostrar un cuadro de diálogo de confirmación
     Swal.fire({
@@ -217,11 +266,24 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
-
+  /**
+   * Método para abrir un modal con los detalles de una categoría
+   * @param id
+   * @example openDetailsModal(1)
+   * @returns void
+   */
   openDetailsModal(id: any) {
     this.OpenPopUp(id, 'Detalles de categoria', CategoryDetailsComponent);
   }
 
+  /**
+   * Método para abrir un modal
+   * @param id
+   * @param title
+   * @param component
+   * @example OpenPopUp(1, 'Detalles de categoria', CategoryDetailsComponent)
+   * @returns void
+   */
   OpenPopUp(id: any, title: any, component: any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',

@@ -4,17 +4,23 @@ import Swal from 'sweetalert2';
 import { ThirdType } from '../../../third-parties-managment/models/ThirdType';
 import { ThirdServiceService } from '../../../third-parties-managment/services/third-service.service';
 import { buttonColors } from '../../../../../shared/buttonColors';
+/**
+ * Componente para seleccionar un proveedor
+ */
 @Component({
   selector: 'app-invoice-select-supplier',
   templateUrl: './invoice-select-supplier.component.html',
   styleUrl: './invoice-select-supplier.component.css'
 })
 export class InvoiceSelectSupplierComponent {
-  inputData: any;
-  filterThird: string = '';
-  lstThirds: any[] = [];
-  selectedItem?: string;
-  entData : any | any = null;
+  /**
+   * Variables del componente
+   */
+  inputData: any; // Variable para almacenar los datos de entrada
+  filterThird: string = '';   // Variable para almacenar el filtro de terceros
+  lstThirds: any[] = [];  // Variable para almacenar los terceros
+  selectedItem?: string;  // Variable para almacenar el item seleccionado
+  entData : any | any = null; // Variable para almacenar los datos de la empresa
 
   columns: any[] = [
    { title: 'Nombre/RazonSocial', lstThirds: 'socialReason' },
@@ -25,10 +31,21 @@ export class InvoiceSelectSupplierComponent {
    { title: 'Acciones'}
  ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<InvoiceSelectSupplierComponent>, private thirdService: ThirdServiceService){
-
+  /**
+   * Constructor del componente
+   * @param data 
+   * @param ref 
+   * @param thirdService
+   */
+  constructor(@Inject(MAT_DIALOG_DATA) 
+    public data: any, 
+    private ref: MatDialogRef<InvoiceSelectSupplierComponent>, 
+    private thirdService: ThirdServiceService){
   }
 
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit() {
     this.inputData = this.data;
 
@@ -54,12 +71,22 @@ export class InvoiceSelectSupplierComponent {
 
   }
 
+  /**
+   * Método para seleccionar un item
+   * @param selectedValue
+   * @memberof InvoiceSelectSupplierComponent
+   * @description Método para seleccionar un item
+   * @returns void
+   */
   selectItem(selectedValue: string): void {
     this.selectedItem = selectedValue;
     console.log('Item seleccionado:', this.selectedItem);
     this.ref.close(this.selectedItem);
   }
 
+  /**
+   * Método para cerrar el popup
+   */
   closePopUp() {
     this.ref.close();
   }

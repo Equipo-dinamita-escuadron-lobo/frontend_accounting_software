@@ -14,6 +14,10 @@ import { ProductTypeCreationComponent } from '../product-type-creation/product-t
 import { UnitOfMeasureCreationComponent } from '../unit-of-measure-creation/unit-of-measure-creation.component';
 import { TaxService } from '../../../taxes/services/tax.service';
 import { Tax } from '../../../taxes/models/Tax';
+
+/**
+ * Componente para la creación de productos
+ */
 @Component({
   selector: 'app-product-creation',
   templateUrl: './product-creation.component.html',
@@ -22,21 +26,34 @@ import { Tax } from '../../../taxes/models/Tax';
 })
 
 export class ProductCreationComponent implements OnInit {
-
+  /**
+   * Variables del componente
+   */
   productForm: FormGroup = this.formBuilder.group({}); // Define un formulario reactivo para la creación de productos
   unitOfMeasures: any[] = []; // Inicializa la propiedad unitOfMeasures como un arreglo vacío
   categories: any[] = []; // Inicializa la propiedad categories como un arreglo vacío
-  productTypes: any[] = [];
-  taxes: any[] = [];
+  productTypes: any[] = []; // Inicializa la propiedad productTypes como un arreglo vacío
+  taxes: any[] = [];  // Inicializa la propiedad taxes como un arreglo vacío
 
-  formSubmitAttempt: boolean = false;
-  submitSuccess: boolean = false;
+  formSubmitAttempt: boolean = false; // Inicializa el intento de envío del formulario como falso
+  submitSuccess: boolean = false; // Inicializa el estado de éxito del envío del formulario como falso
   nextProductId: number = 1; // Inicializa el contador del ID del producto
-  localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
-  entData: any | null = null;
+  localStorageMethods: LocalStorageMethods = new LocalStorageMethods(); // Inicializa la variable para almacenar los métodos de almacenamiento local
+  entData: any | null = null; // Inicializa la variable para almacenar los datos de la empresa
   
-
-
+  /**
+   * Constructor del componente
+   * @param dialogRef 
+   * @param formBuilder 
+   * @param productService 
+   * @param unitOfMeasureService 
+   * @param categoryService 
+   * @param productTypeService 
+   * @param router 
+   * @param dialog 
+   * @param taxService 
+   * @param data 
+   */
   constructor(
     @Optional() private dialogRef: MatDialogRef<ProductCreationComponent>,
     
@@ -52,8 +69,9 @@ export class ProductCreationComponent implements OnInit {
 
   ) {}
 
-
-
+  /**
+   * Método para inicializar el componente
+   */
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
 
@@ -87,7 +105,9 @@ export class ProductCreationComponent implements OnInit {
 
   }
 
-
+  /**
+   * Método para cargar los tipos de producto
+   */
   loadProductTypes(): void {
     this.productTypeService.getAllProductTypes().subscribe(
       (productTypes: any[]) => {
@@ -99,8 +119,9 @@ export class ProductCreationComponent implements OnInit {
     );
   }
 
-
-  // Método para obtener la lista de categorías
+  /**
+   * Método para obtener las categorías
+   */
   getCategories(): void {
     this.categoryService.getCategories(this.entData).subscribe(
       (categories: any[]) => {
@@ -111,6 +132,11 @@ export class ProductCreationComponent implements OnInit {
       }
     );
   }
+  /**
+   * Método para decodificar un valor si es necesario
+   * @param value 
+   * @returns 
+   */
   decodeIfNeeded(value: string): string {
     try {
       return decodeURIComponent(escape(value));
@@ -119,7 +145,9 @@ export class ProductCreationComponent implements OnInit {
     }
   }
   
-
+  /**
+   * Método para obtener las unidades de medida
+   */
   getUnitOfMeasures(): void {
     this.unitOfMeasureService.getUnitOfMeasures(this.entData).subscribe(
       (data: any[]) => {
@@ -137,6 +165,9 @@ export class ProductCreationComponent implements OnInit {
     );
   }
 
+  /**
+   * Método para obtener los impuestos
+   */
   getTaxes() {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.taxService.getTaxes(this.entData).subscribe(
@@ -147,6 +178,10 @@ export class ProductCreationComponent implements OnInit {
     );
   }
 
+  /**
+   * Método para cambiar el estado de una unidad de medida
+   * @param categoryId 
+   */
   onCategoryChange(categoryId: any) {
     const selectedCategory = this.categories.find(category => category.id === categoryId);
     console.log(selectedCategory)
@@ -160,9 +195,9 @@ export class ProductCreationComponent implements OnInit {
   
   }
 
-
-
-  //Metodo Complementario
+  /**
+   * Método para inicializar el formulario
+   */
   initForm(): void {
     // Definir el formulario reactivo con las validaciones
     this.productForm = this.formBuilder.group({
@@ -180,7 +215,10 @@ export class ProductCreationComponent implements OnInit {
     });
   }
 
-  //Metodo de validacion para devolver true o false
+  /**
+   * Método para verificar si el formulario es válido
+   * @returns boolean
+   */
   isFormValid(): boolean {
     const formValue = this.productForm.value;
 
@@ -206,57 +244,62 @@ export class ProductCreationComponent implements OnInit {
     return areTextFieldsValid && areNumberFieldsValid && isDateValid;
   }
 
-  //Método para enviar el formulario y crear un nuevo producto
+  /**
+   * Método para enviar el formulario
+   */
   onSubmit(): void {
-  this.formSubmitAttempt = true;
+    this.formSubmitAttempt = true;
 
-  if (this.isFormValid()) {
-    const formData = this.productForm.value;
+    if (this.isFormValid()) {
+      const formData = this.productForm.value;
 
-    formData.categoryId = parseInt(formData.categoryId, 10);
-    formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
-    formData.cost = parseFloat(formData.cost.toString().replace(/\./g, '').replace(',', '.'));
-    formData.productTypeId = parseInt(formData.productTypeId, 10);
-    formData.enterpriseId = this.entData;
-    
-    this.productService.createProduct(formData).subscribe(
-      (response: any) => {
-        // Mensaje de éxito con alerta
-        Swal.fire({
-          title: 'Creación exitosa',
-          text: 'Se ha creado el producto con éxito!',
-          icon: 'success',
-          confirmButtonColor: buttonColors.confirmationColor,
-        });
-        if(this.dialogRef){
-          this.dialogRef.close('created');
+      formData.categoryId = parseInt(formData.categoryId, 10);
+      formData.unitOfMeasureId = parseInt(formData.unitOfMeasureId, 10);
+      formData.cost = parseFloat(formData.cost.toString().replace(/\./g, '').replace(',', '.'));
+      formData.productTypeId = parseInt(formData.productTypeId, 10);
+      formData.enterpriseId = this.entData;
+      
+      this.productService.createProduct(formData).subscribe(
+        (response: any) => {
+          // Mensaje de éxito con alerta
+          Swal.fire({
+            title: 'Creación exitosa',
+            text: 'Se ha creado el producto con éxito!',
+            icon: 'success',
+            confirmButtonColor: buttonColors.confirmationColor,
+          });
+          if(this.dialogRef){
+            this.dialogRef.close('created');
+          }
+
+          // Restablece el formulario con la fecha actual
+          this.resetFormWithCurrentDate();
+          this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
+          // Incrementa el contador del ID del producto
+          this.nextProductId++;
+          // Vuelve a inicializar el formulario con el nuevo ID
+          this.initForm();
+        },
+        (error) => {
+          // Mensaje de error con alert
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al crear el producto.',
+            
+            confirmButtonColor: buttonColors.confirmationColor,
+            icon: 'error',
+          });
         }
-
-        // Restablece el formulario con la fecha actual
-        this.resetFormWithCurrentDate();
-        this.formSubmitAttempt = false; // Reinicia el estado del intento de envío
-        // Incrementa el contador del ID del producto
-        this.nextProductId++;
-        // Vuelve a inicializar el formulario con el nuevo ID
-        this.initForm();
-      },
-      (error) => {
-        // Mensaje de error con alert
-        Swal.fire({
-          title: 'Error',
-          text: 'Ha ocurrido un error al crear el producto.',
-          
-          confirmButtonColor: buttonColors.confirmationColor,
-          icon: 'error',
-        });
-      }
-    ); 
-  } else {
-    // Mensaje de error si el formulario es inválido
-    alert('No se pudo crear el producto. Por favor revisa los campos.');
+      ); 
+    } else {
+      // Mensaje de error si el formulario es inválido
+      alert('No se pudo crear el producto. Por favor revisa los campos.');
+    }
   }
-  }
-  //Metodo para Resetear Fecha actual
+  
+  /**
+   * Método para restablecer el formulario con la fecha actual
+   */
   resetFormWithCurrentDate(): void {
     // Obtener la fecha actual en UTC
     const currentDateUTC = new Date();
@@ -275,21 +318,21 @@ export class ProductCreationComponent implements OnInit {
     console.log('Fecha actual:', formattedDate);
   }
 
-    //Metodo para formatear el costo
-formatcost(event: any) {
-  const inputValue = event.target.value;
-  let formattedcost = '';
+  formatcost(event: any) {
+    const inputValue = event.target.value;
+    let formattedcost = '';
 
-  if (inputValue !== '') {
-      // Convertir el precio a número entero (asumiendo que no hay decimales)
-      const cost = parseFloat(inputValue.replace(',', ''));
+    if (inputValue !== '') {
+        // Convertir el precio a número entero (asumiendo que no hay decimales)
+        const cost = parseFloat(inputValue.replace(',', ''));
+    }
+
+    //this.productForm.get('cost')?.setValue(formattedcost);
   }
 
-  //this.productForm.get('cost')?.setValue(formattedcost);
-}
-
-
-
+  /**
+   * Método para regresar
+   */
   goBack(): void { 
     if (this.data && this.data.destination === 'destination') {
       this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
@@ -298,7 +341,10 @@ formatcost(event: any) {
     }
   }
 
-
+  /**
+   * Método para abrir un modal con los detalles de una categoría
+   * @param id 
+   */
   openCategoryDialog(): void {
     const dialogRef = this.dialog.open(CategoryCreationComponent, {
       data: { isDialog: true }
@@ -309,27 +355,39 @@ formatcost(event: any) {
     });
   }
 
-openProductTypeDialog(): void {
-  const dialogRef = this.dialog.open(ProductTypeCreationComponent , {
-    data: { isDialog: true }
-  });
-  dialogRef.afterClosed().subscribe(_ => {
-    this.loadProductTypes();
-  });
-}
+  /**
+   * Método para abrir un modal con los detalles de un tipo de producto
+   * @param id
+   */
+  openProductTypeDialog(): void {
+    const dialogRef = this.dialog.open(ProductTypeCreationComponent , {
+      data: { isDialog: true }
+    });
+    dialogRef.afterClosed().subscribe(_ => {
+      this.loadProductTypes();
+    });
+  }
 
-openUnitOfMeasureDialog(): void {
-  const dialogRef = this.dialog.open(UnitOfMeasureCreationComponent, {
-    data: { isDialog: true }
-  });
-  dialogRef.afterClosed().subscribe(_ => {
-    this.getUnitOfMeasures();
-  });
-}
+  /**
+   * Método para abrir un modal con los detalles de una unidad de medida
+   * @param id
+   */
+  openUnitOfMeasureDialog(): void {
+    const dialogRef = this.dialog.open(UnitOfMeasureCreationComponent, {
+      data: { isDialog: true }
+    });
+    dialogRef.afterClosed().subscribe(_ => {
+      this.getUnitOfMeasures();
+    });
+  }
   
 }
 
-// Funcion para validar que el maximo y minimo tengan valores coherentes
+/**
+ * Validador personalizado para la cantidad
+ * @param group 
+ * @returns 
+ */
 function quantityValidator(group: FormGroup): { [key: string]: any } | null {
   const quantity = group.controls['quantity'].value;
   return quantity !== null ? null : { 'quantityInvalid': true };
