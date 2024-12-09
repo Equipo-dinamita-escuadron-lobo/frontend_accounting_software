@@ -1,3 +1,25 @@
+/**
+ * @fileoverview Componente para la creación y gestión de terceros en el sistema
+ * 
+ * Este componente permite:
+ * - Crear nuevos terceros (personas naturales y jurídicas)
+ * - Gestionar tooltips asociados a los campos del formulario
+ * - Validar y procesar información del RUT
+ * - Manejar información geográfica (países, departamentos, ciudades)
+ * - Calcular dígitos de verificación para NIT
+ * - Validar duplicidad de identificaciones
+ * - Gestionar diferentes tipos de terceros y tipos de identificación
+ * 
+ * Funcionalidades principales:
+ * - Formulario dinámico que se adapta según el tipo de persona
+ * - Sistema de tooltips para ayuda contextual
+ * - Validaciones síncronas y asíncronas de datos
+ * - Integración con servicios de localización
+ * - Procesamiento de información desde PDF RUT
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
 import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
@@ -20,7 +42,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogRef } from '@angular/material/dialog';
 import { buttonColors } from '../../../../../shared/buttonColors';
 
-
+/**
+ * Componente para la creación y gestión de terceros en el sistema.
+ * Permite crear nuevos terceros, tanto personas naturales como jurídicas, y gestionar sus tooltips asociados.
+ */
 @Component({
   selector: 'app-third-creation',
   templateUrl: './third-creation.component.html',
@@ -30,48 +55,120 @@ import { buttonColors } from '../../../../../shared/buttonColors';
 
 export class ThirdCreationComponent implements OnInit {
 
+  /** ID del tooltip actual */
   tooltipId: string = '';
+  
+  /** Texto del tooltip actual */
   tooltipText: string = '';
+  
+  /** Array que almacena todos los tooltips disponibles */
   tooltips: Tooltip[] = [];
+  
+  /** Formulario principal para la creación de terceros */
   createdThirdForm!: FormGroup;
+  
+  /** Tooltip que se está mostrando actualmente */
   currentTooltip: Tooltip | undefined;
+  
+  /** Controla la visibilidad del tooltip */
   isTooltipVisible: boolean = false;
+  
+  /** Indica si se está editando un tooltip */
   isEditingTooltip: boolean = false;
-  editTooltipText: string = ''; // Propiedad temporal para la edición del tooltip
-  tooltipPosition = { top: 0, left: 0 }; // Posición del tooltip
-  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>; // Referencia a los elementos del tooltip
+  
+  /** Texto temporal durante la edición del tooltip */
+  editTooltipText: string = '';
+  
+  /** Coordenadas de posición del tooltip */
+  tooltipPosition = { top: 0, left: 0 };
+  
+  /** Referencia a los elementos del tooltip en el DOM */
+  @ViewChildren('tooltipTrigger') tooltipTriggers!: QueryList<ElementRef>;
+  
+  /** Formulario para la gestión de tooltips */
   tooltipForm: FormGroup;
 
+  /** Contenido extraído del PDF RUT */
   contendPDFRUT: string | null = null;
+  
+  /** Información del tercero extraída del RUT */
   infoThird: string[] | null = null;
+  
+  /** Tipos de tercero seleccionados */
   selectedThirdTypes: ThirdType[] = [];
+  
+  /** Indica si el formulario ha sido enviado */
   submitted = false;
+  
+  /** Estado del botón de persona jurídica */
   button1Checked = false;
+  
+  /** Estado del botón de persona natural */
   button2Checked = false;
+  
+  /** Controla la visibilidad de div adicional */
   showAdditionalDiv = false;
+  
+  /** Lista de países disponibles */
   countries: any[] = [];
+  
+  /** Lista de estados/departamentos disponibles */
   states: any[] = [];
+  
+  /** Lista de tipos de tercero disponibles */
   thirdTypes: ThirdType[] = [];
+  
+  /** Lista de tipos de identificación disponibles */
   typeIds: TypeId[] = [];
+  
+  /** Lista de ciudades disponibles */
   cities: any[] = [];
+  
+  /** Código del país seleccionado */
   countryCode!: string;
+  
+  /** País seleccionado actualmente */
   selectedCountry: any;
+  
+  /** Estado/departamento seleccionado actualmente */
   selectedState: any;
+  
+  /** Ciudad seleccionada actualmente */
   selectedCity: any;
-  //Digito de verificacion
+  
+  /** Dígito de verificación calculado */
   verificationNumber: number | null = null;
-  //vector para manejar los mensajes de error 
+  
+  /** Array para almacenar mensajes de error */
   errorMessages: string[] = [];
 
+  /** Instancia de métodos de localStorage */
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+  
+  /** Datos de la empresa actual */
   entData: any | null = null;
+  
+  /** Indica si el ID está duplicado */
   isDuplicated: boolean = false;
 
+  /**
+   * Constructor del componente
+   * @param dialogRef Referencia al diálogo de Material
+   * @param tooltipService Servicio para gestionar tooltips
+   * @param fb Constructor de formularios
+   * @param formBuilder Constructor de formularios adicional
+   * @param thirdService Servicio para gestionar terceros
+   * @param datePipe Pipe para formateo de fechas
+   * @param thirdServiceConfiguration Servicio de configuración de terceros
+   * @param cityService Servicio para gestionar ciudades
+   * @param departmentService Servicio para gestionar departamentos
+   * @param router Router para navegación
+   * @param data Datos opcionales pasados al componente
+   */
   constructor(
     @Optional() private dialogRef: MatDialogRef<ThirdCreationComponent>,
     private tooltipService: TooltipService,
     private fb: FormBuilder,
-
     private formBuilder: FormBuilder,
     private thirdService: ThirdServiceService,
     private datePipe: DatePipe,
@@ -88,7 +185,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  
+  /**
+   * Inicializa el componente cargando datos necesarios y configurando el formulario
+   */
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.loadTooltips(); // Cargar los tooltips al inicializar el componente
@@ -108,7 +207,11 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
-  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  /**
+   * Muestra un tooltip específico en una posición determinada
+   * @param id ID del tooltip a mostrar
+   * @param event Evento del mouse que triggered el tooltip
+   */
   showTooltip(id: string, event: MouseEvent): void {
     this.tooltipService.getTooltipById(id).subscribe(
       (tooltip) => {
@@ -123,9 +226,19 @@ export class ThirdCreationComponent implements OnInit {
       }
     );
   }
+
+  /**
+   * Oculta el tooltip actual
+   */
   hideTooltip(): void {
     this.isTooltipVisible = false;
   }
+
+  /**
+   * Activa el modo de edición para un tooltip específico
+   * @param id ID del tooltip a editar
+   * @param event Evento del mouse asociado
+   */
   editTooltip(id: string, event: MouseEvent): void {
     this.tooltipService.getTooltipById(id).subscribe(
       (tooltip) => {
@@ -140,9 +253,17 @@ export class ThirdCreationComponent implements OnInit {
       }
     );
   }
+
+  /**
+   * Cierra el modo de edición del tooltip
+   */
   closeEditTooltip(): void {
     this.isEditingTooltip = false;
   }
+
+  /**
+   * Guarda los cambios realizados en el tooltip en edición
+   */
   onSubmitEditTooltip(): void {
     if (this.currentTooltip) {
       this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
@@ -159,6 +280,9 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Crea un nuevo tooltip
+   */
   createTooltip(): void {
     if (this.tooltipForm.valid) {
       const newTooltip: Tooltip = this.tooltipForm.value;
@@ -174,6 +298,9 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Actualiza un tooltip existente
+   */
   onSubmit(): void {
     const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
     this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
@@ -186,6 +313,10 @@ export class ThirdCreationComponent implements OnInit {
       }
     );
   }
+
+  /**
+   * Carga todos los tooltips disponibles
+   */
   loadTooltips(): void {
     this.tooltipService.getAllTooltips().subscribe(
       (response) => {
@@ -198,9 +329,9 @@ export class ThirdCreationComponent implements OnInit {
     );
   }
 
-
-  // ************************************************************
-
+  /**
+   * Inicializa el formulario principal con sus validaciones
+   */
   private initializeForm(): void {
     this.createdThirdForm = this.formBuilder.group({
       entId: [''],
@@ -235,7 +366,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  //Cargar datos apartir del PDF del RUT
+  /**
+   * Inicializa el formulario con datos extraídos del PDF RUT
+   */
   private initializeFormPDFRUT(): void {
     if (this.infoThird?.[0].includes("Persona jurídica")) {
       this.button1Checked = true;
@@ -272,11 +405,17 @@ export class ThirdCreationComponent implements OnInit {
     this.onTypeIdChange2(this.infoThird?.[1] ?? '');
   }
 
+  /**
+   * Obtiene la lista de países disponibles
+   */
   private getCountries(): void {
     this.countries = [{ name: 'Colombia', id: 1 }, { name: 'Extranjero', id: 2 }];
     //this.countries = [{ name: 'Colombia', id: 1 }];
   }
 
+  /**
+   * Obtiene los tipos de identificación disponibles
+   */
   private getTypesID(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
@@ -294,6 +433,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene los tipos de tercero disponibles
+   */
   private getThirdTypes(): void {
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[]) => {
@@ -311,7 +453,10 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  //Monitorea los cambios en el selector de Tipos de tercero
+  /**
+   * Maneja la selección de tipos de tercero
+   * @param selectedItems Array de tipos seleccionados
+   */
   onThirdTypeSelect(selectedItems: ThirdType[]): void {
     this.selectedThirdTypes = [];
     this.selectedThirdTypes.push(...selectedItems);
@@ -319,8 +464,10 @@ export class ThirdCreationComponent implements OnInit {
     console.log('Tipos seleccionados actualizados:', this.selectedThirdTypes);
   }
 
-
-  //Funcion para generar un nuevo digito de verificacion
+  /**
+   * Actualiza el dígito de verificación basado en el número de identificación
+   * @param idNumber Número de identificación
+   */
   private updateVerificationNumber(idNumber: number): void {
     const idNumberStr = idNumber.toString();
     const duplicatedStr = idNumberStr + idNumberStr;
@@ -330,6 +477,11 @@ export class ThirdCreationComponent implements OnInit {
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
+  /**
+   * Calcula el dígito de verificación para un número dado
+   * @param numero Número para calcular el dígito de verificación
+   * @returns Dígito de verificación calculado
+   */
   private calcularDigitoVerificacion(numero: string): number {
     const pesos = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3];
     const numeroFormateado = numero.padStart(15, '0');
@@ -349,7 +501,10 @@ export class ThirdCreationComponent implements OnInit {
     return digitoVerificacion;
   }
 
-  //seleccion entre colombia o extranjero 
+  /**
+   * Selecciona entre Colombia o Extranjero 
+   * @param event Evento del cambio de selección
+   */
   onCountryChange(event: any) {
 
     const id_country = JSON.parse(event.target.value);
@@ -365,6 +520,10 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Maneja el cambio de estado/departamento
+   * @param event Evento del cambio de selección
+   */
   onStateChange(event: any) {
     const id_state = JSON.parse(event.target.value);
     this.selectedState = this.states.find(state => state.id == id_state);
@@ -372,16 +531,28 @@ export class ThirdCreationComponent implements OnInit {
     this.getCities(this.selectedState.id);
   }
 
+  /**
+   * Obtiene la lista de ciudades disponibles
+   * @param id ID del departamento
+   */
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
       this.cities = data.cities;
     });
   }
 
+  /**
+   * Obtiene la lista de departamentos disponibles
+   * @param id ID del departamento
+   */
   getDepartments(id: number) {
     this.states = this.departmentService.getDepartmentById(id);
   }
 
+  /**
+   * Maneja el cambio de tipo de identificación
+   * @param event Evento del cambio de selección
+   */
   onTypeIdChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;//Obtenemos el valor del evento
     if (value.includes('NIT')) {
@@ -393,6 +564,10 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Maneja el cambio de tipo de identificación
+   * @param value Valor del tipo de identificación
+   */
   onTypeIdChange2(value: string): void {
     if (value.includes('NIT')) {
       console.log("tipo ID", value, " Se genera digito de verificacion");
@@ -403,6 +578,9 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Navega a la lista de terceros
+   */
   goToListThirds(): void {
     if (this.data && this.data.destination === 'destination') {
       this.dialogRef?.close('close'); // Usar el operador de acceso opcional para dialogRef
@@ -411,7 +589,9 @@ export class ThirdCreationComponent implements OnInit {
     }
   }
 
-  //validar campos obligatorios para persona Juridica(Razon Social) y Natural (Nombre y Apellidos)
+  /**
+   * Valida los campos obligatorios para persona Jurídica (Razón Social) y Natural (Nombre y Apellidos)
+   */
   updateValidator() {
     if (this.button1Checked) {
       this.createdThirdForm.get('socialReason')?.setValidators([Validators.required]);
@@ -434,6 +614,10 @@ export class ThirdCreationComponent implements OnInit {
     this.createdThirdForm.get('gender')?.updateValueAndValidity();
   }
 
+  /**
+   * Maneja el cambio de estado de los botones
+   * @param buttonId ID del botón
+   */
   onCheckChange(buttonId: number): void {
     if (buttonId === 1 && this.button1Checked) {
       this.button2Checked = false;
@@ -450,6 +634,9 @@ export class ThirdCreationComponent implements OnInit {
     this.updateTypeIds();
   }
 
+  /**
+   * Actualiza los tipos de identificación disponibles
+   */
   updateTypeIds(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
@@ -476,7 +663,10 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
-  //Manejo de errores, campos rqueridos
+  /**
+   * Manejo de errores, campos rqueridos
+   * @returns Array de mensajes de error
+   */
   private getFormErrors(): string[] {
     const errors = [];
     const controls = this.createdThirdForm.controls;
@@ -556,6 +746,11 @@ export class ThirdCreationComponent implements OnInit {
     return errors;
   }
 
+  /**
+   * Valida el ID duplicado de forma asíncrona
+   * @param thirdService Servicio para gestionar terceros
+   * @returns Observable para validar el ID duplicado
+   */
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return thirdService.existThird(control.value, this.entData).pipe(
@@ -565,6 +760,9 @@ export class ThirdCreationComponent implements OnInit {
     };
   }
 
+  /**
+   * Envía el formulario
+   */
   OnSubmit() {
     this.submitted = true;
     // Verifica si el formulario es valido
@@ -621,6 +819,9 @@ export class ThirdCreationComponent implements OnInit {
     });
   }
 
+  /**
+   * Restablece el formulario
+   */
   OnReset() {
     this.submitted = false;
     this.button2Checked = false;

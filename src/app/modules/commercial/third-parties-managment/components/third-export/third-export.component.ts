@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Componente para la exportación de terceros a Excel
+ * 
+ * Este componente permite:
+ * - Exportar la lista de terceros a un archivo Excel
+ * - Formatear datos para su presentación en Excel
+ * - Configurar el diseño y estructura del archivo Excel
+ * - Manejar la descarga del archivo generado
+ * 
+ * Funcionalidades principales:
+ * - Generación de archivo Excel con formato específico
+ * - Configuración de columnas y anchos
+ * - Procesamiento de datos de terceros
+ * - Manejo de tipos de datos especiales (arrays, booleanos)
+ * - Gestión de campos opcionales y valores por defecto
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
 import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
@@ -6,17 +25,24 @@ import { Third } from '../../models/Third';
 // Definir el tipo de archivo y la extensión
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
+
 @Component({
   selector: 'app-third-export',
   templateUrl: './third-export.component.html',
   styleUrls: ['./third-export.component.css']
 })
 export class ThirdExportComponent {
+  /** Lista de terceros a exportar */
   private listThirds: Third[] = [];
+  /**
+   * Constructor del componente
+   * @param thirdService Servicio para gestionar terceros
+   */
   constructor(private thirdService: ThirdServiceService) { }
   /**
- * Download the Excel file with the accounts
- */
+   * Descarga el archivo Excel con los terceros
+   * Configura el formato y estructura del archivo
+   */
   downloadExcel() {
     // Definir las columnas del archivo Excel
     const data: any[] = [
@@ -69,10 +95,10 @@ export class ThirdExportComponent {
     this.saveAsExcelFile(excelBuffer, 'Terceros');
   }
   /**
-   * Function recurive to add accounts to the Excel file
-   * @param data 
-   * @param account 
-   * @param level 
+   * Función recursiva para agregar terceros al archivo Excel
+   * @param data Array de datos para el Excel
+   * @param third Tercero a agregar
+   * @param level Nivel de profundidad (no usado actualmente)
    */
   addThirdToExcel(data: any[], third: Third, level: number = 0): void {
     // Combinar varios valores de `thirdTypes` en una cadena, si es un array
@@ -104,22 +130,25 @@ export class ThirdExportComponent {
     ]);
   }
   /**
-   * Save to Excel file
-   * @param buffer
-   * @param fileName
-   * @returns void
-   *  */
+   * Guarda el archivo Excel generado
+   * @param buffer Buffer con los datos del Excel
+   * @param fileName Nombre del archivo a guardar
+   */
   saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, fileName + EXCEL_EXTENSION);
   }
+  /**
+   * Obtiene el ID de la empresa desde localStorage
+   * @returns ID de la empresa o cadena vacía si no existe
+   */
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
     return entData ? JSON.parse(entData).entId : '';
   }
   /**
-   * Get thirds from the API and download the Excel file
-   * @returns Promise<boolean>
+   * Obtiene los terceros desde la API y descarga el Excel
+   * @returns Promesa que indica si la operación fue exitosa
    */
   getThirds(): Promise<boolean> {
     console.log('paso 2')
@@ -132,12 +161,12 @@ export class ThirdExportComponent {
             this.downloadExcel(); // Descargar el Excel automáticamente
             resolve(true); // Retorna true si se descargó el Excel
           } else {
-            console.error('No se encontraron cuentas válidas.');
-            resolve(false); // Retorna false si no se encontraron cuentas válidas
+            console.error('No se encontraron terceros válidos.');
+            resolve(false); // Retorna false si no se encontraron terceros válidos
           }
         },
         error: (error) => {
-          console.error('Error al obtener cuentas', error);
+          console.error('Error al obtener terceros', error);
           resolve(false); // Retorna false en caso de error
         }
       });

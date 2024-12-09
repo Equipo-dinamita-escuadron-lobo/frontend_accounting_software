@@ -1,3 +1,25 @@
+/**
+ * @fileoverview Componente para la edición de terceros en el sistema
+ * 
+ * Este componente permite:
+ * - Editar información de terceros existentes
+ * - Gestionar personas naturales y jurídicas
+ * - Manejar tooltips de ayuda contextual
+ * - Validar y actualizar información del RUT
+ * - Gestionar información geográfica (países, departamentos, ciudades)
+ * - Calcular y validar dígitos de verificación
+ * 
+ * Funcionalidades principales:
+ * - Formulario dinámico adaptable al tipo de persona
+ * - Sistema de tooltips con posicionamiento dinámico
+ * - Validaciones de campos según tipo de persona
+ * - Gestión de estados y tipos de tercero
+ * - Manejo de información geográfica jerárquica
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Third } from '../../models/Third';
@@ -36,17 +58,37 @@ export class ThirdEditModalComponent implements OnInit {
   
   //private apiUrl = 'http://http://localhost//api/thirds/update';
   //private apiUrl = 'http://contables.unicauca.edu.co/api/thirds/update';
-  PersonaCargadaNatural = false
-  PersonaCargadaJuridica = false
-  EstadoGuardado = ''
+  /** Indica si se ha cargado una persona natural */
+  PersonaCargadaNatural = false;
+
+  /** Indica si se ha cargado una persona jurídica */
+  PersonaCargadaJuridica = false;
+
+  /** Estado guardado del tercero (Activo/Inactivo) */
+  EstadoGuardado = '';
+
+  /** Fecha actual del sistema */
   currentDate = new Date();
+
+  /** ID del tercero a editar */
   thirdId: number = 0;
-  //aaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+  /** Nombre del país seleccionado */
   CountryName = "";
+
+  /** Nombre de la provincia/departamento seleccionado */
   ProvinceName = "";
+
+  /** Datos del tercero en edición */
   thirdEdit: Third = {} as Third;
-  mousePosition = { x: 0, y: 0 }; // Posición del mouse
-  positionInicial = { x: 0, y: 0 }; // Posición inicial del mouse
+
+  /** Posición actual del mouse */
+  mousePosition = { x: 0, y: 0 };
+
+  /** Posición inicial del mouse */
+  positionInicial = { x: 0, y: 0 };
+
+  /** Datos iniciales del tercero */
   thirdData: Third = {
     thId: 0,
     entId: '',
@@ -76,19 +118,39 @@ export class ThirdEditModalComponent implements OnInit {
     updateDate: ''
   };
 
-  helpTexts: { [key: string]: string } = {}; // Almacena los textos de ayuda
-  editingHelp: string | null = null; // Para rastrear qué cuadro está en edición
-  visibleHelp: string | null = null; // Para rastrear cuál cuadro es visible
+  /** Textos de ayuda para los tooltips */
+  helpTexts: { [key: string]: string } = {};
 
+  /** Tooltip que está siendo editado */
+  editingHelp: string | null = null;
+
+  /** Tooltip visible actualmente */
+  visibleHelp: string | null = null;
+
+  /** Datos de entrada al componente */
   inputData: any;
+
+  /**
+   * Actualiza el texto de ayuda para un tooltip específico
+   * @param helpId ID del tooltip
+   * @param value Nuevo texto de ayuda
+   */
   updateHelpText(helpId: string, value: string): void {
     this.helpTexts[helpId] = value; // Actualiza el texto de ayuda
   }
 
+  /**
+   * Muestra un tooltip específico
+   * @param helpId ID del tooltip a mostrar
+   */
   showHelp(helpId: string): void {
     this.visibleHelp = helpId; // Muestra el cuadro de ayuda
   }
 
+  /**
+   * Oculta un tooltip específico
+   * @param helpId ID del tooltip a ocultar
+   */
   hideHelp(helpId: string): void {
     if (this.editingHelp !== helpId) {
       this.visibleHelp = null; // Oculta el cuadro de ayuda
@@ -96,6 +158,11 @@ export class ThirdEditModalComponent implements OnInit {
     }
   }
 
+  /**
+   * Alterna la visibilidad de un tooltip
+   * @param helpId ID del tooltip
+   * @param event Evento del mouse
+   */
   toggleHelp(helpId: string, event: MouseEvent): void {
     if (this.editingHelp === helpId) {
       this.stopEditing(); // Cierra el cuadro si ya está editando
@@ -104,6 +171,11 @@ export class ThirdEditModalComponent implements OnInit {
     }
   }
 
+  /**
+   * Establece un tooltip en modo edición
+   * @param helpId ID del tooltip
+   * @param event Evento del mouse
+   */
   setEditing(helpId: string, event: MouseEvent): void {
     this.editingHelp = helpId; // Establece el cuadro actual en edición
     this.visibleHelp = helpId; // Mantiene el cuadro visible mientras se edita
@@ -117,46 +189,111 @@ export class ThirdEditModalComponent implements OnInit {
     
   }
 
+  /**
+   * Detiene la edición del tooltip actual
+   */
   stopEditing(): void {
     this.editingHelp = null; // Salir del modo de edición
     this.visibleHelp = null;
     localStorage.setItem('helpTexts', JSON.stringify(this.helpTexts)); // Guarda los textos de ayuda en el almacenamiento local
   }
 
+  /**
+   * Verifica si un tooltip está en modo edición
+   * @param helpId ID del tooltip
+   * @returns Boolean indicando si está en edición
+   */
   isEditing(helpId: string): boolean {
     return this.editingHelp === helpId; // Retorna si el cuadro está en edición
   }
 
+  /**
+   * Verifica si un tooltip está visible
+   * @param helpId ID del tooltip
+   * @returns Boolean indicando si está visible
+   */
   isHelpVisible(helpId: string): boolean {
     return this.visibleHelp === helpId || this.isEditing(helpId); // Muestra el cuadro si está visible o en edición
   }
+
+  /**
+   * Verifica si un tooltip no está visible
+   * @param helpId ID del tooltip
+   * @returns Boolean indicando si no está visible
+   */
   noisHelpVisible(helpId: string): boolean {
     return this.isEditing(helpId); // No Muestra el cuadro si está visible, solo en edición
   }
 
+  /** Tipos de tercero seleccionados */
   selectedThirdTypes: ThirdType[] = [];
+
+  /** Formulario de edición del tercero */
   createdThirdForm!: FormGroup;
+
+  /** Indica si el formulario ha sido enviado */
   submitted = false;
+
+  /** Estado del botón de persona jurídica */
   button1Checked = false;
+
+  /** Estado del botón de persona natural */
   button2Checked = false;
+
+  /** Controla la visibilidad de div adicional */
   showAdditionalDiv = false;
+
+  /** Lista de países disponibles */
   countries: any[] = [];
+
+  /** Lista de estados/departamentos */
   states: any[] = [];
+
+  /** Lista de tipos de tercero */
   thirdTypes: ThirdType[] = [];
+
+  /** Lista de tipos de identificación */
   typeIds: TypeId[] = [];
+
+  /** Lista de ciudades */
   cities: any[] = [];
+
+  /** Código del país seleccionado */
   countryCode!: string;
+
+  /** País seleccionado */
   selectedCountry: any;
+
+  /** Estado/departamento seleccionado */
   selectedState: any;
-  //Digito de verificacion
+
+  /** Dígito de verificación calculado */
   verificationNumber: number | null = null;
-  //vector para manejar los mensajes de error 
+
+  /** Mensajes de error del formulario */
   errorMessages: string[] = [];
 
+  /** Métodos de localStorage */
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+
+  /** Datos de la empresa */
   entData: any | null = null;
+
+  /** Indica si el ID está duplicado */
   isDuplicated: boolean = false;
 
+  /**
+   * Constructor del componente
+   * @param http Cliente HTTP
+   * @param route Servicio de ruta activa
+   * @param formBuilder Constructor de formularios
+   * @param thirdService Servicio de terceros
+   * @param datePipe Pipe para formateo de fechas
+   * @param thirdServiceConfiguration Servicio de configuración
+   * @param cityService Servicio de ciudades
+   * @param departmentService Servicio de departamentos
+   * @param router Router para navegación
+   */
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
@@ -169,6 +306,9 @@ export class ThirdEditModalComponent implements OnInit {
     private router: Router,
   ) { }
 
+  /**
+   * Inicializa el componente y carga datos necesarios
+   */
   ngOnInit(): void {
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.initializeForm();
@@ -192,6 +332,9 @@ export class ThirdEditModalComponent implements OnInit {
     //this.inputData = this.data;    
   }
 
+  /**
+   * Obtiene los detalles del tercero a editar
+   */
   getthirdDetails(): void {
     this.thirdService.getThirdPartie(this.thirdId).subscribe(
       (third: Third) => {
@@ -273,6 +416,9 @@ export class ThirdEditModalComponent implements OnInit {
     );
   }
 
+  /**
+   * Inicializa el formulario con validaciones
+   */
   private initializeForm(): void {
     this.createdThirdForm = this.formBuilder.group({
       entId: [''],
@@ -307,11 +453,17 @@ export class ThirdEditModalComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene la lista de países disponibles
+   */
   private getCountries(): void {
     //this.countries = [ {name: 'Colombia', id: 1}, {name: 'Ecuador', id: 2}, {name: 'Peru', id: 3}, {name: 'Venezuela', id: 4}];
     this.countries = [{ name: 'Colombia', id: 1 }];
   }
 
+  /**
+   * Obtiene los tipos de identificación disponibles
+   */
   private getTypesID(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
@@ -329,6 +481,9 @@ export class ThirdEditModalComponent implements OnInit {
     });
   }
 
+  /**
+   * Obtiene los tipos de tercero disponibles
+   */
   private getThirdTypes(): void {
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[]) => {
@@ -346,7 +501,10 @@ export class ThirdEditModalComponent implements OnInit {
     });
   }
 
-  //Monitorea los cambios en el selector de Tipos de tercero
+  /**
+   * Maneja la selección de tipos de tercero
+   * @param selectedItems Tipos seleccionados
+   */
   onThirdTypeSelect(selectedItems: ThirdType[]): void {
     this.selectedThirdTypes = [];
     this.selectedThirdTypes.push(...selectedItems);
@@ -354,8 +512,10 @@ export class ThirdEditModalComponent implements OnInit {
     console.log('Tipos seleccionados actualizados:', this.selectedThirdTypes);
   }
 
-
-  //Funcion para generar un nuevo digito de verificacion
+  /**
+   * Actualiza el dígito de verificación
+   * @param idNumber Número de identificación
+   */
   private updateVerificationNumber(idNumber: number): void {
     const idNumberStr = idNumber.toString();
     const duplicatedStr = idNumberStr + idNumberStr;
@@ -366,7 +526,11 @@ export class ThirdEditModalComponent implements OnInit {
     this.createdThirdForm.get('verificationNumber')?.setValue(this.verificationNumber, { emitEvent: false });
   }
 
-  // Función para calcular el numero de verificación
+  /**
+   * Calcula el dígito verificador
+   * @param rut Número RUT
+   * @returns Dígito verificador calculado
+   */
   private calcularDigitoVerificador(rut: string): number {
     rut = rut.replace(/\./g, '').replace(/-/g, '');
     if (rut.length < 7) {
@@ -391,13 +555,20 @@ export class ThirdEditModalComponent implements OnInit {
     }
   }
 
-
+  /**
+   * Maneja el cambio de país
+   * @param event Evento de cambio
+   */
   onCountryChange(event: any) {
     this.selectedCountry = JSON.parse(event.target.value);
     this.countryCode = this.selectedCountry.id;
     this.getDepartments();
   }
 
+  /**
+   * Maneja el cambio de estado/departamento
+   * @param event Evento de cambio
+   */
   onStateChange(event: any) {
     const id_state = JSON.parse(event.target.value);
     this.selectedState = this.states.find(state => state.id == id_state);
@@ -405,15 +576,27 @@ export class ThirdEditModalComponent implements OnInit {
     this.getCities(this.selectedState.id);
   }
 
+  /**
+   * Obtiene las ciudades de un departamento
+   * @param id ID del departamento
+   */
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
       this.cities = data.cities;
     });
   }
+
+  /**
+   * Obtiene los departamentos disponibles
+   */
   getDepartments() {
     this.states = this.departmentService.getListDepartments();
   }
 
+  /**
+   * Maneja el cambio de tipo de identificación
+   * @param event Evento de cambio
+   */
   onTypeIdChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;//Obtenemos el valor del evento
     if (value.includes('NIT')) {
@@ -426,11 +609,16 @@ export class ThirdEditModalComponent implements OnInit {
 
   }
 
+  /**
+   * Navega a la lista de terceros
+   */
   goToListThirds(): void {
     this.router.navigateByUrl('/general/operations/third-parties');
   }
 
-  //validar campos obligatorios para persona Juridica(Razon Social) y Natural (Nombre y Apellidos)
+  /**
+   * Actualiza los validadores según el tipo de persona
+   */
   updateValidator() {
     if (this.button1Checked) {
       this.createdThirdForm.get('socialReason')?.setValidators([Validators.required]);
@@ -453,6 +641,10 @@ export class ThirdEditModalComponent implements OnInit {
     this.createdThirdForm.get('gender')?.updateValueAndValidity();
   }
 
+  /**
+   * Maneja el cambio en los botones de tipo de persona
+   * @param buttonId ID del botón (1: Jurídica, 2: Natural)
+   */
   onCheckChange(buttonId: number): void {
     //this.updateTypeIds();
     if (buttonId === 1 && this.button1Checked) {
@@ -476,6 +668,9 @@ export class ThirdEditModalComponent implements OnInit {
     this.updateValidator();
   }
 
+  /**
+   * Asigna los datos del tercero al formulario
+   */
   assigndata(): void{
     this.createdThirdForm.patchValue({
       thId:this.thirdData.thId,
@@ -506,6 +701,9 @@ export class ThirdEditModalComponent implements OnInit {
     }
   }
 
+  /**
+   * Actualiza los tipos de identificación disponibles
+   */
   updateTypeIds(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
@@ -532,7 +730,10 @@ export class ThirdEditModalComponent implements OnInit {
     });
   }
 
-  //Manejo de errores, campos rqueridos
+  /**
+   * Obtiene los errores del formulario
+   * @returns Array de mensajes de error
+   */
   private getFormErrors(): string[] {
     const errors = [];
     const controls = this.createdThirdForm.controls;
@@ -612,6 +813,11 @@ console.log("Se actualizara")
     return errors;
   }
   
+  /**
+   * Validador asíncrono para IDs duplicados
+   * @param thirdService Servicio de terceros
+   * @returns Validador asíncrono
+   */
   idDuplicadoAsyncValidator(thirdService: ThirdServiceService): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       return thirdService.existThird(control.value, this.entData).pipe(
@@ -621,6 +827,9 @@ console.log("Se actualizara")
     };
   }
 
+  /**
+   * Procesa el envío del formulario
+   */
   OnSubmit() {
     
     let third: Third = this.createdThirdForm.value;
@@ -723,8 +932,9 @@ console.log("Se actualizara")
     );
 }
 
-
-
+  /**
+   * Reinicia el formulario
+   */
   OnReset() {
     this.submitted = false;
     this.button2Checked = false;

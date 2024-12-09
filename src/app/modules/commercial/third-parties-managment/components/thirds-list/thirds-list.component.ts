@@ -1,3 +1,26 @@
+/**
+ * @fileoverview Componente para la gestión y visualización de la lista de terceros
+ * 
+ * Este componente permite:
+ * - Visualizar la lista completa de terceros
+ * - Filtrar y buscar terceros
+ * - Gestionar acciones sobre terceros (editar, ver detalles, configurar)
+ * - Importar y exportar datos de terceros
+ * - Cambiar estados de terceros
+ * - Alternar entre vista resumida y completa
+ * 
+ * Funcionalidades principales:
+ * - Tabla dinámica con paginación
+ * - Filtros de búsqueda
+ * - Gestión de modales (edición, detalles, configuración)
+ * - Importación desde Excel
+ * - Exportación a Excel
+ * - Control de estados de terceros
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,44 +52,87 @@ import { ThirdImportComponent } from '../third-import/third-import.component';
   styleUrls: ['./thirds-list.component.css']
 })
 export class ThirdsListComponent {
+  /** Referencia al modal de edición de terceros */
   @ViewChild('thirdEditModal') thirdEditModal !: ThirdEditModalComponent;
 
+  /** Formulario para filtros y búsqueda */
   form: FormGroup;
 
+  /** ID del tercero seleccionado actualmente */
   selectedThirdId: string | null = null;
+
+  /** Temporizador para operaciones asíncronas */
   timer: any;
 
+  /** Array de terceros */
   data: Third[] = [];
+
+  /** Lista de terceros para Excel */
   listExcel: Third[] = [];
+
+  /** Indica si hay terceros importados */
   importedThirds: boolean = false;
+
+  /** Lista de tipos de tercero */
   thirdTypes: ThirdType[] = [];
+
+  /** Lista de tipos de identificación */
   typeIds: TypeId[] = [];
-  //columnas para las tablas de vista resumida y completa
-  displayedColumnsBrief: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'email', /*'state',*/ 'actions'];
+
+  /** Columnas para la vista resumida */
+  displayedColumnsBrief: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'email', 'actions'];
+
+  /** Columnas para la vista completa */
   displayedColumnsComplete: any[] = ['personType', 'thirdTypes', 'socialReason', 'typeId', 'idNumber', 'verificationNumber', 'email', 'country', 'province', 'city', 'address', 'phoneNumber', 'state', 'actions'];
+
+  /** Fuente de datos para la tabla */
   dataSource = new MatTableDataSource<Third>(this.data);
 
+  /** Control de vista detallada */
   showDetailTable = false;
 
+  /** Referencia al paginador */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  /** Métodos de localStorage */
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+
+  /** Datos de la empresa */
   entData: any | null = null;
 
+  /** Control de visibilidad del modal */
   showModal = false;
-  //Crear tercero apartir del PDF del RUT
+
+  /** Control para crear tercero desde PDF RUT */
   createPdfRUT: boolean = false;
 
+  /**
+   * Constructor del componente
+   * @param thirdService Servicio de terceros
+   * @param thirdServiceConfiguration Servicio de configuración de terceros
+   * @param datePipe Pipe para formateo de fechas
+   * @param thirdExportComponent Componente de exportación
+   * @param fb Constructor de formularios
+   * @param router Router para navegación
+   * @param dialog Servicio de diálogos
+   */
   constructor(private thirdService: ThirdServiceService,private thirdServiceConfiguration: ThirdServiceConfigurationService,  private datePipe: DatePipe, private thirdExportComponent: ThirdExportComponent, private fb: FormBuilder, private router: Router, private dialog: MatDialog) {
     this.form = this.fb.group(this.validationsAll());
   }
 
+  /**
+   * Inicializa las validaciones del formulario
+   * @returns Objeto con configuración de validaciones
+   */
   validationsAll(){
     return {
       stringSearch: ['']
     };
   }
 
+  /**
+   * Inicializa el componente y carga datos necesarios
+   */
   ngOnInit() {
 
     this.entData = this.localStorageMethods.loadEnterpriseData();
@@ -95,36 +161,62 @@ export class ThirdsListComponent {
     }
   }
 
+  /**
+   * Alterna entre vista resumida y detallada
+   */
   showDetailTableFunction():void{
     this.showDetailTable = !this.showDetailTable;
   }
 
+  /**
+   * Abre el modal de detalles de un tercero
+   * @param thId ID del tercero
+   */
   openModalDetails(thId:number):void{
     this.openPopUp(thId,'Detalles del tercero',ThirdDetailsModalComponent)
   }
 
+  /**
+   * Abre el modal de edición de un tercero
+   * @param thId ID del tercero
+   */
   openModalEdit(thId:number):void{
     this.openPopUp(thId, 'Editar información del Tercero', ThirdEditModalComponent)
   }
-  //Abrir Crear tercero apartir del PDF del RUT
+  /**
+   * Abre el modal para crear tercero desde PDF RUT
+   */
   openCreatePDFRunt():void{
     this.createPdfRUT = true;
   }
- //cerrar Crear tercero apartir del PDF del RUT
+ /**
+   * Cierra el modal de creación desde PDF RUT
+   */
   closeCreatePDFRunt():void{
     this.createPdfRUT = false;
   }
 
+  /**
+   * Redirige a la edición de un tercero
+   * @param ThirdId ID del tercero
+   */
   redirectToEdit(ThirdId: string): void {
     console.log("El id del tercero es", ThirdId)
     this.router.navigate(['/general/operations/third-parties/edit', ThirdId]);  
   }
 
 
+  /**
+   * Abre el modal de configuración de terceros
+   */
   openConfigTPModal():void{
     this.openPopUp(0, 'Configuración de Terceros',ThirdConfigModalComponent)
   }
 
+  /**
+   * Cambia el estado de un tercero
+   * @param thId ID del tercero
+   */
   changeThirdPartieState(thId:number):void{
     this.thirdService.changeThirdPartieState(thId).subscribe({
       next: (response: Boolean)=>{
@@ -153,10 +245,20 @@ export class ThirdsListComponent {
       }
     });
   }
+  /**
+   * Elimina un tercero
+   * @param thId ID del tercero
+   */
   deleteThirdPartie(thId:number):void{
     
   }
 
+  /**
+   * Abre un popup modal genérico
+   * @param thId ID del tercero
+   * @param title Título del modal
+   * @param component Componente a mostrar
+   */
   openPopUp(thId:any, title: any, component: any){
     var _popUp = this.dialog.open(component, {
       width: '40%',
@@ -170,11 +272,18 @@ export class ThirdsListComponent {
     _popUp.afterClosed().subscribe()
   }
 
+  /**
+   * Redirige a una ruta específica
+   * @param route Ruta destino
+   */
   redirectTo(route: string): void {
     this.router.navigateByUrl(route);
   }
 
-  //metodo para filtrar los datos
+  /**
+   * Aplica filtros a la tabla de terceros
+   * @param event Evento del input de filtro
+   */
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     // Obtener las columnas por las que se desea filtrar
@@ -190,15 +299,15 @@ export class ThirdsListComponent {
   }
 
   /**
-   * Opens a modal dialog for import details.
+   * Abre el modal de detalles de importación
    */
   openModalDetailsImport(): void {
     this.OpenDetailsImport('Detalles de importación ', ThirdImportComponent)
   }
   /**
-   * Opens a modal dialog with a given title and component.
-   * @param title The title of the modal dialog.
-   * @param component The component to be displayed in the modal dialog.
+   * Abre un popup de detalles de importación
+   * @param title Título del modal
+   * @param component Componente a mostrar
    */
   OpenDetailsImport(title: any, component: any) {
     var _popUp = this.dialog.open(component, {
@@ -213,7 +322,7 @@ export class ThirdsListComponent {
     _popUp.afterClosed().subscribe()
   }
   /**
-     * Export thirds to an Excel file.
+     * Exporta la lista de terceros a Excel
      */
   exportThirdsToExcel() {
     console.log('paso 1')
@@ -235,7 +344,10 @@ export class ThirdsListComponent {
       }
     });
   }
-  // Método que llama al servicio para crear los terceros
+  /**
+   * Crea un tercero desde datos de Excel
+   * @param third Datos del tercero
+   */
   createThirdFromExcel(third: Third) {
     this.thirdService.createThird(third).subscribe({
       next: (response) => {
@@ -253,6 +365,9 @@ export class ThirdsListComponent {
       }
     });
   }
+  /**
+   * Obtiene los tipos de tercero
+   */
   private getThirdTypes(): void {
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
       next: (response: ThirdType[]) => {
@@ -268,6 +383,9 @@ export class ThirdsListComponent {
       }
     });
   }
+  /**
+   * Obtiene los tipos de identificación
+   */
   private getTypesID(): void {
     this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
       next: (response: TypeId[]) => {
@@ -284,6 +402,10 @@ export class ThirdsListComponent {
     });
   }
   excelData: any;
+  /**
+   * Lee y procesa un archivo Excel
+   * @param event Evento del input de archivo
+   */
   ReadExcel(event: any) {
     let file = event.target.files[0];
     // Check if the file is of type xlsx
@@ -328,7 +450,11 @@ export class ThirdsListComponent {
     }
     window.location.reload();
   }
-  // Función que convierte el valor de "Tipo persona" a un enum
+  /**
+   * Convierte el tipo de persona desde Excel
+   * @param tipo Tipo de persona en texto
+   * @returns Enum de tipo de persona
+   */
   convertirTipoPersona(tipo: string): ePersonType {
     console.log('TP', tipo);
     switch (tipo.trim().toLowerCase()) {
@@ -340,6 +466,11 @@ export class ThirdsListComponent {
         throw new Error(`Tipo de persona desconocido: ${tipo}`);
     }
   }
+  /**
+   * Convierte el género desde Excel
+   * @param gender Género en texto
+   * @returns Enum de género o null
+   */
   convertirGenero(gender: String): eThirdGender | null {
     // Si el campo de género está vacío o no tiene valor válido, devolvemos `null`
     if (!gender || gender.trim() === '') {
@@ -356,6 +487,11 @@ export class ThirdsListComponent {
         throw new Error(`Genero desconocido: ${gender}`);
     }
   }
+  /**
+   * Convierte el estado desde Excel
+   * @param estado Estado en texto
+   * @returns Boolean del estado
+   */
   convertirEstado(estado: String) {
     switch (estado.trim().toLowerCase()) {
       case 'activo':
@@ -366,6 +502,11 @@ export class ThirdsListComponent {
         throw new Error(`Estado desconocido: ${estado}`);
     }
   }
+  /**
+   * Convierte los tipos de tercero desde Excel
+   * @param thirdTypes Tipos de tercero en texto
+   * @returns Array de tipos de tercero
+   */
   convertirTipoTercero(thirdTypes: String): ThirdType[] {
   
     console.log('tpss', this.thirdTypes);
@@ -377,6 +518,11 @@ export class ThirdsListComponent {
     console.log('coin');
     return coincidencias;
   }
+  /**
+   * Convierte el tipo de ID desde Excel
+   * @param tipoId Tipo de ID en texto
+   * @returns Objeto TypeId
+   */
   convertirTipoId(tipoId: String): TypeId {
     // Buscar la primera coincidencia
     const coincidencia = this.typeIds.find((tipo) =>

@@ -1,13 +1,35 @@
+/**
+ * @fileoverview Servicio para la gestión de departamentos/provincias
+ * 
+ * Este servicio permite:
+ * - Obtener listados de departamentos
+ * - Manejar departamentos colombianos y extranjeros
+ * - Gestionar consultas a la API de departamentos
+ * - Proporcionar datos estáticos de departamentos
+ * 
+ * Funcionalidades principales:
+ * - Consulta de departamentos desde el backend
+ * - Listado estático de departamentos colombianos
+ * - Manejo de departamentos extranjeros
+ * - Gestión de URLs según el entorno
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Department } from '../models/Department';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-//import { environment } from '../../../../../environments/enviorment.development'
 
+/** URL base de la API */
 let API_URL = '';
 
-//Si microservice es de enterprise se cambia la url de la api a local
+/** 
+ * Configuración de la URL de la API según el tipo de microservicio
+ * Si el microservicio es 'enterprise', se usa la URL local
+ */
 if(environment.microservice == 'enterprise'){
     API_URL = environment.API_LOCAL_URL;
 }
@@ -19,7 +41,7 @@ else{
   providedIn: 'root'
 })
 export class DepartmentService {
-
+  /** Lista estática de departamentos colombianos */
   colombianDepartments: Department[] = [
     { id: 1, name: 'Amazonas' },
     { id: 2, name: 'Antioquia' },
@@ -55,24 +77,33 @@ export class DepartmentService {
     { id: 32, name: 'Vichada' }
   ];
 
+  /** Lista de departamentos extranjeros */
   extranjeroDepartments: Department[] = [
     { id: 33, name: 'Extranjero' },
   ];
 
-  //Production
+  /** URL del endpoint de departamentos */
   private apiUrl = API_URL + 'address/departments';
-  //Local
-  //private apiUrl = myAppUrl + 'address/departments';
-  constructor(private http: HttpClient) {
 
-   }
+  /**
+   * Constructor del servicio
+   * @param http Cliente HTTP para realizar peticiones
+   */
+  constructor(private http: HttpClient) { }
 
-
+  /**
+   * Obtiene la lista de departamentos desde el backend
+   * @returns Observable con la lista de departamentos
+   */
   getListDepartmentsBackend(): Observable<Department[]> {
     return this.http.get<Department[]>(this.apiUrl);
   }
 
-
+  /**
+   * Obtiene un departamento por su ID
+   * @param id ID del departamento
+   * @returns Lista de departamentos (extranjeros si id=2, colombianos en otro caso)
+   */
   getDepartmentById(id: number) {
     if (id == 2) {
       return this.extranjeroDepartments;
@@ -81,6 +112,10 @@ export class DepartmentService {
     }
   }
 
+  /**
+   * Obtiene la lista completa de departamentos colombianos
+   * @returns Lista de departamentos colombianos
+   */
   getListDepartments(){
     return this.colombianDepartments;
   }

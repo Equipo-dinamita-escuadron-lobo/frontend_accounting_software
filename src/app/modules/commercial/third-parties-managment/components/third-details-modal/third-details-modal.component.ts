@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Componente modal para visualizar detalles de terceros
+ * 
+ * Este componente permite:
+ * - Mostrar información detallada de un tercero
+ * - Visualizar datos personales y de contacto
+ * - Manejar diferentes tipos de datos según el tipo de persona
+ * - Mostrar información específica de identificación
+ * 
+ * Funcionalidades principales:
+ * - Visualización de datos básicos del tercero
+ * - Manejo de campos opcionales y obligatorios
+ * - Formateo de datos para su presentación
+ * - Gestión de campos no aplicables
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../services/third-service.service';
@@ -11,8 +30,10 @@ import { ePersonType } from '../../models/ePersonType';
   styleUrl: './third-details-modal.component.css',
 })
 export class ThirdDetailsModalComponent {
+  /** Datos recibidos como input en el modal */
   inputData: any;
 
+  /** Objeto que almacena los datos del tercero a mostrar */
   thirdData: Third = {
     thId: 0,
     entId: '',
@@ -38,16 +59,28 @@ export class ThirdDetailsModalComponent {
     updateDate: '2024-04-29',
   };
 
+  /**
+   * Constructor del componente
+   * @param data Datos pasados al modal
+   * @param ref Referencia al diálogo modal
+   * @param service Servicio para gestionar terceros
+   */
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private ref: MatDialogRef<ThirdDetailsModalComponent>,
     private service: ThirdServiceService
   ) { }
 
+  /**
+   * Cierra el modal de detalles
+   */
   closePopUp() {
     this.ref.close('closing from modal details');
   }
 
+  /**
+   * Inicializa el componente y carga los datos del tercero si existe
+   */
   ngOnInit() {
     this.inputData = this.data;
     if (this.inputData.thId > 0) {
@@ -57,15 +90,26 @@ export class ThirdDetailsModalComponent {
     }
   }
 
-  // Método para concatenar los nombres de los tipos de terceros
+  /**
+   * Concatena los nombres de los tipos de terceros
+   * @returns String con los nombres de los tipos concatenados
+   */
   getThirdTypesNames(): string {
     return this.thirdData.thirdTypes.map(type => type.thirdTypeName).join(', ');
   }
 
-  // Método para verificar y retornar "NO APLICA" si los campos están vacíos
+  /**
+   * Verifica y retorna el género o "NO APLICA" si está vacío
+   * @returns String con el género o "NO APLICA"
+   */
   getGender(): string {
     return this.thirdData.gender ? this.thirdData.gender : 'NO APLICA';
   }
+
+  /**
+   * Verifica y retorna el número de verificación o "NO APLICA" si está vacío
+   * @returns String con el número de verificación o "NO APLICA"
+   */
   getVerificationNumber(): string {
     return this.thirdData.verificationNumber ? this.thirdData.verificationNumber.toString() : 'NO APLICA';
   }

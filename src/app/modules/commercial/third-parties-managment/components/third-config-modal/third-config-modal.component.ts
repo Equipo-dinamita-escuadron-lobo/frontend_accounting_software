@@ -1,3 +1,19 @@
+/**
+ * @fileoverview Componente modal para la configuración de terceros
+ * 
+ * Este componente gestiona la configuración de tipos de terceros y tipos de identificación.
+ * Permite las siguientes operaciones:
+ * - Visualizar tipos de terceros existentes
+ * - Añadir nuevos tipos de terceros
+ * - Eliminar tipos de terceros
+ * - Visualizar tipos de identificación existentes
+ * - Añadir nuevos tipos de identificación
+ * - Eliminar tipos de identificación
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { Component, Inject, Type } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ThirdServiceService } from '../../services/third-service.service';
@@ -9,46 +25,81 @@ import { TypeId } from '../../models/TypeId';
 import { buttonColors } from '../../../../../shared/buttonColors';
 import { HttpErrorResponse } from '@angular/common/http';
 
-
+/**
+ * Componente para gestionar la configuración de terceros mediante un modal
+ * 
+ * @class ThirdConfigModalComponent
+ * @implements OnInit
+ */
 @Component({
   selector: 'app-third-config-modal',
   templateUrl: './third-config-modal.component.html',
   styleUrl: './third-config-modal.component.css'
 })
 export class ThirdConfigModalComponent {
+  /** Datos recibidos como input al componente */
   inputData: any;
 
-  /*aquie empiezo */
+  /** Controla la visibilidad de la sección de identificaciones */
   showIdentifications = true;
 
+  /** Instancia de métodos para manejo de localStorage */
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
+
+  /** Datos de la empresa actual */
   entData: any | null = null;
+
+  /** Controla la visibilidad del input para nuevo tipo de tercero */
   showInputThirdType = false;
+
+  /** Controla la visibilidad del input para nuevo tipo de identificación */
   showInputTypeId = false;
+
+  /** Nombre temporal para nuevo item */
   newItemName = '';
 
-  
-
-  //Se agregaron 2 nuevas propiedades(newIdentificatioName newThirdTypeName) para evitar que se dupliquen los datos en los campos de Tipo de Identificacion y Tipo de Tercero
+  /** Nombre para nueva identificación */
   newIdentificatioName = '';
+
+  /** Nombre para nuevo tipo de tercero */
   newThirdTypeName = '';
 
+  /** Array de tipos de identificación */
   typesId: TypeId[] = []
+
+  /** Array de tipos de terceros */
   thirdTypes: ThirdType[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private ref:MatDialogRef<ThirdConfigModalComponent>, private service:ThirdServiceService, private thirdServiceConfiguration: ThirdServiceConfigurationService){
-
+  /**
+   * Constructor del componente
+   * 
+   * @param data - Datos inyectados al modal
+   * @param ref - Referencia al diálogo actual
+   * @param service - Servicio para operaciones con terceros
+   * @param thirdServiceConfiguration - Servicio para configuración de terceros
+   */
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private ref: MatDialogRef<ThirdConfigModalComponent>, private service: ThirdServiceService, private thirdServiceConfiguration: ThirdServiceConfigurationService) {
   }
 
-  closePopUp(){
+  /**
+   * Cierra el modal actual
+   * 
+   * @returns {void}
+   */
+  closePopUp() {
     this.ref.close('closing from modal details');
   }
 
-  ngOnInit(){
+  /**
+   * Inicializa el componente cargando los datos necesarios
+   * 
+   * @returns {void}
+   */
+  ngOnInit() {
     this.inputData = this.data;
     this.entData = this.localStorageMethods.loadEnterpriseData();
     this.thirdServiceConfiguration.getThirdTypes(this.entData).subscribe({
-      next: (response: ThirdType[])=>{
+      next: (response: ThirdType[]) => {
         this.thirdTypes = response;
       },
       error: (error) => {
@@ -62,8 +113,8 @@ export class ThirdConfigModalComponent {
       }
     });
 
-  this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
-      next: (response: TypeId[])=>{
+    this.thirdServiceConfiguration.getTypeIds(this.entData).subscribe({
+      next: (response: TypeId[]) => {
         this.typesId = response;
         console.log(response)
       },
@@ -79,15 +130,21 @@ export class ThirdConfigModalComponent {
     });
   }
 
-   //correccion HU-1.1
-   //Al momento de crear un nuevo Tipo de identificacion se muestra un mensaje en pantalla
-   //Se actualiza la tabla donde se muestran todos los tipos de identifiacion registrados en el sistema
-  addTypeId(items:any) {
+  /**
+   * Añade un nuevo tipo de identificación
+   * Corrección HU-1.1: Al momento de crear un nuevo Tipo de identificación se muestra un mensaje en pantalla
+   * Se actualiza la tabla donde se muestran todos los tipos de identifiación registrados en el sistema
+   * 
+   * @param items - Lista actual de tipos de identificación
+   * @returns {void}
+   */
+  addTypeId(items: any) {
     console.log(this.newIdentificatioName)
     let sendTypeId: TypeId = {
-    entId: this.entData,
-    typeId: this.newIdentificatioName,
-    typeIdname: this.newIdentificatioName};
+      entId: this.entData,
+      typeId: this.newIdentificatioName,
+      typeIdname: this.newIdentificatioName
+    };
     this.thirdServiceConfiguration.createTypeId(sendTypeId).subscribe({
       next: (response) => {
         this.typesId.push(response);
@@ -110,19 +167,23 @@ export class ThirdConfigModalComponent {
         });
       },
     });
-
   }
 
-
-  //correccion HU-1.2
-  //Al momento de crear un nuevo Tipo de Tercero se muestra un mensaje en pantalla
-  //Se actualiza la tabla donde se muestran todos los tipos de Terceros registrados en el sistema
-  addThirdType(items:any) {
+  /**
+   * Añade un nuevo tipo de tercero
+   * Corrección HU-1.2: Al momento de crear un nuevo Tipo de Tercero se muestra un mensaje en pantalla
+   * Se actualiza la tabla donde se muestran todos los tipos de Terceros registrados en el sistema
+   * 
+   * @param items - Lista actual de tipos de tercero
+   * @returns {void}
+   */
+  addThirdType(items: any) {
     console.log(this.newThirdTypeName)
     let sendTypeId: ThirdType = {
-    entId: this.entData,
-    thirdTypeId: Math.floor(Math.random() * 1001),
-    thirdTypeName: this.newThirdTypeName};
+      entId: this.entData,
+      thirdTypeId: Math.floor(Math.random() * 1001),
+      thirdTypeName: this.newThirdTypeName
+    };
     console.log(sendTypeId)
     this.thirdServiceConfiguration.createThirdType(sendTypeId).subscribe({
       next: (response) => {
@@ -146,57 +207,93 @@ export class ThirdConfigModalComponent {
         });
       },
     });
-
   }
 
+  /**
+   * Cancela la adición de un nuevo tipo de tercero
+   * 
+   * @returns {void}
+   */
   cancelAddThirdType() {
     this.newThirdTypeName = '';
     this.showInputThirdType = false;
   }
 
+  /**
+   * Cancela la adición de un nuevo tipo de identificación
+   * 
+   * @returns {void}
+   */
   cancelAddTypeId() {
     this.newIdentificatioName = '';
     this.showInputTypeId = false;
   }
 
+  /**
+   * Elimina un tipo de tercero
+   * 
+   * @param items - Lista de tipos de tercero
+   * @param index - Índice del elemento a eliminar
+   * @returns {void}
+   */
   deleteItem(items: any, index: number) {
     this.thirdServiceConfiguration.deleteThird(items[index].thirdTypeId).subscribe({
       next: (response) => {
       },
       error: (error: HttpErrorResponse) => {
-        
         if (error.error.text === 'SUCCESS') {
-          
-          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio",'success', true, "si, eliminalo")
-          
+          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio", 'success', true, "si, eliminalo")
         }
-        else{
-          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario",'error', false, undefined)
+        else {
+          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario", 'error', false, undefined)
         }
-      
       }
     });
   }
+
+  /**
+   * Elimina un tipo de identificación
+   * 
+   * @param items - Lista de tipos de identificación
+   * @param index - Índice del elemento a eliminar
+   * @returns {void}
+   */
   deleteItemId(items: any, index: number) {
     this.thirdServiceConfiguration.deleteThird(items[index].thirdTypeId).subscribe({
       next: (response) => {
       },
       error: (error: HttpErrorResponse) => {
-        
         if (error.error.text === 'SUCCESS') {
-          
-          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio",'success', true, "si, eliminalo")
-          
+          this.createAlert(items, index, "¿estás seguro?", "no se podra revertir este cambio", 'success', true, "si, eliminalo")
         }
-        else{
-          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario",'error', false, undefined)
+        else {
+          this.createAlert(items, index, "No se pudo eliminar", "el valor esta asignado a un usuario", 'error', false, undefined)
         }
-      
       }
     });
   }
 
-  createAlert(items: any, index: number, title: string, text: string, icono: 'success' | 'error' | 'warning' | 'info' | 'question', confirmed: boolean, confirmButtonText: string| undefined ) {
+  /**
+   * Crea y muestra una alerta de confirmación
+   * 
+   * @param items - Lista de elementos afectados
+   * @param index - Índice del elemento en la lista
+   * @param title - Título de la alerta
+   * @param text - Texto descriptivo de la alerta
+   * @param icono - Tipo de icono a mostrar
+   * @param confirmed - Indica si se requiere confirmación
+   * @param confirmButtonText - Texto del botón de confirmación
+   * @returns {void}
+   */
+  createAlert(
+    items: any,
+    index: number,
+    title: string,
+    text: string,
+    icono: 'success' | 'error' | 'warning' | 'info' | 'question',
+    confirmed: boolean,
+    confirmButtonText: string | undefined
+  ) {
     Swal.fire({
       title: title,
       text: text,
@@ -217,6 +314,5 @@ export class ThirdConfigModalComponent {
         });
       }
     });
-  }  
-  
+  }
 }
