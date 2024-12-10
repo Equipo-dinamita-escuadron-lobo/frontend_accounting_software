@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountImportComponent } from './account-import.component';
 
+/**
+ * Pruebas unitarias para el componente AccountImportComponent.
+ */
 describe('AccountImportComponent', () => {
   let component: AccountImportComponent;
   let fixture: ComponentFixture<AccountImportComponent>;
@@ -10,8 +13,8 @@ describe('AccountImportComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AccountImportComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AccountImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

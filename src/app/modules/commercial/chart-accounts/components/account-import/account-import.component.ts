@@ -15,10 +15,16 @@ export class AccountImportComponent {
     this.inputData = this.data;
   }
 
+  /**
+ * Cierra el pop-up (modal) y emite un mensaje de cierre.
+ */
   closePopUp() {
     this.ref.close('closing from modal details');
   }
 
+  /**
+ * Descarga el archivo Excel de la plantilla del catálogo de cuentas.
+ */
   downloadExcel() {
     const fileUrl = '../../../../../../assets/data/chart-accounts/plantillaCatalogoCuentas.xlsx';
     const a = document.createElement('a');

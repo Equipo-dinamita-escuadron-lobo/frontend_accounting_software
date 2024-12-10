@@ -15,7 +15,16 @@ export const cuentasDiferentesValidator: ValidatorFn = (
   return null; // No hay error si cualquiera de los campos es null o está vacío
 };
 
-  // Función recursiva para obtener el último hijo o el padre si no tiene hijos
+  
+
+/**
+ * Recorre recursivamente una estructura de cuentas y recoge todos los elementos hoja (sin hijos) en una lista.
+ * Si el nodo actual tiene hijos, se recursiona sobre ellos. Si no tiene hijos, se agrega a la lista de hojas.
+ *
+ * @param item - El nodo actual de la cuenta que se está procesando.
+ * @param leaves - La lista acumulada de hojas donde se agregarán los nodos sin hijos.
+ * @returns Una lista de cuentas que son hojas (sin hijos).
+ */
   export const collectLeaves=(item: Account, leaves: Account[]): Account[] => {
     if (item.children && item.children.length > 0) {
       // Recorrer todos los hijos

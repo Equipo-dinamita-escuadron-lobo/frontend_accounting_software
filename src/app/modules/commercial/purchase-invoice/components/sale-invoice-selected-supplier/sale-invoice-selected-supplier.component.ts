@@ -34,6 +34,11 @@ export class SaleInvoiceSelectedSupplierComponent {
 
   }
 
+  /**
+   * Método de inicialización del componente. Obtiene los terceros relacionados con la empresa proporcionada 
+   * a través del `entId` y los filtra para encontrar aquellos cuyo `thirdTypeName` es "Proveedor".
+   * Si ocurre un error, muestra una alerta con un mensaje de error.
+   */
   ngOnInit() {
     this.inputData = this.data;
 
@@ -58,12 +63,19 @@ export class SaleInvoiceSelectedSupplierComponent {
 
   }
 
+  /**
+ * Asigna el valor seleccionado a `selectedItem` y cierra el cuadro de diálogo, devolviendo el valor seleccionado.
+ * @param selectedValue - El valor del ítem seleccionado.
+ */
   selectItem(selectedValue: string): void {
     this.selectedItem = selectedValue;
     //console.log('Item seleccionado:', this.selectedItem);
     this.ref.close(this.selectedItem);
   }
 
+  /**
+ * Cierra el cuadro de diálogo si el `entId` está presente en los datos proporcionados.
+ */
   closePopUp() {
     if(this.data.entId){
       this.ref.close();

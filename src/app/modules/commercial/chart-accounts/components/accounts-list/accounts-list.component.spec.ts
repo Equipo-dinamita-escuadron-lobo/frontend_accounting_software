@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountsListComponent } from './accounts-list.component';
 
+/**
+ * Pruebas unitarias para el componente AccountsListComponent.
+ */
 describe('AccountsListComponent', () => {
   let component: AccountsListComponent;
   let fixture: ComponentFixture<AccountsListComponent>;
