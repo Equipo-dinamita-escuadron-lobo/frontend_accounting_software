@@ -163,18 +163,20 @@ export class EnterpriseCreationComponent implements OnInit {
     this.getAllTaxPayer();
     this.getAllTaxLiabilities();
 
-    this.form.get('nit')?.valueChanges.subscribe(value => {
-      this.calculateVerificationNumber();
-    });
-
     this.contendPDFRUT = this.enterpriseService.getinfoEnterpriseRUT();
     if(this.contendPDFRUT){
       this.infoEnterprise =  this.contendPDFRUT?.split(';');
-      console.log("Informacion recupera del PDF del RUT",this.infoEnterprise);
+      this.getEnterprisePDF();
       this.enterpriseService.clearInfoEnterpriseRUT();
+
     }else{
       console.log("No se recibio ninguna informacion departe del PDF del RUT");
     }
+
+    this.form.get('nit')?.valueChanges.subscribe(value => {
+      this.calculateVerificationNumber();
+    });
+    
   }
 
   /**
@@ -342,7 +344,7 @@ export class EnterpriseCreationComponent implements OnInit {
           Validators.pattern(/^\d+$/),
         ],
       ],
-      address: ['', [Validators.required, Validators.maxLength(30)]],
+      address: ['', [Validators.required, Validators.maxLength(50)]],
       phone: [
         '',
         [
@@ -766,7 +768,7 @@ export class EnterpriseCreationComponent implements OnInit {
         this.form.markAllAsTouched;
       }
     }
-    
+    this.goToListEnterprises();
   }
   /**
    * Use the Taxlibility service to list in the select interface.
@@ -827,5 +829,55 @@ export class EnterpriseCreationComponent implements OnInit {
    */
   goToListEnterprises(){
     this.router.navigate(['general/enterprises/list']);
+  }
+
+  getEnterprisePDF(){
+    //this.changePlaceholderSelect();
+    if(this.infoEnterprise?.[0] === 'Persona natural o sucesión ilíquida '){
+      this.selectedButtonType= 'NATURAL_PERSON';
+      this.showNaturalPersonForm();
+    }else{
+      this.selectedButtonType= 'LEGAL_PERSON';
+      this.showLegalPersonForm();
+    }
+    this.fillFieldsWithValues();    
+  }
+
+  fillFieldsWithValues() {
+    const department = this.departmenList.find(dep => dep.name.toLowerCase() === this.infoEnterprise?.[7].toLowerCase());
+    this.onDepartmentSelect(department);
+    const city = this.cityList.find(city => city.name.toLowerCase() === this.infoEnterprise?.[8].toLowerCase());
+    const nit = this.infoEnterprise?.[2] ?? '';
+    const dv = this.calculateDV(nit.toString());
+    this.form.setValue({
+      name:'',
+      nit: this.infoEnterprise?.[2] ?? '',
+      address: this.infoEnterprise?.[9] ?? '',
+      phone: this.infoEnterprise?.[11] ?? '',
+      email: this.infoEnterprise?.[10] ?? '',
+      mainActivity:'',
+      secondaryActivity:'',
+      dv:dv,
+      selectedItemDepartment: department,
+      selectedItemEnterpriseType:'',
+      selectedItemTaxPayer: '',
+      selectedItemCity:city ?? null,
+      selectedItemTaxLiabilities:this.taxLiabilitiesList,
+      country: 1,
+      branchSelected: false,
+    });
+    this.form.markAllAsTouched();
+
+    this.form_legal.setValue({
+      businessName: this.infoEnterprise?.[3] ?? '',
+    });
+
+    this.form_natural.setValue({
+      surnameOwner: this.infoEnterprise?.[4] ?? '',
+      nameOwner: this.infoEnterprise?.[5] ?? '',
+    });
+
+    this.form_legal.markAllAsTouched();
+    this.form_natural.markAllAsTouched();
   }
 }
