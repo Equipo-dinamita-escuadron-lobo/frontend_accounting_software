@@ -31,7 +31,7 @@ export class SaleInvoiceSelectedProductsComponent {
     private ref: MatDialogRef<SaleInvoiceSelectedProductsComponent>,
     private productService: ProductService,
     private cdr: ChangeDetectorRef // Inyección de ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.inputData = this.data;
@@ -39,6 +39,10 @@ export class SaleInvoiceSelectedProductsComponent {
     this.getProducts();
   }
 
+  /**
+   * Obtiene la lista de productos desde el servicio y marca los productos como seleccionados si ya existen en la factura.
+   * Luego, realiza una detección de cambios para asegurar que los productos seleccionados se actualicen en la vista.
+   */
   getProducts(): void {
     this.productService.getProducts(this.inputData.entId).subscribe(
       (data: Product[]) => {
@@ -47,7 +51,7 @@ export class SaleInvoiceSelectedProductsComponent {
           selected: false // Marca todos los productos como no seleccionados inicialmente
         }));
 
-        
+
         this.products.forEach((product) => {
           const index = this.productsInvoice.findIndex(p => p.id === product.id);
           if (index !== -1) {
@@ -64,6 +68,11 @@ export class SaleInvoiceSelectedProductsComponent {
     );
   }
 
+  /**
+ * Alterna la selección de un producto. Si el producto no está seleccionado, lo agrega a la lista de productos seleccionados. 
+ * Si ya está seleccionado, lo elimina de la lista. Luego, realiza una detección de cambios para asegurar que la vista se actualice.
+ * @param product - El producto que se va a seleccionar o deseleccionar.
+ */
   toggleSelection(product: SelectableProduct) {
     const index = this.selectedProducts.findIndex(p => p.id === product.id);
     if (index === -1) {
@@ -76,10 +85,16 @@ export class SaleInvoiceSelectedProductsComponent {
     this.cdr.detectChanges(); // Forzar la detección de cambios
   }
 
+  /**
+ * Cierra el cuadro de diálogo y devuelve la lista de productos seleccionados.
+ */
   confirmSelection() {
     this.ref.close(this.selectedProducts);
   }
 
+  /**
+ * Cierra el cuadro de diálogo si existe un `entId` en los datos proporcionados.
+ */
   closePopUp() {
     if (this.data.entId) {
       this.ref.close();

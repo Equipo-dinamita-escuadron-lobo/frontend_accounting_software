@@ -2,6 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountFormComponent } from './account-form.component';
 
+/**
+ * Pruebas unitarias para el componente AccountFormComponent.
+ */
 describe('AccountFormComponent', () => {
   let component: AccountFormComponent;
   let fixture: ComponentFixture<AccountFormComponent>;
@@ -10,8 +13,8 @@ describe('AccountFormComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AccountFormComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(AccountFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

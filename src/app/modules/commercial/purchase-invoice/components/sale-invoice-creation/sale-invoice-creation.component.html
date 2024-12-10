@@ -349,11 +349,12 @@
                     </button>
 
                     @if (SectionNotas) {
-                    <textarea [(ngModel)]="nota"
-                        class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Ej: Venta de productos XY, incluye un (1) Producto Z modelo XXXX. Garantía de N meses a partir de la fecha.">
+                        <textarea [(ngModel)]="nota"
+                          class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Ej: Venta de productos XY, incluye un (1) Producto Z modelo XXXX. Garantía de N meses a partir de la fecha."
+                          maxlength="200">
                         </textarea>
-                    }
+                      }                      
 
                 </div>
 

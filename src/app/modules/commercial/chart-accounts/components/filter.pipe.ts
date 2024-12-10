@@ -6,6 +6,13 @@ import { Account } from '../models/ChartAccount';
 })
 export class FilterPipe implements PipeTransform {
 
+  /**
+ * Transforma la lista de cuentas filtrando aquellas que coincidan con el valor de búsqueda.
+ * 
+ * @param accounts - Lista de cuentas a filtrar.
+ * @param filterValue - Valor a buscar en las cuentas.
+ * @returns Un array de cuentas que cumplen con el filtro, o la lista original si no hay cuentas o filtro proporcionado.
+ */
   transform(accounts: Account[], filterValue: string): Account[] {
     if (!accounts || !filterValue) {
       return accounts;
@@ -15,6 +22,13 @@ export class FilterPipe implements PipeTransform {
     return this.filterAccountsRecursive(accounts, lowercaseFilter);
   }
 
+  /**
+ * Filtra recursivamente las cuentas y subcuentas, buscando coincidencias con el valor de filtro.
+ * 
+ * @param accounts - Lista de cuentas a filtrar, que puede incluir subcuentas.
+ * @param filterValue - Valor a buscar en las cuentas y subcuentas.
+ * @returns Un array de cuentas filtradas que coinciden con el valor de búsqueda, incluyendo las subcuentas si es necesario.
+ */
   filterAccountsRecursive(accounts: Account[], filterValue: string): Account[] {
     let filteredAccounts: Account[] = [];
 
@@ -42,6 +56,12 @@ export class FilterPipe implements PipeTransform {
     return filteredAccounts;
   }
 
+  /**
+ * Expande recursivamente las cuentas principales de una cuenta, marcándolas para mostrar las subcuentas.
+ * 
+ * @param account - La cuenta cuya cuenta principal se debe expandir.
+ * @returns No devuelve valor, pero modifica el estado de las cuentas principales para mostrar las subcuentas.
+ */
   expandParentAccounts(account: Account): void {
     if (account.parentAccount) {
       account.parentAccount.showSubAccounts = true;

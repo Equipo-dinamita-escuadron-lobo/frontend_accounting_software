@@ -17,7 +17,7 @@ import { LocalStorageMethods } from '../../../../../shared/methods/local-storage
 import { Tax } from '../../../taxes/models/Tax';
 import { data } from 'jquery';
 /**
- * Component for managing and displaying chart of accounts.
+ * Componente para gestionar y mostrar el catálogo de cuentas contables.
  */
 @Component({
   selector: 'app-accounts-list',
@@ -27,53 +27,78 @@ import { data } from 'jquery';
 })
 
 export class AccountsListComponent implements OnInit {
-  //form showing inputs
+  /**
+   * Formulario reactivo que contiene los campos de entrada para la gestión de cuentas contables.
+   */
   accountForm: FormGroup;
-  //Form showing selects
+  /**
+ * Formulario reactivo que contiene los selectores para los tipos de naturaleza,
+ * estado financiero y clasificación.
+ */
   formTransactional: FormGroup;
 
-  //variables for flat file import
+  /**
+ * Variables para la importación de archivos planos (flat file).
+ * Estas variables gestionan los datos importados, filtros y estados de importación.
+ */
   filterAccount: string = '';
   listExcel: Account[] = [];
   listAccountsToShow: Account[] = [];
   importedAccounts: boolean = false;
   importedFailed: boolean = false;
 
-  //Account selected
+  /**
+ * Cuenta seleccionada y estado de conmutación para la interfaz de usuario.
+ */
   accountSelected?: Account;
   toggle: boolean = false;
 
-  //variables that will store information about an account
+  /**
+ * Variables para almacenar la información relacionada con una cuenta contable.
+ */
   num: number = 0;
   code: string = '';
   name: string = '';
   parentId: string = '';
 
-  //Variables for show forms
+  /**
+   * Variables para controlar la visibilidad de los formularios en la interfaz de usuario.
+   */
   showPrincipalForm: boolean = false;
   showFormTransactional: boolean = false;
 
-  //selected account
+  /**
+   * Variable que indica si una cuenta ha sido seleccionada.
+   */
   selectedAccount: boolean = false;
 
-  //Variables for show buttons
+  /**
+   * Variables para controlar la visibilidad de los botones en la interfaz de usuario.
+   */
   showButton = false;
   showUpdateButton = false;
   showAddNewClass: boolean = false;
   showButtonDelete: boolean = false;
 
-  //variables that are determined depending on the level
+  /**
+   * Variables determinadas según el nivel de la cuenta.
+   * Estas variables gestionan el tipo de cuenta y si se deben agregar subcuentas o hijos.
+   */
   currentLevelAccount: 'grupo' | 'cuenta' | 'subcuenta' | 'auxiliar' | 'clase' = 'clase';
   addChild: boolean = false;
 
-  //variables that store the account name
+  /**
+   * Variables para almacenar los nombres de las diferentes cuentas contables.
+   */
   className = '';
   groupName = '';
   accountName = '';
   subAccountName = '';
   auxiliaryName = '';
 
-  //determines which input is to be blocked depending on the level selected
+  /**
+   * Determina qué campos de entrada deben ser bloqueados según el nivel seleccionado de la cuenta.
+   */
   inputAccess = {
     class: true,
     group: true,
@@ -82,7 +107,10 @@ export class AccountsListComponent implements OnInit {
     auxiliary: true
   };
 
-  //Arrays with information of services
+  /**
+   * Arreglos que almacenan la información de los servicios relacionados con los tipos de estado financiero,
+   * cuentas, naturaleza, clasificación, y otras cuentas relacionadas con reembolsos y depósitos.
+   */
   listFinancialState: FinancialStateType[] = [];
   listAccounts: Account[] = [];
   listAccountsAux: Account[] = [];
@@ -91,7 +119,10 @@ export class AccountsListComponent implements OnInit {
   listRefundAccount: string[] = [];
   listDepositAccount: string[] = [];
 
-  //variables that have the placeholder of the select
+  /**
+ * Propiedades del componente para gestionar los valores y datos relacionados con los tipos de naturaleza,
+ * estado financiero, clasificación y otros datos de la aplicación.
+ */
   placeNatureType: string = '';
   placeFinancialStateType: string = '';
   placeClasificationType: string = '';
@@ -99,6 +130,18 @@ export class AccountsListComponent implements OnInit {
   entData: any | null = null;
   taxes: Tax[] = [];
 
+  /**
+ * Constructor del componente.
+ * Inicializa los formularios reactivos para la gestión de cuentas y transacciones,
+ * y provee la inyección de dependencias necesarias para la exportación de cuentas,
+ * servicios de cuenta, impuestos y manejo de diálogos.
+ * 
+ * @param accountExportComponent Componente para exportar cuentas.
+ * @param fb Constructor de formularios reactivos.
+ * @param _accountService Servicio para gestionar las cuentas contables.
+ * @param dialog Servicio para manejar diálogos modales.
+ * @param taxService Servicio para gestionar los impuestos.
+ */
   constructor(
     private accountExportComponent: AccountExportComponent,
     private fb: FormBuilder,
@@ -117,7 +160,8 @@ export class AccountsListComponent implements OnInit {
 
 
   /**
-   * Shows the form for adding a new account class.
+   * Muestra el formulario para agregar una nueva clase de cuenta.
+   * Establece el estado de visibilidad y oculta otros formularios y opciones.
    */
   showFormAddNewClass() {
     this.showAddNewClass = true;
@@ -126,7 +170,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Hides the form for adding a new account class.
+   * Oculta el formulario para agregar una nueva clase de cuenta.
+   * Dependiendo de si se ha seleccionado una cuenta, muestra u oculta otros formularios.
    */
   noShowFormAddNewClass() {
     this.showAddNewClass = false;
@@ -138,7 +183,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * allows show the form for add a new child account
+   * Permite mostrar el formulario para agregar una nueva subcuenta.
+   * Oculta los botones y formularios relacionados con la cuenta seleccionada.
    */
   addNewChild() {
     this.addChild = true;
@@ -152,7 +198,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Disallows show the form for add a new child account.
+   * Impide mostrar el formulario para agregar una nueva subcuenta.
+   * Restaura la visibilidad de los botones y formularios relacionados con la cuenta seleccionada.
    */
   noAddNewChild() {
     this.addChild = false;
@@ -163,7 +210,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * allows show the main form 
+   * Permite mostrar el formulario principal y el formulario transaccional.
+   * También habilita los botones relacionados con las acciones de la cuenta.
    */
   showPrincipalAndTransactionalForm() {
     this.showPrincipalForm = true;
@@ -173,7 +221,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * disallows show the main form 
+   * Impide mostrar el formulario principal y el formulario transaccional.
+   * También oculta los botones relacionados con las acciones de la cuenta.
    */
   noShowPrincipalAndTransactionalForm() {
     this.showPrincipalForm = false;
@@ -183,17 +232,18 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Opens a modal dialog for import details.
+   * Abre un diálogo modal para mostrar los detalles de la importación.
    */
   openModalDetails(): void {
     this.OpenDetailsImport('Detalles de importación ', AccountImportComponent)
   }
 
   /**
-   * Opens a modal dialog with a given title and component.
-   * @param title The title of the modal dialog.
-   * @param component The component to be displayed in the modal dialog.
+   * Abre un diálogo modal con un título y componente específicos.
+   * @param title El título del cuadro de diálogo modal.
+   * @param component El componente que se mostrará en el cuadro de diálogo modal.
    */
+
   OpenDetailsImport(title: any, component: any) {
     var _popUp = this.dialog.open(component, {
       width: '40%',
@@ -208,7 +258,7 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Initializes the component by fetching data from services.
+   * Inicializa el componente obteniendo datos desde los servicios.
    */
   ngOnInit(): void {
     this.getAccounts();
@@ -226,16 +276,16 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Toggles the visibility of sub-accounts for a given account.
-   * @param account The account for which to toggle sub-account visibility.
+   * Alterna la visibilidad de las subcuentas de una cuenta específica.
+   * @param account La cuenta para la cual se desea alternar la visibilidad de las subcuentas.
    */
   toggleSubAccounts(account: Account) {
     account.showSubAccounts = !account.showSubAccounts;
   }
 
   /**
-   * Selects an account and updates the form with its data.
-   * @param account The account to be selected.
+   * Selecciona una cuenta y actualiza el formulario con sus datos.
+   * @param account La cuenta que se desea seleccionar.
    */
   selectAccount(account: Account) {
     this.noShowFormAddNewClass();
@@ -248,10 +298,11 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Creates the account form based on the selected account's code and description.
-   * @param code The code of the selected account.
-   * @param description The description of the selected account.
+   * Crea el formulario de cuenta basado en el código y la descripción de la cuenta seleccionada.
+   * @param code El código de la cuenta seleccionada.
+   * @param description La descripción de la cuenta seleccionada.
    */
+
   createForm(code: string, description: string) {
     this.accountForm = this.fb.group({});
     this.showPrincipalAndTransactionalForm();
@@ -324,9 +375,10 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Determines whether the "Update" button should be shown based on form changes.
-   * @returns Whether the "Update" button should be shown.
+   * Determina si se debe mostrar el botón de "Actualizar" basado en los cambios en los formularios.
+   * @returns Si el botón de "Actualizar" debe mostrarse.
    */
+
   shouldShowUpdateButton(): boolean {
     const accountFormHasChanges = this.hasFormValueChanged(this.accountForm);
     const transactionalFormHasChanges = this.hasFormValueChanged(this.formTransactional);
@@ -334,9 +386,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Checks if any control in the given form has been modified.
-   * @param form The form group to check.
-   * @returns Whether any control in the form has been modified.
+   * Verifica si algún control en el formulario proporcionado ha sido modificado.
+   * @param form El grupo de formularios a verificar.
+   * @returns Si algún control en el formulario ha sido modificado.
    */
   hasFormValueChanged(form: FormGroup): boolean {
     const formValues = form.value;
@@ -352,9 +404,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Assigns account names based on the code and description.
-   * @param code The code of the account.
-   * @param name The description of the account.
+   * Asigna nombres de cuentas según el código y la descripción.
+   * @param code El código de la cuenta.
+   * @param name La descripción de la cuenta.
    */
   assignName(code: string, name: string) {
     this.className = '';
@@ -389,7 +441,7 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Export accounts to an Excel file.
+   * Exporta cuentas a un archivo Excel.
    */
   exportAccountsToExcel(): void {
     this.accountExportComponent.getAccounts().then((success) => {
@@ -412,7 +464,7 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Sort the accounts by code.
+   * Ordena las cuentas recursivamente por código.
    */
   sortAccountsRecursively(accounts: Account[]): Account[] {
     // Ordenamos la lista actual numéricamente
@@ -429,6 +481,14 @@ export class AccountsListComponent implements OnInit {
     return accounts;
   }
 
+  /**
+ * Cambia el tipo de estado financiero de las cuentas según el código de la cuenta.
+ * Recorre las cuentas y, según el primer carácter del código, asigna un tipo de estado financiero.
+ * Si la cuenta tiene elementos hijos, se aplica recursivamente la misma lógica a esos hijos.
+ * 
+ * @param accounts - Lista de cuentas a las que se les cambiará el estado financiero.
+ * @returns Un arreglo de cuentas con los tipos de estados financieros actualizados.
+ */
   changeFinancialStateType(accounts: Account[]): Account[] {
     accounts.forEach(account => {
       var code = account.code[0];
@@ -445,6 +505,15 @@ export class AccountsListComponent implements OnInit {
     return accounts;
   }
 
+  /**
+ * Cambia el tipo de naturaleza de las cuentas según el código de la cuenta.
+ * Asigna "Débito" o "Crédito" a la propiedad 'nature' de cada cuenta según el primer carácter del código.
+ * Además, verifica los primeros 4 caracteres del código para asignar "Crédito" en ciertos casos.
+ * Si la cuenta tiene elementos hijos, se aplica recursivamente la misma lógica a esos hijos.
+ * 
+ * @param accounts - Lista de cuentas a las que se les cambiará el tipo de naturaleza.
+ * @returns Un arreglo de cuentas con el tipo de naturaleza actualizado.
+ */
   changeNatureType(accounts: Account[]): Account[] {
     accounts.forEach(account => {
       var code = account.code[0];
@@ -465,6 +534,13 @@ export class AccountsListComponent implements OnInit {
     return accounts;
   }
 
+  /**
+   * Filtra los datos basados en la longitud del código en la primera columna.
+   * Solo se incluyen las filas cuyo código tenga una longitud de 1, 2, 4, 6 o 8 caracteres.
+   * 
+   * @param data - Arreglo de datos (matriz) que se filtrará según la longitud del código en la primera columna.
+   * @returns Un arreglo de datos filtrado, donde solo se incluyen las filas con códigos de longitud específica.
+   */
   filterByCodeLength(data: any[][]): any[][] {
     return data.filter(row => {
       const code = row[0]; // Toma el valor de la primera columna (código)
@@ -474,13 +550,15 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
-
-
-
   /**
-   * Reads an Excel file and processes its data.
-   * @param event The file input event.
+   * Lee un archivo Excel, procesa sus datos y los organiza en una estructura adecuada.
+   * Verifica que el archivo sea de tipo xlsx, filtra las columnas necesarias, convierte valores numéricos,
+   * y filtra las filas vacías o con solo espacios. Además, valida la existencia de campos requeridos y
+   * crea una jerarquía con los datos importados.
+   * 
+   * @param event - El evento de entrada de archivo que contiene el archivo Excel.
    */
+
   ReadExcel(event: any) {
     let file = event.target.files[0];
 
@@ -590,6 +668,14 @@ export class AccountsListComponent implements OnInit {
 
 
 
+  /**
+ * Guarda la jerarquía de cuentas de forma recursiva.
+ * Para cada cuenta, llama a la función de guardado de forma recursiva y espera a que todas las operaciones
+ * de guardado se completen. Al finalizar, devuelve un observable que emite `true`.
+ * 
+ * @param accounts - Lista de cuentas que se guardarán recursivamente.
+ * @returns Un observable que emite `true` cuando todas las cuentas hayan sido guardadas correctamente.
+ */
   saveAccountHierarchy(accounts: Account[]): Observable<boolean> {
     const saveObservables = accounts.map(account => this.saveAccountRecursively(account));
 
@@ -600,6 +686,15 @@ export class AccountsListComponent implements OnInit {
     );
   }
 
+  /**
+ * Guarda una cuenta de forma recursiva, asignando un ID de padre y luego guardando la cuenta.
+ * Si la cuenta tiene hijos, se guarda cada uno de ellos recursivamente, esperando a que todos los hijos
+ * se guarden antes de devolver la cuenta guardada.
+ * 
+ * @param account - La cuenta que se va a guardar.
+ * @param parentId - El ID del padre de la cuenta (por defecto es 0 para la raíz).
+ * @returns Un observable que emite la cuenta guardada.
+ */
   saveAccountRecursively(account: Account, parentId: number = 0): Observable<Account> {
     // Set the parent ID
     account.parent = parentId;
@@ -625,9 +720,12 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Creates a hierarchy of accounts with parent-child relationships.
-   * @param accounts The array of accounts to create the hierarchy from.
-   * @returns The array of top-level accounts with their children.
+   * Crea una jerarquía de cuentas con relaciones padre-hijo a partir de un arreglo de cuentas.
+   * Asigna a cada cuenta su código de padre correspondiente dependiendo del nivel de la cuenta.
+   * La función también organiza las cuentas de nivel superior (Clase) y sus hijos en la jerarquía.
+   * 
+   * @param accounts - El arreglo de cuentas que se utilizará para crear la jerarquía.
+   * @returns Un arreglo de cuentas de nivel superior (Clase) con sus respectivas relaciones padre-hijo.
    */
   createHierarchyWithParent(accounts: Account[]): Account[] {
     const hierarchy: Record<string, Account> = {};
@@ -699,10 +797,12 @@ export class AccountsListComponent implements OnInit {
 
 
   /**
-   * Finds an account by its code and returns its description.
-   * @param accounts The array of accounts to search in.
-   * @param code The code of the account to find.
-   * @returns The description of the found account, or an empty string if not found.
+   * Busca una cuenta por su código y devuelve su descripción.
+   * Si la cuenta no se encuentra en el nivel actual, busca de manera recursiva en los hijos de la cuenta.
+   * 
+   * @param accounts - El arreglo de cuentas en el que se realizará la búsqueda.
+   * @param code - El código de la cuenta que se desea encontrar.
+   * @returns La descripción de la cuenta encontrada, o una cadena vacía si no se encuentra.
    */
   findAccountByCode(accounts: Account[], code: string): string {
     for (const account of accounts) {
@@ -720,8 +820,10 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Updates the input access based on the account level.
-   * @param code The account level code (optional).
+   * Actualiza el acceso a los campos de entrada según el nivel de la cuenta.
+   * Dependiendo del código del nivel de cuenta proporcionado, se habilitan o deshabilitan los accesos a los diferentes niveles (Clase, Grupo, Cuenta, Subcuenta, Auxiliar).
+   * 
+   * @param code - El código del nivel de la cuenta que determina qué accesos se deben habilitar o deshabilitar (opcional).
    */
   updateInputAccess(code?: number) {
     this.inputAccess = {
@@ -741,29 +843,30 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Gets the list of nature types from the account service.
+   * Obtiene la lista de tipos de naturaleza desde el servicio de cuentas.
    */
   getNatureType() {
     this.listNature = this._accountService.getNatureType();
   }
 
   /**
-   * Gets the list of financial state types from the account service.
+   * Obtiene la lista de tipos de estado financiero desde el servicio de cuentas.
    */
   getFinancialStateType() {
     this.listFinancialState = this._accountService.getFinancialStateType();
   }
 
   /**
-   * Gets the list of classification types from the account service.
+   * Obtiene la lista de tipos de clasificación desde el servicio de cuentas.
    */
   getClasificationType() {
     this.listClasification = this._accountService.getClasificationType();
   }
 
   /**
-   * Handles the selection of a financial state type and sets the corresponding form value.
-   * @param event The selection event.
+   * Maneja la selección de un tipo de estado financiero y establece el valor correspondiente en el formulario.
+   * 
+   * @param event - El evento de selección que contiene el nombre del tipo de estado financiero seleccionado.
    */
   onSelectionFinancialStateType(event: any) {
     this.formTransactional.get('selectedFinancialStateType')?.setValue(event.name);
@@ -771,8 +874,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Handles the selection of a nature type and sets the corresponding form value.
-   * @param event The selection event.
+   * Maneja la selección de un tipo de naturaleza y establece el valor correspondiente en el formulario.
+   * 
+   * @param event - El evento de selección que contiene el nombre del tipo de naturaleza seleccionado.
    */
   onSelectionNatureType(event: any) {
     this.formTransactional.get('selectedNatureType')?.setValue(event.name);
@@ -780,8 +884,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Handles the selection of a classification type and sets the corresponding form value.
-   * @param event The selection event.
+   * Maneja la selección de un tipo de clasificación y establece el valor correspondiente en el formulario.
+   * 
+   * @param event - El evento de selección que contiene el nombre del tipo de clasificación seleccionado.
    */
   onSelectionClasificationType(event: any) {
     this.formTransactional.get('selectedClasificationType')?.setValue(event.name);
@@ -789,29 +894,30 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Handles deletion of financial statement type selection.
+   * Maneja la eliminación de la selección del tipo de estado financiero, limpiando el valor en el formulario.
    */
   onSelectionFinancialStateTypeClear() {
     this.formTransactional.get('selectedFinancialStateType')?.setValue('');
   }
 
   /**
-   * Handles deletion of nature statement type selection.
+   * Maneja la eliminación de la selección del tipo de naturaleza, limpiando el valor en el formulario.
    */
   onSelectionNatureTypeClear() {
     this.formTransactional.get('selectedNatureType')?.setValue('');
   }
 
   /**
-   * Handles deletion of classification statement type selection.
+   * Maneja la eliminación de la selección del tipo de clasificación, limpiando el valor en el formulario.
    */
   onSelectionClasificationTypeClear() {
     this.formTransactional.get('selectedClasificationType')?.setValue('');
   }
 
   /**
-   * Set the account information in the selector
-   * @param selectedAccount account selected from list
+   * Establece la información de la cuenta seleccionada en el selector y actualiza los valores del formulario.
+   * 
+   * @param selectedAccount - La cuenta seleccionada de la lista que contiene la información a establecer en el formulario.
    */
   accountHasInformation(selectedAccount: Account) {
     this.placeNatureType = 'Seleccione una opción';
@@ -839,7 +945,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * save the accounts that have been imported by calling the service
+   * Guarda las cuentas que han sido importadas llamando al servicio correspondiente.
+   * Muestra un mensaje de éxito o error según el resultado de la operación.
    */
   saveImportAccounts() {
     this.importedAccounts = false;
@@ -869,16 +976,15 @@ export class AccountsListComponent implements OnInit {
 
 
   /**
-   * cancel the import of the file
+   * Cancela la importación del archivo y restaura la lista de cuentas original.
    */
   cancelImportAccounts() {
     this.importedAccounts = false;
     this.listAccounts = this.listAccountsAux;
   }
 
-  //save and cancel functions come from the child form (component account-form) and are implemented here
   /**
-   * hides the form and shows the state it was in again
+   * Oculta el formulario y restaura el estado en el que estaba antes.
    */
   cancel() {
     if (this.showAddNewClass) {
@@ -890,8 +996,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * If a child account is added, then the parent's code is added, if it is a class, it is added normally
-   * @param $event Account with the information that was filled out in the child form
+   * Si se agrega una cuenta hija, se concatena el código del padre, y si es una clase, se agrega normalmente.
+   * @param $event Cuenta con la información que fue completada en el formulario de la cuenta hija.
    */
   addNewAccount($event: Account) {
     if (this.showAddNewClass) {
@@ -914,8 +1020,8 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Gets the company ID from localStorage.
-   * @returns The company ID
+   * Obtiene el ID de la empresa desde el localStorage.
+   * @returns El ID de la empresa.
    */
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
@@ -925,11 +1031,12 @@ export class AccountsListComponent implements OnInit {
     return '';
   }
 
-  // Service CRUD methods
+  //CRUD Metodos
   /**
-   * Get all accounts
-   * @returns A Promise that resolves when the accounts are fetched successfully, or rejects with an error.
+   * Obtiene todas las cuentas.
+   * @returns Una promesa que se resuelve cuando las cuentas son obtenidas correctamente, o se rechaza con un error en caso de fallo.
    */
+
   getAccounts(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({
@@ -949,9 +1056,9 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Get an account by its code.
-   * @param account The account object containing the code to search for.
-   * @returns A Promise that resolves with a boolean indicating whether the account exists or not, or rejects with an error.
+   * Obtiene una cuenta por su código.
+   * @param account El objeto cuenta que contiene el código a buscar.
+   * @returns Una promesa que se resuelve con un valor booleano que indica si la cuenta existe o no, o se rechaza con un error en caso de fallo.
    */
   getAccountByCode(account: Account): Promise<boolean> {
     return this._accountService.getAccountByCode(account.code, this.getIdEnterprise()).toPromise()
@@ -965,8 +1072,10 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Save an account by calling the service
-   * @param account account that contains the information to save
+   * Guarda una cuenta llamando al servicio.
+   * Primero verifica si la cuenta ya existe. Si no existe, crea la cuenta mediante el servicio. 
+   * Si la cuenta es una subcuenta y la cuenta seleccionada tiene más de dos cuentas auxiliares, muestra un error.
+   * @param account La cuenta que contiene la información a guardar.
    */
   async saveNewAccountType(account: Account) {
     try {
@@ -1024,13 +1133,16 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Delete an account by calling the service
+   * Elimina una cuenta llamando al servicio.
+   * Antes de eliminar, valida si la cuenta está asociada a algún impuesto. Si está vinculada, muestra un mensaje de error.
+   * Si no está vinculada, pide confirmación al usuario para proceder con la eliminación.
+   * Luego de la eliminación, actualiza la lista de cuentas y expande la cuenta padre si es necesario.
    */
   deleteAccount() {
     // Validate if the account is linked to any tax
     if (this.accountSelected && this.accountSelected.id) {
       const isLinked = this.searchIfAccountIsLinked(this.accountSelected.code);
-      if (isLinked) {        
+      if (isLinked) {
         Swal.fire({
           title: 'Error al eliminar',
           text: 'No es posible eliminar porque está asociado a un impuesto.',
@@ -1093,8 +1205,12 @@ export class AccountsListComponent implements OnInit {
       }
     }
   }
+
   /**
-   * Update an account 
+   * Actualiza la información de una cuenta seleccionada.
+   * Valida que el código de la cuenta no esté asociado a subcuentas antes de proceder con la actualización.
+   * Si la cuenta ya existe o si los datos no han cambiado, muestra un mensaje de error.
+   * Si la cuenta no existe y los datos han cambiado, actualiza la cuenta llamando al servicio correspondiente.
    */
   async updateAccount() {
     try {
@@ -1148,9 +1264,12 @@ export class AccountsListComponent implements OnInit {
   }
 
   /**
-   * Update an account by calling the service
-   * @param id ID of the account to update
-   * @param account account that contains the information to update
+   * Actualiza la cuenta con el ID y la información proporcionados llamando al servicio correspondiente.
+   * Si la actualización es exitosa, obtiene la lista de cuentas, expande la cuenta actualizada y selecciona la cuenta actualizada.
+   * Además, cierra los formularios correspondientes y muestra un mensaje de éxito.
+   * Si ocurre un error durante la actualización, muestra un mensaje de error.
+   * @param id El ID de la cuenta a actualizar.
+   * @param account La cuenta con la nueva información para actualizar.
    */
   update(id?: number, account?: Account) {
     this._accountService.updateAccount(id, account).subscribe(
@@ -1227,6 +1346,11 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
+  /**
+ * Obtiene los impuestos a través del servicio `taxService` y procesa los resultados.
+ * Mapea las cuentas de depósito y de reembolso de cada impuesto, y luego asigna estas cuentas a las propiedades `listDepositAccount` y `listRefundAccount`.
+ * Si ocurre un error al obtener los impuestos, se muestra un mensaje de error en la consola.
+ */
   getTaxesByCodes(): void {
     this.taxService.getTaxes(this.entData).pipe(
       map((taxes: Tax[]) => {
@@ -1247,6 +1371,11 @@ export class AccountsListComponent implements OnInit {
     );
   }
 
+  /**
+ * Verifica si una cuenta está asociada a algún impuesto, buscando si su código se encuentra en las listas de cuentas de reembolso o de depósito.
+ * @param accountCode El código de la cuenta a verificar.
+ * @returns `true` si el código de la cuenta está presente en alguna de las listas, `false` en caso contrario.
+ */
   searchIfAccountIsLinked(accountCode: string) {
     return this.listRefundAccount.some(account => account === accountCode) || this.listDepositAccount.some(account => account === accountCode)
   }

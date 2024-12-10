@@ -18,8 +18,10 @@ export class AccountExportComponent {
 
   constructor(private _accountService: ChartAccountService) { }
 
+
+
   /**
-   * Download the Excel file with the accounts
+   * Genera y descarga un archivo Excel con los datos de las cuentas.
    */
   downloadExcel() {
     // Definir las columnas del archivo Excel
@@ -57,11 +59,12 @@ export class AccountExportComponent {
 
 
   /**
-   * Function recurive to add accounts to the Excel file
-   * @param data 
-   * @param account 
-   * @param level 
+   * Función recursiva para agregar cuentas al archivo Excel.
+   * @param data Arreglo que contiene los datos del archivo Excel.
+   * @param account Objeto que representa la cuenta a agregar.
+   * @param level Nivel de profundidad o indentación de la cuenta en la jerarquía (por defecto es 0).
    */
+
   addAccountToExcel(data: any[], account: Account, level: number = 0): void {
     // Agregar la cuenta actual como una nueva fila en el Excel
     data.push([
@@ -81,26 +84,31 @@ export class AccountExportComponent {
   }
 
   /**
-   * Save to Excel file
-   * @param buffer
-   * @param fileName
+   * Guarda el archivo en formato Excel.
+   * @param buffer Datos binarios del archivo Excel.
+   * @param fileName Nombre del archivo sin extensión.
    * @returns void
-   *  */
+   */
   saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     saveAs(data, fileName + EXCEL_EXTENSION);
   }
 
 
+  /**
+ * Obtiene el ID de la empresa desde el almacenamiento local.
+ * @returns El ID de la empresa como cadena de texto. Devuelve una cadena vacía si no se encuentra.
+ */
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
     return entData ? JSON.parse(entData).entId : '';
   }
 
   /**
-   * Get accounts from the API and download the Excel file
-   * @returns Promise<boolean>
+   * Obtiene las cuentas desde la API y descarga el archivo Excel con los datos.
+   * @returns Promesa que resuelve en true si se descargó el Excel, o false si ocurrió un error o no se encontraron cuentas válidas.
    */
+
   getAccounts(): Promise<boolean> {
     return new Promise((resolve) => {
       this._accountService.getListAccounts(this.getIdEnterprise()).subscribe({

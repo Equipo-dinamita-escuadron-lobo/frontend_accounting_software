@@ -26,8 +26,8 @@ export class AccountFormComponent implements OnInit {
   /**
    * values ​​emitted from child component, new account (created, edited), cancel event
    */
-  @Output() newAccount = new EventEmitter<Account>(); 
-  @Output() cancelar = new EventEmitter<void>(); 
+  @Output() newAccount = new EventEmitter<Account>();
+  @Output() cancelar = new EventEmitter<void>();
 
   /**
    * lists containing additional data
@@ -53,6 +53,12 @@ export class AccountFormComponent implements OnInit {
    */
   messageLength: string = '';
 
+  /**
+ * Constructor del componente.
+ * Inicializa el formulario reactivo para crear una nueva cuenta y configura las validaciones.
+ * @param _accountService Servicio para gestionar las cuentas del plan contable.
+ * @param fb Constructor de formularios reactivos.
+ */
   constructor(private _accountService: ChartAccountService, private fb: FormBuilder) {
     this.formNewAccount = this.fb.group({
       code: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -64,8 +70,9 @@ export class AccountFormComponent implements OnInit {
   }
 
   /**
-   * Handle changes to inputs (@Input).
-   * @param changes Object that contains the changes made.
+   * Maneja los cambios en las propiedades de entrada (@Input).
+   * Actualiza las validaciones del formulario y establece valores iniciales en función de los cambios detectados.
+   * @param changes Objeto que contiene los cambios realizados en las propiedades de entrada.
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['level']) {
@@ -97,7 +104,8 @@ export class AccountFormComponent implements OnInit {
   }
 
   /**
-   * Initializes the component.
+   * Inicializa el componente.
+   * Llama a métodos para obtener los tipos de naturaleza, estado financiero, clasificación y asignar mensajes.
    */
   ngOnInit(): void {
     this.getNatureType();
@@ -107,14 +115,14 @@ export class AccountFormComponent implements OnInit {
   }
 
   /**
-   * Assigns the code length message based on account level.
+   * Asigna el mensaje de longitud del código según el nivel de la cuenta.
    */
   asignMessage() {
     this.messageLength = this.level === 1 ? 'un dígito' : 'dos dígitos';
   }
 
   /**
-   * Raises the newAccount event with the new accounting account created.
+   * Emite el evento newAccount con la nueva cuenta contable creada.
    */
   sendAccount() {
     const account: Account = {
@@ -131,8 +139,8 @@ export class AccountFormComponent implements OnInit {
 
 
   /**
-   * Gets the company ID from localStorage.
-   * @returns The company ID
+   * Obtiene el ID de la empresa desde el localStorage.
+   * @returns El ID de la empresa, o una cadena vacía si no se encuentra.
    */
   getIdEnterprise(): string {
     const entData = localStorage.getItem('entData');
@@ -140,29 +148,29 @@ export class AccountFormComponent implements OnInit {
   }
 
   /**
-   * Gets the nature types from the service.
+   * Obtiene los tipos de naturaleza desde el servicio.
    */
   getNatureType() {
     this.listNature = this._accountService.getNatureType();
   }
 
   /**
-   * Gets the financial statement types from the service.
+   * Obtiene los tipos de estado financiero desde el servicio.
    */
   getFinancialStateType() {
     this.listFinancialState = this._accountService.getFinancialStateType();
   }
 
   /**
-   * Gets the classification types from the service.
+   * Obtiene los tipos de clasificación desde el servicio.
    */
   getClasificationType() {
     this.listClasification = this._accountService.getClasificationType();
   }
 
   /**
-   * Handles the selection of financial statement type.
-   * @param event Selection event.
+   * Maneja la selección del tipo de estado financiero.
+   * @param event Evento de selección.
    */
   onSelectionFinancialStateType(event: any) {
     this.formNewAccount.get('selectedFinancialStateType')?.setValue(event.name);
@@ -170,47 +178,47 @@ export class AccountFormComponent implements OnInit {
   }
 
   /**
-   * Handles nature type selection.
-   * @param event Selection event.
+   * Maneja la selección del tipo de naturaleza.
+   * @param event Evento de selección.
    */
   onSelectionNatureType(event: any) {
     this.formNewAccount.get('selectedNatureType')?.setValue(event.name);
     this.placeNatureType = '';
   }
-    
+
   /**
-   * Handles classification type selection.
-   * @param event Selection event.
-   */  
+   * Maneja la selección del tipo de clasificación.
+   * @param event Evento de selección.
+   */
   onSelectionClasificationType(event: any) {
     this.formNewAccount.get('selectedClassificationType')?.setValue(event.name);
     this.placeClassificationType = '';
   }
 
   /**
-   * Handles deletion of financial statement type selection.
+   * Maneja la eliminación de la selección del tipo de estado financiero.
    */
   onSelectionFinancialStateTypeClear() {
     this.formNewAccount.get('selectedFinancialStateType')?.setValue('');
   }
 
-  /**
-   * Handles deletion of nature type selection.
-   */
+/**
+ * Maneja la eliminación de la selección del tipo de naturaleza.
+ */
   onSelectionNatureTypeClear() {
     this.formNewAccount.get('selectedNatureType')?.setValue('');
   }
 
-  /**
-   * Handles clearing the sorting type selection.
-   */
+/**
+ * Maneja la eliminación de la selección del tipo de clasificación.
+ */
   onSelectionClassificationTypeClear() {
     this.formNewAccount.get('selectedClassificationType')?.setValue('');
   }
 
-  /**
-   * Issues the cancel event.
-   */
+/**
+ * Emite el evento de cancelación.
+ */
   cancel() {
     this.cancelar.emit();
   }
