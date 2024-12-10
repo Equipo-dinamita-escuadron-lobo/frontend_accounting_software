@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Componente para visualizar y gestionar detalles de empresas
+ * 
+ * Este componente permite:
+ * - Visualizar información detallada de una empresa
+ * - Gestionar el estado de la empresa
+ * - Manejar la navegación entre vistas
+ * - Controlar permisos de usuario
+ * 
+ * Funcionalidades principales:
+ * - Consulta de información empresarial
+ * - Archivado de empresas
+ * - Validación de roles de usuario
+ * - Navegación entre módulos
+ * 
+ * @autor [CONTAPP]
+ * @versión 1.0.0
+ */
+
 import { Component } from '@angular/core';
 import { EnterpriseService } from '../../services/enterprise.service';
 import { Enterprise, EnterpriseDetails } from '../../models/Enterprise';
@@ -12,11 +31,22 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrl: './enterprise-details.component.css',
 })
 export class EnterpriseDetailsComponent {
+  /** Detalles de la empresa seleccionada */
   enterpriseSelected?: EnterpriseDetails;
+  
+  /** Tipo de persona (natural/jurídica) */
   typePerson:string = '';
+  
+  /** Identificador de la empresa */
   id:any;
+  
+  /** Control de permisos de usuario */
   rol: boolean = false;
 
+  /**
+   * Constructor del componente
+   * Inicializa servicios y verifica permisos
+   */
   constructor(private enterpriseService: EnterpriseService,
     private router: Router,
     private authService: AuthService
@@ -24,11 +54,18 @@ export class EnterpriseDetailsComponent {
     this.rol = this.authService.verifiedRolSuperUser();
   }
 
+  /**
+   * Inicializa el componente
+   * Carga la información de la empresa seleccionada
+   */
   ngOnInit(): void {
     this.getEnterpriseSelectedInfo();
   }
 
-
+  /**
+   * Obtiene la información detallada de la empresa seleccionada
+   * @returns Detalles de la empresa
+   */
   getEnterpriseSelectedInfo() {
     const id = this.enterpriseService.getSelectedEnterprise();
     if (id === null) {
@@ -46,6 +83,10 @@ export class EnterpriseDetailsComponent {
     return this.enterpriseSelected;
   }
 
+  /**
+   * Determina el tipo de persona según el valor recibido
+   * @param value Tipo de persona (LEGAL_PERSON/NATURAL_PERSON)
+   */
   getTypePerson(value:string){
     if(value === 'LEGAL_PERSON'){
       this.typePerson = 'Persona Jurídica';
@@ -56,15 +97,24 @@ export class EnterpriseDetailsComponent {
     }
   }
 
+  /**
+   * Navega a la lista de empresas
+   */
   goToListEnterprises(){
     this.router.navigate(['general/enterprises/list']);
   }
 
+  /**
+   * Navega a la edición de empresa
+   */
   goToEditEnterprise(){
     this.router.navigate(['general/operations/home/edit']);
   }
 
-
+  /**
+   * Archiva una empresa cambiando su estado a inactivo
+   * Muestra confirmaciones mediante SweetAlert2
+   */
   archiveEnterprise() {
     Swal.fire({
       title: 'Deseas archivar esta empresa?',
@@ -88,7 +138,6 @@ export class EnterpriseDetailsComponent {
             this.goToListEnterprises();
           },
         });
-
       }
     });
   }

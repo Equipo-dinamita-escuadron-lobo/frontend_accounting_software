@@ -1,3 +1,22 @@
+/**
+ * @fileoverview Componente para la gestión y visualización de la lista de empresas
+ * 
+ * Este componente permite:
+ * - Visualizar el listado de empresas activas e inactivas
+ * - Filtrar empresas por nombre
+ * - Gestionar el estado de las empresas (activar/archivar)
+ * - Navegar entre diferentes funcionalidades empresariales
+ * 
+ * Funcionalidades principales:
+ * - Listado de empresas con filtros
+ * - Cambio de estado de empresas
+ * - Navegación a creación y edición
+ * - Ordenamiento alfabético
+ * 
+ * @autor [CONTAPP]
+ * @versión 1.0.0
+ */
+
 import { Component, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { EnterpriseList } from '../../models/EnterpriseList';
 import { EnterpriseService } from '../../services/enterprise.service';
@@ -14,33 +33,58 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrls: ['./enterprise-list.component.css'],
 })
 export class EnterpriseListComponent {
+  /** Filtro por nombre de empresa */
   filterName: string = '';
+
+  /** Listas de empresas activas e inactivas */
   listEnterprises: EnterpriseList[] = [];
   listEnterprisesInctive: EnterpriseList[] = [];
+
+  /** Tipo de lista actual (ACTIVE/INACTIVE) */
   typeList = 'ACTIVE';
+
+  /** Textos de interfaz */
   title: string = 'Listado de empresas';
   subtitle: string = 'Elija una empresa para acceder a sus funcionalidades';
 
+  /** Control de selección de empresa */
   selecteEnterprise?: EnterpriseList;
-  showLegalForm: boolean = true;
-  showNaturalForm: boolean = false;
-  filterEnterprise: string = '';
-
   selectedEnterprise: EnterpriseList | null = null;
 
+  /** Control de visualización de formularios */
+  showLegalForm: boolean = true;
+  showNaturalForm: boolean = false;
+  
+  /** Filtro de empresas */
+  filterEnterprise: string = '';
+
+  /** Referencia al botón de archivo */
   @ViewChild('buttonArchive') buttonArchive!: ElementRef;
+
+  /** Métodos de almacenamiento local */
   localStorageMethods: LocalStorageMethods = new LocalStorageMethods();
 
+  /**
+   * Constructor del componente
+   * Inicializa servicios necesarios
+   */
   constructor(
     private enterpriseService: EnterpriseService,
     private router: Router,
     private cdRef: ChangeDetectorRef
   ) {}
 
+  /**
+   * Inicializa el componente
+   * Carga la lista de empresas activas
+   */
   ngOnInit(): void {
     this.getEnterprisesActive();
   }
 
+  /**
+   * Obtiene la lista de empresas activas
+   */
   getEnterprisesActive() {
     this.title = 'Listado de empresas';
     this.subtitle = 'Elija una empresa para acceder a sus funcionalidades';
@@ -53,6 +97,9 @@ export class EnterpriseListComponent {
     });
   }
 
+  /**
+   * Obtiene la lista de empresas inactivas
+   */
   getEnterprisesInactive() {
     this.title = 'Empresas archivadas';
     this.subtitle = 'Lista de empresas archivadas.';
@@ -64,23 +111,40 @@ export class EnterpriseListComponent {
     });
   }
 
+  /**
+   * Navega a la vista de creación de empresa
+   */
   goToCreateEnterprise() {
     this.router.navigate(['general/enterprises/create']);
   }
 
+  /**
+   * Navega a la vista de creación de PDF RUT
+   */
   goToCreateEnterpisepdfRUT(){
     this.router.navigate(['general/enterprises/create-PDF-RUT']);
   }
 
+  /**
+   * Actualiza la empresa seleccionada y guarda sus datos
+   * @param id ID de la empresa seleccionada
+   */
   updateEnterpriseSelected(id: string) {
     this.localStorageMethods.saveEnterpriseData(id);
     this.logInEnterprise();
   }
 
+  /**
+   * Navega a la vista principal de la empresa
+   */
   logInEnterprise() {
     this.router.navigate(['general/operations/home']);
   }
 
+  /**
+   * Activa una empresa archivada
+   * @param id ID de la empresa a activar
+   */
   activeEnterprise(id: string) {
     Swal.fire({
       title: 'Deseas activar esta empresa?',
@@ -109,6 +173,9 @@ export class EnterpriseListComponent {
     });
   }
 
+  /**
+   * Ordena alfabéticamente el array de empresas por nombre
+   */
   sortArrayByName(): void {
     this.listEnterprises.sort((a:EnterpriseList, b:EnterpriseList) => {
       if (a.name.toLowerCase() < b.name.toLowerCase()) {

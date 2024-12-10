@@ -1,3 +1,25 @@
+/**
+ * @fileoverview Componente para la edición de empresas
+ * 
+ * Este componente permite:
+ * - Editar información de empresas existentes
+ * - Gestionar datos empresariales básicos y avanzados
+ * - Manejar diferentes tipos de persona (natural/jurídica)
+ * - Administrar ubicaciones y responsabilidades tributarias
+ * - Gestionar logos empresariales
+ * 
+ * Funcionalidades principales:
+ * - Formularios para edición de datos empresariales
+ * - Validación de campos
+ * - Carga y actualización de logos
+ * - Gestión de ubicaciones (departamentos y ciudades)
+ * - Control de responsabilidades tributarias
+ * - Cálculo automático de dígito de verificación
+ * 
+ * @autor [CONTAPP]
+ * @versión 1.0.0
+ */
+
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -32,65 +54,46 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrl: './enterprise-edit.component.css',
 })
 export class EnterpriseEditComponent {
-  /**
-   * Declaration of variables to create enterprise
-   */
-
+  /** Formularios para la gestión de datos */
   form: FormGroup;
   form_legal: FormGroup;
   form_natural: FormGroup;
   enterpriseEdit?: EnterpriseDetails;
 
+  /** Textos de interfaz */
   title: string = 'Editar Empresa';
-  subtitle: string =
-    'Ingrese toda la información requerida en los siguientes formularios';
+  subtitle: string = 'Ingrese toda la información requerida en los siguientes formularios';
 
-  /**
-   * Arrays with information of services
-   */
-
+  /** Listas de datos para selección */
   taxLiabilitiesList: TaxLiability[] = [];
   taxPayersList: TaxPayerType[] = [];
   departmenList: Department[] = [];
   cityList: { id: number; name: string }[] = [];
   enterpriseTypesList: EnterpriseType[] = [];
 
-  /**
-   * variables for the logo
-   */
+  /** Variables para el logo */
   file: File | null = null;
   imagenUrl: string | null = 'hol';
 
-  /**
-   * Variables to indicates what type of person
-   */
+  /** Control de tipo de persona */
   selectedButtonType: string = 'LEGAL_PERSON';
   showLegalForm: boolean = true;
   showNaturalForm: boolean = false;
   enabledSelectCity: boolean = false;
 
-  /**
-   * Placeholder
-   */
-
+  /** Textos placeholder */
   placeTypeEnterprise: string = 'Seleccione una opción';
   placeTypePayer: string = 'Seleccione una opción';
   placeTaxLiaabilities: string = 'Seleccione una opción(es)';
   placeDepartment: string = 'Seleccione una opción';
   placeCity: string = 'Seleccione una opción';
 
+  /** Control de permisos */
   rol:boolean = false;
 
   /**
-   *
-   * @param fb To form reactive
-   * @param enterpriseService
-   * @param taxLiabilityService
-   * @param taxPayerService
-   * @param cityService
-   * @param departmentService
-   * @param enterpriseTypesService
-   * @description constructor to initialice services
+   * Constructor del componente
+   * Inicializa servicios y formularios necesarios
    */
   constructor(
     private fb: FormBuilder,
@@ -112,13 +115,20 @@ export class EnterpriseEditComponent {
     });
   }
 
+  /**
+   * Inicializa el componente
+   * Carga datos necesarios
+   */
   ngOnInit(): void {
     this.getDepartments();
     this.getTypesEnterprise();
-    this.getAllTaxPayeres();
+    this.getAllTaxPayer();
     this.getAllTaxLiabilities();
   }
 
+  /**
+   * Actualiza los placeholders con la información de la empresa
+   */
   changePlaceholderSelect() {
     this.placeTypeEnterprise = '' + this.enterpriseEdit?.enterpriseType.name;
     this.placeTypePayer = '' + this.enterpriseEdit?.taxPayerType.name;
@@ -128,8 +138,7 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   *
-   * @returns  validations of the form group
+   * Define las validaciones para todos los campos del formulario
    */
   validationsAll() {
     return {
@@ -197,6 +206,9 @@ export class EnterpriseEditComponent {
     };
   }
 
+  /**
+   * Define las validaciones para persona natural
+   */
   validationsNatural() {
     return {
       nameOwner: [
@@ -218,12 +230,18 @@ export class EnterpriseEditComponent {
     };
   }
 
+  /**
+   * Define las validaciones para persona jurídica
+   */
   validationsLegal() {
     return {
       businessName: ['', [Validators.required, Validators.maxLength(50)]],
     };
   }
 
+  /**
+   * Valida el formulario según el tipo de persona
+   */
   validationsForm(): boolean {
     if (this.form.valid) {
       if (this.selectedButtonType === 'LEGAL_PERSON') {
@@ -239,9 +257,11 @@ export class EnterpriseEditComponent {
     return true;
   }
 
-  selectedValueValidator(
-    control: AbstractControl
-  ): { [key: string]: boolean } | null {
+  /**
+   * Validador personalizado para campos de selección
+   * @param control Control del formulario a validar
+   */
+  selectedValueValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (
       control.value !== null &&
       control.value !== undefined &&
@@ -254,7 +274,7 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * @description Allows you to change the type of person to legal
+   * Muestra el formulario para persona jurídica
    */
   showLegalPersonForm() {
     this.showLegalForm = true;
@@ -263,7 +283,7 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * @description Allows you to change the type of person to natural
+   * Muestra el formulario para persona natural
    */
   showNaturalPersonForm() {
     this.selectedButtonType = 'NATURAL_PERSON';
@@ -272,8 +292,7 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * @description Allows to identify the status of the checkbox
-   * @returns 0 if checkbox is not selected, 1 if it's selected
+   * Verifica el estado del checkbox de sucursal
    */
   checkBranch() {
     if (this.form.value.branchSelected) {
@@ -283,23 +302,23 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * @description Handle file selection event
-   * @param event Event containing selected files
+   * Maneja la selección de archivos
+   * @param event Evento de selección de archivo
    */
   onSelect(event: any) {
     this.file = event.addedFiles[0];
   }
 
   /**
-   * @description remove image
+   * Elimina el archivo seleccionado
    */
   onRemove() {
     this.file = null;
   }
 
   /**
-   * @description Function to upload an image to Cloudinary.
-   * @return A promise that resolves to the URL of the uploaded image or is rejected with an error message.
+   * Sube un archivo al servidor
+   * @returns Promesa con la URL del archivo subido
    */
   upload(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -355,7 +374,10 @@ export class EnterpriseEditComponent {
     });
   }
 
-  // Funcion para calcular el digito de verficacion
+  /**
+   * Actualiza el dígito de verificación
+   * @param nit NIT para calcular el dígito de verificación
+   */
   updateDV(nit: string): void {
     if (nit && nit.length > 0) {
       const dv = this.calcularDigitoVerificacion(nit);
@@ -364,7 +386,10 @@ export class EnterpriseEditComponent {
     }
   }
 
-  // Función para calcular el dígito de verificación usando la fórmula proporcionada
+  /**
+   * Calcula el dígito de verificación para un NIT
+   * @param numero NIT para calcular el dígito
+   */
   private calcularDigitoVerificacion(numero: string): number {
     const pesos = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3];
     const numeroFormateado = numero.padStart(15, '0'); // Aseguramos que el número tenga 15 dígitos
@@ -392,41 +417,61 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * @description Active select of city
+   * Habilita la selección de ciudad
    */
   enableSelectCity() {
     this.getCities(this.form.value.selectedItemDepartment.id);
     this.enabledSelectCity = true;
   }
 
+  /**
+   * Maneja la selección de departamento
+   * @param event Evento de selección
+   */
   onDepartmentSelect(event: any) {
     this.form.value.selectedItemDepartment = event;
     this.enableSelectCity();
     this.placeDepartment = '';
   }
 
+  /**
+   * Maneja la selección del tipo de empresa
+   * @param event Evento de selección
+   */
   onEnterpriseTypeSelect(event: any) {
     this.form.value.selectedItemEnterpriseType = event;
     this.placeTypeEnterprise = '';
   }
 
+  /**
+   * Maneja la selección del tipo de contribuyente
+   * @param event Evento de selección
+   */
   onTaxPayerSelect(event: any) {
     this.form.value.selectedItemTaxPayer = event;
     this.placeTypePayer = '';
   }
 
+  /**
+   * Maneja la selección de ciudad
+   * @param event Evento de selección
+   */
   onCitySelect(event: any) {
     this.form.value.selectedItemCity = event;
     this.placeCity = '';
   }
 
+  /**
+   * Maneja la selección de responsabilidades tributarias
+   * @param event Evento de selección
+   */
   onTaxLiabilitySelect(event: any) {
     this.form.value.selectedItemTaxLiabilities = event;
     this.placeTaxLiaabilities = '';
   }
 
   /**
-   * @description Desactive select of city
+   * Limpia la selección de departamento
    */
   onSelectionDepartmentClear() {
     this.enabledSelectCity = false;
@@ -434,20 +479,30 @@ export class EnterpriseEditComponent {
     this.cityList = [];
   }
 
+  /**
+   * Limpia la selección de ciudad
+   */
   onSelectionCityClear() {
     this.form.value.selectedItemCity = { id: -1, name: '' };
   }
 
+  /**
+   * Limpia la selección del tipo de contribuyente
+   */
   onSelectionTaxPayerClear() {
     this.form.value.selectedItemTaxPayer = { id: -1, name: '' };
   }
 
+  /**
+   * Limpia la selección del tipo de empresa
+   */
   onSelectionTypeEnterpriseClear() {
     this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
     this.placeTypeEnterprise = 'Seleccione el tipo de empresa';
   }
+
   /**
-   * @description Save enterprise using Enterprise service
+   * Edita la información de la empresa
    */
   async editEnterprise() {
     if (!this.validationsForm()) {
@@ -543,32 +598,40 @@ export class EnterpriseEditComponent {
       }
     }
   }
+
   /**
-   * Use the Taxlibility service to list in the select interface.
+   * Obtiene todas las responsabilidades tributarias
    */
   getAllTaxLiabilities() {
     this.taxLiabilitiesList = this.taxLiabilityService.getTaxLiabilities();
   }
 
   /**
-   * Use the TaxPayer service to list in the select interface.
+   * Obtiene todos los tipos de contribuyentes
    */
-
-  getAllTaxPayeres() {
-    this.taxPayersList = this.taxPayerService.getTaxPayerTypes();
+  getAllTaxPayer() {
+    this.taxPayerService.getTaxPayerTypesBack().subscribe({
+      next: (response: TaxPayerType[]) => {
+        this.taxPayersList = response;
+        console.log('Tipos de contribuyente obtenidos:', this.taxPayersList);
+      },
+      error: (error) => {
+        console.log('Error al obtener tipos de contribuyente:', error);
+      }
+    });
   }
 
   /**
-   * Use the Department service to list in the select interface.
+   * Obtiene la lista de departamentos
    */
   getDepartments() {
     this.departmenList = this.departmentService.getListDepartments();
   }
 
   /**
-   * Use the City service to list in the select interface.
+   * Obtiene las ciudades de un departamento
+   * @param id ID del departamento
    */
-
   getCities(id: number) {
     this.cityService.getListCitiesByDepartment(id).subscribe((data) => {
       this.cityList = data.cities;
@@ -576,17 +639,22 @@ export class EnterpriseEditComponent {
   }
 
   /**
-   * Use the EnterpriseType service to list in the select interface.
+   * Obtiene los tipos de empresa disponibles
    */
-
   getTypesEnterprise() {
     this.enterpriseTypesList = this.enterpriseService.getTypesEnterprise();
   }
 
+  /**
+   * Navega a la vista de detalles
+   */
   goToDetailsEnterprises() {
     this.router.navigate(['general/operations/home']);
   }
 
+  /**
+   * Obtiene la información de la empresa a editar
+   */
   getEnterpriseEdit() {
     const id = ''+ this.enterpriseService.getSelectedEnterprise();
     this.enterpriseService
@@ -603,6 +671,10 @@ export class EnterpriseEditComponent {
       });
   }
 
+  /**
+   * Carga el logo de la empresa
+   * @param url URL del logo
+   */
   loadLogo(url: string) {
     if (url !== '') {
       this.enterpriseService.downloadLogo(url).subscribe((imagenArchivo) => {
@@ -611,6 +683,9 @@ export class EnterpriseEditComponent {
     }
   }
 
+  /**
+   * Rellena los campos del formulario con los valores de la empresa
+   */
   fillFieldsWithValues() {
     this.form.setValue({
       name: this.enterpriseEdit?.name,

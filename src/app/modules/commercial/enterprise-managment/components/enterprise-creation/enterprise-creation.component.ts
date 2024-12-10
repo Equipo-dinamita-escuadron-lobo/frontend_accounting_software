@@ -1,3 +1,24 @@
+/**
+ * @fileoverview Componente para la creación y gestión de empresas
+ * 
+ * Este componente permite:
+ * - Crear nuevas empresas en el sistema
+ * - Gestionar información empresarial básica y avanzada
+ * - Manejar diferentes tipos de persona (natural/jurídica)
+ * - Administrar tooltips informativos
+ * - Procesar información del RUT
+ * 
+ * Funcionalidades principales:
+ * - Formularios para ingreso de datos empresariales
+ * - Validación de campos obligatorios
+ * - Carga y gestión de logos empresariales
+ * - Gestión de ubicaciones (departamentos y ciudades)
+ * - Control de responsabilidades tributarias
+ * - Sistema de ayuda mediante tooltips
+ * 
+ * @autor [CONTAPP]
+ * @versión 1.0.0
+ */
 import { Component, Inject, OnInit, Optional, ElementRef, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -131,13 +152,15 @@ export class EnterpriseCreationComponent implements OnInit {
       dv: [{ value: '', disabled: true }]
     });*/
   }
-
+  /**
+   * Inicializa el componente y carga datos necesarios
+   */
   ngOnInit(): void {
     this.loadTooltips(); // Cargar los tooltips al inicializar el componente
 
     this.getDepartments(1);
     this.getTypesEnterprise();
-    this.getAllTaxPayeres();
+    this.getAllTaxPayer();
     this.getAllTaxLiabilities();
 
     this.form.get('nit')?.valueChanges.subscribe(value => {
@@ -154,8 +177,10 @@ export class EnterpriseCreationComponent implements OnInit {
     }
   }
 
-  // crear cuadro texto de ayuda aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  showTooltip(id: string, event: MouseEvent): void {
+  /**
+   * Muestra el tooltip en la posición especificada
+   */  
+   showTooltip(id: string, event: MouseEvent): void {
     this.tooltipService.getTooltipById(id).subscribe(
       (tooltip) => {
         this.currentTooltip = tooltip;
@@ -169,9 +194,15 @@ export class EnterpriseCreationComponent implements OnInit {
       }
     );
   }
+  /**
+   * Oculta el tooltip actual
+   */
   hideTooltip(): void {
     this.isTooltipVisible = false;
   }
+  /**
+   * Activa el modo de edición del tooltip
+   */
   editTooltip(id: string, event: MouseEvent): void {
     this.tooltipService.getTooltipById(id).subscribe(
       (tooltip) => {
@@ -186,9 +217,19 @@ export class EnterpriseCreationComponent implements OnInit {
       }
     );
   }
+  /**
+   * Cierra el modo de edición del tooltip
+   * @description Desactiva el modo de edición del tooltip actual
+   * @returns void
+   */
   closeEditTooltip(): void {
     this.isEditingTooltip = false;
   }
+  /**
+   * Maneja el envío del formulario de edición del tooltip
+   * @description Actualiza el texto del tooltip actual y lo guarda en el servidor
+   * @returns void
+   */
   onSubmitEditTooltip(): void {
     if (this.currentTooltip) {
       this.currentTooltip.tip = this.editTooltipText; // Actualizar el texto del tooltip
@@ -204,7 +245,9 @@ export class EnterpriseCreationComponent implements OnInit {
       );
     }
   }
-
+  /**
+   * Crea un nuevo tooltip en el sistema
+   */
   createTooltip(): void {
     if (this.tooltipForm.valid) {
       const newTooltip: Tooltip = this.tooltipForm.value;
@@ -219,7 +262,9 @@ export class EnterpriseCreationComponent implements OnInit {
       );
     }
   }
-
+  /**
+   * Envía el formulario para actualizar un tooltip existente
+   */
   onSubmit(): void {
     const tooltip: Tooltip = { entId: this.tooltipId, tip: this.tooltipText };
     this.tooltipService.updateTooltip(this.tooltipId, tooltip).subscribe(
@@ -232,6 +277,9 @@ export class EnterpriseCreationComponent implements OnInit {
       }
     );
   }
+  /**
+   * Carga todos los tooltips disponibles
+   */
   loadTooltips(): void {
     this.tooltipService.getAllTooltips().subscribe(
       (response) => {
@@ -246,7 +294,9 @@ export class EnterpriseCreationComponent implements OnInit {
 
 
   // ************************************************************
-  
+  /**
+   * Calcula el número de verificación del NIT
+   */
   calculateVerificationNumber(): void {
     const nit = this.form.get('nit')?.value;
     if (nit) {
@@ -254,7 +304,10 @@ export class EnterpriseCreationComponent implements OnInit {
       this.form.get('dv')?.setValue(this.verificationNumber);
     }
   }
-
+  /**
+   * Calcula el dígito de verificación para un NIT dado
+   * @param nit Número de identificación tributaria
+   */
   calculateDV(nit: string): number {
     let vpri = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
     let x = 0;
@@ -336,7 +389,9 @@ export class EnterpriseCreationComponent implements OnInit {
       branchSelected: [false],
     };
   }
-
+  /**
+   * Define las validaciones para persona natural
+   */
   validationsNatural() {
     return {
       nameOwner: [
@@ -357,13 +412,17 @@ export class EnterpriseCreationComponent implements OnInit {
       ],
     };
   }
-
+  /**
+   * Define las validaciones para persona jurídica
+   */
   validationsLegal() {
     return {
       businessName: ['', [Validators.required, Validators.maxLength(50)]],
     };
   }
-
+  /**
+   * Valida el formulario según el tipo de persona seleccionado
+   */
   validationsForm(): boolean {
     if (this.form.valid) {
       if (this.selectedButtonType === 'LEGAL_PERSON') {
@@ -378,7 +437,10 @@ export class EnterpriseCreationComponent implements OnInit {
 
     return true;
   }
-
+  /**
+   * Validador personalizado para campos de selección
+   * @param control Control del formulario a validar
+   */
   selectedValueValidator(
     control: AbstractControl
   ): { [key: string]: boolean } | null {
@@ -509,7 +571,10 @@ export class EnterpriseCreationComponent implements OnInit {
     this.enabledSelectCity = true;
   }
 
-  //seleccion entre colombia o extranjero 
+  /**
+   * Maneja el cambio de país seleccionado
+   * @param event Evento de cambio de país
+   */
   onCountryChange(event: any) {
     this.isForeign = event.target.value === 'Extranjero';
     if (this.isForeign) {
@@ -525,6 +590,9 @@ export class EnterpriseCreationComponent implements OnInit {
     }
   }
 
+  /**
+   * Determina el código del país seleccionado
+   */
   actSelectioCountry(){ 
     if (this.isForeign) {
       return 2;
@@ -532,28 +600,43 @@ export class EnterpriseCreationComponent implements OnInit {
       return 1;
     }
   }
-
+  /**
+   * Maneja la selección de departamento
+   * @param event Evento de selección
+   */
   onDepartmentSelect(event: any) {
     this.form.value.selectedItemDepartment = event;
     this.enableSelectCity();
     this.placeDepartment = '';
   }
-
+  /**
+   * Maneja la selección del tipo de empresa
+   * @param event Evento de selección
+   */
   onEnterpriseTypeSelect(event: any) {
     this.form.value.selectedItemEnterpriseType = event;
     this.placeTypeEnterprise = '';
   }
-
+  /**
+   * Maneja la selección del tipo de contribuyente
+   * @param event Evento de selección
+   */
   onTaxPayerSelect(event: any) {
     this.form.value.selectedItemTaxPayer = event;
     this.placeTypePayer = '';
   }
-
+  /**
+   * Maneja la selección de ciudad
+   * @param event Evento de selección
+   */
   onCitySelect(event: any) {
     this.form.value.selectedItemCity = event;
     this.placeCity = '';
   }
-
+  /**
+   * Maneja la selección de responsabilidades tributarias
+   * @param event Evento de selección
+   */
   onTaxLiabilitySelect(event: any) {
     this.form.value.selectedItemTaxLiabilities = event;
     this.placeTaxLiaabilities = '';
@@ -567,15 +650,21 @@ export class EnterpriseCreationComponent implements OnInit {
     this.form.value.selectedItemDepartment = { id: -1, name: '' };
     this.cityList = [];
   }
-
+  /**
+   * Limpia la selección de ciudad
+   */
   onSelectionCityClear() {
     this.form.value.selectedItemCity = { id: -1, name: '' };
   }
-
+  /**
+   * Limpia la selección del tipo de contribuyente
+   */
   onSelectionTaxPayerClear() {
     this.form.value.selectedItemTaxPayer = { id: -1, name: '' };
   }
-
+  /**
+   * Limpia la selección del tipo de empresa
+   */
   onSelectionTypeEnterpriseClear() {
     this.form.value.selectedItemEnterpriseType = { id: -1, name: '' };
     this.placeTypeEnterprise = 'Seleccione el tipo de empresa';
@@ -585,9 +674,7 @@ export class EnterpriseCreationComponent implements OnInit {
   /**
    * @description Save enterprise using Enterprise service
    */
-  async saveEnterprise() {
-
-    
+  async saveEnterprise() {  
 
     if(!this.validationsForm()){
       try {
@@ -698,9 +785,17 @@ export class EnterpriseCreationComponent implements OnInit {
   /**
    * Use the TaxPayer service to list in the select interface.
    */
-
-  getAllTaxPayeres() {
-    this.taxPayersList = this.taxPayerService.getTaxPayerTypes();
+  getAllTaxPayer() {
+    console.log('entrando a gettaxp');
+    this.taxPayerService.getTaxPayerTypesBack().subscribe({
+      next: (response: TaxPayerType[]) => {
+        this.taxPayersList = response;
+        console.log('Tipos de contribuyente obtenidos:', this.taxPayersList);
+      },
+      error: (error) => {
+        console.log('Error al obtener tipos de contribuyente:', error);
+      }
+    });
   }
 
   /**
@@ -727,7 +822,9 @@ export class EnterpriseCreationComponent implements OnInit {
   getTypesEnterprise() {
     this.enterpriseTypesList = this.enterpriseService.getTypesEnterprise();
   }
-
+  /**
+   * Navega a la lista de empresas
+   */
   goToListEnterprises(){
     this.router.navigate(['general/enterprises/list']);
   }

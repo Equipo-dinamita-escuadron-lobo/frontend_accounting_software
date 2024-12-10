@@ -1,3 +1,23 @@
+/**
+ * @fileoverview Componente para crear empresas a partir de PDF del RUT
+ * 
+ * Este componente permite:
+ * - Cargar archivos PDF del RUT
+ * - Visualizar el PDF cargado
+ * - Extraer información del RUT
+ * - Crear empresas con la información extraída
+ * 
+ * Funcionalidades principales:
+ * - Carga y validación de archivos PDF
+ * - Visualización segura de PDF
+ * - Procesamiento de información del RUT
+ * - Manejo de errores y alertas
+ * - Redirección a creación de empresa
+ * 
+ * @author [CONTAPP]
+ * @version 1.0.0
+ */
+
 import { Component, Output, EventEmitter } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
@@ -12,13 +32,28 @@ import { buttonColors } from '../../../../../shared/buttonColors';
   styleUrl: './enterprise-create-rut.component.css'
 })
 export class EnterpriseCreateRUTComponent {
+  /** Evento para cerrar el componente */
   @Output() close = new EventEmitter<void>();
   
+  /** Datos de entrada del componente */
   inputData = { title: 'Crear una Empresa apartir del PDF del RUT' };
+
+  /** URL segura del PDF cargado */
   pdfUrl: SafeResourceUrl | null = null;
+
+  /** Archivo PDF seleccionado */
   selectedFile: File | null = null;
+
+  /** Indica si se ha cargado un archivo */
   isFileLoaded = false;
 
+  /**
+   * Constructor del componente
+   * @param sanitizer Servicio para sanitizar URLs
+   * @param http Cliente HTTP
+   * @param router Servicio de enrutamiento
+   * @param enterpriseServie Servicio de empresas
+   */
   constructor(
     private sanitizer: DomSanitizer, 
     private http: HttpClient, 
@@ -26,6 +61,10 @@ export class EnterpriseCreateRUTComponent {
     private enterpriseServie: EnterpriseService,
   ) {}
 
+  /**
+   * Maneja el cambio de archivo seleccionado
+   * @param event Evento de cambio de archivo
+   */
   onFileChange(event: any) {
     const file = event.target.files[0];
     if (file && file.type === 'application/pdf') {
@@ -41,7 +80,10 @@ export class EnterpriseCreateRUTComponent {
     }
   }
 
-
+  /**
+   * Sube el archivo PDF y procesa la información
+   * Maneja la extracción de información y redirección
+   */
   uploadFile() {
     if (this.selectedFile) {
       this.enterpriseServie.ExtractInfoPDFRUT(this.selectedFile).subscribe({
@@ -66,7 +108,6 @@ export class EnterpriseCreateRUTComponent {
             console.log(pdfContent);
             this.redirectToCreateEnterprise(pdfContent);
           }
-  
         },
         error: (err) => {
           Swal.fire({
@@ -87,6 +128,9 @@ export class EnterpriseCreateRUTComponent {
     }
   }
 
+  /**
+   * Cierra el popup y limpia el estado
+   */
   closePopUp() {
     this.close.emit();
     this.pdfUrl = null;
@@ -95,10 +139,17 @@ export class EnterpriseCreateRUTComponent {
     this.router.navigate(['general/enterprises/list']);
   }
 
+  /**
+   * Navega a la lista de empresas
+   */
   goToListEnterprises(){
     this.router.navigate(['general/enterprises/list']);
   }
 
+  /**
+   * Redirige a la creación de empresa con la información extraída
+   * @param infoEnterprise Información extraída del RUT
+   */
   redirectToCreateEnterprise(infoEnterprise: string):void{
     this.enterpriseServie.setInfoEnterpiseRUT(infoEnterprise);
     this.router.navigate(['general/enterprises/create']);
